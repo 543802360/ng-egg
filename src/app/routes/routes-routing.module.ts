@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-03-10 09:05:00
- * @LastEditTime: 2020-03-10 14:29:54
+ * @LastEditTime: 2020-03-10 22:21:44
  * @LastEditors: Please set LastEditors
  * @Description: 路由注册入口
  * @FilePath: /ng-egg/src/app/routes/routes-routing.module.ts
@@ -34,9 +34,14 @@ const routes: Routes = [
       { path: 'dashboard', component: DashboardComponent, data: { title: '仪表盘' } },
       { path: 'exception', loadChildren: () => import('./exception/exception.module').then(m => m.ExceptionModule) },
       // 业务子模块
+      {
+        path: 'sys',
+        loadChildren: () => import('./sys/sys.module').then(m => m.SysModule)
+      },
       // { path: 'widgets', loadChildren: () => import('./widgets/widgets.module').then(m => m.WidgetsModule) },
     ]
   },
+
   // 全屏布局
   // {
   //     path: 'fullscreen',
