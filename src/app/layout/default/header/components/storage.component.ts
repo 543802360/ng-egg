@@ -1,3 +1,11 @@
+/*
+ * @Author: your name
+ * @Date: 2020-03-10 09:05:00
+ * @LastEditTime: 2020-03-10 15:31:55
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: /ng-egg/src/app/layout/default/header/components/storage.component.ts
+ */
 import { Component, HostListener, ChangeDetectionStrategy } from '@angular/core';
 import { NzModalService, NzMessageService } from 'ng-zorro-antd';
 
@@ -5,7 +13,7 @@ import { NzModalService, NzMessageService } from 'ng-zorro-antd';
   selector: 'header-storage',
   template: `
     <i nz-icon nzType="tool"></i>
-    {{ 'menu.clear.local.storage' | translate }}
+      清除缓存
   `,
   // tslint:disable-next-line: no-host-metadata-property
   host: {
@@ -14,7 +22,7 @@ import { NzModalService, NzMessageService } from 'ng-zorro-antd';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderStorageComponent {
-  constructor(private modalSrv: NzModalService, private messageSrv: NzMessageService) {}
+  constructor(private modalSrv: NzModalService, private messageSrv: NzMessageService) { }
 
   @HostListener('click')
   _click() {

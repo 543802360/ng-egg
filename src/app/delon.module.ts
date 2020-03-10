@@ -1,3 +1,4 @@
+
 /**
  * 进一步对基础模块的导入提炼
  * 有关模块注册指导原则请参考：https://ng-alain.com/docs/module
@@ -52,7 +53,10 @@ import { DelonAuthConfig } from '@delon/auth';
 export function fnDelonAuthConfig(): DelonAuthConfig {
   return {
     ...new DelonAuthConfig(),
-    login_url: '/passport/login',
+    store_key: "token",
+    token_invalid_redirect: true, // 无效时跳转至登录页，包括：无效token值、token已过期（限JWT）
+    login_url: '/passport/login', // 登录页路由地址
+    token_send_key: 'token', // 发送token参数名
   };
 }
 

@@ -49,7 +49,7 @@ export class HeaderNotifyComponent {
   count = 5;
   loading = false;
 
-  constructor(private msg: NzMessageService, private cdr: ChangeDetectorRef) {}
+  constructor(private msg: NzMessageService, private cdr: ChangeDetectorRef) { }
 
   private updateNoticeData(notices: NoticeIconList[]): NoticeItem[] {
     const data = this.data.slice();
@@ -79,6 +79,7 @@ export class HeaderNotifyComponent {
     this.loading = true;
     setTimeout(() => {
       this.data = this.updateNoticeData([
+
         {
           id: '000000001',
           avatar: 'https://gw.alipayobjects.com/zos/rmsportal/ThXAXghbEsBCCSDihZxY.png',

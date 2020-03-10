@@ -1,3 +1,11 @@
+/*
+ * @Author: your name
+ * @Date: 2020-03-10 09:05:00
+ * @LastEditTime: 2020-03-10 15:26:14
+ * @LastEditors: your name
+ * @Description: In User Settings Edit
+ * @FilePath: /ng-egg/src/app/layout/default/header/components/search.component.ts
+ */
 import { Component, HostBinding, Input, ElementRef, AfterViewInit, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
@@ -9,7 +17,7 @@ import { Component, HostBinding, Input, ElementRef, AfterViewInit, ChangeDetecti
         [(ngModel)]="q"
         (focus)="qFocus()"
         (blur)="qBlur()"
-        [placeholder]="'menu.search.placeholder' | translate"
+        [placeholder]="'全局搜索'"
       />
     </nz-input-group>
   `,
@@ -34,7 +42,7 @@ export class HeaderSearchComponent implements AfterViewInit {
     setTimeout(() => this.qIpt.focus(), 300);
   }
 
-  constructor(private el: ElementRef) {}
+  constructor(private el: ElementRef) { }
 
   ngAfterViewInit() {
     this.qIpt = (this.el.nativeElement as HTMLElement).querySelector('.ant-input') as HTMLInputElement;
