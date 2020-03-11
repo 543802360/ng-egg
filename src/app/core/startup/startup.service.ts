@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { zip } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { MenuService, SettingsService, TitleService, ALAIN_I18N_TOKEN } from '@delon/theme';
+import { MenuService, MenuIcon, SettingsService, TitleService, ALAIN_I18N_TOKEN } from '@delon/theme';
 import { DA_SERVICE_TOKEN, ITokenService } from '@delon/auth';
 import { ACLService } from '@delon/acl';
 import { TranslateService } from '@ngx-translate/core';
@@ -12,6 +12,7 @@ import { I18NService } from '../i18n/i18n.service';
 import { NzIconService } from 'ng-zorro-antd/icon';
 import { ICONS_AUTO } from '../../../style-icons-auto';
 import { ICONS } from '../../../style-icons';
+import { array2tree } from '@shared';
 
 /**
  * Used for application startup
@@ -36,36 +37,63 @@ export class StartupService {
 
   private viaHttp(resolve: any, reject: any) {
     resolve(null);
-    // zip(
-    //   this.httpClient.get(`assets/tmp/i18n/${this.i18n.defaultLang}.json`),
-    //   this.httpClient.get('assets/tmp/app-data.json')
-    // ).pipe(
-    //   catchError(([langData, appData]) => {
-    //     resolve(null);
-    //     return [langData, appData];
-    //   })
-    // ).subscribe(([langData, appData]) => {
-    //   // Setting language data
-    //   this.translate.setTranslation(this.i18n.defaultLang, langData);
-    //   this.translate.setDefaultLang(this.i18n.defaultLang);
+    zip(
+      this.httpClient.get('sys/menus')
+    ).pipe(
+      catchError(([menuData]) => {
+        resolve(null);
+        return [menuData];
+      })
+    ).subscribe(([menuData]) => {
 
-    //   // Application data
-    //   const res: any = appData;
-    //   // Application information: including site name, description, year
-    //   this.settingService.setApp(res.app);
-    //   // User information: including name, avatar, email address
-    //   this.settingService.setUser(res.user);
-    //   // ACL: Set the permissions to full, https://ng-alain.com/acl/getting-started
-    //   this.aclService.setFull(true);
-    //   // Menu data, https://ng-alain.com/theme/menu
-    //   this.menuService.add(res.menu);
-    //   // Can be set page suffix title, https://ng-alain.com/theme/title
-    //   this.titleService.suffix = res.app.name;
-    // },
-    //   () => { },
-    //   () => {
-    //     resolve(null);
-    //   });
+      // Application data
+      const res: any = menuData;
+      // Application information: including site name, description, year
+      // this.settingService.setApp(res.app);
+      // User information: including name, avatar, email address
+      // this.settingService.setUser(res.user);
+      // ACL: Set the permissions to full, https://ng-alain.com/acl/getting-started
+      // this.aclService.setFull(true);
+      // Menu data, https://ng-alain.com/theme/menu
+      const menusArray = menuData.data.map(item => {
+        let menu;
+        item.parent_id ?
+          menu = {
+            text: item.menuname, // 菜单名称
+            key: item.menu_id,  // 菜单id
+            parent_id: item.parent_id, // 父菜单id
+            link: item.route_path, // 路由
+            reuse: true,// 路由复用，所有菜单均使用
+            group: false
+          } : menu = {
+            text: item.menuname, // 菜单名称
+            key: item.menu_id,  // 菜单id
+            parent_id: item.parent_id, // 父菜单id
+            link: item.route_path, // 路由
+            icon: item.icon,
+            group: false
+          };
+
+        return menu;
+
+      });
+      const menus = array2tree(menusArray, 'key', 'parent_id', 'children');
+      this.menuService.add([
+        {
+          "text": "主导航",
+          "group": true,
+          children: menus
+
+        }]);
+      // resolve(null);
+
+      // Can be set page suffix title, https://ng-alain.com/theme/title
+      // this.titleService.suffix = res.app.name;
+    },
+      () => { },
+      () => {
+        resolve(null);
+      });
   }
 
   private viaMockI18n(resolve: any, reject: any) {
