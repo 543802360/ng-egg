@@ -1,3 +1,11 @@
+/*
+ * @Author: your name
+ * @Date: 2020-03-10 09:05:00
+ * @LastEditTime: 2020-03-11 09:41:27
+ * @LastEditors: your name
+ * @Description: In User Settings Edit
+ * @FilePath: /ng-egg/src/app/delon.module.ts
+ */
 
 /**
  * 进一步对基础模块的导入提炼
@@ -31,11 +39,11 @@ const MOCK_MODULES = !environment.production ? [DelonMockModule.forRoot({ data: 
 import { RouteReuseStrategy } from '@angular/router';
 import { ReuseTabService, ReuseTabStrategy } from '@delon/abc/reuse-tab';
 const REUSETAB_PROVIDES = [
-  // {
-  //   provide: RouteReuseStrategy,
-  //   useClass: ReuseTabStrategy,
-  //   deps: [ReuseTabService],
-  // },
+  {
+    provide: RouteReuseStrategy,
+    useClass: ReuseTabStrategy,
+    deps: [ReuseTabService],
+  },
 ];
 // #endregion
 
