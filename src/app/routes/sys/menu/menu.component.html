@@ -4,12 +4,12 @@
   </ng-template>
 </page-header>
 <nz-card>
-  <nz-table #menuTable nzBordered nzSize="middle" [nzData]="menuTreeData" [nzLoading]="http.loading">
+  <nz-table #menuTable nzBordered nzSize="middle" [nzData]="menuCollapseTreeData" [nzLoading]="http.loading">
     <thead>
       <tr>
         <th nzAlign="left">名称</th>
         <th nzAlign="center">图标</th>
-        <th nzAlign="center">类型</th>
+        <!-- <th nzAlign="center">类型</th> -->
         <th nzAlign="center">节点路由</th>
         <th nzAlign="center">排序号</th>
         <th nzAlign="center">更新时间</th>
@@ -25,7 +25,7 @@
               {{item.menuname}}
             </td>
             <td nzAlign="center"> <i [class]="item.icon"></i></td>
-            <td nzAlign="center">{{ item.menutype }}</td>
+            <!-- <td nzAlign="center">{{ item.menutype }}</td> -->
             <td nzAlign="center">{{ item.route_path }}</td>
             <td nzAlign="center">{{ item.order_num }}</td>
             <td nzAlign="center">{{ item.updated_at | date: 'yyyy-MM-dd HH:mm:ss' }}</td>

@@ -56,10 +56,11 @@ export class SysMenuComponent implements OnInit, AfterViewInit {
 
   // 菜单数组数据
   menuData: IMenu[];
-  // 菜单树节点数据
-  menuTreeData: IMenu[];
+  // 菜单树节点数据(表格)
+  menuCollapseTreeData: IMenu[];
   // 菜单折叠数据
   mapOfMenuExpandedData: { [menu_id: string]: IMenu[] } = {};
+
 
   constructor(
     private http: _HttpClient,
@@ -88,6 +89,7 @@ export class SysMenuComponent implements OnInit, AfterViewInit {
       let menu;
       item.parent_id ?
         menu = {
+          title: item.menuname, // 菜单名称(tree-select 用)
           text: item.menuname, // 菜单名称
           key: item.menu_id,  // 菜单id
           parent_id: item.parent_id, // 父菜单id
@@ -95,6 +97,7 @@ export class SysMenuComponent implements OnInit, AfterViewInit {
           reuse: true,// 路由复用，所有菜单均使用
           group: false
         } : menu = {
+          title: item.menuname, // 菜单名称(tree-select 用)
           text: item.menuname, // 菜单名称
           key: item.menu_id,  // 菜单id
           parent_id: item.parent_id, // 父菜单id
@@ -131,9 +134,9 @@ export class SysMenuComponent implements OnInit, AfterViewInit {
             return { ...item, showExpand: true };
           }
         });
-        this.menuTreeData = array2tree(this.menuData, 'menu_id', 'parent_id', 'children');
-        console.log(this.menuTreeData);
-        this.menuTreeData.forEach(item => {
+
+        this.menuCollapseTreeData = array2tree(this.menuData, 'menu_id', 'parent_id', 'children');
+        this.menuCollapseTreeData.forEach(item => {
           this.mapOfMenuExpandedData[item.menu_id] = this.convertTreeToList(item);
         });
 
@@ -162,7 +165,7 @@ export class SysMenuComponent implements OnInit, AfterViewInit {
         nzTitle: '新建菜单',
         nzContent: SysMenuEditComponent,
         nzComponentParams: {
-          menu: newMenu
+          menu: newMenu,
         },
         nzFooter: null
       }).afterClose.subscribe(res => {
@@ -175,7 +178,7 @@ export class SysMenuComponent implements OnInit, AfterViewInit {
         nzTitle: '新建菜单',
         nzContent: SysMenuEditComponent,
         nzComponentParams: {
-          menu
+          menu,
         },
         nzFooter: null
       }).afterClose.subscribe(res => {
@@ -195,7 +198,7 @@ export class SysMenuComponent implements OnInit, AfterViewInit {
       nzTitle: menu.menuname,
       nzContent: SysMenuEditComponent,
       nzComponentParams: {
-        menu
+        menu,
       },
       nzFooter: null
     }).afterClose.subscribe(res => {
@@ -226,7 +229,7 @@ export class SysMenuComponent implements OnInit, AfterViewInit {
 
   //#endregion
 
-  //#region table树 折叠
+  //#region table树折叠 (antd example)
   collapse(array: IMenu[], data: IMenu, $event: boolean): void {
     if ($event === false) {
       if (data.children) {
