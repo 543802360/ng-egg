@@ -1,17 +1,11 @@
-/*
- * @Author: your name
- * @Date: 2020-03-10 16:24:46
- * @LastEditTime: 2020-03-11 13:42:11
- * @LastEditors: Please set LastEditors
- * @Description: In User Settings Edit
- * @FilePath: /ng-egg/src/app/routes/sys/menu/edit/edit.component.ts
- */
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { NzModalRef } from 'ng-zorro-antd/modal';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { _HttpClient } from '@delon/theme';
 import { SFSchema, SFUISchema } from '@delon/form';
-import { IMenu } from '@shared';
+import { IMenu, array2tree } from '@shared';
+import { delay, map } from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-sys-menu-edit',
@@ -24,12 +18,39 @@ export class SysMenuEditComponent implements OnInit {
   // 菜单表单json schema定义
   schema: SFSchema = {
     properties: {
-      menuname: { type: 'string', title: '菜单名称' },
-      parent_name: { type: 'string', title: '上级菜单' },
-      route_path: { type: 'string', title: '节点路由' },
-      menutype: { type: 'string', title: '节点类型' },
-      icon: { type: 'string', title: '节点图标' },
-      order_num: { type: 'number', title: '排序号' },
+      menuname: {
+        type: 'string',
+        title: '菜单名称'
+      },
+      parent_name: {
+        type: 'string',
+        title: '上级菜单',
+        enum: [
+          { title: '一级菜单', key: '' }
+        ]
+      },
+      route_path: {
+        type: 'string',
+        title: '节点路由'
+      },
+      // menutype: {
+      //   type: 'string',
+      //   title: '节点类型',
+      //   enum: [
+      //     { label: '目录', value: 'DIR' },
+      //     {
+      //       label: '菜单', value: 'MENU',
+      //     }
+      //   ]
+      // },
+      icon: {
+        type: 'string',
+        title: '节点图标'
+      },
+      order_num: {
+        type: 'number',
+        title: '排序号'
+      },
     },
     required: ['menuname'],
   };
@@ -45,6 +66,21 @@ export class SysMenuEditComponent implements OnInit {
     },
     $parent_id: {
       widget: 'string',
+    },
+    $parent_name: {
+      widget: 'tree-select',
+      multiple: false,
+      asyncData: () => {
+        return this.http.get('sys/menus').pipe(
+          map(resp => {
+            const menuData = resp.data.map((menu: IMenu) => {
+              return { title: menu.menuname, 'key': menu.menu_id, 'parent_id': menu.parent_id };
+
+            });
+            return array2tree(menuData, 'key', 'parent_id', 'children');
+          })
+        );
+      }
     },
     $order_num: {
       widget: 'number',
