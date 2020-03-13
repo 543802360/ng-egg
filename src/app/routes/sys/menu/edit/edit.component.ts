@@ -6,44 +6,53 @@
  * @Description: In User Settings Edit
  * @FilePath: /ng-egg/src/app/routes/sys/menu/edit/edit.component.ts
  */
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { NzModalRef } from 'ng-zorro-antd/modal';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { _HttpClient } from '@delon/theme';
 import { SFSchema, SFUISchema } from '@delon/form';
+import { IMenu } from '@shared';
 
 @Component({
   selector: 'app-sys-menu-edit',
   templateUrl: './edit.component.html',
 })
 export class SysMenuEditComponent implements OnInit {
-  record: any = {};
-  i: any;
+
+  // 菜单
+  @Input() menu: IMenu = {};
+  // 菜单表单json schema定义
   schema: SFSchema = {
     properties: {
-      no: { type: 'string', title: '编号' },
-      owner: { type: 'string', title: '姓名', maxLength: 15 },
-      callNo: { type: 'number', title: '调用次数' },
-      href: { type: 'string', title: '链接', format: 'uri' },
-      description: { type: 'string', title: '描述', maxLength: 140 },
+      menuname: { type: 'string', title: '菜单名称' },
+      parent_name: { type: 'string', title: '上级菜单' },
+      route_path: { type: 'string', title: '节点路由' },
+      menutype: { type: 'string', title: '节点类型' },
+      icon: { type: 'string', title: '节点图标' },
+      order_num: { type: 'number', title: '排序号' },
     },
-    required: ['owner', 'callNo', 'href', 'description'],
+    required: ['menuname'],
   };
+  // 表单ui定义
   ui: SFUISchema = {
+
     '*': {
       spanLabelFixed: 100,
-      grid: { span: 12 },
-    },
-    $no: {
-      widget: 'text'
-    },
-    $href: {
-      widget: 'string',
-    },
-    $description: {
-      widget: 'textarea',
       grid: { span: 24 },
     },
+    $menuname: {
+      widget: 'string'
+    },
+    $parent_id: {
+      widget: 'string',
+    },
+    $order_num: {
+      widget: 'number',
+      grid: {
+        span: 24
+      }
+    },
+
   };
 
   constructor(
@@ -53,18 +62,48 @@ export class SysMenuEditComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    if (this.record.id > 0)
-      this.http.get(`/user/${this.record.id}`).subscribe(res => (this.i = res));
+    // if (this.record.id > 0)
+    //   this.http.get(`/user/${this.record.id}`).subscribe(res => (this.i = res));
   }
 
-  save(value: any) {
-    this.http.post(`/user/${this.record.id}`, value).subscribe(res => {
-      this.msgSrv.success('保存成功');
-      this.modal.close(true);
-    });
+  /**
+   * 保存修改菜单
+   * @param menu
+   */
+  save(menu: IMenu) {
+    if (menu.menu_id) {
+      // 更新
+      this.http.put(`sys/menus/${menu.menu_id}`, menu).subscribe(resp => {
+        this.success(resp);
+      }, error => {
+
+      });
+    } else {
+      // 创建
+      this.http.post(`sys/menus`, menu).subscribe(resp => {
+        this.success(resp);
+      }, error => {
+
+      });
+    }
   }
 
   close() {
     this.modal.destroy();
+  }
+
+  /**
+   * 菜单保存成功响应处理
+   * @param resp :http response
+   */
+  success(resp) {
+    if (resp.success) {
+      setTimeout(() => {
+        this.close();
+      });
+      this.msgSrv.success(resp.msg, { nzDuration: 4000 });
+    } else {
+      this.msgSrv.error(resp.msg, { nzDuration: 4000 });
+    }
   }
 }
