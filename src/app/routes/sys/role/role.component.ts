@@ -1,7 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { _HttpClient, ModalHelper } from '@delon/theme';
-import { STColumn, STComponent } from '@delon/abc/table';
+import { STColumn, STComponent, STData } from '@delon/abc/table';
+
 import { SFSchema } from '@delon/form';
+import { SysRoleEditComponent } from './edit/edit.component';
+import { SysRoleViewComponent } from './view/view.component';
 
 @Component({
   selector: 'app-sys-role',
@@ -25,10 +28,29 @@ export class SysRoleComponent implements OnInit {
     { title: '时间', type: 'date', index: 'updatedAt' },
     {
       title: '',
-      buttons: [
-        // { text: '查看', click: (item: any) => `/form/${item.id}` },
-        // { text: '编辑', type: 'static', component: FormEditComponent, click: 'reload' },
-      ]
+      buttons:
+        [
+          {
+            text: '查看',
+            type: 'static',
+            modal: {
+              component: SysRoleViewComponent,
+              params: record => ({ record })
+            },
+            click: (record: STData) => {
+
+            }
+          },
+          {
+            text: '编辑',
+            type: 'static',
+            modal: {
+              component: SysRoleEditComponent,
+              params: record => ({ record })
+            },
+            click: 'load'
+          },
+        ]
     }
   ];
 
