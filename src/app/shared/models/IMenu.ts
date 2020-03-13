@@ -9,15 +9,16 @@ import { MenuType } from './MenuType';
  * @FilePath: /ng-egg/src/app/shared/models/IMenu.ts
  */
 export interface IMenu {
-  menu_id: string; // 菜单id
-  parent_id: string; // 父节点id
-  menuname: string; // 菜单名称
-  icon: string; // font-awesome
-  menutype: MenuType; // 菜单类型：目录、菜单
-  route_path: string; // 路由链接
-  is_show: boolean; // 菜单是否可见
-  order_num: number;// 菜单排序
-  updated_at: Date;// 更新时间
+  menu_id?: string; // 菜单id
+  parent_id?: string; // 父节点id
+  parent_name?: string;
+  menuname?: string; // 菜单名称
+  icon?: string; // font-awesome
+  menutype?: MenuType; // 菜单类型：目录、菜单
+  route_path?: string; // 路由链接
+  is_show?: boolean; // 菜单是否可见
+  order_num?: number;// 菜单排序
+  updated_at?: Date;// 更新时间
   children?: IMenu[]; // 子菜单
   parent?: IMenu; // 父菜单
   level?: number;// 菜单折叠层级
