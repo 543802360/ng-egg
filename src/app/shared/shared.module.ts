@@ -45,6 +45,7 @@ const DIRECTIVES = [];
     ...COMPONENTS,
     ...DIRECTIVES
   ],
+  entryComponents: [IconPickerComponent],
   exports: [
     CommonModule,
     FormsModule,
