@@ -1,7 +1,50 @@
 <!-- <nz-spin *ngIf="!menu" class="modal-spin"></nz-spin> -->
-<sf #sf mode="edit" [schema]="schema" [ui]="ui" [formData]="menu" button="none">
+<!-- <sf #sf mode="edit" [schema]="schema" [ui]="ui" [formData]="menu" button="none">
   <div class="modal-footer">
     <button nz-button type="button" (click)="close()">关闭</button>
     <button nz-button type="submit" nzType="primary" (click)="save(sf.value)" [disabled]="!sf.valid">保存</button>
   </div>
-</sf>
+</sf> -->
+
+
+<form nz-form [formGroup]="menuGroup" nzLayout="horizontal">
+  <nz-form-item>
+    <nz-form-label nzFor="menuname" nzSpan="6" nzRequired>菜单名称</nz-form-label>
+    <nz-form-control nzSpan="18">
+      <input nz-input formControlName="menuname" placeholder="">
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label nzFor="parent_name" nzSpan="6">上级菜单</nz-form-label>
+    <nz-form-control nzSpan="18">
+      <nz-tree-select formControlName="parent_name" [(ngModel)]="parentMenu" [nzNodes]="menuTreeNodes">
+      </nz-tree-select>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label nzFor="route_path" nzSpan="6">节点路由</nz-form-label>
+    <nz-form-control nzSpan="18">
+      <input nz-input formControlName="route_path" placeholder="">
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label nzFor="icon" nzSpan="6">节点图标</nz-form-label>
+    <nz-form-control nzSpan="18">
+      <input nz-input formControlName="icon" placeholder="">
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label nzFor="order_num" nzSpan="6">排序号</nz-form-label>
+    <nz-form-control nzSpan="18">
+      <input nz-input formControlName="order_num" placeholder="">
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-control nzSpan="12">
+      <button nz-button (click)="save()">保存</button>
+    </nz-form-control>
+    <nz-form-control nzSpan="12">
+      <button nz-button>关闭</button>
+    </nz-form-control>
+  </nz-form-item>
+</form>

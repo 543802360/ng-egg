@@ -77,9 +77,6 @@ export class SysMenuComponent implements OnInit, AfterViewInit {
   }
 
   add() {
-    // this.modal
-    //   .createStatic(FormEditComponent, { i: { id: 0 } })
-    //   .subscribe(() => this.st.reload());
   }
 
   //#region 初始化与更新系统菜单导航
@@ -160,31 +157,58 @@ export class SysMenuComponent implements OnInit, AfterViewInit {
    */
   newMenu(menu?: IMenu) {
     if (menu) {
-      const newMenu: IMenu = { parent_name: menu.menuname, parent_id: menu.menu_id }
+      // 构建新菜单结构，须用Object.assign
+      const newMenu = { ...menu };
+      console.log('new menu :', newMenu);
+      Object.defineProperties(newMenu, {
+        menu_id: {
+          writable: true,
+          configurable: true,
+          enumerable: true,
+          value: null
+        },
+        menuname: {
+          writable: true,
+          configurable: true,
+          enumerable: true,
+          value: null
+        },
+        parent_name: {
+          writable: true,
+          configurable: true,
+          enumerable: true,
+          value: newMenu.menuname
+        },
+        parent_id: {
+          writable: true,
+          configurable: true,
+          enumerable: true,
+          value: newMenu.menu_id
+        },
+        parent: {
+          writable: true,
+          configurable: true,
+          enumerable: true,
+          value: menu
+        },
+      });
       this.modalSrv.create({
         nzTitle: '新建菜单',
         nzContent: SysMenuEditComponent,
         nzComponentParams: {
-          menu: newMenu,
+          menu
         },
         nzFooter: null
       }).afterClose.subscribe(res => {
-        setTimeout(() => {
-          this.initMenus();
-        }, 100);
+        res ? this.initMenus() : null;
       });
     } else {
       this.modalSrv.create({
         nzTitle: '新建菜单',
         nzContent: SysMenuEditComponent,
-        nzComponentParams: {
-          menu,
-        },
         nzFooter: null
       }).afterClose.subscribe(res => {
-        setTimeout(() => {
-          this.initMenus();
-        }, 100);
+        res ? this.initMenus() : null;
       });
     }
   }
@@ -194,6 +218,7 @@ export class SysMenuComponent implements OnInit, AfterViewInit {
    * @param menu
    */
   editMenu(menu?: IMenu) {
+    console.log(menu);
     this.modalSrv.create({
       nzTitle: menu.menuname,
       nzContent: SysMenuEditComponent,
@@ -202,9 +227,7 @@ export class SysMenuComponent implements OnInit, AfterViewInit {
       },
       nzFooter: null
     }).afterClose.subscribe(res => {
-      setTimeout(() => {
-        this.initMenus();
-      }, 100);
+      res ? this.initMenus() : null;
     });
   }
 
@@ -254,6 +277,7 @@ export class SysMenuComponent implements OnInit, AfterViewInit {
       this.visitNode(node, hashMap, array);
       if (node.children) {
         for (let i = node.children.length - 1; i >= 0; i--) {
+          // stack.push({ ...node.children[i], level: node.level! + 1, expand: false });
           stack.push({ ...node.children[i], level: node.level! + 1, expand: false, parent: node });
         }
       }
