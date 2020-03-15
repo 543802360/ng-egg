@@ -19,6 +19,6 @@ export * from './models/IDepartment';
 export * from './models/IRole';
 export * from "./models/IUser";
 export * from "./models/MenuType";
-
+export * from './models/TableOperator';
 // 模块
 export * from './shared.module';
