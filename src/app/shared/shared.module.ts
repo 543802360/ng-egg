@@ -1,4 +1,3 @@
-import { IconPickerComponent } from './components/icon-picker.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
@@ -23,7 +22,7 @@ const THIRDMODULES = [
 // #endregion
 
 // #region your componets & directives
-const COMPONENTS = [IconPickerComponent];
+const COMPONENTS = [];
 const DIRECTIVES = [];
 // #endregion
 
@@ -45,7 +44,7 @@ const DIRECTIVES = [];
     ...COMPONENTS,
     ...DIRECTIVES
   ],
-  entryComponents: [IconPickerComponent],
+  entryComponents: [],
   exports: [
     CommonModule,
     FormsModule,
