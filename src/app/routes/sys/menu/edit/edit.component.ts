@@ -6,7 +6,8 @@ import { SFSchema, SFUISchema, SFComponent } from '@delon/form';
 import { IMenu, array2tree, TableOperator } from '@shared';
 import { delay, map } from 'rxjs/operators';
 import { IconPickerComponent } from '@shared/components/icon-picker.component';
-import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
+import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { NzTreeSelectComponent } from 'ng-zorro-antd';
 
 
 @Component({
@@ -14,102 +15,14 @@ import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
   templateUrl: './edit.component.html',
 })
 export class SysMenuEditComponent implements OnInit, AfterViewInit {
-  @ViewChild('sf', { static: false }) menuSf: SFComponent;
   // 菜单
   @Input() menu: IMenu = {};
   menuGroup: FormGroup;
   menuTreeNodes = [];
   parentMenu;
-  // 菜单表单json schema定义
-  schema: SFSchema = {
-    properties: {
-      menuname: {
-        type: 'string',
-        title: '菜单名称'
-      },
-      parent_name: {
-        type: 'string',
-        title: '上级菜单',
-        enum: [
-          { title: '一级菜单', key: '' }
-        ]
-      },
-      // parent_id: {
-      //   type: 'string',
-      //   title: '上级菜单ID',
-      // },
-      route_path: {
-        type: 'string',
-        title: '节点路由'
-      },
-      // menutype: {
-      //   type: 'string',
-      //   title: '节点类型',
-      //   enum: [
-      //     { label: '目录', value: 'DIR' },
-      //     {
-      //       label: '菜单', value: 'MENU',
-      //     }
-      //   ]
-      // },
-      icon: {
-        type: 'string',
-        title: '节点图标',
-        // ui: {
-        //   widget: 'custom_icon'
-        // }
-      },
-      order_num: {
-        type: 'number',
-        title: '排序号'
-      },
-    },
-    required: ['menuname'],
-  };
-  // 表单ui定义
-  ui: SFUISchema = {
+  selectedIcon: string;
 
-    '*': {
-      spanLabelFixed: 100,
-      grid: { span: 24 },
-    },
-    $menuname: {
-      widget: 'string'
-    },
-    // $parent_id: {
-    //   widget: 'string',
-    // },
-    $parent_name: {
-      widget: 'tree-select',
-      multiple: false,
-      allowClear: true,
-      asyncData: () => {
-        return this.http.get('sys/menus').pipe(
-          map(resp => {
-            const menuData = resp.data.map((menu: IMenu) => {
-              return { title: menu.menuname, 'key': menu.menu_id, 'parent_id': menu.parent_id };
-
-            });
-            return array2tree(menuData, 'key', 'parent_id', 'children');
-          })
-        );
-      }
-    },
-    $icon: {
-      widget: 'fontawesome',
-      position: 'right',
-      onIconPickerSelect: (icon) => {
-        console.log(icon, this.menuSf);
-      }
-    },
-    $order_num: {
-      widget: 'number',
-      grid: {
-        span: 24
-      }
-    },
-
-  };
+  @ViewChild('menuTree', { static: false }) menuTree: NzTreeSelectComponent;
 
   constructor(
     private modal: NzModalRef,
@@ -122,17 +35,22 @@ export class SysMenuEditComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     if (this.menu) {
       this.menuGroup = this.fb.group({
-        menuname: [this.menu.menuname],
+        menuname: [this.menu.menuname, Validators.required],
         parent_name: [''],
         route_path: [this.menu.route_path],
         icon: [this.menu.icon],
         order_num: [this.menu.order_num]
       });
     } else {
-
+      this.menuGroup = this.fb.group({
+        menuname: [null, Validators.required],
+        parent_name: [null],
+        route_path: [null],
+        icon: [null],
+        order_num: [null]
+      });
     }
-
-
+    // 初始化菜单树
     this.http.get('sys/menus').pipe(
       map(resp => {
         const menuData = resp.data.map((menu: IMenu) => {
@@ -144,68 +62,57 @@ export class SysMenuEditComponent implements OnInit, AfterViewInit {
     ).subscribe(resp => {
       setTimeout(() => {
         this.menuTreeNodes = resp;
-        this.parentMenu = this.menu.parent_id;
+        if (this.menu) {
+          this.menuGroup.controls.icon.setValue(this.menu.icon);
+          this.parentMenu = this.menu.parent_id;
+        }
       });
     });
   }
 
   ngAfterViewInit() {
-
-
-
-    // if (this.menu) {
-    //   Object.assign(this.schema.properties, {
-    //     parent_name: {
-    //       type: 'string',
-    //       title: '上级菜单',
-    //       enum: [
-    //         { title: '一级菜单', key: '' }
-    //       ],
-    //       default: this.menu.parent_id
-    //     },
-    //     icon: {
-    //       type: 'string',
-    //       title: '节点图标',
-    //       enum: [''],
-    //       default: this.menu.icon
-    //     },
-    //   });
-    //   setTimeout(() => {
-    //     this.menuSf.refreshSchema();
-    //   }, 200);
-    // }
   }
 
-  iconSelect() {
-    console.log('choose icon start');
-    this.modalSrv.create({
-      nzTitle: '选择菜单图标',
-      nzContent: IconPickerComponent,
-      nzComponentParams: {
-        position: 'bottom',
-        onIconPickerSelect: (icon) => {
-          console.log('choose :', icon);
-        }
-      }
-    }).open();
+  onIconPickerSelect(e) {
+    this.menuGroup.controls.icon.setValue(e);
   }
   /**
    * 保存修改菜单
    * @param menu
    */
-  save(menu: IMenu) {
-    // 获取父节点id，为空或存在
-    Object.assign(menu, { parent_id: menu.parent_name });
-    if (menu.menu_id) {
+  save() {
+
+    // tslint:disable-next-line: forin
+    for (const i in this.menuGroup.controls) {
+      this.menuGroup.controls[i].markAsDirty();
+      this.menuGroup.controls[i].updateValueAndValidity();
+    }
+    if (!this.menuGroup.value.menuname) return;
+
+    if (this.menu.menu_id) {
       // 更新
-      this.http.put(`sys/menus/${menu.menu_id}`, menu).subscribe(resp => {
+      let editedMenu = { ...this.menu, ...this.menuGroup.value };
+      // 获取父节点id
+      if (this.menuGroup.value.parent_name) {
+        const selectedMenuNode = this.menuTree.getSelectedNodeList()[0];
+        editedMenu = { ...editedMenu, parent_id: selectedMenuNode.key, parent_name: selectedMenuNode.title };
+      }
+      this.http.put(`sys/menus/${this.menu.menu_id}`, editedMenu).subscribe(resp => {
         this.success(resp);
       }, error => {
 
       });
     } else {
       // 创建
-      this.http.post(`sys/menus`, menu).subscribe(resp => {
+      let newMenu = {
+        ...this.menuGroup.value
+      };
+      // 获取父节点id
+      if (this.menuGroup.value.parent_name) {
+        const selectedMenuNode = this.menuTree.getSelectedNodeList()[0];
+        newMenu = { ...newMenu, parent_id: selectedMenuNode.key, parent_name: selectedMenuNode.title };
+      }
+      this.http.post(`sys/menus`, newMenu).subscribe(resp => {
         this.success(resp);
       }, error => {
 
