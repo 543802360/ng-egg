@@ -5,29 +5,34 @@ import { STColumn, STComponent, STData } from '@delon/abc/table';
 import { SFSchema } from '@delon/form';
 import { SysRoleEditComponent } from './edit/edit.component';
 import { SysRoleViewComponent } from './view/view.component';
+import { IRole } from '@shared';
+import { NzMessageService } from 'ng-zorro-antd';
+import { HttpParams } from '@angular/common/http';
 
 @Component({
   selector: 'app-sys-role',
   templateUrl: './role.component.html',
 })
 export class SysRoleComponent implements OnInit {
-  url = `/user`;
-  searchSchema: SFSchema = {
-    properties: {
-      no: {
-        type: 'string',
-        title: '编号'
-      }
-    }
-  };
+
   @ViewChild('st', { static: false }) st: STComponent;
+  roleData: IRole[];
   columns: STColumn[] = [
-    { title: '编号', index: 'no' },
-    { title: '调用次数', type: 'number', index: 'callNo' },
-    { title: '头像', type: 'img', width: '50px', index: 'avatar' },
-    { title: '时间', type: 'date', index: 'updatedAt' },
     {
-      title: '',
+      title: '角色名称',
+      index: 'rolename'
+    },
+    {
+      title: '角色说明',
+      index: 'remark'
+    },
+    {
+      title: '更新时间',
+      index: 'updated_at',
+      render: 'updateAt-row'
+    },
+    {
+      title: '操作',
       buttons:
         [
           {
@@ -48,20 +53,42 @@ export class SysRoleComponent implements OnInit {
               component: SysRoleEditComponent,
               params: record => ({ record })
             },
-            click: 'load'
+            click: (record: STData) => {
+
+            }
           },
         ]
     }
   ];
 
-  constructor(private http: _HttpClient, private modal: ModalHelper) { }
+  constructor(
+    private http: _HttpClient,
+    private modal: ModalHelper,
+    private msgSrv: NzMessageService) { }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.initRoles();
+  }
 
   add() {
     // this.modal
     //   .createStatic(FormEditComponent, { i: { id: 0 } })
     //   .subscribe(() => this.st.reload());
+  }
+
+  initRoles() {
+    this.http.get('sys/roles',
+      { params: new HttpParams().set('pageNum', '1').set('pageSize', '10') })
+      .subscribe(resp => {
+
+        if (resp.success) {
+          this.msgSrv.success(resp.msg);
+          this.roleData = resp.data;
+
+        } else {
+          this.msgSrv.error(resp.msg);
+        }
+      });
   }
 
 }

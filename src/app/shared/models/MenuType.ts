@@ -8,6 +8,7 @@
  */
 
 export enum MenuType {
-  DIR = "DIR",
-  MENU = "MENU"
+  DIR = "0",
+  MENU = "1",
+  PERMISSION = "2"
 };

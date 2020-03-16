@@ -18,7 +18,12 @@ export class SysRoleViewComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.http.get(`/user/${this.record.id}`).subscribe(res => this.i = res);
+    console.log(this.record);
+    this.http.get(`sys/roles/${this.record.roleid}`).subscribe(res => {
+      if (res.success) {
+        this.i = res.data;
+      }
+    });
   }
 
   close() {

@@ -3,9 +3,8 @@ import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { _HttpClient } from '@delon/theme';
 import { SFSchema, SFUISchema, SFComponent } from '@delon/form';
-import { IMenu, array2tree, TableOperator } from '@shared';
+import { IMenu, array2tree, TableOperator, MenuType } from '@shared';
 import { delay, map } from 'rxjs/operators';
-import { IconPickerComponent } from '@shared/components/icon-picker.component';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { NzTreeSelectComponent } from 'ng-zorro-antd';
 
@@ -16,11 +15,12 @@ import { NzTreeSelectComponent } from 'ng-zorro-antd';
 })
 export class SysMenuEditComponent implements OnInit, AfterViewInit {
   // 菜单
-  @Input() menu: IMenu = {};
+  @Input() menu: IMenu;
   menuGroup: FormGroup;
   menuTreeNodes = [];
-  parentMenu;
-  selectedIcon: string;
+  parentMenu; // 父级菜单
+  menutype: MenuType;  // 节点类型
+  selectedIcon: string; // 所选图标 font-awesome
 
   @ViewChild('menuTree', { static: false }) menuTree: NzTreeSelectComponent;
 
@@ -36,20 +36,28 @@ export class SysMenuEditComponent implements OnInit, AfterViewInit {
     if (this.menu) {
       this.menuGroup = this.fb.group({
         menuname: [this.menu.menuname, Validators.required],
+        menutype: [this.menutype],
         parent_name: [''],
         route_path: [this.menu.route_path],
         icon: [this.menu.icon],
-        order_num: [this.menu.order_num]
+        order_num: [this.menu.order_num],
+        perms: [this.menu.perms]
       });
+      this.menutype = this.menu.menutype;
     } else {
       this.menuGroup = this.fb.group({
         menuname: [null, Validators.required],
+        menutype: [0],
         parent_name: [null],
         route_path: [null],
         icon: [null],
-        order_num: [null]
+        order_num: [null],
+        perms: [null]
       });
+
+      this.menutype = MenuType.DIR;
     }
+
     // 初始化菜单树
     this.http.get('sys/menus').pipe(
       map(resp => {
@@ -89,7 +97,7 @@ export class SysMenuEditComponent implements OnInit, AfterViewInit {
     }
     if (!this.menuGroup.value.menuname) return;
 
-    if (this.menu.menu_id) {
+    if (this.menu && this.menu.menu_id) {
       // 更新
       let editedMenu = { ...this.menu, ...this.menuGroup.value };
       // 获取父节点id

@@ -15,6 +15,7 @@ export interface IMenu {
   menuname?: string; // 菜单名称
   icon?: string; // font-awesome
   menutype?: MenuType; // 菜单类型：目录、菜单
+  perms?: string; // 权限
   route_path?: string; // 路由链接
   is_show?: boolean; // 菜单是否可见
   order_num?: number;// 菜单排序

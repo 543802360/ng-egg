@@ -11,8 +11,8 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  SERVER_URL: `http://47.105.192.51:10920/api/`,
-  // SERVER_URL: `http://127.0.0.1:10920/api/`,
+  // SERVER_URL: `http://47.105.192.51:10920/api/`,
+  SERVER_URL: `http://127.0.0.1:10920/api/`,
   production: false,
   useHash: true,
   hmr: false,

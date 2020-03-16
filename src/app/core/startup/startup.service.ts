@@ -12,7 +12,7 @@ import { I18NService } from '../i18n/i18n.service';
 import { NzIconService } from 'ng-zorro-antd/icon';
 import { ICONS_AUTO } from '../../../style-icons-auto';
 import { ICONS } from '../../../style-icons';
-import { array2tree } from '@shared';
+import { array2tree, MenuType } from '@shared';
 
 /**
  * Used for application startup
@@ -55,7 +55,7 @@ export class StartupService {
       // ACL: Set the permissions to full, https://ng-alain.com/acl/getting-started
       // this.aclService.setFull(true);
       // Menu data, https://ng-alain.com/theme/menu
-      const menusArray = menuData.data.map(item => {
+      const menusArray = menuData.data.filter(item => item.menutype !== MenuType.PERMISSION).map(item => {
         let menu;
         item.parent_id ?
           menu = {

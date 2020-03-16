@@ -11,7 +11,7 @@ import { _HttpClient, ModalHelper, MenuService } from '@delon/theme';
 import { STColumn, STComponent } from '@delon/abc/table';
 import { SFSchema } from '@delon/form';
 import { SysMenuEditComponent } from './edit/edit.component';
-import { IMenu, array2tree } from '@shared';
+import { IMenu, array2tree, MenuType } from '@shared';
 import { NzModalService, NzMessageService } from 'ng-zorro-antd';
 
 @Component({
@@ -82,7 +82,7 @@ export class SysMenuComponent implements OnInit, AfterViewInit {
   //#region 初始化与更新系统菜单导航
 
   updateMenus(menuData: IMenu[]) {
-    const menusArray = menuData.map(item => {
+    const menusArray = menuData.filter(item => item.menutype !== MenuType.PERMISSION).map(item => {
       let menu;
       item.parent_id ?
         menu = {
@@ -193,7 +193,7 @@ export class SysMenuComponent implements OnInit, AfterViewInit {
         },
       });
       this.modalSrv.create({
-        nzTitle: '新建菜单',
+        nzTitle: '新建',
         nzContent: SysMenuEditComponent,
         nzComponentParams: {
           menu
@@ -204,7 +204,7 @@ export class SysMenuComponent implements OnInit, AfterViewInit {
       });
     } else {
       this.modalSrv.create({
-        nzTitle: '新建菜单',
+        nzTitle: '新建',
         nzContent: SysMenuEditComponent,
         nzFooter: null
       }).afterClose.subscribe(res => {

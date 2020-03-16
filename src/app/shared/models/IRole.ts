@@ -7,6 +7,9 @@
  * @FilePath: /ng-egg/src/app/shared/models/IRole.ts
  */
 export interface IRole {
-  roleid: string;
-  rolename: string;
+  roleid: string; // 角色id
+  rolename: string; // 角色名称
+  remark: string;// 角色说明
+  functionPermission?: any[]; // 功能权限
+  dataPermission?: any[]; // 数据权限
 }

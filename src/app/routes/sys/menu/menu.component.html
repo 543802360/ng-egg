@@ -1,6 +1,6 @@
 <page-header [action]="phActionTpl">
   <ng-template #phActionTpl>
-    <button (click)="newMenu()" nz-button nzType="primary">添加</button>
+    <button (click)="newMenu()" nz-button nzType="primary">新建</button>
   </ng-template>
 </page-header>
 <nz-card>
@@ -9,8 +9,9 @@
       <tr>
         <th nzAlign="left">名称</th>
         <th nzAlign="center">图标</th>
-        <!-- <th nzAlign="center">类型</th> -->
+        <th nzAlign="center">类型</th>
         <th nzAlign="center">节点路由</th>
+        <th nzAlign="center">权限</th>
         <th nzAlign="center">排序号</th>
         <th nzAlign="center">更新时间</th>
         <th nzAlign="center">操作</th>
@@ -25,8 +26,11 @@
               {{item.menuname}}
             </td>
             <td nzAlign="center"> <i [class]="item.icon"></i></td>
-            <!-- <td nzAlign="center">{{ item.menutype }}</td> -->
+            <td nzAlign="center">{{ item.menutype=="0"?"目录":item.menutype=="1" ?"菜单":"权限"}}</td>
             <td nzAlign="center">{{ item.route_path }}</td>
+            <td nzAlign="center">
+              <nz-tag *ngIf="item.perms" [nzColor]="'blue'">{{ item.perms }}</nz-tag>
+            </td>
             <td nzAlign="center">{{ item.order_num }}</td>
             <td nzAlign="center">{{ item.updated_at | date: 'yyyy-MM-dd HH:mm:ss' }}</td>
             <td nzAlign="center">

@@ -13,29 +13,25 @@ export class SysRoleEditComponent implements OnInit {
   i: any;
   schema: SFSchema = {
     properties: {
-      no: { type: 'string', title: '编号' },
-      owner: { type: 'string', title: '姓名', maxLength: 15 },
-      callNo: { type: 'number', title: '调用次数' },
-      href: { type: 'string', title: '链接', format: 'uri' },
-      description: { type: 'string', title: '描述', maxLength: 140 },
+      rolename: { type: 'string', title: '角色名称' },
+      remark: { type: 'string', title: '角色说明' },
+      functionPermission: { type: 'string', title: '功能权限' },
+      dataPermission: { type: 'string', title: '数据权限' },
     },
-    required: ['owner', 'callNo', 'href', 'description'],
+    required: ['rolename', 'functionPermission'],
   };
   ui: SFUISchema = {
     '*': {
       spanLabelFixed: 100,
       grid: { span: 12 },
     },
-    $no: {
+    $rolename: {
       widget: 'text'
     },
-    $href: {
+    $remark: {
       widget: 'string',
     },
-    $description: {
-      widget: 'textarea',
-      grid: { span: 24 },
-    },
+
   };
 
   constructor(
@@ -46,14 +42,14 @@ export class SysRoleEditComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.record.id > 0)
-      this.http.get(`/user/${this.record.id}`).subscribe(res => (this.i = res));
+      this.http.get(`sys/roles/${this.record.roleid}`).subscribe(res => (this.i = res));
   }
 
   save(value: any) {
-    this.http.post(`/user/${this.record.id}`, value).subscribe(res => {
-      this.msgSrv.success('保存成功');
-      this.modal.close(true);
-    });
+    // this.http.post(`/user/${this.record.id}`, value).subscribe(res => {
+    //   this.msgSrv.success('保存成功');
+    //   this.modal.close(true);
+    // });
   }
 
   close() {
