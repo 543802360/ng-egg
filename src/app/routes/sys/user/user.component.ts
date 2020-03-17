@@ -2,39 +2,22 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { _HttpClient, ModalHelper } from '@delon/theme';
 import { STColumn, STComponent } from '@delon/abc/table';
 import { SFSchema } from '@delon/form';
+import { IDepartment, array2tree } from '@shared';
 
 @Component({
   selector: 'app-sys-user',
   templateUrl: './user.component.html',
+  styleUrls: ['./user.component.less']
 })
 export class SysUserComponent implements OnInit {
-  url = `/user`;
-  searchSchema: SFSchema = {
-    properties: {
-      no: {
-        type: 'string',
-        title: '编号'
-      }
-    }
-  };
-  @ViewChild('st', { static: false }) st: STComponent;
-  columns: STColumn[] = [
-    { title: '编号', index: 'no' },
-    { title: '调用次数', type: 'number', index: 'callNo' },
-    { title: '头像', type: 'img', width: '50px', index: 'avatar' },
-    { title: '时间', type: 'date', index: 'updatedAt' },
-    {
-      title: '',
-      buttons: [
-        // { text: '查看', click: (item: any) => `/form/${item.id}` },
-        // { text: '编辑', type: 'static', component: FormEditComponent, click: 'reload' },
-      ]
-    }
-  ];
+
+  departmentTreeNodes: any[];
 
   constructor(private http: _HttpClient, private modal: ModalHelper) { }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.initDepartmentTree();
+  }
 
   add() {
     // this.modal
@@ -42,4 +25,33 @@ export class SysUserComponent implements OnInit {
     //   .subscribe(() => this.st.reload());
   }
 
+  initDepartmentTree() {
+    this.http.get('sys/departments').subscribe(resp => {
+      const menuData = resp.data.map((dpartment: IDepartment) => {
+        return {
+          title: dpartment.department_name,
+          'key': dpartment.department_id,
+          'parent_id': dpartment.parent_id,
+          'parent_name': dpartment.parent_name
+        };
+      });
+      this.departmentTreeNodes = array2tree(menuData, 'key', 'parent_id', 'children');
+      console.log(this.departmentTreeNodes);
+    });
+  }
+
+  addDepartment() {
+
+  }
+  departmentSelected(e) {
+    console.log(e);
+  };
+  refreshDepartment() {
+
+
+  }
+
+  addUser() {
+
+  }
 }
