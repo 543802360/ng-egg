@@ -7,10 +7,12 @@
  * @FilePath: /ng-egg/src/app/shared/models/IDepartment.ts
  */
 export interface IDepartment {
-  department_id: string;
+  department_id: string; // 部门 uuid
   department_name: string;
-  department_code: string;
   icon: string;
   parent_id: string;
+  parent_name: string;
+  department_code: string;// 部门编码，关联业务数据用
+
 
 }
