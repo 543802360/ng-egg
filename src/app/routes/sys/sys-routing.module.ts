@@ -10,7 +10,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { SysRoleComponent } from './role/role.component';
-import { SysDepartmentComponent } from './department/department.component';
 import { SysMenuComponent } from './menu/menu.component';
 import { SysUserComponent } from './user/user.component';
 import { SysLogComponent } from './log/log.component';
@@ -18,7 +17,6 @@ import { SysLogComponent } from './log/log.component';
 const routes: Routes = [
 
   { path: 'role', component: SysRoleComponent },
-  { path: 'department', component: SysDepartmentComponent },
   { path: 'menu', component: SysMenuComponent },
   { path: 'user', component: SysUserComponent },
   { path: 'log', component: SysLogComponent }];

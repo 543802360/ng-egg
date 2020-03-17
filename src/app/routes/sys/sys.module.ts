@@ -13,9 +13,7 @@ import { SysRoutingModule } from './sys-routing.module';
 import { SysRoleComponent } from './role/role.component';
 import { SysRoleEditComponent } from './role/edit/edit.component';
 import { SysRoleViewComponent } from './role/view/view.component';
-import { SysDepartmentComponent } from './department/department.component';
-import { SysDepartmentEditComponent } from './department/edit/edit.component';
-import { SysDepartmentViewComponent } from './department/view/view.component';
+
 import { SysMenuComponent } from './menu/menu.component';
 import { SysMenuEditComponent } from './menu/edit/edit.component';
 import { SysMenuViewComponent } from './menu/view/view.component';
@@ -23,22 +21,21 @@ import { SysUserComponent } from './user/user.component';
 import { SysUserEditComponent } from './user/edit/edit.component';
 import { SysUserViewComponent } from './user/view/view.component';
 import { SysLogComponent } from './log/log.component';
+import { SysDepartmentComponent } from './department/department.component';
 
 const COMPONENTS = [
   SysRoleComponent,
-  SysDepartmentComponent,
   SysMenuComponent,
   SysUserComponent,
   SysLogComponent];
 const COMPONENTS_NOROUNT = [
   SysRoleEditComponent,
   SysRoleViewComponent,
-  SysDepartmentEditComponent,
-  SysDepartmentViewComponent,
   SysMenuEditComponent,
   SysMenuViewComponent,
   SysUserEditComponent,
-  SysUserViewComponent];
+  SysUserViewComponent,
+  SysDepartmentComponent];
 
 @NgModule({
   imports: [
