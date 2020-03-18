@@ -200,7 +200,7 @@ export class SysMenuComponent implements OnInit, AfterViewInit {
         },
         nzFooter: null
       }).afterClose.subscribe(res => {
-        res ? this.initMenus() : null;
+        res ? this.initMenus() : 'null';
       });
     } else {
       this.modalSrv.create({
