@@ -11,6 +11,7 @@
 // 工具类
 export * from './utils/yuan';
 export * from './utils/array2tree';
+export * from './utils/tree2array';
 
 // 接口类
 
