@@ -35,9 +35,9 @@ export class SysMenuEditComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     if (this.menu) {
       this.menuGroup = this.fb.group({
-        menuname: [this.menu.menuname, Validators.required],
+        menuname: [this.menu.menuname, [Validators.required]],
         menutype: [this.menutype],
-        parent_name: [''],
+        parent_name: ['',],
         route_path: [this.menu.route_path],
         icon: [this.menu.icon],
         order_num: [this.menu.order_num],
@@ -46,7 +46,7 @@ export class SysMenuEditComponent implements OnInit, AfterViewInit {
       this.menutype = this.menu.menutype;
     } else {
       this.menuGroup = this.fb.group({
-        menuname: [null, Validators.required],
+        menuname: [null, [Validators.required]],
         menutype: [0],
         parent_name: [null],
         route_path: [null],
@@ -81,6 +81,13 @@ export class SysMenuEditComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
   }
 
+  menunameValidator(control: FormControl): { [s: string]: boolean } {
+    if (control.value && control.value !== this.menuGroup.controls.menuname.value) {
+      return { error: true };
+    }
+    return {};
+  };
+
   onIconPickerSelect(e) {
     this.menuGroup.controls.icon.setValue(e);
   }
@@ -99,12 +106,16 @@ export class SysMenuEditComponent implements OnInit, AfterViewInit {
 
     if (this.menu && this.menu.menu_id) {
       // 更新
-      let editedMenu = { ...this.menu, ...this.menuGroup.value };
+      let editedMenu: IMenu = { ...this.menu, ...this.menuGroup.value };
       // 获取父节点id
       if (this.menuGroup.value.parent_name) {
         const selectedMenuNode = this.menuTree.getSelectedNodeList()[0];
         editedMenu = { ...editedMenu, parent_id: selectedMenuNode.key, parent_name: selectedMenuNode.title };
       }
+      if (editedMenu.menuname === editedMenu.parent_name) {
+        this.msgSrv.warning('节点名称不能与上级节点名称相同！');
+        return;
+      };
       this.http.put(`sys/menus/${this.menu.menu_id}`, editedMenu).subscribe(resp => {
         this.success(resp);
       }, error => {
@@ -119,7 +130,11 @@ export class SysMenuEditComponent implements OnInit, AfterViewInit {
       if (this.menuGroup.value.parent_name) {
         const selectedMenuNode = this.menuTree.getSelectedNodeList()[0];
         newMenu = { ...newMenu, parent_id: selectedMenuNode.key, parent_name: selectedMenuNode.title };
-      }
+      };
+      if (newMenu.menuname === newMenu.parent_name) {
+        this.msgSrv.warning('节点名称不能与上级节点名称相同！');
+        return;
+      };
       this.http.post(`sys/menus`, newMenu).subscribe(resp => {
         this.success(resp);
       }, error => {
