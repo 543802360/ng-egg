@@ -9,6 +9,10 @@
 export interface IUser {
   userid?: string;
   username?: string;
+  roleid?: string;
+  rolename?: string;
+  department_id?: string;
+  department_name?: string;
   password?: string;
   name?: string;
   email?: string;
