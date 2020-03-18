@@ -42,7 +42,7 @@
           (formReset)="st.reset($event)">
         </sf> -->
         <st #st [data]="userData" size="middle" [bordered]="true" [columns]="userColumns" [scroll]="{x:'1200px'}"
-          (change)="userChange($event)">
+          (change)="userChange($event)" loading="http.loading">
           <ng-template st-row="login_status" let-item let-index="index">
             <nz-tag *ngIf="item.is_login=='Y'" nzColor="green">正常</nz-tag>
             <nz-tag *ngIf="item.is_login=='N'" nzColor="red">禁用</nz-tag>
