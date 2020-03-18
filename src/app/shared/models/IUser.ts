@@ -7,7 +7,11 @@
  * @FilePath: /ng-egg/src/app/shared/models/IUser.ts
  */
 export interface IUser {
-  userid: string;
-  username: string;
-  password: string;
+  userid?: string;
+  username?: string;
+  password?: string;
+  name?: string;
+  email?: string;
+  photo?: string;
+  is_login?: boolean;
 }
