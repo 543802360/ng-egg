@@ -1,62 +1,77 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { NzModalRef } from 'ng-zorro-antd/modal';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { _HttpClient } from '@delon/theme';
 import { SFSchema, SFUISchema } from '@delon/form';
+import { IDepartment, TableOperator } from '@shared';
 
 @Component({
   selector: 'app-sys-department',
   templateUrl: './department.component.html',
 })
 export class SysDepartmentComponent implements OnInit {
-  record: any = {};
-  i: any;
+  @Input() record: IDepartment;
   schema: SFSchema = {
     properties: {
-      no: { type: 'string', title: '编号' },
-      owner: { type: 'string', title: '姓名', maxLength: 15 },
-      callNo: { type: 'number', title: '调用次数' },
-      href: { type: 'string', title: '链接', format: 'uri' },
-      description: { type: 'string', title: '描述', maxLength: 140 },
+      department_name: { type: 'string', title: '部门名称' },
+      parent_name: { type: 'string', title: '上级部门', readOnly: true }
     },
-    required: ['owner', 'callNo', 'href', 'description'],
+    required: ['department_name'],
   };
   ui: SFUISchema = {
     '*': {
       spanLabelFixed: 100,
-      grid: { span: 12 },
-    },
-    $no: {
-      widget: 'text'
-    },
-    $href: {
-      widget: 'string',
-    },
-    $description: {
-      widget: 'textarea',
       grid: { span: 24 },
     },
+    $department_name: {
+      widget: 'string'
+    },
+    $parent_name: {
+      widget: 'string',
+    },
+
   };
 
   constructor(
     private modal: NzModalRef,
     private msgSrv: NzMessageService,
     public http: _HttpClient,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
-    if (this.record.id > 0)
-    this.http.get(`/user/${this.record.id}`).subscribe(res => (this.i = res));
+    console.log('edited department:', this.record);
   }
 
-  save(value: any) {
-    this.http.post(`/user/${this.record.id}`, value).subscribe(res => {
-      this.msgSrv.success('保存成功');
-      this.modal.close(true);
-    });
+  save(depart: IDepartment) {
+    if (depart.department_id) {
+      this.http.put(`sys/departments/${depart.department_id}`, depart).subscribe(resp => {
+        this.success(resp);
+      }, error => {
+
+      });
+    } else {
+      this.http.post('sys/departments', depart).subscribe(resp => {
+        this.success(resp);
+      }, error => {
+
+      });
+    }
   }
 
-  close() {
-    this.modal.destroy();
+  close(result?: any) {
+    this.modal.destroy(result);
   }
+
+
+  success(resp) {
+    if (resp.success) {
+      setTimeout(() => {
+        this.close({ type: TableOperator.EDITED });
+      });
+      this.msgSrv.success(resp.msg, { nzDuration: 4000 });
+    } else {
+      this.msgSrv.error(resp.msg, { nzDuration: 4000 });
+    }
+  }
+
 }
