@@ -106,12 +106,12 @@ export class SysMenuEditComponent implements OnInit, AfterViewInit {
 
     if (this.menu && this.menu.menu_id) {
       // 更新
-      let editedMenu: IMenu = { ...this.menu, ...this.menuGroup.value };
-      // 获取父节点id
-      if (this.menuGroup.value.parent_name) {
-        const selectedMenuNode = this.menuTree.getSelectedNodeList()[0];
-        editedMenu = { ...editedMenu, parent_id: selectedMenuNode.key, parent_name: selectedMenuNode.title };
-      }
+      const selectedParent = this.menuTree.getSelectedNodeList().length ? this.menuTree.getSelectedNodeList()[0] : null;
+      const editedMenu: IMenu =
+        selectedParent ?
+          { ...this.menu, ...this.menuGroup.value, ...{ parent_name: selectedParent.title, parent_id: selectedParent.key } }
+          : { ...this.menu, ...this.menuGroup.value, ...{ parent_name: null, parent_id: null } };
+
       if (editedMenu.menuname === editedMenu.parent_name) {
         this.msgSrv.warning('节点名称不能与上级节点名称相同！');
         return;
