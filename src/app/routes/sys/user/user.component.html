@@ -1,10 +1,10 @@
-<div style="width:100%;height:100%;padding: 0; overflow: auto;position: fixed;">
-  <page-header [fixedOffsetTop]="0">
+<div style="width:100%;height:1080px;padding: 0;">
+  <!-- <page-header [fixedOffsetTop]="0">
 
-  </page-header>
+  </page-header> -->
 
-  <div nz-row style="height: calc(100% - 270px);" nzGutter="8">
-    <div nz-col style="height: 100%;" nzSpan="6">
+  <div nz-row style="height: 100%;padding-top:10px ;margin: 0;" nzGutter="8">
+    <div nz-col style="height: 100%;" nzSpan="5">
       <nz-card style="height: 100%;" nzTitle="组织架构" [nzExtra]="tplDepartment">
         <nz-tree #departmentTree [nzData]="departmentTreeNodes" [nzExpandAll]="true" nzShowExpand="true"
           [nzDraggable]="dragEnabled" (nzClick)="departmentSelected($event)"
@@ -30,19 +30,27 @@
 
       </ng-template>
     </div>
+    <div nz-col style="height: 100%;" nzSpan="19">
+      <nz-card style="height: 100%;" nzTitle="成员列表">
+        <div class="mb-md">
+          <button (click)="st.clear()" nzType="primary" nz-button>添加</button>
+          <button (click)="st.reload()" nzType="danger" [disabled]="userEditVisible" nz-button> 删除</button>
+          <button (click)="st.clearStatus(); st.reload()" nzType="primary" [disabled]="userEditVisible"
+            nz-button>转移</button>
+        </div>
+        <!-- <sf style="float: right;" mode="search" [schema]="userSearchSchema" (formSubmit)="st.reset($event)"
+          (formReset)="st.reset($event)">
+        </sf> -->
+        <st #st [data]="userData" size="middle" [bordered]="true" [columns]="userColumns" [scroll]="{x:'1200px'}"
+          (change)="userChange($event)">
+          <ng-template st-row="login_status" let-item let-index="index">
+            <nz-tag *ngIf="item.is_login=='Y'" nzColor="green">正常</nz-tag>
+            <nz-tag *ngIf="item.is_login=='N'" nzColor="red">禁用</nz-tag>
+          </ng-template>
 
-    <div nz-col style="height: 100%;" nzSpan="18">
-      <nz-card style="height: 100%;" nzTitle="成员列表" [nzExtra]="tplUser">
-        <!-- <sf mode="search" [schema]="searchSchema" (formSubmit)="st.reset($event)" (formReset)="st.reset($event)"></sf>
-        <st #st [data]="url" [columns]="columns"></st> -->
+        </st>
       </nz-card>
-      <ng-template #tplUser>
-
-      </ng-template>
     </div>
   </div>
-
-
-
 
 </div>

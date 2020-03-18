@@ -1,8 +1,9 @@
+import { SysUserEditComponent } from './edit/edit.component';
 import { Component, OnInit, ViewChild, Renderer2 } from '@angular/core';
 import { _HttpClient, ModalHelper } from '@delon/theme';
-import { STColumn, STComponent } from '@delon/abc/table';
+import { STColumn, STComponent, STData, STChange } from '@delon/abc/table';
 import { SFSchema } from '@delon/form';
-import { IDepartment, array2tree, tree2array } from '@shared';
+import { IDepartment, IUser, array2tree, tree2array } from '@shared';
 import { NzMenuDirective, NzContextMenuService, NzFormatEmitEvent, NzModalService, NzTreeNode, NzMessageService, NzTreeComponent } from 'ng-zorro-antd';
 import { SysDepartmentComponent } from '../department/department.component';
 import { map } from 'rxjs/operators';
@@ -18,9 +19,88 @@ export class SysUserComponent implements OnInit {
   departmentTreeNodes: any[] = [];
   // 右键选中treenode
   selectedNode: NzTreeNode;
+  // 拖拽
   dragEnabled = false;
   isDraged = false;
 
+  // 用户表操作
+  userData: IUser[];
+  userEditVisible = true;
+  userColumns: STColumn[] = [
+    {
+      index: 'userid',
+      title: '编号',
+      type: 'checkbox'
+    },
+    // { title: '头像', index: 'photo', type: 'img', fixed: 'left', width: 100, className: 'text-center' },
+    { title: '用户名', index: 'username', fixed: 'left', width: 100, className: 'text-center' },
+    { title: '姓名', index: 'name', fixed: 'left' },
+
+    { title: '部门', index: 'department_name', className: 'text-center' },
+    { title: '角色', index: 'rolename', className: 'text-center' },
+    { title: '手机号码', index: 'phone', className: 'text-center' },
+    { title: '邮箱', index: 'email', className: 'text-center' },
+    {
+      title: '状态', index: 'is_login', type: 'tag', className: 'text-center',
+      render: 'login_status'
+      // tag:{
+
+      // }
+      // format: (item: STData, col: STColumn, index) => {
+      //   return '正常'
+      // }
+
+    },
+    { title: '创建时间', index: 'created_at', type: 'date', className: 'text-center' },
+    { title: '更新时间', index: 'updated_at', type: 'date', className: 'text-center' },
+    {
+      title: '操作', fixed: 'right', width: 180, className: 'text-center',
+
+      buttons: [
+        {
+          text: '编辑',
+          type: 'modal',
+          modal: {
+            component: SysUserEditComponent,
+            params: record => ({ record }),
+            modalOptions: {}
+          },
+          click: (_record, modal) => {
+            console.log(modal);
+          }
+        },
+        { text: '转移' },
+        {
+          text: '删除',
+          type: 'del',
+          pop: {
+            title: '确认删除此用户吗？',
+            okType: 'danger',
+            icon: 'star',
+          },
+          click: (record, _modal, comp) => {
+            this.http.post('sys/user/destroy', record).subscribe(resp => {
+              if (resp.success) {
+                this.msgSrv.success(`成功删除用户${record.username}`);
+                comp!.removeRow(record);
+              }
+              else {
+                this.msgSrv.error(resp.msg);
+              };
+            });
+
+          },
+        }
+      ]
+    }
+  ];
+  userSearchSchema: SFSchema = {
+    properties: {
+      username: {
+        type: 'string',
+      }
+    }
+  };
   constructor(
     private http: _HttpClient,
     private modalSrv: NzModalService,
@@ -29,6 +109,7 @@ export class SysUserComponent implements OnInit {
 
   ngOnInit() {
     this.initDepartmentTree();
+    this.initUsers();
   }
 
   add() {
@@ -36,6 +117,45 @@ export class SysUserComponent implements OnInit {
     //   .createStatic(FormEditComponent, { i: { id: 0 } })
     //   .subscribe(() => this.st.reload());
   }
+
+  //#region 用户操作
+
+
+  initUsers() {
+    this.http.get('sys/user/list').subscribe(resp => {
+      console.log(resp);
+      this.userData = resp.data;
+    });
+  }
+
+  addUser() {
+
+  }
+
+  deleteUser() {
+
+  }
+
+  editUser() {
+
+  }
+
+  userChange(e: STChange) {
+    console.log('change', e);
+    if (e.type === "checkbox" && e.checkbox.length) {
+      this.userEditVisible = false;
+    } else if (e.type === "checkbox" && !e.checkbox.length) {
+      this.userEditVisible = true;
+    }
+  }
+
+  //#endregion
+
+  //#region 部门操作
+
+  /**
+    * 初始化部门树
+    */
 
   initDepartmentTree() {
     this.http.get('sys/departments').subscribe(resp => {
@@ -192,8 +312,9 @@ export class SysUserComponent implements OnInit {
     }
     this.initDepartmentTree();
   }
+  //#endregion
 
-  addUser() {
 
-  }
+
+
 }
