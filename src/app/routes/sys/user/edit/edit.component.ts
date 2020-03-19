@@ -3,7 +3,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { NzModalRef } from 'ng-zorro-antd/modal';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { _HttpClient } from '@delon/theme';
-import { SFSchema, SFUISchema } from '@delon/form';
+import { SFSchema, SFUISchema, SFComponent } from '@delon/form';
 import { map } from 'rxjs/operators';
 
 @Component({
@@ -11,6 +11,8 @@ import { map } from 'rxjs/operators';
   templateUrl: './edit.component.html',
 })
 export class SysUserEditComponent implements OnInit {
+
+  @ViewChild('sf', { static: false }) userSF: SFComponent;
   record: IUser = {};
   i: any;
   schema: SFSchema = {
@@ -73,21 +75,34 @@ export class SysUserEditComponent implements OnInit {
     // 角色，异步获取数据，通过pipe map操作符转换数据
     $rolename: {
       widget: 'select',
+      allowClear: true,
       asyncData: () => {
         return this.http.get('sys/roles').pipe(
           map(resp => {
+
+            // 设置角色默认值
+            // Object.defineProperty(this.schema.properties.rolename, 'default', {
+            //   configurable: true,
+            //   writable: true,
+            //   enumerable: true,
+            //   value: this.record ? this.record.roleid : null
+            // });
+            // console.log(this.userSF);
+            // this.userSF.refreshSchema();
+
             return resp.data.map(item => {
               return {
                 label: item.rolename,
                 value: item.roleid
               };
             });
-          }))
+          }));
       }
     },
     // 部门，异步获取
     $department_name: {
       widget: 'tree-select',
+      allowClear: true,
       asyncData: () => {
         return this.http.get('sys/departments').pipe(
           map(resp => {
@@ -116,30 +131,74 @@ export class SysUserEditComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log('user edit ', this.record);
+    if (!this.record) {
+      this.record = {};
+      this.i = {};
+      return;
+    }
     if (this.record.userid) {
       this.http.get(`sys/user/${this.record.userid}`).subscribe(resp => {
         if (resp.success) {
           this.i = resp.data;
+          setTimeout(() => {
+            // (this.userSF.rootProperty as any)
+            //   .properties.rolename.setValue({ label: this.record.rolename, value: this.record.roleid });
+            // 设置角色默认值
+            Object.defineProperty(this.schema.properties.rolename, 'default', {
+              configurable: true,
+              writable: true,
+              enumerable: true,
+              value: this.record ? this.record.roleid : null
+            });
+            Object.defineProperty(this.schema.properties.department_name, 'default', {
+              configurable: true,
+              writable: true,
+              enumerable: true,
+              value: this.record ? this.record.department_id : null
+            });
+            this.userSF.refreshSchema();
+
+          });
         }
       });
     }
   }
 
+  /**
+   * 保存用户；新建 or update
+   * @param user
+   */
   save(user: IUser) {
-    const userEdited =
+    const userEdited: IUser =
       { ...user, ...{ roleid: user.rolename, rolename: null }, department_id: user.department_name, department_name: null };
-    this.http.post(`sys/user/update`, userEdited).subscribe(res => {
-      if (res.success) {
-        this.msgSrv.success(res.msg);
-      } else {
-        this.msgSrv.error(res.msg);
 
-      }
-      this.modal.close(true);
-      // this.msgSrv.success('保存成功');
-      // this.modal.close(true);
-    });
+    if (userEdited.userid) {
+
+      this.http.post(`sys/user/update`, userEdited).subscribe(res => {
+        if (res.success) {
+          this.msgSrv.success(res.msg);
+        } else {
+          this.msgSrv.error(res.msg);
+
+        }
+        this.modal.close(true);
+        // this.msgSrv.success('保存成功');
+        // this.modal.close(true);
+      });
+    } else {
+      this.http.post(`sys/user/create`, userEdited).subscribe(res => {
+        if (res.success) {
+          this.msgSrv.success(res.msg);
+        } else {
+          this.msgSrv.error(res.msg);
+
+        }
+        this.modal.close(true);
+        // this.msgSrv.success('保存成功');
+        // this.modal.close(true);
+      });
+    }
+
   }
 
   close() {
