@@ -31,7 +31,7 @@ export class UserLoginComponent implements OnDestroy {
     public msg: NzMessageService,
   ) {
     this.form = fb.group({
-      userName: [null, [Validators.required, Validators.minLength(4)]],
+      userName: [null, [Validators.required]],
       password: [null, Validators.required],
       mobile: [null, [Validators.required, Validators.pattern(/^1\d{10}$/)]],
       captcha: [null, [Validators.required]],
@@ -129,7 +129,6 @@ export class UserLoginComponent implements OnDestroy {
           if (url.includes('/passport')) {
             url = '/';
           }
-          console.log('登录跳转:', url);
           this.router.navigateByUrl(url);
         });
       });
