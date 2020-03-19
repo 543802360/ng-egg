@@ -253,8 +253,12 @@ export class SysUserComponent implements OnInit {
    * 部门树节点单击
    * @param e
    */
-  departmentSelected(e) {
-    console.log(e);
+  departmentSelected(e: NzFormatEmitEvent) {
+    this.http.get(`sys/user/getUsersByDepartmentId/${e.node.key}`).subscribe(resp => {
+      if (resp.success) {
+        this.userData = resp.data;
+      }
+    }, error => { });
   };
   /**
    * 组织架构树右键菜单
@@ -277,7 +281,7 @@ export class SysUserComponent implements OnInit {
    * 刷新部门组织架构
    */
   refreshDepartment() {
-
+    this.initDepartmentTree();
   }
   /**
    * 确认拖拽排序
