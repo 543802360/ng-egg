@@ -4,6 +4,7 @@
   </page-header> -->
 
   <div nz-row style="height: 100%;padding-top:10px ;margin: 0;" nzGutter="8">
+    <!-- 组织架构 -->
     <div nz-col style="height: 100%;" nzSpan="5">
       <nz-card style="height: 100%;" nzTitle="组织架构" [nzExtra]="tplDepartment">
         <nz-tree #departmentTree [nzData]="departmentTreeNodes" [nzExpandAll]="true" nzShowExpand="true"
@@ -18,10 +19,11 @@
         </nz-dropdown-menu>
       </nz-card>
       <ng-template #tplDepartment>
-        <a nz-tooltip nzTooltipTitle="刷新组织架构"><i class="fas fa-sync"></i></a>
+        <a nz-tooltip nzTooltipTitle="刷新组织架构" (click)="refreshDepartment()"><i class="fas fa-sync"></i></a>
         <nz-divider nzType="vertical"></nz-divider>
-        <a nz-tooltip nzTooltipTitle="添加根节点" (click)="addDepartment('root')"><i class="fas fa-plus"></i></a>
-        <nz-divider nzType="vertical"></nz-divider>
+        <a nz-tooltip nzTooltipTitle="添加根节点" *ngIf="!departmentTreeNodes.length" (click)="addDepartment('root')"><i
+            class="fas fa-plus"></i></a>
+        <nz-divider nzType="vertical" *ngIf="!departmentTreeNodes.length"></nz-divider>
         <a nz-tooltip nzTooltipTitle="拖动排序" *ngIf="!dragEnabled" (click)="dragEnabled=!dragEnabled"><i
             class="fas fa-list-ul"></i></a>
         <a *ngIf="dragEnabled" (click)="confirmDrag()"> 保存</a>
@@ -30,6 +32,7 @@
 
       </ng-template>
     </div>
+    <!-- 成员 -->
     <div nz-col style="height: 100%;" nzSpan="19">
       <nz-card style="height: 100%;" nzTitle="成员列表">
         <div class="mb-md">
