@@ -33,16 +33,15 @@
     <div nz-col style="height: 100%;" nzSpan="19">
       <nz-card style="height: 100%;" nzTitle="成员列表">
         <div class="mb-md">
-          <button (click)="st.clear()" nzType="primary" nz-button>添加</button>
-          <button (click)="st.reload()" nzType="danger" [disabled]="userEditVisible" nz-button> 删除</button>
-          <button (click)="st.clearStatus(); st.reload()" nzType="primary" [disabled]="userEditVisible"
-            nz-button>转移</button>
+          <button (click)="addUser()" nzType="primary" nz-button>添加</button>
+          <button nzType="danger" [disabled]="userEditVisible" nz-button> 删除</button>
+          <button nzType="primary" [disabled]="userEditVisible" nz-button>转移</button>
         </div>
         <!-- <sf style="float: right;" mode="search" [schema]="userSearchSchema" (formSubmit)="st.reset($event)"
           (formReset)="st.reset($event)">
         </sf> -->
         <st #st [data]="userData" size="middle" [bordered]="true" [columns]="userColumns" [scroll]="{x:'1200px'}"
-          (change)="userChange($event)" loading="http.loading">
+          (change)="userChange($event)" [loading]="http.loading">
           <ng-template st-row="login_status" let-item let-index="index">
             <nz-tag *ngIf="item.is_login=='Y'" nzColor="green">正常</nz-tag>
             <nz-tag *ngIf="item.is_login=='N'" nzColor="red">禁用</nz-tag>

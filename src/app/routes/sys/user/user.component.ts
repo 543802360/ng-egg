@@ -43,13 +43,6 @@ export class SysUserComponent implements OnInit {
     {
       title: '状态', index: 'is_login', type: 'tag', className: 'text-center',
       render: 'login_status'
-      // tag:{
-
-      // }
-      // format: (item: STData, col: STColumn, index) => {
-      //   return '正常'
-      // }
-
     },
     { title: '创建时间', index: 'created_at', type: 'date', className: 'text-center' },
     { title: '更新时间', index: 'updated_at', type: 'date', className: 'text-center' },
@@ -63,10 +56,18 @@ export class SysUserComponent implements OnInit {
           modal: {
             component: SysUserEditComponent,
             params: record => ({ record }),
-            modalOptions: {}
+            modalOptions: {
+              nzStyle: {
+                left: '26%',
+                position: 'fixed'
+              }
+            }
           },
+          //
+          // click: 'reload',
           click: (_record, modal) => {
-            console.log(modal);
+            // modal 为回传值，可自定义回传值
+            modal ? this.initUsers() : null;
           }
         },
         { text: '转移' },
@@ -104,18 +105,13 @@ export class SysUserComponent implements OnInit {
   constructor(
     private http: _HttpClient,
     private modalSrv: NzModalService,
+    private modal: ModalHelper,
     private contextSrv: NzContextMenuService,
     private msgSrv: NzMessageService) { }
 
   ngOnInit() {
     this.initDepartmentTree();
     this.initUsers();
-  }
-
-  add() {
-    // this.modal
-    //   .createStatic(FormEditComponent, { i: { id: 0 } })
-    //   .subscribe(() => this.st.reload());
   }
 
   //#region 用户操作
@@ -129,7 +125,20 @@ export class SysUserComponent implements OnInit {
   }
 
   addUser() {
-
+    this.modal
+      .createStatic(SysUserEditComponent, { record: null }, {
+        modalOptions: {
+          nzStyle: {
+            left: '26%',
+            position: 'fixed'
+          }
+        }
+      })
+      .subscribe(res => {
+        if (res) {
+          this.initUsers();
+        }
+      });
   }
 
   deleteUser() {
@@ -141,7 +150,7 @@ export class SysUserComponent implements OnInit {
   }
 
   userChange(e: STChange) {
-    console.log('change', e);
+    // console.log('change', e);
     if (e.type === "checkbox" && e.checkbox.length) {
       this.userEditVisible = false;
     } else if (e.type === "checkbox" && !e.checkbox.length) {
