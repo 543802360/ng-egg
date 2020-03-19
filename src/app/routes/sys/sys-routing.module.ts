@@ -19,7 +19,12 @@ const routes: Routes = [
   { path: 'role', component: SysRoleComponent },
   { path: 'menu', component: SysMenuComponent },
   { path: 'user', component: SysUserComponent },
-  { path: 'log', component: SysLogComponent }];
+  { path: 'log', component: SysLogComponent },
+  {
+    path: '',
+    redirectTo: 'user',
+    pathMatch: 'full'
+  }];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
