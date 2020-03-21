@@ -16,10 +16,10 @@ import { SysLogComponent } from './log/log.component';
 
 const routes: Routes = [
 
-  { path: 'role', component: SysRoleComponent },
-  { path: 'menu', component: SysMenuComponent },
-  { path: 'user', component: SysUserComponent },
-  { path: 'log', component: SysLogComponent },
+  { path: 'role', component: SysRoleComponent, data: { title: '角色管理' } },
+  { path: 'menu', component: SysMenuComponent, data: { title: '菜单管理' } },
+  { path: 'user', component: SysUserComponent, data: { title: '用户管理' } },
+  { path: 'log', component: SysLogComponent, data: { title: '日志管理' } },
   {
     path: '',
     redirectTo: 'user',
