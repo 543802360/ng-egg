@@ -8,7 +8,7 @@
  */
 
 export enum MenuType {
-  DIR = "0",
-  MENU = "1",
-  PERMISSION = "2"
+  DIR = "0", // 目录
+  MENU = "1", // 菜单
+  PERMISSION = "2" //  权限
 };
