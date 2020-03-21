@@ -13,6 +13,7 @@ import { NzIconService } from 'ng-zorro-antd/icon';
 import { ICONS_AUTO } from '../../../style-icons-auto';
 import { ICONS } from '../../../style-icons';
 import { array2tree, MenuType } from '@shared';
+import { ArrayService } from '@delon/util';
 
 /**
  * Used for application startup
@@ -27,6 +28,7 @@ export class StartupService {
     @Inject(ALAIN_I18N_TOKEN) private i18n: I18NService,
     private settingService: SettingsService,
     private aclService: ACLService,
+    private arrayService: ArrayService,
     private titleService: TitleService,
     @Inject(DA_SERVICE_TOKEN) private tokenService: ITokenService,
     private httpClient: HttpClient,
@@ -38,16 +40,16 @@ export class StartupService {
   private viaHttp(resolve: any, reject: any) {
     resolve(null);
     zip(
-      this.httpClient.get('sys/menus')
+      this.httpClient.get('sys/user/admin/permmenu')
     ).pipe(
-      catchError(([menuData]) => {
+      catchError(([permsData]) => {
         resolve(null);
-        return [menuData];
+        return [permsData];
       })
-    ).subscribe(([menuData]) => {
+    ).subscribe(([permsData]) => {
 
       // Application data
-      const res: any = menuData;
+      const res: any = permsData;
       // Application information: including site name, description, year
       // this.settingService.setApp(res.app);
       // User information: including name, avatar, email address
@@ -55,7 +57,7 @@ export class StartupService {
       // ACL: Set the permissions to full, https://ng-alain.com/acl/getting-started
       // this.aclService.setFull(true);
       // Menu data, https://ng-alain.com/theme/menu
-      const menusArray = menuData.data.filter(item => item.menutype !== MenuType.PERMISSION).map(item => {
+      const menusArray = permsData.data.menus.filter(item => item.menutype !== MenuType.PERMISSION).map(item => {
         let menu;
         item.parent_id ?
           menu = {
@@ -82,6 +84,7 @@ export class StartupService {
         {
           "text": "主导航",
           "group": true,
+          hideInBreadcrumb: true,
           children: menus
 
         }]);
@@ -102,7 +105,6 @@ export class StartupService {
       .subscribe(langData => {
         this.translate.setTranslation(this.i18n.defaultLang, langData);
         this.translate.setDefaultLang(this.i18n.defaultLang);
-
         this.viaMock(resolve, reject);
       });
   }
@@ -162,8 +164,6 @@ export class StartupService {
     return new Promise((resolve, reject) => {
       // http
       this.viaHttp(resolve, reject);
-
-
     });
   }
 }
