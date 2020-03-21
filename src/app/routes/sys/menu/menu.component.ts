@@ -112,9 +112,10 @@ export class SysMenuComponent implements OnInit, AfterViewInit {
         {
           "text": "主导航",
           "group": true,
+          hideInBreadcrumb: true,
           children: menus
         }]);
-    }, 500);
+    });
   }
 
   /**
@@ -136,8 +137,6 @@ export class SysMenuComponent implements OnInit, AfterViewInit {
         this.menuCollapseTreeData.forEach(item => {
           this.mapOfMenuExpandedData[item.menu_id] = this.convertTreeToList(item);
         });
-
-        this.updateMenus(resp.data);
 
       } else {
 

@@ -19,44 +19,77 @@ export class SysRoleComponent implements OnInit {
   roleData: IRole[];
   columns: STColumn[] = [
     {
+      index: 'roleid',
+      title: '编号',
+      type: 'checkbox',
+      fixed: 'left',
+      width: 40
+    },
+    {
       title: '角色名称',
-      index: 'rolename'
+      index: 'rolename',
+      className: 'text-center'
     },
     {
       title: '角色说明',
-      index: 'remark'
+      index: 'remark',
+      className: 'text-center'
+    },
+    {
+      title: '创建时间',
+      index: 'created_at',
+      type: 'date',
+      className: 'text-center'
     },
     {
       title: '更新时间',
       index: 'updated_at',
-      render: 'updateAt-row'
+      type: 'date',
+      className: 'text-center'
     },
     {
       title: '操作',
+      className: 'text-center',
       buttons:
         [
-          {
-            text: '查看',
-            type: 'static',
-            modal: {
-              component: SysRoleViewComponent,
-              params: record => ({ record })
-            },
-            click: (record: STData) => {
-
-            }
-          },
           {
             text: '编辑',
             type: 'static',
             modal: {
               component: SysRoleEditComponent,
-              params: record => ({ record })
+              params: record => ({ record }),
+              modalOptions: {
+                nzStyle: {
+                  left: '26%',
+                  position: 'fixed'
+                }
+              }
             },
-            click: (record: STData) => {
+            click: (record: STData, modal: boolean) => {
 
             }
           },
+          {
+            text: '删除',
+            type: 'del',
+            pop: {
+              title: '确认删除此角色吗？',
+              okType: 'danger',
+              icon: 'star',
+            },
+            click: (record, _modal, comp) => {
+              this.http.delete(`sys/roles/${record.roleid}`).subscribe(resp => {
+                if (resp.success) {
+                  this.msgSrv.success(resp.msg);
+                  comp!.removeRow(record);
+                }
+                else {
+                  this.msgSrv.error(resp.msg);
+                };
+              });
+
+            },
+          }
         ]
     }
   ];
@@ -70,19 +103,39 @@ export class SysRoleComponent implements OnInit {
     this.initRoles();
   }
 
-  add() {
+  addRole() {
+    this.modal
+      .createStatic(SysRoleEditComponent, { record: null }, {
+        modalOptions: {
+          nzStyle: {
+            left: '26%',
+            position: 'fixed'
+          }
+        }
+      })
+      .subscribe(res => {
+        if (res) {
+          // this.initRoles();
+          this.initRoles();
+          // this.st.reload();
+        }
+      });
     // this.modal
     //   .createStatic(FormEditComponent, { i: { id: 0 } })
     //   .subscribe(() => this.st.reload());
   }
 
+  refresh() {
+    this.initRoles();
+  }
+
   initRoles() {
     this.http.get('sys/roles',
-      { params: new HttpParams().set('pageNum', '1').set('pageSize', '10') })
+      // { params: new HttpParams().set('pageNum', '1').set('pageSize', '10') }
+    )
       .subscribe(resp => {
-
         if (resp.success) {
-          this.msgSrv.success(resp.msg);
+          // this.msgSrv.success(resp.msg);
           this.roleData = resp.data;
 
         } else {

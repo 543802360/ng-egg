@@ -30,7 +30,9 @@ export class SysUserComponent implements OnInit {
     {
       index: 'userid',
       title: '编号',
-      type: 'checkbox'
+      type: 'checkbox',
+      fixed: 'left',
+      width: 40
     },
     // { title: '头像', index: 'photo', type: 'img', fixed: 'left', width: 100, className: 'text-center' },
     { title: '用户名', index: 'username', fixed: 'left', width: 100, className: 'text-center' },
@@ -70,7 +72,7 @@ export class SysUserComponent implements OnInit {
             modal ? this.initUsers() : null;
           }
         },
-        { text: '转移' },
+        // { text: '转移' },
         {
           text: '删除',
           type: 'del',
@@ -235,17 +237,21 @@ export class SysUserComponent implements OnInit {
    * 删除部门
    */
   deleteDepartment() {
-    this.modalSrv.confirm({
-      nzContent: `确认删除【${this.selectedNode.title}】吗？`,
+    this.modalSrv.warning({
+      nzTitle: '提示',
+      nzContent: `确认删除【${this.selectedNode.title}】吗？该操作会删除部门下的所有用户，是否确认？`,
       nzOnOk: () => {
         this.http.delete(`sys/departments/${this.selectedNode.key}`).subscribe(resp => {
           resp.success ?
             this.msgSrv.success(resp.msg) : this.msgSrv.error(resp.msg);
           setTimeout(() => {
             this.initDepartmentTree();
+            this.initUsers();
           });
         });
-      }
+      },
+      nzCancelText: '取消',
+      nzOnCancel: () => { }
     });
   }
 
@@ -301,8 +307,6 @@ export class SysUserComponent implements OnInit {
         parent_name: item.parent_name
       }
     });
-    console.log('ordered tree nodes：', orderedNodes);
-
     this.http.post('sys/departments/updateAll', orderedNodes)
       .pipe(map(resp => {
         resp.success ? this.msgSrv.success(resp.msg) : this.msgSrv.error(resp.msg);

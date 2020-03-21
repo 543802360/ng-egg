@@ -14,7 +14,7 @@ export class SysUserEditComponent implements OnInit {
 
   @ViewChild('sf', { static: false }) userSF: SFComponent;
   record: IUser = {};
-  i: any;
+  i: any = {};
   schema: SFSchema = {
     properties: {
       // photo: {
@@ -50,10 +50,22 @@ export class SysUserEditComponent implements OnInit {
       is_login: {
         type: 'string',
         title: '用户状态',
+        default: 'Y',
         enum: [{ label: '正常', value: 'Y' }, { label: '禁用', value: 'N' }],
         ui: {
           widget: 'radio',
 
+        }
+      },
+      mark: {
+        type: 'number',
+        title: '提示',
+        default: 0,
+        ui: {
+          widget: 'text', defaultText: '默认密码为 ：abc@123',
+          grid: {
+            span: 24
+          },
         }
       }
     },
@@ -149,6 +161,13 @@ export class SysUserEditComponent implements OnInit {
               writable: true,
               enumerable: true,
               value: this.record ? this.record.roleid : null
+            });
+            //
+            Object.defineProperty(this.schema.properties.mark.ui, 'hidden', {
+              configurable: true,
+              writable: true,
+              enumerable: true,
+              value: true
             });
             Object.defineProperty(this.schema.properties.department_name, 'default', {
               configurable: true,

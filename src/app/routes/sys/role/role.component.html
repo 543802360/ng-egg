@@ -1,13 +1,13 @@
 <page-header [action]="phActionTpl">
   <ng-template #phActionTpl>
-    <button (click)="add()" nz-button nzType="primary">新建</button>
   </ng-template>
 </page-header>
 <nz-card>
   <!-- <sf mode="search" [schema]="searchSchema" (formSubmit)="st.reset($event)" (formReset)="st.reset($event)"></sf> -->
-  <st #st [data]="roleData" [columns]="columns" [loading]="http.loading">
-    <ng-template st-row="updateAt-row" let-item let-index="index" let-column="column">
-      {{item.updated_at |  date: 'yyyy-MM-dd HH:mm:ss'}}
-    </ng-template>
+  <div class="mb-md">
+    <button nzType="default" nz-button (click)="refresh()">刷新</button>
+    <button nzType="primary" nz-button (click)="addRole()"> 添加</button>
+  </div>
+  <st #st bordered="true" [data]="roleData" [columns]="columns" [loading]="http.loading">
   </st>
 </nz-card>
