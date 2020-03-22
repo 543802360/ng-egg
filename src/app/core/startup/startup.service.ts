@@ -57,6 +57,11 @@ export class StartupService {
       // ACL: Set the permissions to full, https://ng-alain.com/acl/getting-started
       // this.aclService.setFull(true);
       // Menu data, https://ng-alain.com/theme/menu
+      // 设置角色对应的权限
+      // console.log('perms', permsData.data.perms);
+      const perms = permsData.data.perms.map(item => `ability.${item}`);
+      this.aclService.setAbility(permsData.data.perms);
+      // 设置角色对应的菜单
       const menusArray = permsData.data.menus.filter(item => item.menutype !== MenuType.PERMISSION).map(item => {
         let menu;
         item.parent_id ?
