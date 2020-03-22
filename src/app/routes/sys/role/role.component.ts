@@ -50,11 +50,13 @@ export class SysRoleComponent implements OnInit {
     {
       title: '操作',
       className: 'text-center',
+      acl: { ability: ['sys:role:edit', 'sys:role:delete'] },
       buttons:
         [
           {
             text: '编辑',
             type: 'static',
+            acl: { ability: ['sys:role:edit'] },
             modal: {
               component: SysRoleEditComponent,
               params: record => ({ record }),
@@ -72,6 +74,7 @@ export class SysRoleComponent implements OnInit {
           {
             text: '删除',
             type: 'del',
+            acl: { ability: ['sys:role:delete'] },
             pop: {
               title: '确认删除此角色吗？',
               okType: 'danger',

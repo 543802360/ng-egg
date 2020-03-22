@@ -49,8 +49,11 @@ export class SysUserComponent implements OnInit {
     { title: '创建时间', index: 'created_at', type: 'date', className: 'text-center' },
     { title: '更新时间', index: 'updated_at', type: 'date', className: 'text-center' },
     {
-      title: '操作', fixed: 'right', width: 180, className: 'text-center',
-
+      title: '操作',
+      fixed: 'right',
+      width: 180,
+      className: 'text-center',
+      acl: { ability: ['sys:user:add', 'sys:user:delete'] },
       buttons: [
         {
           text: '编辑',
@@ -68,16 +71,16 @@ export class SysUserComponent implements OnInit {
           },
           //
           // click: 'reload',
-          click: (_record, modal) => {
+          click: (_record, modal, comp) => {
             // modal 为回传值，可自定义回传值
-            modal ? this.initUsers() : null;
+            // modal ? this.initUsers() : null;
           }
         },
         // { text: '转移' },
         {
           text: '删除',
           type: 'del',
-          acl: 'ability.sys:user:delete',
+          acl: { ability: ['sys:user:delete'] },
           pop: {
             title: '确认删除此用户吗？',
             okType: 'danger',

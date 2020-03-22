@@ -12,9 +12,9 @@
           (nzContextMenu)="deprtmentCtxMenu($event,menu)" (nzOnDragEnd)="departmentDragEnd($event)"></nz-tree>
         <nz-dropdown-menu #menu="nzDropdownMenu">
           <ul nz-menu>
-            <li nz-menu-item (click)="addDepartment()">新增</li>
-            <li nz-menu-item (click)="editDepartment()">编辑</li>
-            <li nz-menu-item (click)="deleteDepartment()">删除</li>
+            <li nz-menu-item acl [acl-ability]="'sys:department:add'" (click)="addDepartment()">新增</li>
+            <li nz-menu-item acl [acl-ability]="'sys:department:edit'" (click)="editDepartment()">编辑</li>
+            <li nz-menu-item acl [acl-ability]="'sys:department:delete'" (click)="deleteDepartment()">删除</li>
           </ul>
         </nz-dropdown-menu>
       </nz-card>
@@ -37,8 +37,10 @@
       <nz-card style="height: 100%;" nzTitle="成员列表">
         <div class="mb-md">
           <button acl [acl-ability]="'sys:user:add'" nzType="primary" (click)="addUser()" nz-button>添加</button>
-          <button nzType="danger" [disabled]="userEditVisible" nz-button> 删除</button>
-          <button nzType="primary" [disabled]="userEditVisible" nz-button>转移</button>
+          <button acl [acl-ability]="'sys:user:deleteAll'" nzType="danger" [disabled]="userEditVisible" nz-button>
+            删除</button>
+          <button acl [acl-ability]="'sys:user:move'" nzType="primary" [disabled]="userEditVisible"
+            nz-button>转移</button>
         </div>
         <!-- <sf style="float: right;" mode="search" [schema]="userSearchSchema" (formSubmit)="st.reset($event)"
           (formReset)="st.reset($event)">
