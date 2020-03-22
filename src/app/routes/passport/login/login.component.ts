@@ -116,7 +116,7 @@ export class UserLoginComponent implements OnDestroy {
         password: this.password.value,
       })
       .subscribe(
-        res => {
+        (res: any) => {
           if (res.success !== true) {
             this.error = res.msg;
             return;
@@ -125,7 +125,10 @@ export class UserLoginComponent implements OnDestroy {
           // 清空路由复用信息
           this.reuseTabService.clear();
           // 设置用户Token信息
-          this.tokenService.set(res.data);
+          this.tokenService.set({ token: res.data.token });
+          // 设置user信息，
+          const { name, email, photo } = res.data;
+          this.settingsService.setUser({ name, email, avatar: photo });
           // 重新获取 StartupService 内容，我们始终认为应用信息一般都会受当前用户授权范围而影响
           this.startupSrv.load().then(() => {
             let url = this.tokenService.referrer!.url || '/';
