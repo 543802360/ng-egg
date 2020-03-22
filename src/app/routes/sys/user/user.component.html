@@ -36,7 +36,7 @@
     <div nz-col style="height: 100%;" nzSpan="19">
       <nz-card style="height: 100%;" nzTitle="成员列表">
         <div class="mb-md">
-          <button (click)="addUser()" nzType="primary" nz-button>添加</button>
+          <button acl [acl-ability]="'sys:user:add'" nzType="primary" (click)="addUser()" nz-button>添加</button>
           <button nzType="danger" [disabled]="userEditVisible" nz-button> 删除</button>
           <button nzType="primary" [disabled]="userEditVisible" nz-button>转移</button>
         </div>

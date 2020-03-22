@@ -6,7 +6,7 @@
   <!-- <sf mode="search" [schema]="searchSchema" (formSubmit)="st.reset($event)" (formReset)="st.reset($event)"></sf> -->
   <div class="mb-md">
     <button nzType="default" nz-button (click)="refresh()">刷新</button>
-    <button nzType="primary" nz-button (click)="addRole()"> 添加</button>
+    <button acl [acl-ability]="'sys:role:add'" nzType="primary" nz-button (click)="addRole()"> 添加</button>
   </div>
   <st #st bordered="true" [data]="roleData" [columns]="columns" [loading]="http.loading">
   </st>
