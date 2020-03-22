@@ -4,7 +4,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-// #region default language
+// #region default language（默认语言）
 // Reference: https://ng-alain.com/docs/i18n
 import { default as ngLang } from '@angular/common/locales/zh';
 import { NZ_I18N, zh_CN as zorroLang } from 'ng-zorro-antd/i18n';
@@ -24,7 +24,7 @@ const LANG_PROVIDES = [
   { provide: DELON_LOCALE, useValue: LANG.delon },
 ];
 // #endregion
-// #region i18n services
+// #region i18n services(国际化)
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { ALAIN_I18N_TOKEN } from '@delon/theme';

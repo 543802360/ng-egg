@@ -1,11 +1,3 @@
-/*
- * @Author: your name
- * @Date: 2020-03-10 09:05:00
- * @LastEditTime: 2020-03-11 09:41:27
- * @LastEditors: your name
- * @Description: In User Settings Edit
- * @FilePath: /ng-egg/src/app/delon.module.ts
- */
 
 /**
  * 进一步对基础模块的导入提炼
@@ -15,7 +7,7 @@ import { NgModule, Optional, SkipSelf, ModuleWithProviders } from '@angular/core
 import { throwIfAlreadyLoaded } from '@core';
 
 import { AlainThemeModule } from '@delon/theme';
-import { DelonACLModule } from '@delon/acl';
+import { DelonACLModule, DelonACLConfig, ACLCanType } from '@delon/acl';
 
 // #region mock
 import { DelonMockModule } from '@delon/mock';
@@ -67,6 +59,20 @@ export function fnDelonAuthConfig(): DelonAuthConfig {
     token_send_key: 'token', // 发送token参数名
   };
 }
+//#region  ALC 设置
+export function fnDelonACLConfig(): DelonACLConfig {
+  return {
+    ...new DelonACLConfig(),
+    // tslint:disable-next-line: no-object-literal-type-assertion
+    ...{
+      preCan: (roleOrAbility: ACLCanType) => {
+        const str = roleOrAbility.toString();
+        return str.startsWith('ability.') ? { ability: [str] } : null;
+      }
+    } as DelonACLConfig
+  };
+}
+//#endregion
 
 // tslint:disable-next-line: no-duplicate-imports
 import { STConfig } from '@delon/abc';
