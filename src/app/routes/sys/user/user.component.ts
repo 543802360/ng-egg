@@ -55,6 +55,7 @@ export class SysUserComponent implements OnInit {
         {
           text: '编辑',
           type: 'modal',
+          acl: { ability: ['sys:user:edit'] },
           modal: {
             component: SysUserEditComponent,
             params: record => ({ record }),
@@ -76,6 +77,7 @@ export class SysUserComponent implements OnInit {
         {
           text: '删除',
           type: 'del',
+          acl: 'ability.sys:user:delete',
           pop: {
             title: '确认删除此用户吗？',
             okType: 'danger',
