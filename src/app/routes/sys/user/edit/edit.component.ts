@@ -115,6 +115,9 @@ export class SysUserEditComponent implements OnInit {
     $department_name: {
       widget: 'tree-select',
       allowClear: true,
+      dropdownStyle: {
+        'max-height': '300px'
+      },
       asyncData: () => {
         return this.http.get('sys/departments').pipe(
           map(resp => {
