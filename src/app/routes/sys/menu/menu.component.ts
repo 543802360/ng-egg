@@ -226,7 +226,7 @@ export class SysMenuComponent implements OnInit, AfterViewInit {
       },
       nzFooter: null
     }).afterClose.subscribe(res => {
-      res ? this.initMenus() : null;
+      // res ? this.initMenus() : null;
     });
   }
 
@@ -248,6 +248,13 @@ export class SysMenuComponent implements OnInit, AfterViewInit {
       }
     });
   };
+
+  /**
+   * 刷新菜单
+   */
+  refreshMenu() {
+    this.initMenus();
+  }
 
   //#endregion
 
