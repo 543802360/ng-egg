@@ -25,7 +25,8 @@ export class SysUserComponent implements OnInit {
 
   // 用户表操作
   userData: IUser[];
-  userEditVisible = true;
+  userEditDisabled = true;
+  userSelected: IUser[];
   userColumns: STColumn[] = [
     {
       index: 'userid',
@@ -87,7 +88,7 @@ export class SysUserComponent implements OnInit {
             icon: 'star',
           },
           click: (record, _modal, comp) => {
-            this.http.post('sys/user/destroy', record).subscribe(resp => {
+            this.http.post('sys/user/destroy', [record.userid]).subscribe(resp => {
               if (resp.success) {
                 this.msgSrv.success(`成功删除用户${record.username}`);
                 comp!.removeRow(record);
@@ -126,7 +127,6 @@ export class SysUserComponent implements OnInit {
 
   initUsers() {
     this.http.get('sys/user/list').subscribe(resp => {
-      console.log(resp);
       this.userData = resp.data;
     });
   }
@@ -150,6 +150,24 @@ export class SysUserComponent implements OnInit {
 
   deleteUser() {
 
+    this.modalSrv.warning({
+      nzTitle: '提示',
+      nzContent: '确认删除所选用户吗？',
+      nzOnOk: () => {
+        const userids = this.userSelected.map(item => item.userid);
+        this.http.post('sys/user/destroy', userids).subscribe(resp => {
+          if (resp.success) {
+            this.msgSrv.success(resp.msg);
+            this.initUsers();
+          }
+          else {
+            this.msgSrv.error(resp.msg);
+          };
+        });
+      },
+      nzCancelText: '取消'
+    });
+
   }
 
   editUser() {
@@ -157,11 +175,12 @@ export class SysUserComponent implements OnInit {
   }
 
   userChange(e: STChange) {
-    // console.log('change', e);
     if (e.type === "checkbox" && e.checkbox.length) {
-      this.userEditVisible = false;
+      this.userEditDisabled = false;
+      this.userSelected = e.checkbox as any;
+      console.table('edit users', e.checkbox);
     } else if (e.type === "checkbox" && !e.checkbox.length) {
-      this.userEditVisible = true;
+      this.userEditDisabled = true;
     }
   }
 
