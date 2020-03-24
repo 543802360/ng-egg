@@ -1,9 +1,15 @@
 <page-header [action]="phActionTpl">
   <ng-template #phActionTpl>
-    <button (click)="newMenu()" nz-button nzType="primary">新建</button>
+    <!-- <button (click)="newMenu()" nz-button nzType="primary">新建</button> -->
   </ng-template>
 </page-header>
 <nz-card>
+
+  <div class="mb-md">
+    <button acl [acl-ability]="'sys:menu:refresh'" nzType="default" nz-button (click)="refreshMenu()">刷新</button>
+    <button acl [acl-ability]="'sys:menu:add'" nzType="primary" nz-button (click)="newMenu()"> 添加</button>
+  </div>
+
   <nz-table #menuTable nzBordered nzSize="middle" [nzData]="menuCollapseTreeData" [nzLoading]="http.loading">
     <thead>
       <tr>
