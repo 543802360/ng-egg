@@ -46,6 +46,9 @@ export class SysRoleEditComponent implements OnInit {
       multiple: true,
       showLine: false,
       allowClear: true,
+      dropdownStyle: {
+        'max-height': '300px'
+      },
       asyncData: () => {
         return this.http.get('sys/menus').pipe(
           map(resp => {
@@ -69,6 +72,9 @@ export class SysRoleEditComponent implements OnInit {
       checkable: true,
       showLine: false,
       allowClear: true,
+      dropdownStyle: {
+        'max-height': '300px'
+      },
       asyncData: () => {
         return this.http.get('sys/departments').pipe(
           map(resp => {
@@ -115,7 +121,6 @@ export class SysRoleEditComponent implements OnInit {
       const menuIdList = this.processPermMenus(role.menuIdList);
       Object.assign(role, { menuIdList });
     }
-    console.log(role);
     if (role.roleid) {
       this.http.put(`sys/roles/${role.roleid}`, role).subscribe(res => {
         if (res.success) {
@@ -143,6 +148,12 @@ export class SysRoleEditComponent implements OnInit {
     }
   }
 
+  /**
+   * 处理权限和菜单；
+   * 1、如果选择的是MenuType.DIR、MenuType.MENU，则获取所有子节点一并存入
+   * 2、如果获取的是MenuType.PERMISSION,则只存入该权限节点。父节点逻辑由后台处理
+   * @param menuList
+   */
   processPermMenus(menuList: string[]) {
     const result = [];
     let children = [];
