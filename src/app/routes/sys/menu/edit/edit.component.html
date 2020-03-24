@@ -1,0 +1,73 @@
+<!-- <nz-spin *ngIf="!menu" class="modal-spin"></nz-spin> -->
+<!-- <sf #sf mode="edit" [schema]="schema" [ui]="ui" [formData]="menu" button="none">
+  <div class="modal-footer">
+    <button nz-button type="button" (click)="close()">关闭</button>
+    <button nz-button type="submit" nzType="primary" (click)="save(sf.value)" [disabled]="!sf.valid">保存</button>
+  </div>
+</sf> -->
+
+
+<form nz-form [formGroup]="menuGroup" nzLayout="horizontal">
+  <nz-form-item>
+    <nz-form-label nzFor="menutype" nzSpan="6">节点类型</nz-form-label>
+    <nz-form-control nzSpan="18">
+      <nz-radio-group [(ngModel)]="menutype" formControlName="menutype">
+        <label nz-radio nzValue="0">目录</label>
+        <label nz-radio nzValue="1">菜单</label>
+        <label nz-radio nzValue="2">权限</label>
+      </nz-radio-group>
+
+      <!-- <input nz-input formControlName="menuname" placeholder=""> -->
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label nzFor="menuname" nzSpan="6" nzRequired>节点名称</nz-form-label>
+    <nz-form-control nzSpan="18" nzErrorTip="菜单名称为必填项">
+      <input nz-input formControlName="menuname" placeholder="">
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label nzFor="parent_name" nzSpan="6">上级节点</nz-form-label>
+    <nz-form-control nzSpan="18" nzErrorTip="节点名称不能与上级节点名称相同">
+      <nz-tree-select #menuTree [nzDropdownStyle]="{'max-height':'300px'}" formControlName="parent_name"
+        [(ngModel)]="parentMenu" [nzNodes]="menuTreeNodes">
+      </nz-tree-select>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item *ngIf="menutype==1">
+    <nz-form-label nzFor="route_path" nzSpan="6">节点路由</nz-form-label>
+    <nz-form-control nzSpan="18">
+      <input nz-input formControlName="route_path" placeholder="">
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label nzFor="icon" nzSpan="6">节点图标</nz-form-label>
+    <nz-form-control nzSpan="18">
+      <input nz-input formControlName="icon" placeholder="" [iconPicker]="selectedIcon"
+        (iconPickerSelect)="onIconPickerSelect($event)" [ipPosition]="'bottom'" [ipFallbackIcon]="null"
+        [ipPlaceHolder]="'选择图标'">
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label nzFor="order_num" nzSpan="6">排序号</nz-form-label>
+    <nz-form-control nzSpan="18">
+      <input nz-input formControlName="order_num" placeholder="">
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item *ngIf="menutype==2">
+    <nz-form-label nzFor="perms" nzSpan="6">权限</nz-form-label>
+    <nz-form-control nzSpan="18">
+      <input nz-input formControlName="perms" placeholder="">
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-control nzSpan="16" nzOffset="0">
+    </nz-form-control>
+    <nz-form-control nzSpan="4" nzOffset="0">
+      <button nzSize="default" nzType="primary" nz-button (click)="save()">保存</button>
+    </nz-form-control>
+    <nz-form-control nzSpan="4" nzOffset="0">
+      <button nzSize="default" nzType="primary" (click)="close()" nz-button>关闭</button>
+    </nz-form-control>
+  </nz-form-item>
+</form>

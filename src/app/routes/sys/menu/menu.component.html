@@ -1,0 +1,55 @@
+<page-header [action]="phActionTpl">
+  <ng-template #phActionTpl>
+    <!-- <button (click)="newMenu()" nz-button nzType="primary">新建</button> -->
+  </ng-template>
+</page-header>
+<nz-card>
+
+  <div class="mb-md">
+    <button acl [acl-ability]="'sys:menu:refresh'" nzType="default" nz-button (click)="refreshMenu()">刷新</button>
+    <button acl [acl-ability]="'sys:menu:add'" nzType="primary" nz-button (click)="newMenu()"> 添加</button>
+  </div>
+
+  <nz-table #menuTable nzBordered nzSize="middle" [nzData]="menuCollapseTreeData" [nzLoading]="http.loading">
+    <thead>
+      <tr>
+        <th nzAlign="left">名称</th>
+        <th nzAlign="center">图标</th>
+        <th nzAlign="center">类型</th>
+        <th nzAlign="center">节点路由</th>
+        <th nzAlign="center">权限</th>
+        <th nzAlign="center">排序号</th>
+        <th nzAlign="center">更新时间</th>
+        <th nzAlign="center">操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let data of menuTable.data">
+        <ng-container *ngFor="let item of mapOfMenuExpandedData[data.menu_id]">
+          <tr *ngIf="(item.parent && item.parent.expand) || !item.parent">
+            <td nzAlign="left" [nzIndentSize]="item.level * 20" [nzShowExpand]="!!item.children"
+              [(nzExpand)]="item.expand" (nzExpandChange)="collapse(mapOfMenuExpandedData[data.menu_id], item, $event)">
+              {{item.menuname}}
+            </td>
+            <td nzAlign="center"> <i [class]="item.icon"></i></td>
+            <td nzAlign="center">{{ item.menutype=="0"?"目录":item.menutype=="1" ?"菜单":"权限"}}</td>
+            <td nzAlign="center">{{ item.route_path }}</td>
+            <td nzAlign="center">
+              <nz-tag *ngIf="item.perms" [nzColor]="'blue'">{{ item.perms }}</nz-tag>
+            </td>
+            <td nzAlign="center">{{ item.order_num }}</td>
+            <td nzAlign="center">{{ item.updated_at | date: 'yyyy-MM-dd HH:mm:ss' }}</td>
+            <td nzAlign="center">
+              <!-- <a (click)="newMenu(item)">新增</a>
+              <nz-divider nzType="vertical"></nz-divider> -->
+              <a (click)="editMenu(item)">编辑</a>
+              <nz-divider nzType="vertical"></nz-divider>
+              <a (click)="deleteMenu(item)">删除</a>
+            </td>
+
+          </tr>
+        </ng-container>
+      </ng-container>
+    </tbody>
+  </nz-table>
+</nz-card>

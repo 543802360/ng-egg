@@ -1,0 +1,41 @@
+/*
+ * @Author: your name
+ * @Date: 2020-03-10 09:05:00
+ * @LastEditTime: 2020-03-10 15:29:17
+ * @LastEditors: your name
+ * @Description: In User Settings Edit
+ * @FilePath: /ng-egg/src/app/layout/default/header/components/fullscreen.component.ts
+ */
+import { Component, HostListener, ChangeDetectionStrategy } from '@angular/core';
+import * as screenfull from 'screenfull';
+
+@Component({
+  selector: 'header-fullscreen',
+  template: `
+    <i nz-icon [nzType]="status ? 'fullscreen-exit' : 'fullscreen'"></i>
+    {{ (status ? '退出全屏' : '全屏')  }}
+  `,
+  // tslint:disable-next-line: no-host-metadata-property
+  host: {
+    '[class.d-block]': 'true',
+  },
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class HeaderFullScreenComponent {
+  status = false;
+  private get sf(): screenfull.Screenfull {
+    return screenfull as screenfull.Screenfull;
+  }
+
+  @HostListener('window:resize')
+  _resize() {
+    this.status = this.sf.isFullscreen;
+  }
+
+  @HostListener('click')
+  _click() {
+    if (this.sf.isEnabled) {
+      this.sf.toggle();
+    }
+  }
+}
