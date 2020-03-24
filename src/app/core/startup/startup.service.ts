@@ -38,7 +38,6 @@ export class StartupService {
   }
 
   private viaHttp(resolve: any, reject: any) {
-    resolve(null);
     zip(
       this.httpClient.get('sys/user/admin/permmenu')
     ).pipe(
@@ -49,7 +48,6 @@ export class StartupService {
     ).subscribe(([permsData]) => {
 
       // Application data
-      const res: any = permsData;
       // Application information: including site name, description, year
       // this.settingService.setApp(res.app);
       // User information: including name, avatar, email address
@@ -57,9 +55,9 @@ export class StartupService {
       // ACL: Set the permissions to full, https://ng-alain.com/acl/getting-started
       // this.aclService.setFull(true);
       // Menu data, https://ng-alain.com/theme/menu
-      // 设置角色对应的权限
       // console.log('perms', permsData.data.perms);
-      const perms = permsData.data.perms.map(item => `ability.${item}`);
+      // const perms = permsData.data.perms.map(item => `ability.${item}`);
+      // 设置角色对应的权限
       this.aclService.setAbility(permsData.data.perms);
       // 设置角色对应的菜单
       const menusArray = permsData.data.menus.filter(item => item.menutype !== MenuType.PERMISSION).map(item => {
@@ -91,7 +89,6 @@ export class StartupService {
           "group": true,
           hideInBreadcrumb: true,
           children: menus
-
         }]);
       // resolve(null);
 
@@ -102,65 +99,6 @@ export class StartupService {
       () => {
         resolve(null);
       });
-  }
-
-  private viaMockI18n(resolve: any, reject: any) {
-    this.httpClient
-      .get(`assets/tmp/i18n/${this.i18n.defaultLang}.json`)
-      .subscribe(langData => {
-        this.translate.setTranslation(this.i18n.defaultLang, langData);
-        this.translate.setDefaultLang(this.i18n.defaultLang);
-        this.viaMock(resolve, reject);
-      });
-  }
-
-  private viaMock(resolve: any, reject: any) {
-    // const tokenData = this.tokenService.get();
-    // if (!tokenData.token) {
-    //   this.injector.get(Router).navigateByUrl('/passport/login');
-    //   resolve({});
-    //   return;
-    // }
-    // mock
-    const app: any = {
-      name: `ng-alain`,
-      description: `Ng-zorro admin panel front-end framework`
-    };
-    const user: any = {
-      name: 'Admin',
-      avatar: './assets/tmp/img/avatar.jpg',
-      email: 'cipchk@qq.com',
-      token: '123456789'
-    };
-    // Application information: including site name, description, year
-    this.settingService.setApp(app);
-    // User information: including name, avatar, email address
-    this.settingService.setUser(user);
-    // ACL: Set the permissions to full, https://ng-alain.com/acl/getting-started
-    this.aclService.setFull(true);
-    // Menu data, https://ng-alain.com/theme/menu
-    this.menuService.add([
-      {
-        text: 'Main',
-        group: true,
-        children: [
-          {
-            text: 'Dashboard',
-            link: '/dashboard',
-            icon: { type: 'icon', value: 'appstore' }
-          },
-          {
-            text: 'Quick Menu',
-            icon: { type: 'icon', value: 'rocket' },
-            shortcutRoot: true
-          }
-        ]
-      }
-    ]);
-    // Can be set page suffix title, https://ng-alain.com/theme/title
-    this.titleService.suffix = app.name;
-
-    resolve({});
   }
 
   load(): Promise<any> {

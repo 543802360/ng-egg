@@ -23,6 +23,7 @@ import { UserRegisterResultComponent } from './passport/register-result/register
 // single pages
 import { CallbackComponent } from './callback/callback.component';
 import { UserLockComponent } from './passport/lock/lock.component';
+import { ACLGuard } from '@delon/acl';
 
 const routes: Routes = [
   {
@@ -30,9 +31,20 @@ const routes: Routes = [
     component: LayoutDefaultComponent,
     canActivate: [JWTGuard],
     children: [
-      { path: '', redirectTo: 'sys', pathMatch: 'full' },
-      { path: 'dashboard', component: DashboardComponent, data: { title: '仪表盘' } },
-      { path: 'exception', loadChildren: () => import('./exception/exception.module').then(m => m.ExceptionModule) },
+      {
+        path: '',
+        redirectTo: 'sys',
+        pathMatch: 'full'
+      },
+      {
+        path: 'dashboard',
+        component: DashboardComponent,
+        data: { title: '仪表盘' }
+      },
+      {
+        path: 'exception',
+        loadChildren: () => import('./exception/exception.module').then(m => m.ExceptionModule)
+      },
       // 业务子模块
       {
         path: 'sys',
