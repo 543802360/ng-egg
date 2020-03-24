@@ -61,7 +61,7 @@ export class SysMenuEditComponent implements OnInit, AfterViewInit {
     // 初始化菜单树
     this.http.get('sys/menus').pipe(
       map(resp => {
-        const menuData = resp.data.map((menu: IMenu) => {
+        const menuData = resp.data.filter((menu: IMenu) => menu.menutype !== MenuType.PERMISSION).map((menu: IMenu) => {
           return { title: menu.menuname, 'key': menu.menu_id, 'parent_id': menu.parent_id };
 
         });

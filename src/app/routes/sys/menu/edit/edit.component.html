@@ -29,7 +29,8 @@
   <nz-form-item>
     <nz-form-label nzFor="parent_name" nzSpan="6">上级节点</nz-form-label>
     <nz-form-control nzSpan="18" nzErrorTip="节点名称不能与上级节点名称相同">
-      <nz-tree-select #menuTree formControlName="parent_name" [(ngModel)]="parentMenu" [nzNodes]="menuTreeNodes">
+      <nz-tree-select #menuTree [nzDropdownStyle]="{'max-height':'300px'}" formControlName="parent_name"
+        [(ngModel)]="parentMenu" [nzNodes]="menuTreeNodes">
       </nz-tree-select>
     </nz-form-control>
   </nz-form-item>
@@ -47,7 +48,7 @@
         [ipPlaceHolder]="'选择图标'">
     </nz-form-control>
   </nz-form-item>
-  <nz-form-item *ngIf="false">
+  <nz-form-item>
     <nz-form-label nzFor="order_num" nzSpan="6">排序号</nz-form-label>
     <nz-form-control nzSpan="18">
       <input nz-input formControlName="order_num" placeholder="">
