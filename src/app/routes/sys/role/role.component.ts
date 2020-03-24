@@ -8,6 +8,7 @@ import { SysRoleViewComponent } from './view/view.component';
 import { IRole } from '@shared';
 import { NzMessageService } from 'ng-zorro-antd';
 import { HttpParams } from '@angular/common/http';
+import { StartupService } from '@core';
 
 @Component({
   selector: 'app-sys-role',
@@ -68,7 +69,9 @@ export class SysRoleComponent implements OnInit {
               }
             },
             click: (record: STData, modal: boolean) => {
-
+              if (modal) {
+                this.startSrv.load().then(resp => { });
+              }
             }
           },
           {
@@ -100,7 +103,8 @@ export class SysRoleComponent implements OnInit {
   constructor(
     private http: _HttpClient,
     private modal: ModalHelper,
-    private msgSrv: NzMessageService) { }
+    private msgSrv: NzMessageService,
+    private startSrv: StartupService) { }
 
   ngOnInit() {
     this.initRoles();
