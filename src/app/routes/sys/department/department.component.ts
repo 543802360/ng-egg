@@ -14,6 +14,7 @@ export class SysDepartmentComponent implements OnInit {
   schema: SFSchema = {
     properties: {
       department_name: { type: 'string', title: '部门名称' },
+      department_code: { type: 'string', title: '部门代码' },
       parent_name: { type: 'string', title: '上级部门', readOnly: true }
     },
     required: ['department_name'],
@@ -25,6 +26,11 @@ export class SysDepartmentComponent implements OnInit {
     },
     $department_name: {
       widget: 'string'
+    },
+    $department_code: {
+      widget: 'select',
+      // optional: '(可选)',
+      optionalHelp: '一般为行政区划代码，与业务数据关联'
     },
     $parent_name: {
       widget: 'string',
