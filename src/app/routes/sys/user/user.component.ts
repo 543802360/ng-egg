@@ -1,7 +1,7 @@
 import { SysUserEditComponent } from './edit/edit.component';
 import { Component, OnInit, ViewChild, Renderer2 } from '@angular/core';
 import { _HttpClient, ModalHelper } from '@delon/theme';
-import { STColumn, STComponent, STData, STChange } from '@delon/abc/table';
+import { STColumn, STComponent, STData, STChange, STColumnButton } from '@delon/abc/table';
 import { SFSchema } from '@delon/form';
 import { IDepartment, IUser, array2tree, tree2array } from '@shared';
 import { NzMenuDirective, NzContextMenuService, NzFormatEmitEvent, NzModalService, NzTreeNode, NzMessageService, NzTreeComponent } from 'ng-zorro-antd';
@@ -59,6 +59,13 @@ export class SysUserComponent implements OnInit {
         {
           text: '编辑',
           type: 'modal',
+          iif: (item: STData,
+            btn: STColumnButton,
+            column: STColumn) => {
+            return item.groupid === 1 ? false : true
+
+          },
+          iifBehavior: 'disabled',
           acl: { ability: ['sys:user:edit'] },
           modal: {
             component: SysUserEditComponent,
@@ -81,6 +88,13 @@ export class SysUserComponent implements OnInit {
         {
           text: '删除',
           type: 'del',
+          iif: (item: STData,
+            btn: STColumnButton,
+            column: STColumn) => {
+            return item.groupid === 1 ? false : true
+
+          },
+          iifBehavior: 'disabled',
           acl: { ability: ['sys:user:delete'] },
           pop: {
             title: '确认删除此用户吗？',
