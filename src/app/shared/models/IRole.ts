@@ -10,6 +10,7 @@ export interface IRole {
   roleid?: string; // 角色id
   rolename?: string; // 角色名称
   remark?: string;// 角色说明
+  userid?: string;// 角色创建者
   created_at?: Date; // 创建时间
   updated_at?: Date; // 更新时间
   menuIdList?: any[]; // 功能权限
