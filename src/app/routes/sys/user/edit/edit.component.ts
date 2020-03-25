@@ -70,7 +70,7 @@ export class SysUserEditComponent implements OnInit {
         }
       }
     },
-    required: ['name', 'username', 'rolename', 'department_name'],
+    required: ['name', 'username', 'rolename'],
   };
   ui: SFUISchema = {
     '*': {
