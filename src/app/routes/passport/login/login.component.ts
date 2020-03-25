@@ -8,6 +8,7 @@ import { SocialService, SocialOpenType, ITokenService, DA_SERVICE_TOKEN } from '
 import { ReuseTabService } from '@delon/abc';
 import { environment } from '@env/environment';
 import { StartupService } from '@core';
+import { CacheService } from '@delon/cache';
 
 @Component({
   selector: 'passport-login',
@@ -28,6 +29,7 @@ export class UserLoginComponent implements OnDestroy {
     private reuseTabService: ReuseTabService,
     @Inject(DA_SERVICE_TOKEN) private tokenService: ITokenService,
     private startupSrv: StartupService,
+    private cacheSrv: CacheService,
     public http: _HttpClient,
     public msg: NzMessageService,
   ) {
@@ -129,6 +131,8 @@ export class UserLoginComponent implements OnDestroy {
           // 设置user信息，
           const { name, email, photo } = res.data;
           this.settingsService.setUser({ name, email, avatar: photo });
+          // 持久化userInfo
+          this.cacheSrv.set('userInfo', res.data);
           // 重新获取 StartupService 内容，我们始终认为应用信息一般都会受当前用户授权范围而影响
           this.startupSrv.load().then((result) => {
             console.log('login', result);
