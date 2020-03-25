@@ -7,6 +7,7 @@ import { _HttpClient } from '@delon/theme';
 import { SFSchema, SFUISchema, SFComponent } from '@delon/form';
 import { ArrayService } from '@delon/util';
 import { NzTreeComponent, NzTreeBase } from 'ng-zorro-antd';
+import { CacheService } from '@delon/cache';
 
 @Component({
   selector: 'app-sys-role-edit',
@@ -101,7 +102,7 @@ export class SysRoleEditComponent implements OnInit {
   constructor(
     private modal: NzModalRef,
     private msgSrv: NzMessageService,
-    private arraySrv: ArrayService,
+    private cacheSrv: CacheService,
     public http: _HttpClient,
 
   ) { }
@@ -142,6 +143,8 @@ export class SysRoleEditComponent implements OnInit {
         // this.modal.close(true);
       });
     } else {
+      // 设置创建角色的userid
+      Object.assign(role, { userid: this.cacheSrv.get('userInfo', { mode: 'none' }).userid });
       this.http.post(`sys/roles`, role).subscribe(res => {
         if (res.success) {
           this.msgSrv.success(res.msg);
@@ -170,7 +173,7 @@ export class SysRoleEditComponent implements OnInit {
     const getChildrenNodes = (array, sourceId, parentIdMapName, idMapName) => {
       for (const item of array) {
         if (item[parentIdMapName] === sourceId) {
-          console.table(item);
+          // console.table(item);
           children.push(item[idMapName]);
           getChildrenNodes(array, item[idMapName], parentIdMapName, idMapName);
         } else {
@@ -242,7 +245,7 @@ export class SysRoleEditComponent implements OnInit {
     const getChildrenNodes = (array, sourceId, parentIdMapName, idMapName) => {
       for (const item of array) {
         if (item[parentIdMapName] === sourceId) {
-          console.table(item);
+          // console.table(item);
           children.push(item[idMapName]);
           getChildrenNodes(array, item[idMapName], parentIdMapName, idMapName);
         } else {

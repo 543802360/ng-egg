@@ -5,6 +5,7 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 import { _HttpClient } from '@delon/theme';
 import { SFSchema, SFUISchema, SFComponent } from '@delon/form';
 import { map } from 'rxjs/operators';
+import { CacheService } from '@delon/cache';
 
 @Component({
   selector: 'app-sys-user-edit',
@@ -91,17 +92,6 @@ export class SysUserEditComponent implements OnInit {
       asyncData: () => {
         return this.http.get('sys/roles').pipe(
           map(resp => {
-
-            // 设置角色默认值
-            // Object.defineProperty(this.schema.properties.rolename, 'default', {
-            //   configurable: true,
-            //   writable: true,
-            //   enumerable: true,
-            //   value: this.record ? this.record.roleid : null
-            // });
-            // console.log(this.userSF);
-            // this.userSF.refreshSchema();
-
             return resp.data.map(item => {
               return {
                 label: item.rolename,
@@ -142,6 +132,7 @@ export class SysUserEditComponent implements OnInit {
   constructor(
     private modal: NzModalRef,
     private msgSrv: NzMessageService,
+    private cacheSrv: CacheService,
     public http: _HttpClient,
   ) { }
 
@@ -208,6 +199,7 @@ export class SysUserEditComponent implements OnInit {
         // this.modal.close(true);
       });
     } else {
+      Object.assign(userEdited, { creator_id: this.cacheSrv.get('userInfo', { mode: 'none' }).userid });
       this.http.post(`sys/user/create`, userEdited).subscribe(res => {
         if (res.success) {
           this.msgSrv.success(res.msg);
