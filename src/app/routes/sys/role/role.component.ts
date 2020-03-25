@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { _HttpClient, ModalHelper } from '@delon/theme';
-import { STColumn, STComponent, STData } from '@delon/abc/table';
+import { STColumn, STComponent, STData, STColumnButton } from '@delon/abc/table';
 
 import { SFSchema } from '@delon/form';
 import { SysRoleEditComponent } from './edit/edit.component';
@@ -19,13 +19,13 @@ export class SysRoleComponent implements OnInit {
   @ViewChild('st', { static: false }) st: STComponent;
   roleData: IRole[];
   columns: STColumn[] = [
-    {
-      index: 'roleid',
-      title: '编号',
-      type: 'checkbox',
-      fixed: 'left',
-      width: 40
-    },
+    // {
+    //   index: 'roleid',
+    //   title: '编号',
+    //   type: 'checkbox',
+    //   fixed: 'left',
+    //   width: 40
+    // },
     {
       title: '角色名称',
       index: 'rolename',
@@ -57,6 +57,13 @@ export class SysRoleComponent implements OnInit {
           {
             text: '编辑',
             type: 'static',
+            iif: (item: STData,
+              btn: STColumnButton,
+              column: STColumn) => {
+              return item.groupid === 1 ? false : true
+
+            },
+            iifBehavior: 'disabled',
             acl: { ability: ['sys:role:edit'] },
             modal: {
               component: SysRoleEditComponent,
@@ -78,6 +85,10 @@ export class SysRoleComponent implements OnInit {
             text: '删除',
             type: 'del',
             acl: { ability: ['sys:role:delete'] },
+            iif: (item: STData, btn: STColumnButton, column: STColumn) => {
+              return item.groupid === 1 ? false : true
+            },
+            iifBehavior: 'disabled',
             pop: {
               title: '确认删除此角色吗？',
               okType: 'danger',
