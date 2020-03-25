@@ -110,6 +110,9 @@ export class SysRoleComponent implements OnInit {
     this.initRoles();
   }
 
+  /**
+   * 添加角色
+   */
   addRole() {
     this.modal
       .createStatic(SysRoleEditComponent, { record: null }, {

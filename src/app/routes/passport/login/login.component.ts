@@ -130,13 +130,14 @@ export class UserLoginComponent implements OnDestroy {
           const { name, email, photo } = res.data;
           this.settingsService.setUser({ name, email, avatar: photo });
           // 重新获取 StartupService 内容，我们始终认为应用信息一般都会受当前用户授权范围而影响
-          this.startupSrv.load().then(() => {
+          this.startupSrv.load().then((result) => {
+            console.log('login', result);
             let url = this.tokenService.referrer!.url || '/';
             if (url.includes('/passport')) {
               url = '/';
             }
             this.router.navigateByUrl(url);
-          });
+          }).catch(error => { });
         });
   }
 

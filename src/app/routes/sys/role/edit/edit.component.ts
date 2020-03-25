@@ -1,5 +1,5 @@
 import { map } from 'rxjs/operators';
-import { IRole, array2tree, IMenu, MenuType } from '@shared';
+import { IRole, array2tree, IMenu, MenuType, IDepartment } from '@shared';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NzModalRef } from 'ng-zorro-antd/modal';
 import { NzMessageService } from 'ng-zorro-antd/message';
@@ -13,12 +13,15 @@ import { NzTreeComponent, NzTreeBase } from 'ng-zorro-antd';
   templateUrl: './edit.component.html',
 })
 export class SysRoleEditComponent implements OnInit {
-  //
+  // role 动态表单
   @ViewChild('sf', { static: false }) roleSf: SFComponent;
+  // 菜单树节点
   menusTreeNodes = [];
+  // 菜单数组
   menusArray: IMenu[];
   record: IRole = {};
   i: IRole;
+  departmentArray: IDepartment[];
   // role schema
   schema: SFSchema = {
     properties: {
@@ -86,7 +89,7 @@ export class SysRoleEditComponent implements OnInit {
                 parent_name: item.parent_name
               };
             });
-
+            this.departmentArray = resp.data;
             return array2tree(node, 'key', 'parent_id', 'children');
           }))
       }
@@ -120,6 +123,11 @@ export class SysRoleEditComponent implements OnInit {
     if (role.menuIdList.length) {
       const menuIdList = this.processPermMenus(role.menuIdList);
       Object.assign(role, { menuIdList });
+    }
+    // 处理数据权限
+    if (role.departmentIdList.length) {
+      const departmentIdList = this.processDataPerms(role.departmentIdList);
+      Object.assign(role, { departmentIdList });
     }
     if (role.roleid) {
       this.http.put(`sys/roles/${role.roleid}`, role).subscribe(res => {
@@ -227,7 +235,37 @@ export class SysRoleEditComponent implements OnInit {
     return Array.from(new Set(result));
   };
 
+  processDataPerms(departmentList: string[]) {
+    const result = [];
+    let children = [];
+    // 递归获取子节点
+    const getChildrenNodes = (array, sourceId, parentIdMapName, idMapName) => {
+      for (const item of array) {
+        if (item[parentIdMapName] === sourceId) {
+          console.table(item);
+          children.push(item[idMapName]);
+          getChildrenNodes(array, item[idMapName], parentIdMapName, idMapName);
+        } else {
+          continue;
+        }
+      }
+    };
 
+    /**
+    * 主要是为了nz-tree的显示逻辑进行菜单的递归
+     */
+    departmentList.forEach(id => {
+      this.departmentArray.forEach(item => {
+        if (item.department_id === id) {
+          children = [];
+          getChildrenNodes(this.departmentArray, item.department_id, 'parent_id', 'department_id');
+          result.push(item.department_id, ...children);
+        }
+      });
+    });
+    // 部门去重
+    return Array.from(new Set(result));
+  };
 
   close() {
     this.modal.destroy();
