@@ -38,6 +38,11 @@ const routes: Routes = [
         path: 'sys',
         loadChildren: () => import('./sys/sys.module').then(m => m.SysModule)
       },
+      // 楼宇经济子模块
+      {
+        path: 'building',
+        loadChildren: () => import('./building-economic/building-economic.module').then(m => m.BuildingEconomicModule)
+      },
       // { path: 'widgets', loadChildren: () => import('./widgets/widgets.module').then(m => m.WidgetsModule) },
     ]
   },
