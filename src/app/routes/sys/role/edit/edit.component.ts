@@ -5,8 +5,6 @@ import { NzModalRef } from 'ng-zorro-antd/modal';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { _HttpClient } from '@delon/theme';
 import { SFSchema, SFUISchema, SFComponent } from '@delon/form';
-import { ArrayService } from '@delon/util';
-import { NzTreeComponent, NzTreeBase } from 'ng-zorro-antd';
 import { CacheService } from '@delon/cache';
 
 @Component({
@@ -121,12 +119,12 @@ export class SysRoleEditComponent implements OnInit {
    */
   save(role: IRole) {
     // 处理菜单权限
-    if (role.menuIdList.length) {
+    if (role.menuIdList && role.menuIdList.length) {
       const menuIdList = this.processPermMenus(role.menuIdList);
       Object.assign(role, { menuIdList });
     }
     // 处理数据权限
-    if (role.departmentIdList.length) {
+    if (role.departmentIdList && role.departmentIdList.length) {
       const departmentIdList = this.processDataPerms(role.departmentIdList);
       Object.assign(role, { departmentIdList });
     }

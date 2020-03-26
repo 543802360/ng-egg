@@ -7,6 +7,7 @@ import { IDepartment, IUser, array2tree, tree2array } from '@shared';
 import { NzMenuDirective, NzContextMenuService, NzFormatEmitEvent, NzModalService, NzTreeNode, NzMessageService, NzTreeComponent } from 'ng-zorro-antd';
 import { SysDepartmentComponent } from '../department/department.component';
 import { map } from 'rxjs/operators';
+import { CacheService } from '@delon/cache';
 @Component({
   selector: 'app-sys-user',
   templateUrl: './user.component.html',
@@ -81,7 +82,7 @@ export class SysUserComponent implements OnInit {
           // click: 'reload',
           click: (_record, modal, comp) => {
             // modal 为回传值，可自定义回传值
-            // modal ? this.initUsers() : null;
+            modal ? this.initUsers() : null;
           }
         },
         // { text: '转移' },
@@ -91,10 +92,9 @@ export class SysUserComponent implements OnInit {
           iif: (item: STData,
             btn: STColumnButton,
             column: STColumn) => {
-            return item.groupid === 1 ? false : true
-
+            return this.cacheSrv.get('userInfo', { mode: 'none' }).userid === item.userid ? false : true;
           },
-          iifBehavior: 'disabled',
+          iifBehavior: 'hide',
           acl: { ability: ['sys:user:delete'] },
           pop: {
             title: '确认删除此用户吗？',
@@ -128,6 +128,7 @@ export class SysUserComponent implements OnInit {
     private http: _HttpClient,
     private modalSrv: NzModalService,
     private modal: ModalHelper,
+    private cacheSrv: CacheService,
     private contextSrv: NzContextMenuService,
     private msgSrv: NzMessageService) { }
 

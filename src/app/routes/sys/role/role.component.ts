@@ -4,11 +4,11 @@ import { STColumn, STComponent, STData, STColumnButton } from '@delon/abc/table'
 
 import { SFSchema } from '@delon/form';
 import { SysRoleEditComponent } from './edit/edit.component';
-import { SysRoleViewComponent } from './view/view.component';
 import { IRole } from '@shared';
 import { NzMessageService } from 'ng-zorro-antd';
 import { HttpParams } from '@angular/common/http';
 import { StartupService } from '@core';
+import { CacheService } from '@delon/cache';
 
 @Component({
   selector: 'app-sys-role',
@@ -60,8 +60,12 @@ export class SysRoleComponent implements OnInit {
             iif: (item: STData,
               btn: STColumnButton,
               column: STColumn) => {
-              return item.groupid === 1 ? false : true
 
+              if (item.groupid !== 1) {
+                return this.cacheSrv.get('userInfo', { mode: 'none' }).roleid === item.roleid ? false : true;
+              } else {
+                return true;
+              }
             },
             iifBehavior: 'disabled',
             acl: { ability: ['sys:role:edit'] },
@@ -85,8 +89,15 @@ export class SysRoleComponent implements OnInit {
             text: '删除',
             type: 'del',
             acl: { ability: ['sys:role:delete'] },
-            iif: (item: STData, btn: STColumnButton, column: STColumn) => {
-              return item.groupid === 1 ? false : true
+            iif: (item: STData,
+              btn: STColumnButton,
+              column: STColumn) => {
+              if (item.groupid === 1) {
+                return false;
+              };
+              if (item.groupid !== 1) {
+                return this.cacheSrv.get('userInfo', { mode: 'none' }).roleid === item.roleid ? false : true;
+              }
             },
             iifBehavior: 'disabled',
             pop: {
@@ -115,6 +126,7 @@ export class SysRoleComponent implements OnInit {
     private http: _HttpClient,
     private modal: ModalHelper,
     private msgSrv: NzMessageService,
+    private cacheSrv: CacheService,
     private startSrv: StartupService) { }
 
   ngOnInit() {

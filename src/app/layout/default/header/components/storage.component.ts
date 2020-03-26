@@ -27,10 +27,10 @@ export class HeaderStorageComponent {
   @HostListener('click')
   _click() {
     this.modalSrv.confirm({
-      nzTitle: 'Make sure clear all local storage?',
+      nzTitle: '确定清除所有本地缓存吗?',
       nzOnOk: () => {
         localStorage.clear();
-        this.messageSrv.success('Clear Finished!');
+        this.messageSrv.success('清除完成!');
       },
     });
   }
