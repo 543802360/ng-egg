@@ -16,46 +16,56 @@ import { SysLogComponent } from './log/log.component';
 import { ACLGuard } from '@delon/acl';
 
 const routes: Routes = [
+
+  {
+    path: 'role',
+    component: SysRoleComponent,
+    canActivate: [ACLGuard],
+    data: {
+      title: '角色管理',
+      guard: {
+        ability: ['/sys/role'],
+      },
+      guard_url: 'exception/403'
+    }
+  },
+  {
+    path: 'menu',
+    component: SysMenuComponent,
+    canActivate: [ACLGuard],
+    data:
+    {
+      title: '菜单管理',
+      guard: {
+        ability: ['/sys/menu'],
+      },
+      guard_url: 'exception/403'
+    }
+  },
+  {
+    path: 'user',
+    component: SysUserComponent,
+    canActivate: [ACLGuard],
+    data: {
+      title: '用户管理',
+      guard: {
+        ability: ['/sys/user'],
+      },
+      guard_url: 'exception/403'
+    }
+  },
+  {
+    path: 'log',
+    component: SysLogComponent,
+    canActivate: [ACLGuard],
+    data: { title: '日志管理' }
+  },
   {
     path: '',
-    canActivateChild: [ACLGuard],
-    children: [
-      {
-        path: 'role',
-        component: SysRoleComponent,
-        data: {
-          title: '角色管理',
-          guard: {
-            ability: ['sys:role:add']
-          },
-          guard_url: '/exception/403'
-
-        }
-      },
-      {
-        path: 'menu',
-        component: SysMenuComponent,
-        data: { title: '菜单管理' }
-      },
-      {
-        path: 'user',
-        component: SysUserComponent,
-        data: { title: '用户管理' }
-      },
-      {
-        path: 'log',
-        component: SysLogComponent,
-        data: { title: '日志管理' }
-      },
-      {
-        path: '',
-        redirectTo: 'role',
-        pathMatch: 'full'
-      }
-    ]
-  }, {
-
+    redirectTo: 'user',
+    pathMatch: 'full'
   }
+
 
 ];
 

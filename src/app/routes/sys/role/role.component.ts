@@ -1,14 +1,14 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { _HttpClient, ModalHelper } from '@delon/theme';
-import { STColumn, STComponent, STData } from '@delon/abc/table';
+import { STColumn, STComponent, STData, STColumnButton } from '@delon/abc/table';
 
 import { SFSchema } from '@delon/form';
 import { SysRoleEditComponent } from './edit/edit.component';
-import { SysRoleViewComponent } from './view/view.component';
 import { IRole } from '@shared';
 import { NzMessageService } from 'ng-zorro-antd';
 import { HttpParams } from '@angular/common/http';
 import { StartupService } from '@core';
+import { CacheService } from '@delon/cache';
 
 @Component({
   selector: 'app-sys-role',
@@ -19,13 +19,13 @@ export class SysRoleComponent implements OnInit {
   @ViewChild('st', { static: false }) st: STComponent;
   roleData: IRole[];
   columns: STColumn[] = [
-    {
-      index: 'roleid',
-      title: '编号',
-      type: 'checkbox',
-      fixed: 'left',
-      width: 40
-    },
+    // {
+    //   index: 'roleid',
+    //   title: '编号',
+    //   type: 'checkbox',
+    //   fixed: 'left',
+    //   width: 40
+    // },
     {
       title: '角色名称',
       index: 'rolename',
@@ -57,6 +57,17 @@ export class SysRoleComponent implements OnInit {
           {
             text: '编辑',
             type: 'static',
+            iif: (item: STData,
+              btn: STColumnButton,
+              column: STColumn) => {
+
+              if (item.groupid !== 1) {
+                return this.cacheSrv.get('userInfo', { mode: 'none' }).roleid === item.roleid ? false : true;
+              } else {
+                return true;
+              }
+            },
+            iifBehavior: 'disabled',
             acl: { ability: ['sys:role:edit'] },
             modal: {
               component: SysRoleEditComponent,
@@ -78,6 +89,17 @@ export class SysRoleComponent implements OnInit {
             text: '删除',
             type: 'del',
             acl: { ability: ['sys:role:delete'] },
+            iif: (item: STData,
+              btn: STColumnButton,
+              column: STColumn) => {
+              if (item.groupid === 1) {
+                return false;
+              };
+              if (item.groupid !== 1) {
+                return this.cacheSrv.get('userInfo', { mode: 'none' }).roleid === item.roleid ? false : true;
+              }
+            },
+            iifBehavior: 'disabled',
             pop: {
               title: '确认删除此角色吗？',
               okType: 'danger',
@@ -104,12 +126,16 @@ export class SysRoleComponent implements OnInit {
     private http: _HttpClient,
     private modal: ModalHelper,
     private msgSrv: NzMessageService,
+    private cacheSrv: CacheService,
     private startSrv: StartupService) { }
 
   ngOnInit() {
     this.initRoles();
   }
 
+  /**
+   * 添加角色
+   */
   addRole() {
     this.modal
       .createStatic(SysRoleEditComponent, { record: null }, {

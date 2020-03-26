@@ -31,21 +31,10 @@ const routes: Routes = [
     component: LayoutDefaultComponent,
     canActivate: [JWTGuard],
     children: [
-      {
-        path: '',
-        redirectTo: 'sys',
-        pathMatch: 'full'
-      },
-      {
-        path: 'dashboard',
-        component: DashboardComponent,
-        data: { title: '仪表盘' }
-      },
-      {
-        path: 'exception',
-        loadChildren: () => import('./exception/exception.module').then(m => m.ExceptionModule)
-      },
-      // 业务子模块
+      { path: '', redirectTo: 'sys', pathMatch: 'full' },
+      { path: 'dashboard', component: DashboardComponent, data: { title: '仪表盘' } },
+      { path: 'exception', loadChildren: () => import('./exception/exception.module').then(m => m.ExceptionModule) },
+      // 系统设置子模块
       {
         path: 'sys',
         loadChildren: () => import('./sys/sys.module').then(m => m.SysModule)

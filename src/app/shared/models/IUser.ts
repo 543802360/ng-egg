@@ -13,6 +13,7 @@ export interface IUser {
   rolename?: string;
   department_id?: string;
   department_name?: string;
+  creator_id?: string;// 用户创建者id
   password?: string;
   name?: string;
   email?: string;
