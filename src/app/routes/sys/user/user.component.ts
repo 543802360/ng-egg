@@ -59,13 +59,13 @@ export class SysUserComponent implements OnInit {
         {
           text: '编辑',
           type: 'modal',
-          iif: (item: STData,
-            btn: STColumnButton,
-            column: STColumn) => {
-            return item.groupid === 1 ? false : true
+          // iif: (item: STData,
+          //   btn: STColumnButton,
+          //   column: STColumn) => {
+          //   return item.groupid === 1 ? false : true
 
-          },
-          iifBehavior: 'disabled',
+          // },
+          // iifBehavior: 'disabled',
           acl: { ability: ['sys:user:edit'] },
           modal: {
             component: SysUserEditComponent,
