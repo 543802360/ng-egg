@@ -1,83 +1,207 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { NzModalRef } from 'ng-zorro-antd/modal';
-import { NzMessageService } from 'ng-zorro-antd/message';
-import { _HttpClient } from '@delon/theme';
-import { SFSchema, SFUISchema } from '@delon/form';
-import { IDepartment, TableOperator } from '@shared';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { _HttpClient, ModalHelper } from '@delon/theme';
+import { STColumn, STComponent } from '@delon/abc/table';
+import { SFSchema } from '@delon/form';
+import { IDepartment, IUser, array2tree, tree2array } from '@shared';
+import { NzMenuDirective, NzContextMenuService, NzFormatEmitEvent, NzModalService, NzTreeNode, NzMessageService, NzTreeComponent } from 'ng-zorro-antd';
+// import { SysDepartmentComponent } from '../log/department/department.component';
+import { map } from 'rxjs/operators';
+import { CacheService } from '@delon/cache';
+import { SysDepartmentEditComponent } from './edit/edit.component';
 
 @Component({
   selector: 'app-sys-department',
   templateUrl: './department.component.html',
 })
 export class SysDepartmentComponent implements OnInit {
-  @Input() record: IDepartment;
-  schema: SFSchema = {
-    properties: {
-      department_name: { type: 'string', title: '部门名称' },
-      department_code: { type: 'string', title: '部门代码' },
-      parent_name: { type: 'string', title: '上级部门', readOnly: true }
-    },
-    required: ['department_name'],
-  };
-  ui: SFUISchema = {
-    '*': {
-      spanLabelFixed: 100,
-      grid: { span: 24 },
-    },
-    $department_name: {
-      widget: 'string'
-    },
-    $department_code: {
-      widget: 'select',
-      // optional: '(可选)',
-      optionalHelp: '一般为行政区划代码，与业务数据关联'
-    },
-    $parent_name: {
-      widget: 'string',
-    },
-
-  };
+  @ViewChild('departmentTree', { static: false }) departmentTree: NzTreeComponent;
+  // 部门树节点s
+  departmentTreeNodes: any[] = [];
+  // 右键选中treenode
+  selectedNode: NzTreeNode;
+  // 拖拽
+  dragEnabled = false;
+  isDraged = false;
 
   constructor(
-    private modal: NzModalRef,
-    private msgSrv: NzMessageService,
-    public http: _HttpClient,
+    private http: _HttpClient,
+    private modalSrv: NzModalService,
+    private modal: ModalHelper,
+    private cacheSrv: CacheService,
+    private contextSrv: NzContextMenuService,
+    private msgSrv: NzMessageService
   ) { }
 
-  ngOnInit(): void {
-    console.log('edited department:', this.record);
+  ngOnInit() {
+    this.initDepartmentTree();
   }
 
-  save(depart: IDepartment) {
-    if (depart.department_id) {
-      this.http.put(`sys/departments/${depart.department_id}`, depart).subscribe(resp => {
-        this.success(resp);
-      }, error => {
+  //#region 部门操作
 
+  /**
+    * 初始化部门树
+    */
+
+  initDepartmentTree() {
+    this.http.get('sys/departments').subscribe(resp => {
+      const menuData = resp.data.map((dpartment: IDepartment) => {
+        return {
+          title: dpartment.department_name,
+          'key': dpartment.department_id,
+          'parent_id': dpartment.parent_id,
+          'parent_name': dpartment.parent_name
+        };
       });
-    } else {
-      this.http.post('sys/departments', depart).subscribe(resp => {
-        this.success(resp);
-      }, error => {
+      this.departmentTreeNodes = array2tree(menuData, 'key', 'parent_id', 'children');
+    });
+  }
 
+  /**
+   * 添加部门节点
+   * @param root :是否为根节点
+   */
+  addDepartment(root?: string) {
+    const parent = root ? { parent_id: '', parent_name: '' } : { parent_id: this.selectedNode.key, parent_name: this.selectedNode.title };
+    this.modalSrv.create({
+      nzTitle: '编辑部门',
+      nzContent: SysDepartmentEditComponent,
+      nzComponentParams: {
+        record: parent
+      },
+      nzFooter: null
+    }).afterClose.subscribe(res => {
+      res ? this.initDepartmentTree() : null;
+    });
+
+  }
+
+  /**
+   * 编辑部门节点
+   */
+  editDepartment() {
+    const record = this.selectedNode.parentNode ?
+
+      {
+        parent_id: this.selectedNode.parentNode.key,
+        parent_name: this.selectedNode.parentNode.title,
+        department_id: this.selectedNode.key,
+        department_name: this.selectedNode.title
+      } :
+      {
+        parent_id: '',
+        parent_name: '',
+        department_id: this.selectedNode.key,
+        department_name: this.selectedNode.title
+      };
+    if (this.selectedNode) {
+      const modal = this.modalSrv.create({
+        nzTitle: '编辑部门',
+        nzContent: SysDepartmentEditComponent,
+        nzComponentParams: {
+          record
+        },
+        nzFooter: null
+      }).afterClose.subscribe(res => {
+        res ? this.initDepartmentTree() : null;
       });
     }
   }
 
-  close(result?: any) {
-    this.modal.destroy(result);
+  /**
+   * 删除部门
+   */
+  deleteDepartment() {
+    this.modalSrv.warning({
+      nzTitle: '提示',
+      nzContent: `确认删除【${this.selectedNode.title}】吗？`,
+      nzOnOk: () => {
+        this.http.delete(`sys/departments/${this.selectedNode.key}`).subscribe(resp => {
+          resp.success ?
+            this.msgSrv.success(resp.msg) : this.msgSrv.error(resp.msg);
+          setTimeout(() => {
+            this.initDepartmentTree();
+          });
+        });
+      },
+      nzCancelText: '取消',
+      nzOnCancel: () => { }
+    });
   }
 
-
-  success(resp) {
-    if (resp.success) {
-      setTimeout(() => {
-        this.close({ type: TableOperator.EDITED });
-      });
-      this.msgSrv.success(resp.msg, { nzDuration: 4000 });
-    } else {
-      this.msgSrv.error(resp.msg, { nzDuration: 4000 });
+  /**
+   * 部门树节点单击
+   * @param e
+   */
+  departmentSelected(e: NzFormatEmitEvent) {
+    this.http.get(`sys/user/getUsersByDepartmentId/${e.node.key}`).subscribe(resp => {
+      if (resp.success) {
+        // this.userData = resp.data;
+      }
+    }, error => { });
+  };
+  /**
+   * 组织架构树右键菜单
+   * @param e
+   */
+  deprtmentCtxMenu(e: NzFormatEmitEvent, menu) {
+    console.log(e);
+    this.selectedNode = e.node;
+    this.contextSrv.create(e.event, menu);
+    // this.departMenu.elementRef.nativeElement
+  }
+  /**
+   * 拖拽完成事件
+   * @param e
+   */
+  departmentDragEnd(e) {
+    this.isDraged = true;
+  }
+  /**
+   * 刷新部门组织架构
+   */
+  refreshDepartment() {
+    this.initDepartmentTree();
+  }
+  /**
+   * 确认拖拽排序
+   */
+  confirmDrag() {
+    this.dragEnabled = !this.dragEnabled;
+    if (!this.isDraged) {
+      return;
     }
+    // console.log(this.departmentTree.getTreeNodes());
+    // 拷贝部门树节点，并转换为扁平数组形式
+    const orderedNodes = tree2array(Object.values({ ...this.departmentTree.getTreeNodes() }), 'key', 'title', 'parentNode').map(item => {
+      return {
+        department_id: item.id,
+        department_name: item.name,
+        parent_id: item.parent_id,
+        parent_name: item.parent_name
+      }
+    });
+    this.http.post('sys/departments/updateAll', orderedNodes)
+      .pipe(map(resp => {
+        resp.success ? this.msgSrv.success(resp.msg) : this.msgSrv.error(resp.msg);
+      }))
+      .subscribe(resp => {
+        setTimeout(() => {
+          this.initDepartmentTree();
+        });
+      }, error => {
+        this.msgSrv.error(error);
+      });
   }
+  /**
+   * 取消拖拽排序
+   */
+  cancelDrag() {
+    this.dragEnabled = !this.dragEnabled;
+    if (!this.isDraged) {
+      return;
+    }
+    this.initDepartmentTree();
+  }
+  //#endregion
 
 }
