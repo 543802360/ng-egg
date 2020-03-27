@@ -4,6 +4,7 @@ import * as dark from "../../geo/styles/dark.json";
 @Component({
   selector: 'app-building-economic-create-building',
   templateUrl: './create-building.component.html',
+  styleUrls: ['./create-building.component.less']
 })
 export class BuildingEconomicCreateBuildingComponent implements OnInit {
   style;
@@ -12,7 +13,8 @@ export class BuildingEconomicCreateBuildingComponent implements OnInit {
   constructor(private http: _HttpClient) { }
 
   ngOnInit() {
-    this.style = dark;
+    console.log(dark);
+    this.style = (dark as any).default;
   }
 
 }
