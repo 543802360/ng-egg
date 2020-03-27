@@ -22,12 +22,16 @@ import { SysUserEditComponent } from './user/edit/edit.component';
 import { SysUserViewComponent } from './user/view/view.component';
 import { SysLogComponent } from './log/log.component';
 import { SysDepartmentComponent } from './department/department.component';
+import { SysDepartmentEditComponent } from './department/edit/edit.component';
+import { SysDepartmentViewComponent } from './department/view/view.component';
 
 const COMPONENTS = [
+
   SysRoleComponent,
   SysMenuComponent,
   SysUserComponent,
-  SysLogComponent];
+  SysLogComponent,
+  SysDepartmentComponent];
 const COMPONENTS_NOROUNT = [
   SysRoleEditComponent,
   SysRoleViewComponent,
@@ -35,7 +39,8 @@ const COMPONENTS_NOROUNT = [
   SysMenuViewComponent,
   SysUserEditComponent,
   SysUserViewComponent,
-  SysDepartmentComponent];
+  SysDepartmentEditComponent,
+  SysDepartmentViewComponent];
 
 @NgModule({
   imports: [

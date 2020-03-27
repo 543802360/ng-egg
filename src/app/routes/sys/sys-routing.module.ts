@@ -14,6 +14,7 @@ import { SysMenuComponent } from './menu/menu.component';
 import { SysUserComponent } from './user/user.component';
 import { SysLogComponent } from './log/log.component';
 import { ACLGuard } from '@delon/acl';
+import { SysDepartmentComponent } from './department/department.component';
 
 const routes: Routes = [
 
@@ -55,6 +56,18 @@ const routes: Routes = [
     }
   },
   {
+    path: 'department',
+    component: SysDepartmentComponent,
+    canActivate: [ACLGuard],
+    data: {
+      title: '部门管理',
+      guard: {
+        ability: ['/sys/department'],
+      },
+      guard_url: 'exception/403'
+    }
+  },
+  {
     path: 'log',
     component: SysLogComponent,
     canActivate: [ACLGuard],
@@ -65,8 +78,6 @@ const routes: Routes = [
     redirectTo: 'user',
     pathMatch: 'full'
   }
-
-
 ];
 
 @NgModule({
