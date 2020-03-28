@@ -34,7 +34,7 @@
       </nz-tree-select>
     </nz-form-control>
   </nz-form-item>
-  <nz-form-item *ngIf="menutype==1">
+  <nz-form-item *ngIf="menutype!=2">
     <nz-form-label nzFor="route_path" nzSpan="6">节点路由</nz-form-label>
     <nz-form-control nzSpan="18">
       <input nz-input formControlName="route_path" placeholder="">
