@@ -30,7 +30,7 @@ const routes: Routes = [
     component: LayoutDefaultComponent,
     canActivate: [JWTGuard],
     children: [
-      { path: '', redirectTo: 'sys', pathMatch: 'full' },
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: DashboardComponent, data: { title: '仪表盘' } },
       { path: 'exception', loadChildren: () => import('./exception/exception.module').then(m => m.ExceptionModule) },
       // 系统设置子模块
