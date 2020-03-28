@@ -14,6 +14,7 @@ import { ICONS_AUTO } from '../../../style-icons-auto';
 import { ICONS } from '../../../style-icons';
 import { array2tree, MenuType } from '@shared';
 import { ArrayService } from '@delon/util';
+import { CacheService } from '@delon/cache';
 
 /**
  * Used for application startup
@@ -23,6 +24,7 @@ import { ArrayService } from '@delon/util';
 export class StartupService {
   constructor(
     iconSrv: NzIconService,
+    private cacheSrv: CacheService,
     private menuService: MenuService,
     private translate: TranslateService,
     @Inject(ALAIN_I18N_TOKEN) private i18n: I18NService,
@@ -46,7 +48,8 @@ export class StartupService {
       // this.aclService.setFull(true);
       // 设置角色对应的权限
       const { perms, menus, departments } = (permsData as any).data;
-      console.log('设置权限 success');
+      // 持久化
+      this.cacheSrv.set('perms', perms);
       this.aclService.setAbility(perms);
       // 设置角色对应的菜单
       const menusArray = menus.filter(item => item.menutype !== MenuType.PERMISSION).map(item => {
