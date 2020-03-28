@@ -1,7 +1,40 @@
-<sf #sf mode="edit" [schema]="schema" [ui]="ui" [formData]="record" button="none">
-  <div class="modal-footer">
-    <button nz-button type="button" (click)="close()">关闭</button>
-    <button nz-button type="submit" nzType="primary" (click)="save(sf.value)" [disabled]="!sf.valid"
-      [nzLoading]="http.loading">保存</button>
+<div style="width:100%;height:1080px;padding: 0;">
+  <page-header [fixedOffsetTop]="0">
+  </page-header>
+  <div nz-row style="height: 100%;padding-top:10px ;margin: 0;" nzGutter="8">
+    <!-- 组织架构 -->
+    <div nz-col style="height: 100%;" nzSpan="8">
+      <nz-card style="height: 100%;" nzTitle="组织架构" [nzExtra]="tplDepartment">
+        <nz-tree #departmentTree [nzData]="departmentTreeNodes" [nzExpandAll]="true" nzShowExpand="true"
+          [nzDraggable]="dragEnabled" (nzClick)="departmentSelected($event)"
+          (nzContextMenu)="deprtmentCtxMenu($event,menu)" (nzOnDragEnd)="departmentDragEnd($event)"></nz-tree>
+        <nz-dropdown-menu #menu="nzDropdownMenu">
+          <ul nz-menu>
+            <li nz-menu-item acl [acl-ability]="'sys:department:add'" (click)="addDepartment()">新增</li>
+            <li nz-menu-item acl [acl-ability]="'sys:department:edit'" (click)="editDepartment()">编辑</li>
+            <li nz-menu-item acl [acl-ability]="'sys:department:delete'" (click)="deleteDepartment()">删除</li>
+          </ul>
+        </nz-dropdown-menu>
+      </nz-card>
+      <ng-template #tplDepartment>
+        <a nz-tooltip nzTooltipTitle="刷新组织架构" (click)="refreshDepartment()"><i class="fas fa-sync"></i></a>
+        <nz-divider nzType="vertical"></nz-divider>
+        <a nz-tooltip nzTooltipTitle="添加根节点" *ngIf="!departmentTreeNodes.length" (click)="addDepartment('root')"><i
+            class="fas fa-plus"></i></a>
+        <nz-divider nzType="vertical" *ngIf="!departmentTreeNodes.length"></nz-divider>
+        <a nz-tooltip nzTooltipTitle="拖动排序" *ngIf="!dragEnabled" (click)="dragEnabled=!dragEnabled"><i
+            class="fas fa-list-ul"></i></a>
+        <a *ngIf="dragEnabled" (click)="confirmDrag()"> 保存</a>
+        <nz-divider *ngIf="dragEnabled" nzType="vertical"></nz-divider>
+        <a *ngIf="dragEnabled" (click)="cancelDrag()"> 取消</a>
+
+      </ng-template>
+    </div>
+    <!-- 成员 -->
+    <div nz-col style="height: 100%;" nzSpan="16">
+      <nz-card style="height: 100%;" nzTitle="成员列表">
+
+      </nz-card>
+    </div>
   </div>
-</sf>
+</div>
