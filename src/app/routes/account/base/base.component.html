@@ -1,0 +1,22 @@
+<div class="main">
+  <div class="left">
+    <form nz-form nzLayout="vertical" #f="ngForm" se-container>
+      <se label="姓名" [error]="'请填写手机号码'">
+        <input type="name" nz-input [(ngModel)]="i.name" name="name">
+      </se>
+      <se label=" 邮箱" [error]="'请填写正确邮箱格式'">
+        <input type="email" nz-input [(ngModel)]="i.email" name="email">
+      </se>
+      <se label="电话" [error]="'请填写手机号码'">
+        <input type="phone" nz-input [(ngModel)]="i.phone" name="phone">
+      </se>
+      <se label="街道地址" [error]="''">
+        <input type="text" nz-input [(ngModel)]="i.address" name="address">
+      </se>
+      <se>
+        <button nz-button nzType="primary" [disabled]="f.invalid">更新基本信息</button>
+      </se>
+    </form>
+  </div>
+  <div class="right"></div>
+</div>

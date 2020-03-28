@@ -1,0 +1,16 @@
+<div class="main">
+  <div class="left">
+    <form nz-form nzLayout="vertical" #f="ngForm" se-container>
+      <se label="新密码" required error="请填写密码">
+        <input type="password" nz-input [(ngModel)]="i.pwd" name="pwd" required>
+      </se>
+      <se label="确认密码" required error="请确认密码">
+        <input type="password" nz-input [(ngModel)]="i.repwd" name="repwd" required>
+      </se>
+      <se>
+        <button nz-button nzType="primary" [disabled]="f.invalid">更新密码</button>
+      </se>
+    </form>
+  </div>
+  <div class="right"></div>
+</div>

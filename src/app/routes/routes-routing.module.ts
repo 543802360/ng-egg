@@ -30,19 +30,47 @@ const routes: Routes = [
     component: LayoutDefaultComponent,
     canActivate: [JWTGuard],
     children: [
-      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-      { path: 'dashboard', component: DashboardComponent, data: { title: '仪表盘' } },
-      { path: 'exception', loadChildren: () => import('./exception/exception.module').then(m => m.ExceptionModule) },
-      // 系统设置子模块
       {
-        path: 'sys',
-        loadChildren: () => import('./sys/sys.module').then(m => m.SysModule)
+        path: '',
+        redirectTo: 'dashboard',
+        pathMatch: 'full'
+      },
+      // 系统首页仪表盘（一览性）
+      {
+        path: 'dashboard',
+        component: DashboardComponent,
+        data: { title: '仪表盘' }
+      },
+      // 异常处理模块
+      {
+        path: 'exception',
+        loadChildren: () => import('./exception/exception.module').then(m => m.ExceptionModule)
+      },
+      // 税源管理模块
+      {
+        path: 'company',
+        loadChildren: () => import('./compony-manage/compony-manage.module').then(m => m.ComponyManageModule)
+      },
+      // 税收分析模块
+      {
+        path: 'analysis',
+        loadChildren: () => import('./tax-analysis/tax-analysis.module').then(m => m.TaxAnalysisModule)
       },
       // 楼宇经济子模块
       {
         path: 'building',
         loadChildren: () => import('./building-economic/building-economic.module').then(m => m.BuildingEconomicModule)
       },
+      // 系统设置子模块
+      {
+        path: 'sys',
+        loadChildren: () => import('./sys/sys.module').then(m => m.SysModule)
+      },
+      // 个人中心模块
+      {
+        path: 'account',
+        loadChildren: () => import('./account/account.module').then(m => m.AccountModule)
+      }
       // { path: 'widgets', loadChildren: () => import('./widgets/widgets.module').then(m => m.WidgetsModule) },
     ]
   },

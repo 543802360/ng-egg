@@ -1,14 +1,47 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { AccountAccountSettingComponent } from './account-setting/account-setting.component';
-import { AccountAccountSettingBaseComponent } from './account-setting-base/account-setting-base.component';
-import { AccountAccountSettingSecurityComponent } from './account-setting-security/account-setting-security.component';
+import { AccountSettingComponent } from './setting/setting.component';
+import { AccountBaseComponent } from './base/base.component';
+import { AccountSecurityComponent } from './security/security.component';
+import { ACLGuard } from '@delon/acl';
 
 const routes: Routes = [
 
-  { path: 'account-setting', component: AccountAccountSettingComponent },
-  { path: 'account-setting-base', component: AccountAccountSettingBaseComponent },
-  { path: 'account-setting-security', component: AccountAccountSettingSecurityComponent }];
+  {
+    path: 'setting',
+    component: AccountSettingComponent,
+    canActivateChild: [ACLGuard],
+    children: [
+      {
+        path: 'base',
+        component: AccountBaseComponent,
+        data: {
+          title: '基本设置',
+          guard: {
+            ability: ['/account/setting/base']
+          },
+          guard_url: 'exception/403'
+        }
+      },
+      {
+        path: 'security',
+        component: AccountSecurityComponent,
+        data: {
+          title: '安全设置',
+          guard: {
+            ability: ['/account/setting/security']
+          },
+          guard_url: 'exception/403'
+        }
+      },
+      {
+        path: '',
+        redirectTo: 'base',
+        pathMatch: 'full'
+      }
+    ]
+  },
+];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
