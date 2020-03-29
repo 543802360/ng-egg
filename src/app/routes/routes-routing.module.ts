@@ -49,7 +49,7 @@ const routes: Routes = [
       // 税源管理模块
       {
         path: 'company',
-        loadChildren: () => import('./compony-manage/compony-manage.module').then(m => m.ComponyManageModule)
+        loadChildren: () => import('./company/company.module').then(m => m.CompanyModule)
       },
       // 税收分析模块
       {
