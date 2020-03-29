@@ -7,17 +7,22 @@ import { CompanyListViewComponent } from './list/view/view.component';
 import { CompanyPositionComponent } from './position/position.component';
 import { CompanyPositionEditComponent } from './position/edit/edit.component';
 import { CompanyPositionViewComponent } from './position/view/view.component';
+import { CompanyUsedNameComponent } from './used-name/used-name.component';
+import { CompanyUsedNameEditComponent } from './used-name/edit/edit.component';
+import { CompanyUsedNameViewComponent } from './used-name/view/view.component';
 
 
 const COMPONENTS = [
   CompanyListComponent,
   CompanyPositionComponent,
-];
+  CompanyUsedNameComponent];
 const COMPONENTS_NOROUNT = [
   CompanyListEditComponent,
   CompanyListViewComponent,
   CompanyPositionEditComponent,
-  CompanyPositionViewComponent];
+  CompanyPositionViewComponent,
+  CompanyUsedNameEditComponent,
+  CompanyUsedNameViewComponent];
 
 @NgModule({
   imports: [

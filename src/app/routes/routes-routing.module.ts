@@ -39,7 +39,7 @@ const routes: Routes = [
       {
         path: 'dashboard',
         component: DashboardComponent,
-        data: { title: '仪表盘' }
+        data: { title: '税收仪表盘' }
       },
       // 异常处理模块
       {
