@@ -1,22 +1,28 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { _HttpClient, ModalHelper } from '@delon/theme';
-import { STColumn, STComponent } from '@delon/abc/table';
+import { STColumn, STComponent, STData } from '@delon/abc/table';
 import { SFSchema } from '@delon/form';
+import { IPayer } from '@shared/models/IPayer';
 
 @Component({
   selector: 'app-company-list',
   templateUrl: './list.component.html',
 })
 export class CompanyListComponent implements OnInit {
+  importTypes = ['下载模板', '追加导入', '重新导入'];
   url = `/user`;
-  searchSchema: SFSchema = {
-    properties: {
-      no: {
-        type: 'string',
-        title: '编号'
-      }
-    }
+  q: IPayer = {
+    NSRMC: '',
+    NSRSBH: '',
+    SHXYDM: '',
+    NSRZT: ''
   };
+  data: any[] = [];
+  loading = false;
+  selectedRows: STData[] = [];
+
+  expandForm = false;
+
   @ViewChild('st', { static: false }) st: STComponent;
   columns: STColumn[] = [
     { title: '编号', index: 'no' },
@@ -40,6 +46,10 @@ export class CompanyListComponent implements OnInit {
     // this.modal
     //   .createStatic(FormEditComponent, { i: { id: 0 } })
     //   .subscribe(() => this.st.reload());
+  }
+
+  getData() {
+
   }
 
 }

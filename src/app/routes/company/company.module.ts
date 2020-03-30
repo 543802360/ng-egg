@@ -10,6 +10,7 @@ import { CompanyPositionViewComponent } from './position/view/view.component';
 import { CompanyUsedNameComponent } from './used-name/used-name.component';
 import { CompanyUsedNameEditComponent } from './used-name/edit/edit.component';
 import { CompanyUsedNameViewComponent } from './used-name/view/view.component';
+import { NgxMapboxGLModule } from 'ngx-mapbox-gl';
 
 
 const COMPONENTS = [
@@ -27,7 +28,8 @@ const COMPONENTS_NOROUNT = [
 @NgModule({
   imports: [
     SharedModule,
-    CompanyRoutingModule
+    CompanyRoutingModule,
+    NgxMapboxGLModule
   ],
   declarations: [
     ...COMPONENTS,

@@ -1,9 +1,54 @@
-<page-header [action]="phActionTpl">
-  <ng-template #phActionTpl>
-    <button (click)="add()" nz-button nzType="primary">新建</button>
-  </ng-template>
-</page-header>
-<nz-card>
-  <sf mode="search" [schema]="searchSchema" (formSubmit)="st.reset($event)" (formReset)="st.reset($event)"></sf>
+<nz-card nzTitle="企业名单导入" style="margin-top: 10px;">
+  <button nzType="primary" nz-button *ngFor="let i of importTypes" class="mr-sm">
+    {{ i }}
+  </button>
+</nz-card>
+<nz-card style="margin-top: 10px;">
+  <form style="padding-bottom: 10px;" nz-form [nzLayout]="'inline'" (ngSubmit)="getData()" class="search__form">
+    <div nz-row [nzGutter]="{ xs: 8, sm: 8, md: 8, lg: 24, xl: 48, xxl: 48 }">
+      <div nz-col nzMd="8" nzSm="24">
+        <nz-form-item>
+          <nz-form-label nzFor="NSRMC">纳税人名称</nz-form-label>
+          <nz-form-control>
+            <input nz-input [(ngModel)]="q.NSRMC" name="NSRMC" placeholder="请输入" id="NSRMC" />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzMd="8" nzSm="24">
+        <nz-form-item>
+          <nz-form-label nzFor="NSRSBH">纳税人识别号</nz-form-label>
+          <nz-form-control>
+            <input nz-input [(ngModel)]="q.NSRSBH" name="NSRSBH" placeholder="请输入" id="NSRSBH" />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzMd="8" nzSm="24" *ngIf="expandForm">
+        <nz-form-item>
+          <nz-form-label nzFor="SHXYDM">社会信用代码</nz-form-label>
+          <nz-form-control>
+            <input nz-input [(ngModel)]="q.SHXYDM" name="SHXYDM" placeholder="请输入" id="SHXYDM" />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzMd="8" nzSm="24" *ngIf="expandForm">
+        <nz-form-item>
+          <nz-form-label nzFor="NSRZT">纳税人状态</nz-form-label>
+          <nz-form-control>
+            <nz-select [(ngModel)]="q.NSRZT" name="NSRZT" id="NSRZT" [nzPlaceHolder]="'请选择'" [nzShowSearch]="true">
+              <!-- <nz-option *ngFor="let i of status; let idx = index" [nzLabel]="i.text" [nzValue]="idx"></nz-option> -->
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="expandForm ? 24 : 8" [class.text-right]="expandForm">
+        <button nz-button type="submit" [nzType]="'primary'" [nzLoading]="loading">查询</button>
+        <button nz-button type="reset" (click)="reset()" class="mx-sm">重置</button>
+        <a (click)="expandForm = !expandForm">
+          {{ expandForm ? '收起' : '展开' }}
+          <i nz-icon [nzType]="expandForm ? 'up' : 'down'"></i>
+        </a>
+      </div>
+    </div>
+  </form>
   <st #st [data]="url" [columns]="columns"></st>
 </nz-card>

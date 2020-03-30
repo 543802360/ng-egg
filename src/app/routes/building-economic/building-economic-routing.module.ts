@@ -10,7 +10,6 @@ const routes: Routes = [
   {
     path: 'create',
     component: BuildingEconomicCreateBuildingComponent,
-    canActivate: [ACLGuard],
     data: {
       title: '楼宇建模',
       guard: {
@@ -22,7 +21,6 @@ const routes: Routes = [
   {
     path: 'list',
     component: BuildingEconomicBuildingListComponent,
-    canActivate: [ACLGuard],
     data: {
       title: '楼宇数据维护',
       guard: {
@@ -34,7 +32,6 @@ const routes: Routes = [
   {
     path: 'map',
     component: BuildingEconomicBuildingMapComponent,
-    canActivate: [ACLGuard],
     data: {
       title: '楼宇经济地图',
       guard: {

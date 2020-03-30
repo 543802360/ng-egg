@@ -1,4 +1,16 @@
-mgl-map {
-  height:100%;
-  width: 100%;
+:host {
+  ::ng-deep {
+    .main{
+      position: fixed;
+      height: calc(100% - 136px);
+       display: flex;
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    mgl-map {
+      height: 100%;
+      width: 100%;
+    }
+  }
 }
