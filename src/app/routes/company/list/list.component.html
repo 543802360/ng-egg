@@ -4,13 +4,14 @@
   </button>
 </nz-card>
 <nz-card style="margin-top: 10px;">
-  <form style="padding-bottom: 10px;" nz-form [nzLayout]="'inline'" (ngSubmit)="getData()" class="search__form">
+  <form style="padding-bottom: 10px;" nz-form [nzLayout]="'inline'" class="search__form">
     <div nz-row [nzGutter]="{ xs: 8, sm: 8, md: 8, lg: 24, xl: 48, xxl: 48 }">
       <div nz-col nzMd="8" nzSm="24">
         <nz-form-item>
           <nz-form-label nzFor="NSRMC">纳税人名称</nz-form-label>
           <nz-form-control>
-            <input nz-input [(ngModel)]="q.NSRMC" name="NSRMC" placeholder="请输入" id="NSRMC" />
+            <input nz-input [(ngModel)]="params.NSRMC" (ngModelChange)="searchAutoChangeS.next({'NSRMC':$event})"
+              [nzAutocomplete]="nsrmcAuto" name="NSRMC" placeholder="请输入" id="NSRMC" />
           </nz-form-control>
         </nz-form-item>
       </div>
@@ -18,7 +19,8 @@
         <nz-form-item>
           <nz-form-label nzFor="NSRSBH">纳税人识别号</nz-form-label>
           <nz-form-control>
-            <input nz-input [(ngModel)]="q.NSRSBH" name="NSRSBH" placeholder="请输入" id="NSRSBH" />
+            <input nz-input [(ngModel)]="params.NSRSBH" (ngModelChange)="searchAutoChangeS.next({'NSRSBH':$event})"
+              [nzAutocomplete]="nsrsbhAuto" name="NSRSBH" placeholder="请输入" id="NSRSBH" />
           </nz-form-control>
         </nz-form-item>
       </div>
@@ -26,29 +28,36 @@
         <nz-form-item>
           <nz-form-label nzFor="SHXYDM">社会信用代码</nz-form-label>
           <nz-form-control>
-            <input nz-input [(ngModel)]="q.SHXYDM" name="SHXYDM" placeholder="请输入" id="SHXYDM" />
+            <input nz-input [(ngModel)]="q.SHXYDM" (ngModelChange)="searchAutoChangeS.next({'SHXYDM':$event})"
+              [nzAutocomplete]="nsrsbhAuto" name="SHXYDM" placeholder="请输入" id="SHXYDM" />
           </nz-form-control>
         </nz-form-item>
       </div>
       <div nz-col nzMd="8" nzSm="24" *ngIf="expandForm">
         <nz-form-item>
-          <nz-form-label nzFor="NSRZT">纳税人状态</nz-form-label>
-          <nz-form-control>
-            <nz-select [(ngModel)]="q.NSRZT" name="NSRZT" id="NSRZT" [nzPlaceHolder]="'请选择'" [nzShowSearch]="true">
-              <!-- <nz-option *ngFor="let i of status; let idx = index" [nzLabel]="i.text" [nzValue]="idx"></nz-option> -->
-            </nz-select>
-          </nz-form-control>
+
         </nz-form-item>
       </div>
       <div nz-col [nzSpan]="expandForm ? 24 : 8" [class.text-right]="expandForm">
-        <button nz-button type="submit" [nzType]="'primary'" [nzLoading]="loading">查询</button>
-        <button nz-button type="reset" (click)="reset()" class="mx-sm">重置</button>
+        <button nz-button type="submit" (click)="st.load(1,params)" [nzType]="'primary'"
+          [nzLoading]="http.loading">查询</button>
+        <button nz-button type="reset" (click)="st.load(1)" class="mx-sm">重置</button>
+        <button nz-button type="button" (click)="exportNsrData($event)" nzType="primary" class="mx-sm">导出</button>
+
         <a (click)="expandForm = !expandForm">
           {{ expandForm ? '收起' : '展开' }}
           <i nz-icon [nzType]="expandForm ? 'up' : 'down'"></i>
         </a>
       </div>
     </div>
+    <nz-autocomplete [nzDataSource]="nsrmcAutoDataSource" nzBackfill #nsrmcAuto>
+
+    </nz-autocomplete>
+    <nz-autocomplete [nzDataSource]="nsrsbhAutoDataSource" nzBackfill #nsrsbhAuto>
+
+    </nz-autocomplete>
   </form>
-  <st #st [data]="url" [columns]="columns"></st>
+  <st #st [data]="url" [req]="companyReq" [res]="companyRes" size="middle" [bordered]="true" [scroll]="{x:'2120px'}"
+    [columns]="columns" [pi]="1" [ps]="10" [total]="total" [page]="page">
+  </st>
 </nz-card>

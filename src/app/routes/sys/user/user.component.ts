@@ -50,7 +50,7 @@ export class SysUserComponent implements OnInit {
     {
       title: '操作',
       fixed: 'right',
-      width: 180,
+      width: 200,
       className: 'text-center',
       acl: { ability: ['sys:user:add', 'sys:user:delete'] },
       buttons: [
@@ -76,7 +76,6 @@ export class SysUserComponent implements OnInit {
             }
           },
           //
-          // click: 'reload',
           click: (_record, modal, comp) => {
             // modal 为回传值，可自定义回传值
             modal ? this.initUsers() : null;
