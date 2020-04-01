@@ -11,19 +11,25 @@ import { CompanyUsedNameComponent } from './used-name/used-name.component';
 import { CompanyUsedNameEditComponent } from './used-name/edit/edit.component';
 import { CompanyUsedNameViewComponent } from './used-name/view/view.component';
 import { NgxMapboxGLModule } from 'ngx-mapbox-gl';
+import { CompanyDjnsrxxComponent } from './djnsrxx/djnsrxx.component';
+import { CompanyDjnsrxxEditComponent } from './djnsrxx/edit/edit.component';
+import { CompanyDjnsrxxViewComponent } from './djnsrxx/view/view.component';
 
 
 const COMPONENTS = [
   CompanyListComponent,
   CompanyPositionComponent,
-  CompanyUsedNameComponent];
+  CompanyUsedNameComponent,
+  CompanyDjnsrxxComponent];
 const COMPONENTS_NOROUNT = [
   CompanyListEditComponent,
   CompanyListViewComponent,
   CompanyPositionEditComponent,
   CompanyPositionViewComponent,
   CompanyUsedNameEditComponent,
-  CompanyUsedNameViewComponent];
+  CompanyUsedNameViewComponent,
+  CompanyDjnsrxxEditComponent,
+  CompanyDjnsrxxViewComponent];
 
 @NgModule({
   imports: [

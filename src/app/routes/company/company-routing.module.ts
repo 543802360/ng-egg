@@ -4,6 +4,7 @@ import { CompanyListComponent } from './list/list.component';
 import { CompanyPositionComponent } from './position/position.component';
 import { CompanyUsedNameComponent } from './used-name/used-name.component';
 import { ACLGuard } from '@delon/acl';
+import { CompanyDjnsrxxComponent } from './djnsrxx/djnsrxx.component';
 
 const routes: Routes = [
   {
@@ -43,10 +44,20 @@ const routes: Routes = [
             },
             guard_url: 'exception/403'
           }
+        },
+        {
+          path: 'djnsrxx',
+          component: CompanyDjnsrxxComponent,
+          data: {
+            title: '登记纳税人信息',
+            guard: {
+              ability: ['/company/djnsrxx'],
+            },
+            guard_url: 'exception/403'
+          }
         }
       ]
   },
-
 ];
 
 @NgModule({
