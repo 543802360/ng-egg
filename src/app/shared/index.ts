@@ -13,7 +13,7 @@ export * from './models/IRole';
 export * from "./models/IUser";
 export * from "./models/MenuType";
 export * from './models/TableOperator';
-
+export * from './models/IDjnsrxx';
 // 数据类型
 
 // 模块
