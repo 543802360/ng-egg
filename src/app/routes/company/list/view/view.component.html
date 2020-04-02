@@ -1,13 +1,21 @@
 <div class="modal-header">
-  <div class="modal-title">查看 {{ record.id }} 信息</div>
+  <div class="modal-title">查看 {{ record.NSRMC }} 信息</div>
 </div>
 <nz-spin *ngIf="!i" class="modal-spin"></nz-spin>
-<div sv-container *ngIf="i">
-  <sv label="姓名">{{ i.owner }}</sv>
-  <sv label="会员卡号">32943898021309809423</sv>
-  <sv label="身份证">3321944288191034921</sv>
-  <sv label="联系方式">18112345678</sv>
-  <sv label="联系地址">曲丽丽 18100000000 浙江省杭州市西湖区黄姑山路工专路交叉路口</sv>
+<div sv-container *ngIf="i" gutter="12">
+  <!-- <sv label="登记序号">{{i.DJXH}}</sv> -->
+  <sv label="纳税人名称">{{i.NSRMC}}</sv>
+  <sv label="纳税人识别号">{{i.NSRSBH}}</sv>
+  <sv label="社会信用代码">{{i.SHXYDM}}</sv>
+  <sv label="所属行业">{{i.HYMC}}</sv>
+  <sv label="登记注册类型">{{i.DJZCLXMC}}</sv>
+  <sv label="纳税人状态">{{i.NSRZTMC}}</sv>
+  <sv label="联系人">{{i.LXR}}</sv>
+  <sv label="联系电话">{{i.LXDH}}</sv>
+  <sv label="登记日期">{{i.DJRQ}}</sv>
+  <sv label="注册地址" col="1">{{i.ZCDZ}}</sv>
+  <sv label="经营范围" col="1">{{i.JYFW}}</sv>
+
 </div>
 <div class="modal-footer">
   <button nz-button type="button" (click)="close()">关闭</button>
