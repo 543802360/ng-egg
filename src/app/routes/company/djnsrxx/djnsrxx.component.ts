@@ -4,11 +4,14 @@ import { CompanyDjnsrxxEditComponent } from './edit/edit.component';
 import { filter, switchMap, debounceTime, map } from 'rxjs/operators';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { _HttpClient, ModalHelper } from '@delon/theme';
-import { STColumn, STComponent, STData, STReq, STRes, STColumnTag, STPage } from '@delon/abc/table';
+import { STColumn, STComponent, STData, STReq, STRes, STColumnTag, STPage, STRequestOptions, STChange } from '@delon/abc/table';
 import { SFSchema } from '@delon/form';
 import { Subject } from 'rxjs';
-import { XlsxService, XlsxExportOptions } from '@delon/abc';
+import { XlsxService, XlsxExportOptions, LoadingService } from '@delon/abc';
 import { CompanyDjnsrxxViewComponent } from './view/view.component';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { loadingCustoms } from '@shared';
+import { NzModalService } from 'ng-zorro-antd';
 
 @Component({
   selector: 'app-company-djnsrxx',
@@ -21,13 +24,6 @@ export class CompanyDjnsrxxComponent implements OnInit {
   nsrmcAutoDataSource = [];
   nsrsbhAutoDataSource = [];
   searchAutoChangeS = new Subject<string>();
-
-  q = {
-    NSRMC: '',
-    NSRSBH: '',
-    SHXYDM: '',
-    NSRZT: ''
-  };
   selectedRows: STData[] = [];
   expandForm = false;
   nsrztTag: STColumnTag = {
@@ -98,6 +94,12 @@ export class CompanyDjnsrxxComponent implements OnInit {
       width: 150,
       className: 'text-center'
     },
+    // {
+    //   title: '经营范围',
+    //   // index: 'HY_DM',
+    //   index: 'JYFW',
+    //   className: 'text-center'
+    // },
     {
       title: '注册地址',
       index: 'ZCDZ',
@@ -135,7 +137,7 @@ export class CompanyDjnsrxxComponent implements OnInit {
       className: 'text-center',
       buttons: [
         {
-          icon: 'edit',
+          icon: 'eye',
           tooltip: '查看基本信息',
           type: 'modal',
           // iif: (item: STData,
@@ -213,7 +215,26 @@ export class CompanyDjnsrxxComponent implements OnInit {
       pi: 'pageNum',
       ps: 'pageSize'
     },
-    params: this.params
+    process: (requestOpt: STRequestOptions) => {
+      const { NSRMC, NSRSBH } = requestOpt.params as any;
+      if (NSRMC === null) {
+        // (requestOpt.params as any).set('NSRMC', ['']);
+        Object.defineProperty(requestOpt.params, 'NSRMC', {
+          enumerable: true,
+          configurable: true,
+          value: ''
+        })
+      }
+      if (NSRSBH === null) {
+        // (requestOpt.params as any).set('NSRSBH', ['']);
+        Object.defineProperty(requestOpt.params, 'NSRSBH', {
+          enumerable: true,
+          configurable: true,
+          value: ''
+        })
+      }
+      return requestOpt;
+    }
   };
   // response 配置
   companyRes: STRes = {
@@ -223,9 +244,16 @@ export class CompanyDjnsrxxComponent implements OnInit {
     }
   };
   XlsxExportOptions: XlsxExportOptions;
+
+  //
+  batchDisabled = true;
+
   constructor(
     private http: _HttpClient,
     private modal: ModalHelper,
+    private modalSrv: NzModalService,
+    private msgSrv: NzMessageService,
+    private loadingSrv: LoadingService,
     private xlsx: XlsxService
   ) { }
 
@@ -234,12 +262,14 @@ export class CompanyDjnsrxxComponent implements OnInit {
     let suggestionKey = '';
     this.searchAutoChangeS
       .pipe(
+        filter(resp => {
+          return Object.values(resp)[0] && Object.values(resp)[0].length >= 2
+        }),
         debounceTime(400),
-        filter(resp => Object.values(resp)[0].length >= 2))
-      .pipe(switchMap(res => {
-        suggestionKey = Object.keys(res)[0];
-        return this.http.get('nsr/suggestion', res)
-      }))
+        switchMap(res => {
+          suggestionKey = Object.keys(res)[0];
+          return this.http.get('nsr/suggestion', res)
+        }))
       .subscribe(resp => {
         switch (suggestionKey) {
           case 'NSRMC':
@@ -258,21 +288,69 @@ export class CompanyDjnsrxxComponent implements OnInit {
       });
   }
 
-  /**
-   *
-   * @param e
-   */
-  searchAutoModelChange(e) {
-    console.log(e);
-
-  }
-
   add() {
     // this.modal
     //   .createStatic(FormEditComponent, { i: { id: 0 } })
     //   .subscribe(() => this.st.reload());
   }
 
+  batchadd() {
+    this.modalSrv.confirm({
+      nzTitle: '提示',
+      nzContent: '确认添加至本辖区企业库吗？',
+      nzCancelText: '取消',
+      nzOnOk: () => {
+        this.loadingSrv.open({ text: '正在处理……' });
+        this.http.post('hx/nsr', this.selectedRows).subscribe(res => {
+          this.loadingSrv.close();
+          if (res.success) {
+            this.msgSrv.success(res.msg);
+          } else {
+            this.msgSrv.error(res.msg);
+
+          }
+        });
+      }
+    })
+
+  }
+
+  /**
+   * 表格check事件
+   * @param e
+   */
+  stChange(e: STChange) {
+    if (e.type === 'checkbox') {
+      e.checkbox.length ? this.batchDisabled = false : this.batchDisabled = true;
+      // console.log(e.checkbox);
+      this.selectedRows = e.checkbox;
+    }
+    if (e.type === "loaded") {
+      e.loaded.length ? this.batchDisabled = false : this.batchDisabled = true;
+    }
+  }
+
+  clear() {
+    // 清除所有checkbox
+    this.st.clearCheck();
+    // 清除单选
+    this.st.clearRadio();
+    // 清除所有状态（单复选、排序、过滤）
+    this.st.clearStatus();
+  }
+
+  /**
+   * 重置表
+   */
+  reset() {
+    this.params.NSRMC = '';
+    this.params.NSRSBH = '';
+    this.st.reset(this.params);
+  }
+
+  /**
+   * 导出数据
+   */
   exportNsrData() {
     const data = [this.columns.filter(i => i.title !== '操作' && i.title !== '序号' && i.title !== '编号').map(i => i.title)];
     this.st._data.forEach(i =>
