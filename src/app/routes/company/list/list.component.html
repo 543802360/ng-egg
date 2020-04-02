@@ -28,22 +28,17 @@
         <nz-form-item>
           <nz-form-label nzFor="SHXYDM">社会信用代码</nz-form-label>
           <nz-form-control>
-            <input nz-input [(ngModel)]="q.SHXYDM" (ngModelChange)="searchAutoChangeS.next({'SHXYDM':$event})"
+            <input nz-input [(ngModel)]="params.SHXYDM" (ngModelChange)="searchAutoChangeS.next({'SHXYDM':$event})"
               [nzAutocomplete]="nsrsbhAuto" name="SHXYDM" placeholder="请输入" id="SHXYDM" />
           </nz-form-control>
-        </nz-form-item>
-      </div>
-      <div nz-col nzMd="8" nzSm="24" *ngIf="expandForm">
-        <nz-form-item>
-
         </nz-form-item>
       </div>
       <div nz-col [nzSpan]="expandForm ? 24 : 8" [class.text-right]="expandForm">
         <button nz-button type="submit" (click)="st.load(1,params)" [nzType]="'primary'"
           [nzLoading]="http.loading">查询</button>
-        <button nz-button type="reset" (click)="st.load(1)" class="mx-sm">重置</button>
-        <button nz-button type="button" (click)="exportNsrData($event)" nzType="primary" class="mx-sm">导出</button>
-
+        <button nz-button type="reset" (click)="reset()" class="mx-sm">重置</button>
+        <button nz-button acl [acl-ability]="'company:hxnsrxx:export'" type="button" (click)="exportNsrData($event)"
+          nzType="primary" class="mx-sm">导出</button>
         <a (click)="expandForm = !expandForm">
           {{ expandForm ? '收起' : '展开' }}
           <i nz-icon [nzType]="expandForm ? 'up' : 'down'"></i>
@@ -57,7 +52,16 @@
 
     </nz-autocomplete>
   </form>
-  <st #st [data]="url" [req]="companyReq" [res]="companyRes" size="middle" [bordered]="true" [scroll]="{x:'2120px'}"
-    [columns]="columns" [pi]="1" [ps]="10" [total]="total" [page]="page">
+
+  <div class="mb-md">
+    <button acl [acl-ability]="'company:hxnsrxx:clear'" nzType="default" (click)="clear()" nz-button>清空选择</button>
+    <button acl [acl-ability]="'company:hxnsrxx:refresh'" nzType="default" (click)="st.load(1)" nz-button>刷新</button>
+    <button acl [acl-ability]="'company:hxnsrxx:add'" nzType="primary" (click)="add()" nz-button>添加</button>
+    <button acl [acl-ability]="'company:hxnsrxx:deleteAll'" nzType="danger" (click)="batchDel($event)"
+      [disabled]="batchDelDisabled" nz-button>
+      删除</button>
+  </div>
+  <st #st [data]="url" [req]="companyReq" [res]="companyRes" size="middle" [bordered]="true" [scroll]="{x:'2222px'}"
+    [columns]="columns" [pi]="1" [ps]="10" [total]="total" [page]="page" (change)="stChange($event)">
   </st>
 </nz-card>

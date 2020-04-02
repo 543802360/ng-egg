@@ -1,11 +1,14 @@
 import { filter, switchMap, debounceTime, map } from 'rxjs/operators';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { _HttpClient, ModalHelper } from '@delon/theme';
-import { STColumn, STComponent, STData, STReq, STRes, STColumnTag, STPage } from '@delon/abc/table';
+import { STColumn, STComponent, STData, STReq, STRes, STColumnTag, STPage, STRequestOptions, STChange } from '@delon/abc/table';
 import { SFSchema } from '@delon/form';
 import { HttpParams } from '@angular/common/http';
 import { Subject } from 'rxjs';
-import { XlsxService, XlsxExportOptions } from '@delon/abc';
+import { XlsxService, XlsxExportOptions, LoadingService } from '@delon/abc';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { IDjnsrxx } from '@shared';
+import { NzModalService } from 'ng-zorro-antd';
 
 @Component({
   selector: 'app-company-list',
@@ -13,20 +16,14 @@ import { XlsxService, XlsxExportOptions } from '@delon/abc';
 })
 export class CompanyListComponent implements OnInit {
   @ViewChild('st', { static: false }) st: STComponent;
-  url = "nsr/list";
+  url = "hx/nsr/list";
   total: number;
   nsrmcAutoDataSource = [];
   nsrsbhAutoDataSource = [];
   searchAutoChangeS = new Subject<string>();
 
-  importTypes = ['下载模板', '追加导入', '重新导入'];
-  q = {
-    NSRMC: '',
-    NSRSBH: '',
-    SHXYDM: '',
-    NSRZT: ''
-  };
-  selectedRows: STData[] = [];
+  importTypes = ['下载模板', '追加导入'];
+  selectedRows: IDjnsrxx[] = [];
   expandForm = false;
   nsrztTag: STColumnTag = {
     '正常': { text: '正常', color: 'green' },
@@ -67,7 +64,7 @@ export class CompanyListComponent implements OnInit {
       title: '纳税人名称',
       index: 'NSRMC',
       fixed: 'left',
-      width: 220,
+      width: 230,
       className: 'text-center'
     },
     {
@@ -129,11 +126,46 @@ export class CompanyListComponent implements OnInit {
     {
       title: '操作',
       fixed: 'right',
-      width: 100,
+      width: 140,
       className: 'text-center',
       buttons: [
-        { text: '查看', click: (item: any) => `/form/${item.id}` },
-        { text: '编辑', type: 'static', },
+        {
+          // text: '查看',
+          icon: 'eye',
+          tooltip: '查看纳税人信息',
+          acl: {
+            ability: ['company:hxnsrxx:view']
+          },
+          click: (item: any) => `/form/${item.id}`
+        },
+        {
+          icon: 'edit',
+          tooltip: '编辑纳税人信息',
+          acl: {
+            ability: ['company:hxnsrxx:edit']
+          },
+          type: 'static',
+        },
+        {
+          icon: 'delete',
+          tooltip: '删除',
+          type: 'del',
+          acl: {
+            ability: ['company:hxnsrxx:delete']
+          },
+          click: (record, _modal, comp) => {
+            this.http.post('hx/nsr/del', [record.DJXH]).subscribe(resp => {
+              if (resp.success) {
+                this.msgSrv.success(`${resp.msg}`);
+                comp!.removeRow(record);
+              }
+              else {
+                this.msgSrv.error(resp.msg);
+              };
+            });
+
+          },
+        },
       ]
     }
   ];
@@ -143,7 +175,8 @@ export class CompanyListComponent implements OnInit {
   };
   params = {
     NSRMC: '',
-    NSRSBH: ''
+    NSRSBH: '',
+    SHXYDM: ''
   }
   // 请求配置
   companyReq: STReq = {
@@ -153,7 +186,26 @@ export class CompanyListComponent implements OnInit {
       pi: 'pageNum',
       ps: 'pageSize'
     },
-    params: this.params
+    process: (requestOpt: STRequestOptions) => {
+      const { NSRMC, NSRSBH } = requestOpt.params as any;
+      if (NSRMC === null) {
+        // (requestOpt.params as any).set('NSRMC', ['']);
+        Object.defineProperty(requestOpt.params, 'NSRMC', {
+          enumerable: true,
+          configurable: true,
+          value: ''
+        })
+      }
+      if (NSRSBH === null) {
+        // (requestOpt.params as any).set('NSRSBH', ['']);
+        Object.defineProperty(requestOpt.params, 'NSRSBH', {
+          enumerable: true,
+          configurable: true,
+          value: ''
+        })
+      }
+      return requestOpt;
+    }
   };
   // response 配置
   companyRes: STRes = {
@@ -163,23 +215,30 @@ export class CompanyListComponent implements OnInit {
     }
   };
   XlsxExportOptions: XlsxExportOptions;
+  //
+  batchDelDisabled = true;
   constructor(
     private http: _HttpClient,
+    private loadSrv: LoadingService,
     private modal: ModalHelper,
+    private modalSrv: NzModalService,
+    private msgSrv: NzMessageService,
     private xlsx: XlsxService
   ) { }
 
   ngOnInit() {
-    // 搜索提示自动完成框
+    // 搜索提示自动完成框;字符长度大于2、延迟500ms发送请求
     let suggestionKey = '';
     this.searchAutoChangeS
       .pipe(
-        debounceTime(400),
-        filter(resp => Object.values(resp)[0].length >= 2))
-      .pipe(switchMap(res => {
-        suggestionKey = Object.keys(res)[0];
-        return this.http.get('nsr/suggestion', res)
-      }))
+        filter(resp => {
+          return Object.values(resp)[0] && Object.values(resp)[0].length >= 2
+        }),
+        debounceTime(500),
+        switchMap(res => {
+          suggestionKey = Object.keys(res)[0];
+          return this.http.get('nsr/suggestion', res)
+        }))
       .subscribe(resp => {
         switch (suggestionKey) {
           case 'NSRMC':
@@ -198,21 +257,78 @@ export class CompanyListComponent implements OnInit {
       });
   }
 
-  /**
-   *
-   * @param e
-   */
-  searchAutoModelChange(e) {
-    console.log(e);
-
-  }
-
   add() {
     // this.modal
     //   .createStatic(FormEditComponent, { i: { id: 0 } })
     //   .subscribe(() => this.st.reload());
   }
 
+
+
+  /**
+   * 批量删除
+   */
+  batchDel() {
+    this.modalSrv.warning({
+      nzTitle: '提示',
+      nzContent: '确定从本辖区移除这些企业吗？',
+      nzOnOk: () => {
+        this.loadSrv.open({ text: '正在处理……' });
+        const dels = this.selectedRows.map(item => item.DJXH);
+        this.http.post('hx/nsr/del', dels).subscribe(res => {
+          this.loadSrv.close();
+          this.batchDelDisabled = true;
+          if (res.success) {
+            this.msgSrv.success(res.msg);
+            this.st.reload();
+          } else {
+            this.msgSrv.error(res.msg);
+          }
+        }, error => {
+          this.loadSrv.close();
+        });
+      },
+      nzCancelText: '取消',
+      nzOnCancel: () => {
+
+      }
+    })
+  }
+
+  /**
+   * 清除所选
+   */
+  clear() {
+    // 清除所有checkbox
+    this.st.clearCheck();
+    // 清除单选
+    this.st.clearRadio();
+    // 清除所有状态（单复选、排序、过滤）
+    this.st.clearStatus();
+    this.selectedRows.length = 0;
+  }
+  /**
+   * 重置表格
+   */
+  reset() {
+    this.params.NSRMC = '';
+    this.params.NSRSBH = '';
+    this.st.reset(this.params);
+  }
+
+  stChange(e: STChange) {
+    if (e.type === 'checkbox') {
+      e.checkbox.length ? this.batchDelDisabled = false : this.batchDelDisabled = true;
+      // console.log(e.checkbox);
+      this.selectedRows = e.checkbox as any;
+    }
+
+  }
+
+
+  /**
+   * 导出纳税人信息
+   */
   exportNsrData() {
     const data = [this.columns.filter(i => i.title !== '操作' && i.title !== '序号' && i.title !== '编号').map(i => i.title)];
     this.st._data.forEach(i =>
