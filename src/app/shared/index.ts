@@ -15,6 +15,6 @@ export * from "./models/MenuType";
 export * from './models/TableOperator';
 export * from './models/IDjnsrxx';
 // 数据类型
-
+export * from './models/LoadingTypes';
 // 模块
 export * from './shared.module';

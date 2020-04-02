@@ -1,5 +1,5 @@
 export interface IDjnsrxx {
-  DJXH?: string;
+  DJXH?: string; // 登记序号
   NSRMC?: string;
   NSRSBH?: string;
   SHXYDM?: string;
@@ -16,6 +16,10 @@ export interface IDjnsrxx {
   DJRQ?: Date;
   LRRQ?: Date;
   XGRQ?: Date;
+  SSFC?: number;// 税收分成
+  YXBZ?: string; // 有效标志
+  QBLCBZ?: string; // 全部留存标志
+  BZ?: string; // 备注
   Lat?: string;
   Lng?: string;
 }
