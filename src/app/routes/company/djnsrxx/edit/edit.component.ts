@@ -75,10 +75,16 @@ export class CompanyDjnsrxxEditComponent implements OnInit {
   }
 
   save(value: any) {
-    // this.http.post(`/user/${this.record.id}`, value).subscribe(res => {
-    //   this.msgSrv.success('保存成功');
-    //   this.modal.close(true);
-    // });
+    // 确认为本街道企业
+    this.http.post('hx/nsr', [value]).subscribe(res => {
+      if (res.success) {
+        this.msgSrv.success(res.msg);
+      } else {
+        this.msgSrv.error(res.msg);
+
+      }
+      this.modal.close(true);
+    });
   }
 
   close() {
