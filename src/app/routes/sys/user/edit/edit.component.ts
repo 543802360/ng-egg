@@ -157,12 +157,12 @@ export class SysUserEditComponent implements OnInit {
           //   value: this.record ? this.record.roleid : null
           // });
           // // //
-          // Object.defineProperty(this.schema.properties.mark.ui, 'hidden', {
-          //   configurable: true,
-          //   writable: true,
-          //   enumerable: true,
-          //   value: true
-          // });
+          Object.defineProperty(this.schema.properties.mark.ui, 'hidden', {
+            configurable: true,
+            writable: true,
+            enumerable: true,
+            value: true
+          });
           // Object.defineProperty(this.schema.properties.department_name, 'default', {
           //   configurable: true,
           //   writable: true,
@@ -171,6 +171,8 @@ export class SysUserEditComponent implements OnInit {
           // });
           setTimeout(() => {
             this.userSF.setValue('/rolename', this.record.roleid);
+            this.userSF.setValue('/rolename', this.record.roleid);
+
             this.userSF.setValue('/department_name', this.record.department_id);
 
           });

@@ -3,57 +3,116 @@ import { NzModalRef } from 'ng-zorro-antd/modal';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { _HttpClient } from '@delon/theme';
 import { SFSchema, SFUISchema } from '@delon/form';
+import { IDjnsrxx } from '@shared';
 
 @Component({
   selector: 'app-company-list-edit',
   templateUrl: './edit.component.html',
 })
 export class CompanyListEditComponent implements OnInit {
-  record: any = {};
-  i: any;
+  record: IDjnsrxx = {};
+  i: IDjnsrxx;
   schema: SFSchema = {
     properties: {
-      no: { type: 'string', title: '编号' },
-      owner: { type: 'string', title: '姓名', maxLength: 15 },
-      callNo: { type: 'number', title: '调用次数' },
-      href: { type: 'string', title: '链接', format: 'uri' },
-      description: { type: 'string', title: '描述', maxLength: 140 },
+      NSRMC: { type: 'string', title: '纳税人名称' },
+      NSRSBH: { type: 'string', title: '纳税人识别号' },
+      SHXYDM: { type: 'string', title: '社会信用代码' },
+      LXR: { type: 'string', title: '联系人' },
+      LXDH: { type: 'string', title: '联系电话' },
+      SSFC: {
+        type: 'number',
+        title: '税收留存比例',
+        default: 100,
+        minimum: 0,
+        maximum: 100
+      },
+      ZCDZ: { type: 'string', title: '注册地址' },
+      BZ: { type: 'string', title: '备注' }
     },
-    required: ['owner', 'callNo', 'href', 'description'],
+    required: ['NSRMC', 'NSRSBH', 'SSFC'],
   };
   ui: SFUISchema = {
     '*': {
       spanLabelFixed: 100,
-      grid: { span: 12 },
+      grid: { span: 8, gutter: 16 },
     },
-    $no: {
-      widget: 'text'
+    $NSRMC: {
+      widget: 'string'
     },
-    $href: {
+    $NSRSBH: {
+      widget: 'string'
+    },
+    $SHXYDM: {
+      widget: 'string'
+    },
+    $LXR: {
+      widget: 'string'
+    },
+    $LXDH: {
+      widget: 'string'
+    },
+    $SSFC: {
+      widget: 'number',
+      unit: '%',
+      optionalHelp: '此数值为该企业税收在本辖区的留存比例'
+    },
+    $ZCDZ: {
       widget: 'string',
+      grid: {
+        span: 12
+      }
     },
-    $description: {
+    $BZ: {
       widget: 'textarea',
-      grid: { span: 24 },
-    },
+      grid: {
+        span: 12
+      }
+    }
   };
 
   constructor(
     private modal: NzModalRef,
     private msgSrv: NzMessageService,
     public http: _HttpClient,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
-    if (this.record.id > 0)
-    this.http.get(`/user/${this.record.id}`).subscribe(res => (this.i = res));
+    if (this.record) {
+      this.http.get(`hx/nsr/${this.record.UUID}`).subscribe(res => (this.i = res.data))
+    } else {
+      this.i = {};
+      this.record = {};
+    }
   }
 
+
+  /**
+   * 保存
+   * @param value
+   */
   save(value: any) {
-    this.http.post(`/user/${this.record.id}`, value).subscribe(res => {
-      this.msgSrv.success('保存成功');
-      this.modal.close(true);
-    });
+    if (this.record.UUID) {
+      // 更新
+      this.http.put(`hx/nsr/${this.record.UUID}`, value).subscribe(res => {
+        if (res.success) {
+          this.msgSrv.success(res.msg);
+        } else {
+          this.msgSrv.error(res.msg);
+        }
+        this.modal.close(true);
+      });
+    } else {
+      // 创建
+      this.http.post('hx/nsr', [value]).subscribe(res => {
+        if (res.success) {
+          this.msgSrv.success(res.msg);
+        } else {
+          this.msgSrv.error(res.msg);
+        }
+        this.modal.close(true);
+      });
+    }
+
   }
 
   close() {

@@ -9,6 +9,8 @@ import { XlsxService, XlsxExportOptions, LoadingService } from '@delon/abc';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { IDjnsrxx } from '@shared';
 import { NzModalService } from 'ng-zorro-antd';
+import { CompanyListViewComponent } from './view/view.component';
+import { CompanyListEditComponent } from './edit/edit.component';
 
 @Component({
   selector: 'app-company-list',
@@ -41,6 +43,7 @@ export class CompanyListComponent implements OnInit {
       index: 'userid',
       title: '编号',
       type: 'checkbox',
+      format: (item, col, index) => `${index + 1} `,
       fixed: 'left',
       width: 40,
       className: 'text-center'
@@ -73,13 +76,45 @@ export class CompanyListComponent implements OnInit {
       className: 'text-center'
     },
     {
-      title: '纳税人状态',
-      index: 'NSRZTMC',
-      width: 100,
-      type: "tag",
-      tag: this.nsrztTag,
-      className: 'text-center'
+      title: '税收留存比例',
+      index: 'SSFC',
+      className: 'text-center',
+      format: (item, col, index) => `${item.SSFC}%`
+
     },
+    {
+      title: '所属街道',
+      index: 'department_name',
+      className: 'text-center',
+      // 超管可见
+      acl: {
+        role: ['1']
+      }
+    },
+    {
+      title: '有效标志',
+      index: 'YXBZ',
+      width: 100,
+      className: 'text-center',
+      // 超管可见
+      acl: {
+        role: ['1']
+      },
+      type: "tag",
+      tag: {
+        'Y': { text: '有效', color: 'green' },
+        'N': { text: '无效', color: 'red' },
+      },
+    },
+    // {
+    //   title: '纳税人状态',
+    //   index: 'NSRZTMC',
+    //   width: 100,
+    //   type: "tag",
+
+    //   tag: this.nsrztTag,
+    //   className: 'text-center'
+    // },
     {
       title: '登记注册类型',
       index: 'DJZCLXMC',
@@ -133,10 +168,24 @@ export class CompanyListComponent implements OnInit {
           // text: '查看',
           icon: 'eye',
           tooltip: '查看纳税人信息',
+          type: 'modal',
           acl: {
             ability: ['company:hxnsrxx:view']
           },
-          click: (item: any) => `/form/${item.id}`
+          modal: {
+            component: CompanyListViewComponent,
+            params: record => ({ record }),
+            modalOptions: {
+              nzStyle: {
+                left: '26%',
+                position: 'fixed'
+              }
+            }
+          },
+          click: (_record, modal, comp) => {
+            // modal 为回传值，可自定义回传值
+
+          }
         },
         {
           icon: 'edit',
@@ -144,7 +193,21 @@ export class CompanyListComponent implements OnInit {
           acl: {
             ability: ['company:hxnsrxx:edit']
           },
-          type: 'static',
+          type: "modal",
+          modal: {
+            component: CompanyListEditComponent,
+            params: record => record,
+            modalOptions: {
+              nzStyle: {
+                left: '26%',
+                position: 'fixed'
+              }
+            }
+          },
+          click: (_record, modal, comp) => {
+            // modal 为回传值，可自定义回传值
+
+          }
         },
         {
           icon: 'delete',
@@ -154,7 +217,7 @@ export class CompanyListComponent implements OnInit {
             ability: ['company:hxnsrxx:delete']
           },
           click: (record, _modal, comp) => {
-            this.http.post('hx/nsr/del', [record.DJXH]).subscribe(resp => {
+            this.http.post('hx/nsr/del', [record.UUID]).subscribe(resp => {
               if (resp.success) {
                 this.msgSrv.success(`${resp.msg}`);
                 comp!.removeRow(record);
@@ -223,7 +286,6 @@ export class CompanyListComponent implements OnInit {
     private modal: ModalHelper,
     private modalSrv: NzModalService,
     private msgSrv: NzMessageService,
-    private xlsx: XlsxService
   ) { }
 
   ngOnInit() {
@@ -258,12 +320,21 @@ export class CompanyListComponent implements OnInit {
   }
 
   add() {
-    // this.modal
-    //   .createStatic(FormEditComponent, { i: { id: 0 } })
-    //   .subscribe(() => this.st.reload());
+    this.modal
+      .createStatic(CompanyListEditComponent, { record: null }, {
+        modalOptions: {
+          nzStyle: {
+            left: '26%',
+            position: 'fixed'
+          }
+        }
+      })
+      .subscribe(res => {
+        if (res) {
+          this.st.reload();
+        }
+      });
   }
-
-
 
   /**
    * 批量删除
@@ -274,7 +345,7 @@ export class CompanyListComponent implements OnInit {
       nzContent: '确定从本辖区移除这些企业吗？',
       nzOnOk: () => {
         this.loadSrv.open({ text: '正在处理……' });
-        const dels = this.selectedRows.map(item => item.DJXH);
+        const dels = this.selectedRows.map(item => item.UUID);
         this.http.post('hx/nsr/del', dels).subscribe(res => {
           this.loadSrv.close();
           this.batchDelDisabled = true;
@@ -334,15 +405,16 @@ export class CompanyListComponent implements OnInit {
     this.st._data.forEach(i =>
       data.push(this.columns.map(c => i[c.index as string])),
     );
-    this.xlsx.export({
-      sheets: [
-        {
-          data,
-          name: '数据',
-        },
-      ],
-      filename: '纳税人登记信息.xlsx'
-    });
+    this.st.export();
+    // this.xlsx.export({
+    //   sheets: [
+    //     {
+    //       data,
+    //       name: '数据',
+    //     },
+    //   ],
+    //   filename: '纳税人登记信息.xlsx'
+    // });
   }
 
 }

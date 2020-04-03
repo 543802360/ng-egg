@@ -1,4 +1,5 @@
 export interface IDjnsrxx {
+  UUID?: string; // UUID,存在同一企业几个街道共享
   DJXH?: string; // 登记序号
   NSRMC?: string;
   NSRSBH?: string;

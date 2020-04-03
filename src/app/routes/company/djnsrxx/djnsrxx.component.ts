@@ -140,13 +140,6 @@ export class CompanyDjnsrxxComponent implements OnInit {
           icon: 'eye',
           tooltip: '查看基本信息',
           type: 'modal',
-          // iif: (item: STData,
-          //   btn: STColumnButton,
-          //   column: STColumn) => {
-          //   return item.groupid === 1 ? false : true
-
-          // },
-          // iifBehavior: 'disabled',
           acl: {
             ability: ['company:djnsrxx:view']
           },
@@ -325,9 +318,6 @@ export class CompanyDjnsrxxComponent implements OnInit {
       // console.log(e.checkbox);
       this.selectedRows = e.checkbox;
     }
-    if (e.type === "loaded") {
-      e.loaded.length ? this.batchDisabled = false : this.batchDisabled = true;
-    }
   }
 
   clear() {
@@ -337,6 +327,8 @@ export class CompanyDjnsrxxComponent implements OnInit {
     this.st.clearRadio();
     // 清除所有状态（单复选、排序、过滤）
     this.st.clearStatus();
+
+    this.selectedRows = [];
   }
 
   /**

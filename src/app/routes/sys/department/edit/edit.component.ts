@@ -13,16 +13,20 @@ export class SysDepartmentEditComponent implements OnInit {
   @Input() record: IDepartment;
   schema: SFSchema = {
     properties: {
+      department_id: { type: 'string', title: '部门ID' },
       department_name: { type: 'string', title: '部门名称' },
-      department_code: { type: 'string', title: '部门代码' },
       parent_name: { type: 'string', title: '上级部门', readOnly: true }
     },
-    required: ['department_name'],
+    required: ['department_id', 'department_name'],
   };
   ui: SFUISchema = {
     '*': {
       spanLabelFixed: 100,
       grid: { span: 24 },
+    },
+    $department_id: {
+      widget: 'string',
+      optionalHelp: '一般为行政区划代码，与业务数据关联'
     },
     $department_name: {
       widget: 'string'
@@ -30,7 +34,7 @@ export class SysDepartmentEditComponent implements OnInit {
     $department_code: {
       widget: 'select',
       // optional: '(可选)',
-      optionalHelp: '一般为行政区划代码，与业务数据关联'
+      // optionalHelp: '一般为行政区划代码，与业务数据关联'
     },
     $parent_name: {
       widget: 'string',

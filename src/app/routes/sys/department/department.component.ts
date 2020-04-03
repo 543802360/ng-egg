@@ -2,11 +2,12 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { _HttpClient, ModalHelper } from '@delon/theme';
 import { STColumn, STComponent } from '@delon/abc/table';
 import { SFSchema } from '@delon/form';
+import { LoadingService } from '@delon/abc';
+
 import { IDepartment, IUser, array2tree, tree2array } from '@shared';
 import { NzMenuDirective, NzContextMenuService, NzFormatEmitEvent, NzModalService, NzTreeNode, NzMessageService, NzTreeComponent } from 'ng-zorro-antd';
 // import { SysDepartmentComponent } from '../log/department/department.component';
 import { map } from 'rxjs/operators';
-import { CacheService } from '@delon/cache';
 import { SysDepartmentEditComponent } from './edit/edit.component';
 
 @Component({
@@ -22,12 +23,12 @@ export class SysDepartmentComponent implements OnInit {
   // 拖拽
   dragEnabled = false;
   isDraged = false;
-
+  i: IDepartment;
   constructor(
     private http: _HttpClient,
+    private loadingSrv: LoadingService,
     private modalSrv: NzModalService,
     private modal: ModalHelper,
-    private cacheSrv: CacheService,
     private contextSrv: NzContextMenuService,
     private msgSrv: NzMessageService
   ) { }
@@ -38,11 +39,12 @@ export class SysDepartmentComponent implements OnInit {
 
   //#region 部门操作
 
-  /**
-    * 初始化部门树
-    */
 
+  /**
+   * 初始化部门树
+   */
   initDepartmentTree() {
+    this.loadingSrv.open();
     this.http.get('sys/departments').subscribe(resp => {
       const menuData = resp.data.map((dpartment: IDepartment) => {
         return {
@@ -53,6 +55,7 @@ export class SysDepartmentComponent implements OnInit {
         };
       });
       this.departmentTreeNodes = array2tree(menuData, 'key', 'parent_id', 'children');
+      this.loadingSrv.close();
     });
   }
 
@@ -63,7 +66,7 @@ export class SysDepartmentComponent implements OnInit {
   addDepartment(root?: string) {
     const parent = root ? { parent_id: '', parent_name: '' } : { parent_id: this.selectedNode.key, parent_name: this.selectedNode.title };
     this.modalSrv.create({
-      nzTitle: '编辑部门',
+      nzTitle: '新建部门',
       nzContent: SysDepartmentEditComponent,
       nzComponentParams: {
         record: parent
@@ -133,12 +136,28 @@ export class SysDepartmentComponent implements OnInit {
    * @param e
    */
   departmentSelected(e: NzFormatEmitEvent) {
-    this.http.get(`sys/user/getUsersByDepartmentId/${e.node.key}`).subscribe(resp => {
+    this.http.get(`sys/departments/${e.node.key}`).subscribe(resp => {
       if (resp.success) {
-        // this.userData = resp.data;
+        this.i = resp.data;
       }
     }, error => { });
   };
+
+  /**
+   * 部门保存
+   */
+  departmentSaved() {
+    this.http.put(`sys/departments/${this.i.department_id}`, this.i).subscribe(resp => {
+      if (resp.success) {
+        this.msgSrv.success(resp.msg);
+      } else {
+        this.msgSrv.error(resp.msg);
+      }
+    }, error => {
+
+    });
+  }
+
   /**
    * 组织架构树右键菜单
    * @param e
