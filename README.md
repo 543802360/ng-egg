@@ -1,6 +1,8 @@
 #### ng-egg
-使用ng-alain开发中后台前端。后台基于egg.js进行开发，
-后端见：https://github.com/543802360/egg-server-admin
+- 使用ng-alain开发中后台前端。后台基于egg.js进行开发，
+- 后端见：https://github.com/543802360/egg-server-admin
+- **后端**暂不public，涉及业务数据库
+
 
 ## 已完成内容
 ### 通用模块
