@@ -7,6 +7,7 @@ import { BuildingEconomicBuildingListEditComponent } from './building-list/edit/
 import { BuildingEconomicBuildingListViewComponent } from './building-list/view/view.component';
 import { BuildingEconomicBuildingMapComponent } from './building-map/building-map.component';
 import { NgxMapboxGLModule } from "ngx-mapbox-gl";
+
 const COMPONENTS = [
   BuildingEconomicCreateBuildingComponent,
   BuildingEconomicBuildingListComponent,

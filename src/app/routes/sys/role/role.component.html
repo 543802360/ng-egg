@@ -1,8 +1,8 @@
-<page-header [action]="phActionTpl">
+<!-- <page-header [action]="phActionTpl">
   <ng-template #phActionTpl>
   </ng-template>
-</page-header>
-<nz-card>
+</page-header> -->
+<nz-card style="margin-top:10px">
   <!-- <sf mode="search" [schema]="searchSchema" (formSubmit)="st.reset($event)" (formReset)="st.reset($event)"></sf> -->
   <div class="mb-md">
     <button acl [acl-ability]="'sys:role:refresh'" nzType="default" nz-button (click)="refresh()">刷新</button>

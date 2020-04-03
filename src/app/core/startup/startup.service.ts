@@ -48,9 +48,15 @@ export class StartupService {
       // this.aclService.setFull(true);
       // 设置角色对应的权限
       const { perms, menus, departments } = (permsData as any).data;
+      this.aclService.setAbility(perms);
+      const groupid = this.cacheSrv.get('userInfo', { mode: 'none' }).groupid;
+      // this.aclService.setRole([`${groupid}`]);
+      /////// 若为超管，直接设置当前用户为全量，不受限制
+      if (groupid === 1) {
+        this.aclService.setFull(true);
+      }
       // 持久化
       this.cacheSrv.set('perms', perms);
-      this.aclService.setAbility(perms);
       // 设置角色对应的菜单
       const menusArray = menus.filter(item => item.menutype !== MenuType.PERMISSION).map(item => {
         let menu;

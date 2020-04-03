@@ -1,6 +1,6 @@
 <div style="width:100%;height:1080px;padding: 0;">
-  <page-header [fixedOffsetTop]="0">
-  </page-header>
+  <!-- <page-header [fixedOffsetTop]="0">
+  </page-header> -->
   <div nz-row style="height: 100%;padding-top:10px ;margin: 0;" nzGutter="8">
     <!-- 组织架构 -->
     <div nz-col style="height: 100%;" nzSpan="8">
@@ -32,8 +32,24 @@
     </div>
     <!-- 成员 -->
     <div nz-col style="height: 100%;" nzSpan="16">
-      <nz-card style="height: 100%;" nzTitle="成员列表">
-
+      <nz-card style="height: 100%;" nzTitle="部门详情">
+        <form *ngIf="i" nz-form #f="ngForm" se-container>
+          <se label="部门ID" required>
+            <input type="text" nz-input [(ngModel)]="i.department_id" name="department_id" required>
+          </se>
+          <se label="部门名称" required>
+            <input type="text" nz-input [(ngModel)]="i.department_name" name="department_name" required>
+          </se>
+          <se label="上级部门ID">
+            <input type="text" nz-input [(ngModel)]="i.parent_id" name="parent_id">
+          </se>
+          <se label="上级部门名称">
+            <input type="text" nz-input [(ngModel)]="i.parent_name" name="parent_name">
+          </se>
+          <se>
+            <button nz-button nzType="primary" (click)="departmentSaved(f.value)" [disabled]="f.invalid">保存</button>
+          </se>
+        </form>
       </nz-card>
     </div>
   </div>

@@ -4,8 +4,9 @@ import { NzModalRef } from 'ng-zorro-antd/modal';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { _HttpClient } from '@delon/theme';
 import { SFSchema, SFUISchema, SFComponent } from '@delon/form';
-import { map } from 'rxjs/operators';
+import { map, filter } from 'rxjs/operators';
 import { CacheService } from '@delon/cache';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-sys-user-edit',
@@ -14,8 +15,8 @@ import { CacheService } from '@delon/cache';
 export class SysUserEditComponent implements OnInit {
 
   @ViewChild('sf', { static: false }) userSF: SFComponent;
-  record: IUser = {};
-  i: any = {};
+  record: IUser;
+  i: any;
   schema: SFSchema = {
     properties: {
       // photo: {
@@ -119,13 +120,15 @@ export class SysUserEditComponent implements OnInit {
                 parent_name: item.parent_name
               };
             });
-
             return array2tree(node, 'key', 'parent_id', 'children');
-          }))
+          }));
       }
     },
     $phone: {
       widget: 'string',
+    },
+    $mark: {
+      widget: 'text',
     },
   };
 
@@ -146,32 +149,36 @@ export class SysUserEditComponent implements OnInit {
       this.http.get(`sys/user/${this.record.userid}`).subscribe(resp => {
         if (resp.success) {
           this.i = resp.data;
+          // 设置角色默认值
+          // Object.defineProperty(this.schema.properties.rolename, 'default', {
+          //   configurable: true,
+          //   writable: true,
+          //   enumerable: true,
+          //   value: this.record ? this.record.roleid : null
+          // });
+          // // //
+          Object.defineProperty(this.schema.properties.mark.ui, 'hidden', {
+            configurable: true,
+            writable: true,
+            enumerable: true,
+            value: true
+          });
+          // Object.defineProperty(this.schema.properties.department_name, 'default', {
+          //   configurable: true,
+          //   writable: true,
+          //   enumerable: true,
+          //   value: this.record ? this.record.department_id : null
+          // });
           setTimeout(() => {
-            // (this.userSF.rootProperty as any)
-            //   .properties.rolename.setValue({ label: this.record.rolename, value: this.record.roleid });
-            // 设置角色默认值
-            Object.defineProperty(this.schema.properties.rolename, 'default', {
-              configurable: true,
-              writable: true,
-              enumerable: true,
-              value: this.record ? this.record.roleid : null
-            });
-            //
-            Object.defineProperty(this.schema.properties.mark.ui, 'hidden', {
-              configurable: true,
-              writable: true,
-              enumerable: true,
-              value: true
-            });
-            Object.defineProperty(this.schema.properties.department_name, 'default', {
-              configurable: true,
-              writable: true,
-              enumerable: true,
-              value: this.record ? this.record.department_id : null
-            });
-            this.userSF.refreshSchema();
+            this.userSF.setValue('/rolename', this.record.roleid);
+            this.userSF.setValue('/rolename', this.record.roleid);
+
+            this.userSF.setValue('/department_name', this.record.department_id);
 
           });
+
+          // this.userSF.refreshSchema();
+
         }
       });
     }

@@ -25,7 +25,7 @@ import { DA_SERVICE_TOKEN, ITokenService } from '@delon/auth';
     </div>
     <nz-dropdown-menu #userMenu="nzDropdownMenu">
       <div nz-menu class="width-sm">
-        <div nz-menu-item routerLink="/pro/account/center">
+        <div nz-menu-item routerLink="/account/setting">
           <i nz-icon nzType="user" class="mr-sm"></i>
           个人中心
         </div>

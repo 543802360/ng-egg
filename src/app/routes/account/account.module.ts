@@ -1,14 +1,14 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from '@shared';
 import { AccountRoutingModule } from './account-routing.module';
-import { AccountAccountSettingComponent } from './account-setting/account-setting.component';
-import { AccountAccountSettingBaseComponent } from './account-setting-base/account-setting-base.component';
-import { AccountAccountSettingSecurityComponent } from './account-setting-security/account-setting-security.component';
+import { AccountSettingComponent } from './setting/setting.component';
+import { AccountBaseComponent } from './base/base.component';
+import { AccountSecurityComponent } from './security/security.component';
 
 const COMPONENTS = [
-  AccountAccountSettingComponent,
-  AccountAccountSettingBaseComponent,
-  AccountAccountSettingSecurityComponent];
+  AccountSettingComponent,
+  AccountBaseComponent,
+  AccountSecurityComponent];
 const COMPONENTS_NOROUNT = [];
 
 @NgModule({

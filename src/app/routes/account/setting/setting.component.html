@@ -1,0 +1,12 @@
+<div class="main">
+  <div class="menu">
+    <ul nz-menu>
+      <li nz-menu-item [routerLink]="['/account/setting/base']" routerLinkActive="router-link-active">基本设置</li>
+      <li nz-menu-item [routerLink]="['/account/setting/security']">安全设置</li>
+    </ul>
+  </div>
+  <div class="content">
+    <div class="title">{{title}}</div>
+    <router-outlet></router-outlet>
+  </div>
+</div>

@@ -50,20 +50,13 @@ export class SysUserComponent implements OnInit {
     {
       title: '操作',
       fixed: 'right',
-      width: 180,
+      width: 200,
       className: 'text-center',
       acl: { ability: ['sys:user:add', 'sys:user:delete'] },
       buttons: [
         {
           text: '编辑',
           type: 'modal',
-          // iif: (item: STData,
-          //   btn: STColumnButton,
-          //   column: STColumn) => {
-          //   return item.groupid === 1 ? false : true
-
-          // },
-          // iifBehavior: 'disabled',
           acl: { ability: ['sys:user:edit'] },
           modal: {
             component: SysUserEditComponent,
@@ -76,7 +69,6 @@ export class SysUserComponent implements OnInit {
             }
           },
           //
-          // click: 'reload',
           click: (_record, modal, comp) => {
             // modal 为回传值，可自定义回传值
             modal ? this.initUsers() : null;
