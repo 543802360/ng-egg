@@ -24,7 +24,6 @@ export class CompanyListComponent implements OnInit {
   nsrsbhAutoDataSource = [];
   searchAutoChangeS = new Subject<string>();
 
-  importTypes = ['下载模板', '追加导入'];
   selectedRows: IDjnsrxx[] = [];
   expandForm = false;
   nsrztTag: STColumnTag = {
@@ -418,7 +417,8 @@ export class CompanyListComponent implements OnInit {
   uploadChange(e: UploadChangeParam) {
     // console.log(e);
     if (e.type === "success") {
-      this.msgSrv.success(e.file.response.msg);
+
+      e.file.response.success ? this.msgSrv.success(e.file.response.msg) : this.msgSrv.error(e.file.error);
       this.st.reload();
       return;
     }
