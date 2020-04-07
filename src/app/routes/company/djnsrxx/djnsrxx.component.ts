@@ -44,6 +44,7 @@ export class CompanyDjnsrxxComponent implements OnInit {
       type: 'checkbox',
       fixed: 'left',
       width: 40,
+      exported: false,
       className: 'text-center'
     },
     {
@@ -339,24 +340,20 @@ export class CompanyDjnsrxxComponent implements OnInit {
     this.params.NSRSBH = '';
     this.st.reset(this.params);
   }
-
-  /**
-   * 导出数据
-   */
-  exportNsrData() {
-    const data = [this.columns.filter(i => i.title !== '操作' && i.title !== '序号' && i.title !== '编号').map(i => i.title)];
-    this.st._data.forEach(i =>
-      data.push(this.columns.map(c => i[c.index as string])),
-    );
-    this.xlsx.export({
-      sheets: [
-        {
-          data,
-          name: '数据',
-        },
-      ],
-      filename: '纳税人登记信息.xlsx'
-    });
-  }
+  // exportNsrData() {
+  //   const data = [this.columns.filter(i => i.title !== '操作' && i.title !== '序号' && i.title !== '编号').map(i => i.title)];
+  //   this.st._data.forEach(i =>
+  //     data.push(this.columns.map(c => i[c.index as string])),
+  //   );
+  //   this.xlsx.export({
+  //     sheets: [
+  //       {
+  //         data,
+  //         name: '数据',
+  //       },
+  //     ],
+  //     filename: '纳税人登记信息.xlsx'
+  //   });
+  // }
 
 }

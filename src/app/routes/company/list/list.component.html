@@ -1,7 +1,15 @@
 <nz-card nzTitle="企业名单导入" style="margin-top: 10px;">
-  <button nzType="primary" nz-button *ngFor="let i of importTypes" class="mr-sm">
-    {{ i }}
+  <button nzType="primary" nz-button class="mr-sm" down-file http-url="hx/nsr/upload/downloadTemplate"
+    file-name="纳税人导入模板.xlsx">
+    <i nz-icon nzType="download"></i><span>下载模板</span>
   </button>
+  <nz-upload [nzAction]="upload" [nzBeforeUpload]="beforeUpload" (nzChange)="uploadChange($event)">
+    <button nzType="primary" nz-button>
+      <i nz-icon type="upload"></i>
+      <span>点击上传</span>
+    </button>
+  </nz-upload>
+
 </nz-card>
 <nz-card style="margin-top: 10px;">
   <form style="padding-bottom: 10px;" nz-form [nzLayout]="'inline'" class="search__form">
@@ -37,8 +45,9 @@
         <button nz-button type="submit" (click)="st.load(1,params)" [nzType]="'primary'"
           [nzLoading]="http.loading">查询</button>
         <button nz-button type="reset" (click)="reset()" class="mx-sm">重置</button>
-        <button nz-button acl [acl-ability]="'company:hxnsrxx:export'" type="button" (click)="exportNsrData($event)"
-          nzType="primary" class="mx-sm">导出</button>
+        <button nz-button acl [acl-ability]="'company:hxnsrxx:export'" type="button"
+          (click)="st.export(false, { filename: '纳税人信息.xlsx', sheetname: 'sheet1' })" nzType="primary"
+          class="mx-sm">导出</button>
         <a (click)="expandForm = !expandForm">
           {{ expandForm ? '收起' : '展开' }}
           <i nz-icon [nzType]="expandForm ? 'up' : 'down'"></i>
@@ -54,12 +63,15 @@
   </form>
 
   <div class="mb-md">
-    <button acl [acl-ability]="'company:hxnsrxx:clear'" nzType="default" (click)="clear()" nz-button>清空选择</button>
+    <button acl [acl-ability]="'company:hxnsrxx:clear'" nzType="default" (click)="clear()" nz-button>选择</button>
     <button acl [acl-ability]="'company:hxnsrxx:refresh'" nzType="default" (click)="st.load(1)" nz-button>刷新</button>
     <button acl [acl-ability]="'company:hxnsrxx:add'" nzType="primary" (click)="add()" nz-button>添加</button>
     <button acl [acl-ability]="'company:hxnsrxx:deleteAll'" nzType="danger" (click)="batchDel($event)"
       [disabled]="batchDelDisabled" nz-button>
       删除</button>
+    <button acl [acl-ability]="'company:hxnsrxx:exportAll'" nzType="primary" down-file file-name="纳税人信息.xlsx"
+      [http-method]="'GET'" http-url="hx/nsr/export/all" nz-button>
+      全部导出</button>
   </div>
   <st #st [data]="url" [req]="companyReq" [res]="companyRes" size="middle" [bordered]="true" [scroll]="{x:'2222px'}"
     [columns]="columns" [pi]="1" [ps]="10" [total]="total" [page]="page" (change)="stChange($event)">
