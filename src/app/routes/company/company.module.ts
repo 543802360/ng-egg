@@ -14,13 +14,17 @@ import { NgxMapboxGLModule } from 'ngx-mapbox-gl';
 import { CompanyDjnsrxxComponent } from './djnsrxx/djnsrxx.component';
 import { CompanyDjnsrxxEditComponent } from './djnsrxx/edit/edit.component';
 import { CompanyDjnsrxxViewComponent } from './djnsrxx/view/view.component';
+import { CompanyNewComponent } from './new/new.component';
+import { CompanyNewEditComponent } from './new/edit/edit.component';
+import { CompanyNewViewComponent } from './new/view/view.component';
 
 
 const COMPONENTS = [
   CompanyListComponent,
   CompanyPositionComponent,
   CompanyUsedNameComponent,
-  CompanyDjnsrxxComponent];
+  CompanyDjnsrxxComponent,
+  CompanyNewComponent];
 const COMPONENTS_NOROUNT = [
   CompanyListEditComponent,
   CompanyListViewComponent,
@@ -29,7 +33,9 @@ const COMPONENTS_NOROUNT = [
   CompanyUsedNameEditComponent,
   CompanyUsedNameViewComponent,
   CompanyDjnsrxxEditComponent,
-  CompanyDjnsrxxViewComponent];
+  CompanyDjnsrxxViewComponent,
+  CompanyNewEditComponent,
+  CompanyNewViewComponent];
 
 @NgModule({
   imports: [

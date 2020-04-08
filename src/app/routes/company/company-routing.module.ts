@@ -5,6 +5,7 @@ import { CompanyPositionComponent } from './position/position.component';
 import { CompanyUsedNameComponent } from './used-name/used-name.component';
 import { ACLGuard } from '@delon/acl';
 import { CompanyDjnsrxxComponent } from './djnsrxx/djnsrxx.component';
+import { CompanyNewComponent } from './new/new.component';
 
 const routes: Routes = [
   {
@@ -19,6 +20,17 @@ const routes: Routes = [
             title: '企业名录管理',
             guard: {
               ability: ['/company/list'],
+            },
+            guard_url: 'exception/403'
+          }
+        },
+        {
+          path: 'new',
+          component: CompanyNewComponent,
+          data: {
+            title: '新设立企业',
+            guard: {
+              ability: ['company/new']
             },
             guard_url: 'exception/403'
           }

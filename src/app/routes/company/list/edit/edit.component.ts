@@ -78,7 +78,7 @@ export class CompanyListEditComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.record) {
-      this.http.get(`hx/nsr/${this.record.UUID}`).subscribe(res => (this.i = res.data))
+      this.http.get(`hx/nsr/show`, { id: this.record.UUID }).subscribe(res => (this.i = res.data))
     } else {
       this.i = {};
       this.record = {};
