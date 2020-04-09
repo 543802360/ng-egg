@@ -1,0 +1,16 @@
+<nz-card style="margin-top: 10px;">
+
+  <div class="mb-md">
+    <input nz-input [(ngModel)]="params.NSRMC" name="NSRMC" nzPlaceHolder="请输入纳税人名称" style="width: 220px;"
+      class="mr-sm">
+    <button nz-button (click)="st.load(1,params)" [nzType]="'primary'">搜索</button>
+    <button nz-button (click)="params = {}; st.reset()">重置</button>
+  </div>
+  <st #st [data]="url" [req]="companyReq" [res]="companyRes" size="middle" [bordered]="true" [columns]="columns"
+    [pi]="1" [ps]="3" [total]="total" [scroll]="{x:'2220px'}">
+  </st>
+  <div style="height: 660px;min-height: 660px; width: 100%;margin-top: 10px;">
+    <mgl-map style="width: 100%;height:100%" [style]="style" [zoom]="[8]" [center]="[120.3,36.45]">
+    </mgl-map>
+  </div>
+</nz-card>
