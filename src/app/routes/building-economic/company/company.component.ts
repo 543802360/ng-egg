@@ -4,10 +4,10 @@ import { STColumn, STComponent } from '@delon/abc/table';
 import { SFSchema } from '@delon/form';
 
 @Component({
-  selector: 'app-building-economic-building-list',
-  templateUrl: './building-list.component.html',
+  selector: 'app-building-economic-company',
+  templateUrl: './company.component.html',
 })
-export class BuildingEconomicBuildingListComponent implements OnInit {
+export class BuildingEconomicCompanyComponent implements OnInit {
   url = `/user`;
   searchSchema: SFSchema = {
     properties: {

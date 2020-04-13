@@ -1,15 +1,16 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { BuildingEconomicCreateBuildingComponent } from './create-building/create-building.component';
-import { BuildingEconomicBuildingListComponent } from './building-list/building-list.component';
-import { BuildingEconomicBuildingMapComponent } from './building-map/building-map.component';
 import { ACLGuard } from '@delon/acl';
+import { BuildingEconomicListComponent } from './list/list.component';
+import { BuildingEconomicMapComponent } from './map/map.component';
+import { BuildingEconomicCompanyComponent } from './company/company.component';
+import { BuildingEconomicCreateComponent } from './create/create.component';
 
 const routes: Routes = [
 
   {
     path: 'create',
-    component: BuildingEconomicCreateBuildingComponent,
+    component: BuildingEconomicCreateComponent ,
     data: {
       title: '楼宇建模',
       guard: {
@@ -20,7 +21,7 @@ const routes: Routes = [
   },
   {
     path: 'list',
-    component: BuildingEconomicBuildingListComponent,
+    component: BuildingEconomicListComponent,
     data: {
       title: '楼宇数据维护',
       guard: {
@@ -31,7 +32,7 @@ const routes: Routes = [
   },
   {
     path: 'map',
-    component: BuildingEconomicBuildingMapComponent,
+    component:BuildingEconomicMapComponent ,
     data: {
       title: '楼宇经济地图',
       guard: {
@@ -39,7 +40,8 @@ const routes: Routes = [
       },
       guard_url: 'exception/403'
     }
-  }];
+  }
+];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

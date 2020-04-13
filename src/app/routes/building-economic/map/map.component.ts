@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { _HttpClient } from '@delon/theme';
 
 @Component({
-  selector: 'app-building-economic-building-map',
-  templateUrl: './building-map.component.html',
+  selector: 'app-building-economic-map',
+  templateUrl: './map.component.html',
 })
-export class BuildingEconomicBuildingMapComponent implements OnInit {
+export class BuildingEconomicMapComponent implements OnInit {
 
   constructor(private http: _HttpClient) { }
 

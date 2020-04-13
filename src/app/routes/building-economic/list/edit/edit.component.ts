@@ -5,10 +5,10 @@ import { _HttpClient } from '@delon/theme';
 import { SFSchema, SFUISchema } from '@delon/form';
 
 @Component({
-  selector: 'app-building-economic-building-list-edit',
+  selector: 'app-building-economic-list-edit',
   templateUrl: './edit.component.html',
 })
-export class BuildingEconomicBuildingListEditComponent implements OnInit {
+export class BuildingEconomicListEditComponent implements OnInit {
   record: any = {};
   i: any;
   schema: SFSchema = {

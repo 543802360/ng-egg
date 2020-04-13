@@ -334,11 +334,15 @@ export class CompanyPositionComponent implements OnInit {
     this.loadSrv.open();
   }
 
+  /** mapbox gl load
+   */
   mapboxglLoad(e) {
     this.map = e;
     this.loadSrv.close();
   }
 
+  /** 确认位置
+   */
   confirmPos() {
     const { lat, lng } = this.nsrMarker.getLngLat();
     // 更新
@@ -351,9 +355,15 @@ export class CompanyPositionComponent implements OnInit {
     });
   }
 
+  /** 重置位置
+   */
   resetPos() {
     this.nsrMarker.setLngLat(this.nsrDefPosition);
     this.map.flyTo({ center: this.nsrDefPosition, zoom: 16 });
+  }
+
+  mapresize(e){
+    console.log('resize:',e);
   }
 
 }
