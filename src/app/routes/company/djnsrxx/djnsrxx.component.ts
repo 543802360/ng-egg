@@ -59,7 +59,7 @@ export class CompanyDjnsrxxComponent implements OnInit {
       title: '纳税人识别号',
       index: 'NSRSBH',
       fixed: 'left',
-      width: 100,
+      width: 220,
       className: 'text-center'
     },
     {

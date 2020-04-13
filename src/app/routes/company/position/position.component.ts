@@ -6,6 +6,8 @@ import { STColumn, STComponent, STPage, STReq, STRequestOptions, STRes, STData }
 import { SFSchema } from '@delon/form';
 import * as dark from "../../geo/styles/dark.json";
 import { NzMessageService } from 'ng-zorro-antd';
+import * as mapboxgl from "mapbox-gl";
+import { LoadingService } from '@delon/abc';
 
 @Component({
   selector: 'app-company-position',
@@ -13,10 +15,19 @@ import { NzMessageService } from 'ng-zorro-antd';
   styleUrls: ['./position.component.less']
 })
 export class CompanyPositionComponent implements OnInit {
+
+  //#region 地图相关参数
   style;
   center;
   zoom;
+  map: mapboxgl.Map;
+  nsrMarker: mapboxgl.Marker;
+  nsrDefPosition;
+  selected;
+  //#endregion
 
+
+  //#region ng-alain 表格
   @ViewChild('st', { static: false }) st: STComponent;
   url = "hx/nsr/list";
   total: number;
@@ -33,7 +44,7 @@ export class CompanyPositionComponent implements OnInit {
     {
       title: '纳税人识别号',
       index: 'NSRSBH',
-      width: 230,
+      width: 220,
       fixed: 'left',
       className: 'text-center'
     },
@@ -47,13 +58,13 @@ export class CompanyPositionComponent implements OnInit {
     {
       title: '社会信用代码',
       index: 'SHXYDM',
-      width: 230,
+      width: 220,
       className: 'text-center'
     },
     {
       title: '税收留存比例',
       index: 'SSFC',
-      width: 150,
+      width: 120,
       className: 'text-center',
       format: (item, col, index) => `${item.SSFC}%`
 
@@ -95,7 +106,7 @@ export class CompanyPositionComponent implements OnInit {
     {
       title: '登记注册类型',
       index: 'DJZCLXMC',
-      width: 150,
+      width: 130,
       className: 'text-center'
     },
     {
@@ -199,7 +210,47 @@ export class CompanyPositionComponent implements OnInit {
           },
           type: "none",
           click: (_record) => {
-            console.log(_record);
+            // console.log(_record);
+            this.selected = _record;
+            const { NSRMC, ZCDZ } = _record;
+            const params = ZCDZ ? { address: ZCDZ } : { address: NSRMC };
+
+            this.http.get('geo/amap/geocode', params).subscribe(resp => {
+
+              if (!resp.success) {
+                this.msgSrv.error(resp.msg);
+              }
+              const center = {
+                lat: resp.data.lat,
+                lng: resp.data.lng
+              };
+              this.nsrDefPosition = center;
+              if (resp.success) {
+                this.map.flyTo({
+                  center,
+                  zoom: 16
+                });
+              }
+              if (this.nsrMarker) {
+                this.nsrMarker.setLngLat(center);
+              } else {
+                this.nsrMarker = new mapboxgl.Marker({ draggable: true });
+                this.nsrMarker.setLngLat(center).addTo(this.map);
+                this.nsrMarker.getElement().addEventListener("click", e => {
+                  this.modal
+                    .create(CompanyListViewComponent, { record: _record }, {
+                      modalOptions: {
+                        nzStyle: {
+                          left: '26%',
+                          position: 'fixed'
+                        }
+                      }
+                    });
+                });
+              }
+
+            });
+
           }
         },
         {
@@ -271,12 +322,38 @@ export class CompanyPositionComponent implements OnInit {
       return rawData.data.rows;
     }
   };
+  //#endregion
+
   constructor(private http: _HttpClient,
-    private msgSrv: NzMessageService) { }
+    private loadSrv: LoadingService,
+    private msgSrv: NzMessageService,
+    private modal: ModalHelper) { }
 
   ngOnInit() {
-    console.log(dark);
     this.style = (dark as any).default;
+    this.loadSrv.open();
+  }
+
+  mapboxglLoad(e) {
+    this.map = e;
+    this.loadSrv.close();
+  }
+
+  confirmPos() {
+    const { lat, lng } = this.nsrMarker.getLngLat();
+    // 更新
+    this.http.put(`hx/nsr/${this.selected.UUID}`, { ...this.selected, LNG: lng, LAT: lat }).subscribe(res => {
+      if (res.success) {
+        this.msgSrv.success(res.msg);
+      } else {
+        this.msgSrv.error(res.msg);
+      }
+    });
+  }
+
+  resetPos() {
+    this.nsrMarker.setLngLat(this.nsrDefPosition);
+    this.map.flyTo({ center: this.nsrDefPosition, zoom: 16 });
   }
 
 }

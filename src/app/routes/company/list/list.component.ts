@@ -5,7 +5,7 @@ import { STColumn, STComponent, STData, STReq, STRes, STColumnTag, STPage, STReq
 import { SFSchema } from '@delon/form';
 import { HttpParams } from '@angular/common/http';
 import { Subject } from 'rxjs';
-import { XlsxService, XlsxExportOptions, LoadingService } from '@delon/abc';
+import { XlsxService, LoadingService } from '@delon/abc';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { IDjnsrxx } from '@shared';
 import { NzModalService, UploadChangeParam } from 'ng-zorro-antd';
@@ -60,7 +60,7 @@ export class CompanyListComponent implements OnInit {
       title: '纳税人识别号',
       index: 'NSRSBH',
       fixed: 'left',
-      width: 100,
+      width: 220,
       className: 'text-center'
     },
     {
@@ -277,7 +277,6 @@ export class CompanyListComponent implements OnInit {
       return rawData.data.rows;
     }
   };
-  XlsxExportOptions: XlsxExportOptions;
   //
   batchDelDisabled = true;
   constructor(
