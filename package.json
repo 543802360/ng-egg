@@ -41,6 +41,7 @@
     "@delon/theme": "^8.9.0",
     "@delon/util": "^8.9.0",
     "@fortawesome/fontawesome-free": "^5.12.1",
+    "@mapbox/mapbox-gl-draw": "^1.1.2",
     "@ngx-translate/core": "^11.0.1",
     "@ngx-translate/http-loader": "^4.0.0",
     "ajv": "^6.10.2",
@@ -116,5 +117,11 @@
     "hooks": {
       "pre-commit": "npm run lint-staged"
     }
-  }
+  },
+  "browser": {
+"fs": false,
+"path": false,
+"os": false
+}
+
 }

@@ -362,8 +362,8 @@ export class CompanyPositionComponent implements OnInit {
     this.map.flyTo({ center: this.nsrDefPosition, zoom: 16 });
   }
 
-  mapresize(e){
-    console.log('resize:',e);
+  mapresize(e) {
+    console.log('resize:', e);
   }
 
 }

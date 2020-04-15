@@ -10,7 +10,7 @@ const routes: Routes = [
 
   {
     path: 'create',
-    component: BuildingEconomicCreateComponent ,
+    component: BuildingEconomicCreateComponent,
     data: {
       title: '楼宇建模',
       guard: {
@@ -32,7 +32,7 @@ const routes: Routes = [
   },
   {
     path: 'map',
-    component:BuildingEconomicMapComponent ,
+    component: BuildingEconomicMapComponent,
     data: {
       title: '楼宇经济地图',
       guard: {

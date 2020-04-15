@@ -10,18 +10,22 @@ import { BuildingEconomicCompanyComponent } from './company/company.component';
 import { BuildingEconomicCompanyEditComponent } from './company/edit/edit.component';
 import { BuildingEconomicCompanyViewComponent } from './company/view/view.component';
 import { BuildingEconomicCreateComponent } from './create/create.component';
+import { BuildingEconomicCreateEditComponent } from './create/edit/edit.component';
+import { BuildingEconomicCreateViewComponent } from './create/view/view.component';
 
 const COMPONENTS = [
   BuildingEconomicListComponent,
   BuildingEconomicMapComponent,
   BuildingEconomicCompanyComponent,
   BuildingEconomicCreateComponent];
-  
+
 const COMPONENTS_NOROUNT = [
   BuildingEconomicListEditComponent,
   BuildingEconomicListViewComponent,
   BuildingEconomicCompanyEditComponent,
-  BuildingEconomicCompanyViewComponent];
+  BuildingEconomicCompanyViewComponent,
+  BuildingEconomicCreateEditComponent,
+  BuildingEconomicCreateViewComponent];
 
 @NgModule({
   imports: [

@@ -17,7 +17,6 @@
     <!-- <nz-spin *ngIf="!map" nzSize="large" style=""></nz-spin> -->
     <mgl-map style="width: 100%;height:100%" [style]="style" [trackResize]="true" (resize)="mapresize($event)" [zoom]="[8]" [center]="[120.3,36.45]"
       (load)="mapboxglLoad($event)">
-
     </mgl-map>
   </div>
 </nz-card>
