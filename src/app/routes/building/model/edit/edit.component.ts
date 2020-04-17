@@ -8,6 +8,7 @@ import { SFSchema, SFUISchema } from '@delon/form';
 @Component({
   selector: 'app-building-model-edit',
   templateUrl: './edit.component.html',
+  styleUrls: ['./edit.component.less']
 })
 export class BuildingModelEditComponent implements OnInit {
   record: IBuilding;

@@ -8,6 +8,8 @@ import { IDjnsrxx } from '@shared';
 @Component({
   selector: 'app-company-list-edit',
   templateUrl: './edit.component.html',
+  styleUrls: ['./edit.component.less']
+
 })
 export class CompanyListEditComponent implements OnInit {
   record: IDjnsrxx = {};
@@ -54,7 +56,8 @@ export class CompanyListEditComponent implements OnInit {
     $SSFC: {
       widget: 'number',
       unit: '%',
-      optionalHelp: '此数值为该企业税收在本辖区的留存比例'
+      optionalHelp: '此数值为该企业税收在本辖区的留存比例',
+      spanLabelFixed: 150
     },
     $ZCDZ: {
       widget: 'string',

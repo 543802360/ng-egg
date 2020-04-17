@@ -1,3 +1,5 @@
+import { LoadingTypesService } from '@core/loading-types.service';
+import { NzMessageService } from 'ng-zorro-antd/message';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { _HttpClient, ModalHelper } from '@delon/theme';
 import { STColumn, STComponent } from '@delon/abc/table';
@@ -6,6 +8,7 @@ import { BuildingModelEditComponent } from './edit/edit.component';
 import * as dark from "../../geo/styles/dark.json";
 import * as mapboxgl from "mapbox-gl";
 import * as MapboxDraw from "@mapbox/mapbox-gl-draw";
+import { LoadingService } from '@delon/abc';
 
 @Component({
   selector: 'app-building-model',
@@ -15,11 +18,12 @@ import * as MapboxDraw from "@mapbox/mapbox-gl-draw";
 export class BuildingModelComponent implements OnInit {
 
 
+  //#region  mapbox map config
   style;
   center;
   zoom;
   map: mapboxgl.Map;
-
+  //#endregion
   url = `/user`;
   searchSchema: SFSchema = {
     properties: {
@@ -44,25 +48,31 @@ export class BuildingModelComponent implements OnInit {
     }
   ];
 
-  constructor(private http: _HttpClient, private modal: ModalHelper) { }
+  constructor(private http: _HttpClient,
+    private modal: ModalHelper,
+    private loadingSrv: LoadingService,
+    private loadingTypeSrv: LoadingTypesService,
+    private msgSrv: NzMessageService) { }
 
   ngOnInit() {
     this.style = (dark as any).default;
+    this.loadingSrv.open({
+      type: 'custom',
+      custom: this.loadingTypeSrv.loadingTypes.Cubes,
+      text: '正在加载，请稍后……'
+    });
 
-  }
-
-  add() {
-    this.modal
-      .createStatic(BuildingModelEditComponent, { i: { id: 0 } })
-      .subscribe(() => this.st.reload());
   }
 
   /**
-  * mapboxgl map loaded
-  * @param e
-  */
+   * mapboxgl map loaded event
+   * @param e
+   */
   mapboxglLoad(e) {
     this.map = e;
+    this.loadingSrv.close();
+    (window as any).mapboxglmap = this.map;
+    // add draw control
     const draw = new MapboxDraw({
       keybindings: false,
       displayControlsDefault: false,
@@ -73,7 +83,7 @@ export class BuildingModelComponent implements OnInit {
     });
     this.map.addControl(draw, 'top-left');
 
-    // 注册绘制事件
+    // add draw create event；edit building info and then save to db；
     this.map.on('draw.create', e => {
       console.log(e);
       this.modal
@@ -87,14 +97,17 @@ export class BuildingModelComponent implements OnInit {
         })
         .subscribe(() => this.st.reload());
     });
+    // add draw update event;
     this.map.on('draw.update', e => {
 
     });
+    // add delete evnet;delete from buildings db;
     this.map.on('draw.delete', e => {
 
     });
     setTimeout(() => {
       // mapbox-gl-draw_ctrl-draw-btn mapbox-gl-draw_trash
+      // update tools tooltip
       (document.getElementsByClassName('mapbox-gl-draw_ctrl-draw-btn mapbox-gl-draw_trash')[0] as any).title = '删除';
       (document.getElementsByClassName('mapbox-gl-draw_ctrl-draw-btn mapbox-gl-draw_polygon')[0] as any).title = '绘制多边形';
     }, 100);

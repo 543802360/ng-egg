@@ -1,3 +1,4 @@
+import { LoadingTypesService } from '@core/loading-types.service';
 import { CompanyListEditComponent } from './../list/edit/edit.component';
 import { CompanyListViewComponent } from './../list/view/view.component';
 import { Component, OnInit, ViewChild } from '@angular/core';
@@ -324,20 +325,26 @@ export class CompanyPositionComponent implements OnInit {
   //#endregion
 
   constructor(private http: _HttpClient,
-    private loadSrv: LoadingService,
+    private loadingSrv: LoadingService,
+    private loadingTypeSrv: LoadingTypesService,
     private msgSrv: NzMessageService,
     private modal: ModalHelper) { }
 
   ngOnInit() {
     this.style = (dark as any).default;
-    this.loadSrv.open();
+    this.loadingSrv.open({
+      type: 'custom',
+      custom: this.loadingTypeSrv.loadingTypes.Cubes
+    });
   }
 
-  /** mapbox gl load
+  /**
+   *
+   * @param e
    */
   mapboxglLoad(e) {
     this.map = e;
-    this.loadSrv.close();
+    this.loadingSrv.close();
   }
 
   /** 确认位置

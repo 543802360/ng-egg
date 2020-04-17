@@ -1,3 +1,4 @@
+import { LoadingTypesService } from '@core/loading-types.service';
 import { CompanyDjnsrxxEditComponent } from './edit/edit.component';
 
 
@@ -10,7 +11,6 @@ import { Subject } from 'rxjs';
 import { XlsxService, XlsxExportOptions, LoadingService } from '@delon/abc';
 import { CompanyDjnsrxxViewComponent } from './view/view.component';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { loadingCustoms } from '@shared';
 import { NzModalService } from 'ng-zorro-antd';
 
 @Component({
@@ -248,6 +248,7 @@ export class CompanyDjnsrxxComponent implements OnInit {
     private modalSrv: NzModalService,
     private msgSrv: NzMessageService,
     private loadingSrv: LoadingService,
+    private loadingTypeSrv: LoadingTypesService,
     private xlsx: XlsxService
   ) { }
 
@@ -294,7 +295,11 @@ export class CompanyDjnsrxxComponent implements OnInit {
       nzContent: '确认添加至本辖区企业库吗？',
       nzCancelText: '取消',
       nzOnOk: () => {
-        this.loadingSrv.open({ text: '正在处理……' });
+        this.loadingSrv.open({
+          type: 'custom',
+          custom: this.loadingTypeSrv.loadingTypes.Cubes,
+          text: '正在处理……'
+        });
         this.http.post('hx/nsr', this.selectedRows).subscribe(res => {
           this.loadingSrv.close();
           if (res.success) {
