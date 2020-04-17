@@ -1,11 +1,10 @@
+import { Injectable } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { EnumType } from 'typescript';
-/**
- * 定义loaidng自定义样式
- */
-export class LoadingDIYTypes {
 
-  Balls = {
+@Injectable()
+export class LoadingTypesService {
+
+  private Balls = {
     name: 'Balls',
     style: {
       height: '40px',
@@ -27,7 +26,7 @@ export class LoadingDIYTypes {
         </path>
       </svg>`),
   };
-  Bars = {
+  private Bars = {
     name: 'Bars',
     style: {
       fill: '#1890ff',
@@ -51,7 +50,7 @@ export class LoadingDIYTypes {
         </path>
       </svg>`),
   };
-  Bubbles = {
+  private Bubbles = {
     name: 'Bubbles',
     style: {
       height: '40px',
@@ -73,7 +72,7 @@ export class LoadingDIYTypes {
         </circle>
       </svg>`),
   };
-  Cubes = {
+  private Cubes = {
     name: 'Cubes',
     style: {
       height: '40px',
@@ -95,7 +94,7 @@ export class LoadingDIYTypes {
         </path>
       </svg>`),
   };
-  Cylon = {
+  private Cylon = {
     name: 'Cylon',
     style: {
       height: '40px',
@@ -114,7 +113,7 @@ export class LoadingDIYTypes {
         </path>
       </svg>`),
   };
-  Spin = {
+  private Spin = {
     name: 'Spin',
     style: {
       fill: '#1890ff',
@@ -127,7 +126,7 @@ export class LoadingDIYTypes {
         </path>
       </svg>`),
   };
-  Spokes = {
+  private Spokes = {
     name: 'Spokes',
     style: {
       fill: '#1890ff',
@@ -160,7 +159,7 @@ export class LoadingDIYTypes {
         </path>
       </svg>`),
   };
-
+  // loading 自定义类型
   private _loadingTypes = {
     Balls: this.Balls,
     Bars: this.Bars,
@@ -175,12 +174,8 @@ export class LoadingDIYTypes {
 
   }
 
-
   public get loadingTypes() {
     return this._loadingTypes;
   }
 
-
 }
-
-
