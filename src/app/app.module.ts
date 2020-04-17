@@ -92,6 +92,7 @@ import { SharedModule } from './shared/shared.module';
 import { AppComponent } from './app.component';
 import { RoutesModule } from './routes/routes.module';
 import { LayoutModule } from './layout/layout.module';
+import { LoadingTypesService } from '@core/loading-types.service';
 
 @NgModule({
   declarations: [
@@ -114,7 +115,8 @@ import { LayoutModule } from './layout/layout.module';
     ...LANG_PROVIDES,
     ...INTERCEPTOR_PROVIDES,
     ...I18NSERVICE_PROVIDES,
-    ...APPINIT_PROVIDES
+    ...APPINIT_PROVIDES,
+    LoadingTypesService
   ],
   bootstrap: [AppComponent]
 })
