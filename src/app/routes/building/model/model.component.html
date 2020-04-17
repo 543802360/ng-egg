@@ -1,0 +1,10 @@
+<!-- <page-header [action]="phActionTpl">
+  <ng-template #phActionTpl>
+    <button (click)="add()" nz-button nzType="primary">新建</button>
+  </ng-template>
+</page-header> -->
+<nz-card class="container-card">
+  <mgl-map [style]="style" trackResize="true" (resize)="mapresize($event)" [zoom]="[8]" [center]="[120.3,36.45]"
+    (load)="mapboxglLoad($event)">
+  </mgl-map>
+</nz-card>

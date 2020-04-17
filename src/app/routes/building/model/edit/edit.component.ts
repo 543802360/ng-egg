@@ -1,15 +1,15 @@
+import { IBuilding } from '@shared';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NzModalRef } from 'ng-zorro-antd/modal';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { _HttpClient } from '@delon/theme';
 import { SFSchema, SFUISchema } from '@delon/form';
-import { IBuilding } from '@shared';
 
 @Component({
-  selector: 'app-building-economic-create-edit',
+  selector: 'app-building-model-edit',
   templateUrl: './edit.component.html',
 })
-export class BuildingEconomicCreateEditComponent implements OnInit {
+export class BuildingModelEditComponent implements OnInit {
   record: IBuilding;
   i: IBuilding;
   schema: SFSchema = {
@@ -18,17 +18,21 @@ export class BuildingEconomicCreateEditComponent implements OnInit {
         type: 'string',
         title: '楼宇名称'
       },
-      building_height: {
-        type: 'number',
-        title: '楼宇高度'
+      building_address: {
+        type: 'string',
+        title: '楼宇地址'
       },
       building_floor: {
         type: 'number',
         title: '楼宇层数'
       },
-      building_address: {
+      building_height: {
+        type: 'number',
+        title: '楼宇高度'
+      },
+      building_bz: {
         type: 'string',
-        title: '楼宇地址'
+        title: '备注'
       },
     },
     required: ['building_name', 'building_height'],
@@ -52,6 +56,10 @@ export class BuildingEconomicCreateEditComponent implements OnInit {
     $building_floor: {
       widget: 'number',
       grid: { span: 12 },
+    },
+    $building_bz: {
+      widget: 'textarea',
+      grid: { span: 24 },
     },
   };
 

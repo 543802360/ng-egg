@@ -14,6 +14,8 @@ export * from "./models/IUser";
 export * from "./models/MenuType";
 export * from './models/TableOperator';
 export * from './models/IDjnsrxx';
+export * from "./models/IBuilding";
+
 // 数据类型
 export * from './models/LoadingTypes';
 // 模块

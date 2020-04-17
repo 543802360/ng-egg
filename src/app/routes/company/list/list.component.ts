@@ -79,11 +79,13 @@ export class CompanyListComponent implements OnInit {
       title: '税收留存比例',
       index: 'SSFC',
       className: 'text-center',
+      width: 120,
       format: (item, col, index) => `${item.SSFC}%`
 
     },
     {
       title: '所属街道',
+      width: 100,
       index: 'department_name',
       className: 'text-center',
       // 超管可见
@@ -136,11 +138,14 @@ export class CompanyListComponent implements OnInit {
     {
       title: '联系人',
       index: 'LXR',
+      width: 100,
       className: 'text-center'
     },
     {
       title: '联系电话',
       index: 'LXDH',
+      width: 100,
+
       className: 'text-center'
     },
 
@@ -148,6 +153,7 @@ export class CompanyListComponent implements OnInit {
       title: '登记日期',
       type: 'date',
       index: 'DJRQ',
+      width: 100,
       dateFormat: 'YYYY-MM-DD',
       className: 'text-center'
     },
@@ -155,6 +161,7 @@ export class CompanyListComponent implements OnInit {
       title: '修改日期',
       type: 'date',
       index: 'XGRQ',
+      width: 100,
       dateFormat: 'YYYY-MM-DD',
       className: 'text-center'
     },

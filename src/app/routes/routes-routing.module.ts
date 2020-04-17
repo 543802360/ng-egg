@@ -59,7 +59,7 @@ const routes: Routes = [
       // 楼宇经济子模块
       {
         path: 'building',
-        loadChildren: () => import('./building-economic/building-economic.module').then(m => m.BuildingEconomicModule)
+        loadChildren: () => import('./building/building.module').then(m => m.BuildingModule)
       },
       // 系统设置子模块
       {

@@ -210,11 +210,15 @@ export class CompanyPositionComponent implements OnInit {
           },
           type: "none",
           click: (_record) => {
+
             // console.log(_record);
             this.selected = _record;
-            const { NSRMC, ZCDZ } = _record;
+            const { NSRMC, ZCDZ, NSRSBH } = _record;
             const params = ZCDZ ? { address: ZCDZ } : { address: NSRMC };
-
+            const popupContent = `
+            <h5>纳税人名称：${NSRMC}</h5>
+            <h5>纳税人识别号：${NSRSBH}</h5>
+            <h5>注册地址：${ZCDZ}</h5>`;
             this.http.get('geo/amap/geocode', params).subscribe(resp => {
 
               if (!resp.success) {
@@ -232,20 +236,15 @@ export class CompanyPositionComponent implements OnInit {
                 });
               }
               if (this.nsrMarker) {
-                this.nsrMarker.setLngLat(center);
+                this.nsrMarker.setLngLat(center).setPopup(new mapboxgl.Popup({
+                }).setHTML(popupContent).setMaxWidth('600'));
               } else {
                 this.nsrMarker = new mapboxgl.Marker({ draggable: true });
-                this.nsrMarker.setLngLat(center).addTo(this.map);
+                this.nsrMarker.setLngLat(center).addTo(this.map).setPopup(new mapboxgl.Popup({
+                }).setHTML(popupContent).setMaxWidth('600'));
                 this.nsrMarker.getElement().addEventListener("click", e => {
-                  this.modal
-                    .create(CompanyListViewComponent, { record: _record }, {
-                      modalOptions: {
-                        nzStyle: {
-                          left: '26%',
-                          position: 'fixed'
-                        }
-                      }
-                    });
+                  // console.log('clcik');
+
                 });
               }
 
