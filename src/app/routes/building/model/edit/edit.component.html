@@ -2,6 +2,9 @@
   <div class="modal-title">信息</div>
 </div>
 <nz-spin *ngIf="!i" class="modal-spin"></nz-spin>
+<mgl-map style="height: 269px;width: 100%;margin-bottom:10px" [style]="style" trackResize="true" [zoom]="[8]" [center]="[120.3,36.45]"
+  (load)="mapboxglLoad($event)">
+</mgl-map>
 <sf *ngIf="i" #sf mode="edit" [schema]="schema" [ui]="ui" [formData]="i" button="none">
   <div class="modal-footer">
     <button nz-button type="button" (click)="close()">关闭</button>

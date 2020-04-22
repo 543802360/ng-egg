@@ -4,6 +4,17 @@
   </ng-template>
 </page-header> -->
 <nz-card class="container-card">
-  <mgl-map [style]="style" trackResize="true" [zoom]="[8]" [center]="[120.3,36.45]" (load)="mapboxglLoad($event)">
-  </mgl-map>
+
+  <div nz-row nzGutter="8" style="height: 100%;">
+    <div nz-col nzSpan="12" style="height: 100%;">
+      <mgl-map [style]="style" trackResize="true" [zoom]="[8]" [center]="[120.3,36.45]"
+        (load)="mapboxglLoad($event,'2d')">
+      </mgl-map>
+    </div>
+    <div nz-col nzSpan="12" style="height: 100%;">
+      <mgl-map [style]="style" trackResize="true" [zoom]="[8]" [center]="[120.3,36.45]"
+        (load)="mapboxglLoad($event,'3d')">
+      </mgl-map>
+    </div>
+  </div>
 </nz-card>

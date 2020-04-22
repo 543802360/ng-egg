@@ -5,7 +5,7 @@
 export * from './utils/yuan';
 export * from './utils/array2tree';
 export * from './utils/tree2array';
-
+export * from "./utils/geoUtil";
 // 接口类
 export * from './models/IMenu';
 export * from './models/IDepartment';

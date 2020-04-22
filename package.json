@@ -42,8 +42,10 @@
     "@delon/util": "^8.9.0",
     "@fortawesome/fontawesome-free": "^5.12.1",
     "@mapbox/mapbox-gl-draw": "^1.1.2",
+    "@mapbox/mapbox-gl-sync-move": "^0.3.0",
     "@ngx-translate/core": "^11.0.1",
     "@ngx-translate/http-loader": "^4.0.0",
+    "@turf/turf": "^5.1.6",
     "ajv": "^6.10.2",
     "bootstrap": "^3.3.7",
     "file-saver": "^2.0.2",
@@ -56,6 +58,7 @@
     "rxjs": "~6.4.0",
     "screenfull": "^5.0.0",
     "tslib": "^1.10.0",
+    "wicket": "^1.3.6",
     "zone.js": "~0.9.1"
   },
   "devDependencies": {
@@ -119,9 +122,8 @@
     }
   },
   "browser": {
-"fs": false,
-"path": false,
-"os": false
-}
-
+    "fs": false,
+    "path": false,
+    "os": false
+  }
 }
