@@ -5,13 +5,12 @@ import { STColumn, STComponent, STData, STReq, STRes, STColumnTag, STPage, STReq
 import { SFSchema } from '@delon/form';
 import { HttpParams } from '@angular/common/http';
 import { Subject } from 'rxjs';
-import { XlsxService, XlsxExportOptions, LoadingService } from '@delon/abc';
+import { XlsxService, LoadingService } from '@delon/abc';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { IDjnsrxx } from '@shared';
-import { NzModalService } from 'ng-zorro-antd';
+import { NzModalService, UploadChangeParam } from 'ng-zorro-antd';
 import { CompanyListViewComponent } from './view/view.component';
 import { CompanyListEditComponent } from './edit/edit.component';
-
 @Component({
   selector: 'app-company-list',
   templateUrl: './list.component.html',
@@ -19,12 +18,12 @@ import { CompanyListEditComponent } from './edit/edit.component';
 export class CompanyListComponent implements OnInit {
   @ViewChild('st', { static: false }) st: STComponent;
   url = "hx/nsr/list";
+  upload = 'hx/nsr/upload';
   total: number;
   nsrmcAutoDataSource = [];
   nsrsbhAutoDataSource = [];
   searchAutoChangeS = new Subject<string>();
 
-  importTypes = ['下载模板', '追加导入'];
   selectedRows: IDjnsrxx[] = [];
   expandForm = false;
   nsrztTag: STColumnTag = {
@@ -46,6 +45,7 @@ export class CompanyListComponent implements OnInit {
       format: (item, col, index) => `${index + 1} `,
       fixed: 'left',
       width: 40,
+      exported: false,
       className: 'text-center'
     },
     {
@@ -60,7 +60,7 @@ export class CompanyListComponent implements OnInit {
       title: '纳税人识别号',
       index: 'NSRSBH',
       fixed: 'left',
-      width: 100,
+      width: 220,
       className: 'text-center'
     },
     {
@@ -79,11 +79,13 @@ export class CompanyListComponent implements OnInit {
       title: '税收留存比例',
       index: 'SSFC',
       className: 'text-center',
+      width: 120,
       format: (item, col, index) => `${item.SSFC}%`
 
     },
     {
       title: '所属街道',
+      width: 100,
       index: 'department_name',
       className: 'text-center',
       // 超管可见
@@ -136,11 +138,14 @@ export class CompanyListComponent implements OnInit {
     {
       title: '联系人',
       index: 'LXR',
+      width: 100,
       className: 'text-center'
     },
     {
       title: '联系电话',
       index: 'LXDH',
+      width: 100,
+
       className: 'text-center'
     },
 
@@ -148,6 +153,7 @@ export class CompanyListComponent implements OnInit {
       title: '登记日期',
       type: 'date',
       index: 'DJRQ',
+      width: 100,
       dateFormat: 'YYYY-MM-DD',
       className: 'text-center'
     },
@@ -155,6 +161,7 @@ export class CompanyListComponent implements OnInit {
       title: '修改日期',
       type: 'date',
       index: 'XGRQ',
+      width: 100,
       dateFormat: 'YYYY-MM-DD',
       className: 'text-center'
     },
@@ -277,7 +284,6 @@ export class CompanyListComponent implements OnInit {
       return rawData.data.rows;
     }
   };
-  XlsxExportOptions: XlsxExportOptions;
   //
   batchDelDisabled = true;
   constructor(
@@ -387,6 +393,10 @@ export class CompanyListComponent implements OnInit {
     this.st.reset(this.params);
   }
 
+  /**
+   * 表格change
+   * @param e
+   */
   stChange(e: STChange) {
     if (e.type === 'checkbox') {
       e.checkbox.length ? this.batchDelDisabled = false : this.batchDelDisabled = true;
@@ -396,25 +406,30 @@ export class CompanyListComponent implements OnInit {
 
   }
 
+  beforeUpload = (file: File) => {
+
+    if (file.name.includes('xls') || file.name.includes('xlsx')) {
+      return true;
+    } else {
+      this.msgSrv.error('只支持excel文件上传！');
+      return false;
+    }
+  };
 
   /**
-   * 导出纳税人信息
+   * 上传excel事件
+   * @param e
    */
-  exportNsrData() {
-    const data = [this.columns.filter(i => i.title !== '操作' && i.title !== '序号' && i.title !== '编号').map(i => i.title)];
-    this.st._data.forEach(i =>
-      data.push(this.columns.map(c => i[c.index as string])),
-    );
-    this.st.export();
-    // this.xlsx.export({
-    //   sheets: [
-    //     {
-    //       data,
-    //       name: '数据',
-    //     },
-    //   ],
-    //   filename: '纳税人登记信息.xlsx'
-    // });
-  }
+  uploadChange(e: UploadChangeParam) {
+    // console.log(e);
+    if (e.type === "success") {
 
+      e.file.response.success ? this.msgSrv.success(e.file.response.msg) : this.msgSrv.error(e.file.error);
+      this.st.reload();
+      return;
+    }
+    if (e.type === "error") {
+      this.msgSrv.error(e.file.error);
+    }
+  }
 }

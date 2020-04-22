@@ -15,6 +15,8 @@ export class HeaderComponent implements OnInit {
 
   toggleCollapsedSidebar() {
     this.settings.setLayout('collapsed', !this.settings.layout.collapsed);
+    window.dispatchEvent(new Event('resize'));
+
   }
 
   searchToggleChange() {

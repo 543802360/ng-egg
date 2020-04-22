@@ -8,6 +8,8 @@ import { SFSchema, SFUISchema, SFNumberWidgetSchema } from '@delon/form';
 @Component({
   selector: 'app-company-djnsrxx-edit',
   templateUrl: './edit.component.html',
+  styleUrls: ['./edit.component.less']
+
 })
 export class CompanyDjnsrxxEditComponent implements OnInit {
   record: IDjnsrxx = {};
@@ -43,14 +45,14 @@ export class CompanyDjnsrxxEditComponent implements OnInit {
       },
       SSFC: {
         type: 'number',
-        title: '税收分成',
+        title: '税收留存比例',
         maximum: 100,
         minimum: 0,
         default: 100,
         ui: {
           unit: '%',
-          width: 250,
-          optionalHelp: '此数值为该企业税收留在本辖区的比例'
+          optionalHelp: '此数值为该企业税收留在本辖区的比例',
+          spanLabelFixed: 150
         }
       },
 
@@ -59,7 +61,7 @@ export class CompanyDjnsrxxEditComponent implements OnInit {
   };
   ui: SFUISchema = {
     '*': {
-      spanLabelFixed: 100,
+      spanLabelFixed: 120,
       grid: { span: 12 },
     }
   };

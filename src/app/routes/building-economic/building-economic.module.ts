@@ -1,21 +1,31 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from '@shared';
 import { BuildingEconomicRoutingModule } from './building-economic-routing.module';
-import { BuildingEconomicCreateBuildingComponent } from './create-building/create-building.component';
-import { BuildingEconomicBuildingListComponent } from './building-list/building-list.component';
-import { BuildingEconomicBuildingListEditComponent } from './building-list/edit/edit.component';
-import { BuildingEconomicBuildingListViewComponent } from './building-list/view/view.component';
-import { BuildingEconomicBuildingMapComponent } from './building-map/building-map.component';
 import { NgxMapboxGLModule } from "ngx-mapbox-gl";
+import { BuildingEconomicListComponent } from './list/list.component';
+import { BuildingEconomicListEditComponent } from './list/edit/edit.component';
+import { BuildingEconomicListViewComponent } from './list/view/view.component';
+import { BuildingEconomicMapComponent } from './map/map.component';
+import { BuildingEconomicCompanyComponent } from './company/company.component';
+import { BuildingEconomicCompanyEditComponent } from './company/edit/edit.component';
+import { BuildingEconomicCompanyViewComponent } from './company/view/view.component';
+import { BuildingEconomicCreateComponent } from './create/create.component';
+import { BuildingEconomicCreateEditComponent } from './create/edit/edit.component';
+import { BuildingEconomicCreateViewComponent } from './create/view/view.component';
 
 const COMPONENTS = [
-  BuildingEconomicCreateBuildingComponent,
-  BuildingEconomicBuildingListComponent,
-  BuildingEconomicBuildingMapComponent];
+  BuildingEconomicListComponent,
+  BuildingEconomicMapComponent,
+  BuildingEconomicCompanyComponent,
+  BuildingEconomicCreateComponent];
+
 const COMPONENTS_NOROUNT = [
-  BuildingEconomicBuildingListEditComponent,
-  BuildingEconomicBuildingListViewComponent,
-];
+  BuildingEconomicListEditComponent,
+  BuildingEconomicListViewComponent,
+  BuildingEconomicCompanyEditComponent,
+  BuildingEconomicCompanyViewComponent,
+  BuildingEconomicCreateEditComponent,
+  BuildingEconomicCreateViewComponent];
 
 @NgModule({
   imports: [

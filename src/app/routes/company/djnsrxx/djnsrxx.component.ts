@@ -1,3 +1,4 @@
+import { LoadingTypesService } from '@core/loading-types.service';
 import { CompanyDjnsrxxEditComponent } from './edit/edit.component';
 
 
@@ -10,7 +11,6 @@ import { Subject } from 'rxjs';
 import { XlsxService, XlsxExportOptions, LoadingService } from '@delon/abc';
 import { CompanyDjnsrxxViewComponent } from './view/view.component';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { loadingCustoms } from '@shared';
 import { NzModalService } from 'ng-zorro-antd';
 
 @Component({
@@ -44,6 +44,7 @@ export class CompanyDjnsrxxComponent implements OnInit {
       type: 'checkbox',
       fixed: 'left',
       width: 40,
+      exported: false,
       className: 'text-center'
     },
     {
@@ -58,7 +59,7 @@ export class CompanyDjnsrxxComponent implements OnInit {
       title: '纳税人识别号',
       index: 'NSRSBH',
       fixed: 'left',
-      width: 100,
+      width: 220,
       className: 'text-center'
     },
     {
@@ -247,6 +248,7 @@ export class CompanyDjnsrxxComponent implements OnInit {
     private modalSrv: NzModalService,
     private msgSrv: NzMessageService,
     private loadingSrv: LoadingService,
+    private loadingTypeSrv: LoadingTypesService,
     private xlsx: XlsxService
   ) { }
 
@@ -293,7 +295,11 @@ export class CompanyDjnsrxxComponent implements OnInit {
       nzContent: '确认添加至本辖区企业库吗？',
       nzCancelText: '取消',
       nzOnOk: () => {
-        this.loadingSrv.open({ text: '正在处理……' });
+        this.loadingSrv.open({
+          type: 'custom',
+          custom: this.loadingTypeSrv.loadingTypes.Cubes,
+          text: '正在处理……'
+        });
         this.http.post('hx/nsr', this.selectedRows).subscribe(res => {
           this.loadingSrv.close();
           if (res.success) {
@@ -339,24 +345,20 @@ export class CompanyDjnsrxxComponent implements OnInit {
     this.params.NSRSBH = '';
     this.st.reset(this.params);
   }
-
-  /**
-   * 导出数据
-   */
-  exportNsrData() {
-    const data = [this.columns.filter(i => i.title !== '操作' && i.title !== '序号' && i.title !== '编号').map(i => i.title)];
-    this.st._data.forEach(i =>
-      data.push(this.columns.map(c => i[c.index as string])),
-    );
-    this.xlsx.export({
-      sheets: [
-        {
-          data,
-          name: '数据',
-        },
-      ],
-      filename: '纳税人登记信息.xlsx'
-    });
-  }
+  // exportNsrData() {
+  //   const data = [this.columns.filter(i => i.title !== '操作' && i.title !== '序号' && i.title !== '编号').map(i => i.title)];
+  //   this.st._data.forEach(i =>
+  //     data.push(this.columns.map(c => i[c.index as string])),
+  //   );
+  //   this.xlsx.export({
+  //     sheets: [
+  //       {
+  //         data,
+  //         name: '数据',
+  //       },
+  //     ],
+  //     filename: '纳税人登记信息.xlsx'
+  //   });
+  // }
 
 }

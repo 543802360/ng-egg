@@ -7,6 +7,8 @@ import { SFSchema, SFUISchema } from '@delon/form';
 @Component({
   selector: 'app-company-position-edit',
   templateUrl: './edit.component.html',
+  styleUrls: ['./edit.component.less']
+
 })
 export class CompanyPositionEditComponent implements OnInit {
   record: any = {};
@@ -42,11 +44,11 @@ export class CompanyPositionEditComponent implements OnInit {
     private modal: NzModalRef,
     private msgSrv: NzMessageService,
     public http: _HttpClient,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     if (this.record.id > 0)
-    this.http.get(`/user/${this.record.id}`).subscribe(res => (this.i = res));
+      this.http.get(`/user/${this.record.id}`).subscribe(res => (this.i = res));
   }
 
   save(value: any) {

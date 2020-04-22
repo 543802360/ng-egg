@@ -20,7 +20,7 @@ export class CompanyListViewComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.http.get(`hx/nsr/${this.record.UUID}`).subscribe(res => this.i = res.data);
+    this.http.get(`hx/nsr/show`, { id: this.record.UUID }).subscribe(res => this.i = res.data);
   }
 
   close() {

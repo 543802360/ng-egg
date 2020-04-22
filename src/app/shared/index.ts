@@ -5,7 +5,7 @@
 export * from './utils/yuan';
 export * from './utils/array2tree';
 export * from './utils/tree2array';
-
+export * from "./utils/geoUtil";
 // 接口类
 export * from './models/IMenu';
 export * from './models/IDepartment';
@@ -14,6 +14,8 @@ export * from "./models/IUser";
 export * from "./models/MenuType";
 export * from './models/TableOperator';
 export * from './models/IDjnsrxx';
+export * from "./models/IBuilding";
+
 // 数据类型
 export * from './models/LoadingTypes';
 // 模块
