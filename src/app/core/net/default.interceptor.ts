@@ -41,23 +41,40 @@ const CODEMESSAGE = {
 export class DefaultInterceptor implements HttpInterceptor {
   constructor(private injector: Injector, private msg: NzMessageService) { }
 
+
   private get notification(): NzNotificationService {
     return this.injector.get(NzNotificationService);
   }
 
+  /**
+   * 跳转至指定路由
+   * @param url
+   */
   private goTo(url: string) {
     setTimeout(() => this.injector.get(Router).navigateByUrl(url));
   }
 
+  /**
+   * 检验http status
+   * @param ev
+   */
   private checkStatus(ev: HttpResponseBase) {
     if ((ev.status >= 200 && ev.status < 300) || ev.status === 401) {
       return;
+    }
+
+    if (ev.status === 400) {
+      return false;
     }
 
     const errortext = CODEMESSAGE[ev.status] || ev.statusText;
     this.notification.error(`请求错误 ${ev.status}: ${ev.url}`, errortext);
   }
 
+  /**
+   * 处理http返回数据
+   * @param ev
+   */
   private handleData(ev: HttpResponseBase): Observable<any> {
     // 可能会因为 `throw` 导出无法执行 `_HttpClient` 的 `end()` 操作
     if (ev.status > 0) {
@@ -71,16 +88,16 @@ export class DefaultInterceptor implements HttpInterceptor {
         // 例如响应内容：
         //  错误内容：{ success: false, msg: '非法参数' }
         //  正确内容：{ success: true, response: {  } }
-        // 则以下代码片断可直接适用
         if (ev instanceof HttpResponse) {
           const body: any = ev.body;
           if (body && body.success === false) {
-            // this.msg.error(body.msg);
+            // console.log('injector error:', body);
+            this.msg.error(body.msg);
             // 继续抛出错误中断后续所有 Pipe、subscribe 操作，因此：
             // this.http.get('/').subscribe() 并不会触发
-            return throwError(body.msg);
+            return throwError({ status: 400 });
           } else {
-            this.msg.success(body.msg)
+            // this.msg.success(body.msg);
             // 重新修改 `body` 内容为 `response` 内容，对于绝大多数场景已经无须再关心业务状态码
             // return of(new HttpResponse({ ...ev, body: body.response }));
             // 或者依然保持完整的格式
@@ -105,6 +122,7 @@ export class DefaultInterceptor implements HttpInterceptor {
         }
         break;
     }
+    // 是否是错误响应
     if (ev instanceof HttpErrorResponse) {
       return throwError(ev);
     } else {
@@ -112,6 +130,11 @@ export class DefaultInterceptor implements HttpInterceptor {
     }
   }
 
+  /**
+   * 自定义http拦截器
+   * @param req
+   * @param next
+   */
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     // 统一加上服务端前缀
     let url = req.url;
