@@ -98,7 +98,7 @@ export class BuildingModelComponent implements OnInit {
         displayControlsDefault: false,
         controls: {
           polygon: true,
-          trash: true
+          trash: false
         }
       });
       this.map_2d.addControl(this.drawCtrl, 'top-left');
@@ -320,25 +320,20 @@ export class BuildingModelComponent implements OnInit {
       nzOkText: '确认',
       nzOnOk: () => {
         this.http.delete(`building/delete/${building_id}`).subscribe(resp => {
-          if (resp.success) {
-            this.msgSrv.success(resp.msg);
-            this.infoPopup.remove();
-
-            // tslint:disable-next-line: prefer-for-of
-            // 从图层中移除该楼宇
-            for (let i = 0; i < this.buildingFeatures.length; i++) {
-              const f = this.buildingFeatures[i];
-              if (f.properties.building_id === building_id) {
-                this.buildingFeatures.splice(i, 1);
-                this.updateBuildingSource();
-                break;
-              }
-
+          this.infoPopup.remove();
+          // tslint:disable-next-line: prefer-for-of
+          // 从图层中移除该楼宇
+          for (let i = 0; i < this.buildingFeatures.length; i++) {
+            const f = this.buildingFeatures[i];
+            if (f.properties.building_id === building_id) {
+              this.buildingFeatures.splice(i, 1);
+              this.updateBuildingSource();
+              break;
             }
 
-          } else {
-            this.msgSrv.error(resp.msg);
           }
+
+
 
         });
       },
