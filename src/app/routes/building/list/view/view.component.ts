@@ -4,10 +4,10 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 import { _HttpClient } from '@delon/theme';
 
 @Component({
-  selector: 'app-building-economic-company-view',
+  selector: 'app-building-list-view',
   templateUrl: './view.component.html',
 })
-export class BuildingEconomicCompanyViewComponent implements OnInit {
+export class BuildingListViewComponent implements OnInit {
   record: any = {};
   i: any;
 

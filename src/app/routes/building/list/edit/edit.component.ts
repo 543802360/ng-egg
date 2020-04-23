@@ -5,10 +5,10 @@ import { _HttpClient } from '@delon/theme';
 import { SFSchema, SFUISchema } from '@delon/form';
 
 @Component({
-  selector: 'app-building-economic-company-edit',
+  selector: 'app-building-list-edit',
   templateUrl: './edit.component.html',
 })
-export class BuildingEconomicCompanyEditComponent implements OnInit {
+export class BuildingListEditComponent implements OnInit {
   record: any = {};
   i: any;
   schema: SFSchema = {
@@ -42,11 +42,11 @@ export class BuildingEconomicCompanyEditComponent implements OnInit {
     private modal: NzModalRef,
     private msgSrv: NzMessageService,
     public http: _HttpClient,
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     if (this.record.id > 0)
-      this.http.get(`/user/${this.record.id}`).subscribe(res => (this.i = res));
+    this.http.get(`/user/${this.record.id}`).subscribe(res => (this.i = res));
   }
 
   save(value: any) {

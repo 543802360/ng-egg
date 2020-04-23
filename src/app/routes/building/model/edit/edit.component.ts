@@ -1,3 +1,4 @@
+import { EBuildingOperation } from './../../dics/buildingOperation';
 import { GeoUtilService } from './../../../../core/geo-util.service';
 import { CacheService } from '@delon/cache';
 import { IBuilding, geojson2wkt } from '@shared';
@@ -21,7 +22,8 @@ export class BuildingModelEditComponent implements OnInit {
   style = (dark as any).default;
   map: mapboxgl.Map;
 
-  record: any;
+  type: EBuildingOperation; // 编辑类型
+  record: any; // 编辑item
   i: IBuilding;
   schema: SFSchema = {
     properties: {
@@ -46,7 +48,7 @@ export class BuildingModelEditComponent implements OnInit {
         title: '备注'
       },
     },
-    required: ['building_name', 'building_height'],
+    required: ['building_name', 'building_floor', 'building_height'],
   };
   ui: SFUISchema = {
     '*': {
@@ -97,7 +99,9 @@ export class BuildingModelEditComponent implements OnInit {
   save(value: any) {
 
     const { department_id } = this.cacheSrv.get('userInfo', { mode: 'none' });
-    Object.assign(this.i, {
+    const property = deepCopy(this.i);
+    delete property.shape;
+    Object.assign(property, {
       ...value,
       jdxz_dm: department_id
     });
@@ -105,19 +109,41 @@ export class BuildingModelEditComponent implements OnInit {
     const buildingFeature = {
       id: this.i.building_id,
       type: 'Feature',
-      properties: this.i,
+      properties: property,
       geometry: this.i.shape
     }
-
-    // 创建楼宇
-    this.http.post('building/create', this.i).subscribe(resp => {
-      if (resp.success) {
-        this.msgSrv.success(resp.msg);
-        this.modal.close({ feature: buildingFeature })
-      } else {
-        this.msgSrv.error(resp.msg);
-      }
-    });
+    switch (this.type) {
+      // 创建楼宇
+      case EBuildingOperation.CREATE:
+        this.http.post('building/create', this.i).subscribe(resp => {
+          if (resp.success) {
+            this.msgSrv.success(resp.msg);
+            this.modal.close({
+              feature: buildingFeature,
+              type: EBuildingOperation.CREATE
+            })
+          } else {
+            this.msgSrv.error(resp.msg);
+          }
+        });
+        break;
+      // 更新楼宇
+      case EBuildingOperation.UPDATE:
+        this.http.post('building/update', this.i).subscribe(resp => {
+          if (resp.success) {
+            this.msgSrv.success(resp.msg);
+            this.modal.close({
+              feature: buildingFeature,
+              type: EBuildingOperation.UPDATE
+            })
+          } else {
+            this.msgSrv.error(resp.msg);
+          }
+        });
+        break;
+      default:
+        break;
+    }
 
   }
 
@@ -139,7 +165,7 @@ export class BuildingModelEditComponent implements OnInit {
       geometry: this.i.shape
     }
     const center = this.geoUtilSrv.center(feature);
-    console.log('center:', center);
+
     this.map.flyTo({
       center: center.geometry.coordinates as mapboxgl.LngLatLike,
       zoom: 16
@@ -147,7 +173,14 @@ export class BuildingModelEditComponent implements OnInit {
     drawCtrl.add(feature);
     // add draw update event;
     this.map.on('draw.update', e => {
-      this.i.shape = e.features[0].geometry;
+      console.log('update', e);
+      Object.defineProperty(this.i, 'shape', {
+        configurable: true,
+        writable: true,
+        enumerable: true,
+        value: deepCopy(e.features[0].geometry)
+      })
+      // this.i.shape = ;
     });
     // add delete evnet;delete from buildings db;
     this.map.on('draw.delete', e => {

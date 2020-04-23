@@ -9,12 +9,18 @@
     <div nz-col nzSpan="12" style="height: 100%;">
       <mgl-map [style]="style" trackResize="true" [zoom]="[8]" [center]="[120.3,36.45]"
         (load)="mapboxglLoad($event,'2d')">
+        <div #buildingEdit>
+          <button nz-button nzType="primary" (click)="edit()">编辑</button>
+          <button nz-button nzType="danger" (click)="delete()">删除</button>
+        </div>
       </mgl-map>
     </div>
     <div nz-col nzSpan="12" style="height: 100%;">
       <mgl-map [style]="style" trackResize="true" [zoom]="[8]" [center]="[120.3,36.45]"
         (load)="mapboxglLoad($event,'3d')">
+
       </mgl-map>
     </div>
   </div>
+
 </nz-card>
