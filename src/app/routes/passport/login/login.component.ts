@@ -121,11 +121,6 @@ export class UserLoginComponent implements OnDestroy {
       })
       .subscribe(
         (res: any) => {
-          if (res.success !== true) {
-            this.error = res.msg;
-            return;
-          }
-
           // 清空路由复用信息
           this.reuseTabService.clear();
           // 设置用户Token信息
@@ -138,7 +133,6 @@ export class UserLoginComponent implements OnDestroy {
 
           // 重新获取 StartupService 内容，我们始终认为应用信息一般都会受当前用户授权范围而影响
           this.startupSrv.load().then((result) => {
-            console.log('login', result);
             let url = this.tokenService.referrer!.url || '/';
             if (url.includes('/passport')) {
               url = '/';
