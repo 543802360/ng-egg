@@ -4,7 +4,15 @@
   </ng-template>
 </page-header> -->
 <nz-card>
-  <sf mode="search" [schema]="searchSchema" (formSubmit)="st.reset($event)" (formReset)="st.reset($event)"></sf>
+
+  <div class="mb-md">
+    <input nz-input [(ngModel)]="params.building_name" name="building_name" nzPlaceHolder="请输入楼宇名称"
+      style="width: 150px;" class="mr-sm">
+    <button nz-button (click)="st.load(1,params)" [nzType]="'primary'">搜索</button>
+    <button nz-button (click)="params = {}; st.reset({})">重置</button>
+    <button nz-button (click)="add()" [nzType]="'primary'">添加</button>
+
+  </div>
   <st #st [data]="url" [req]="companyReq" [res]="companyRes" size="middle" [bordered]="true" [scroll]="{x:'1200px'}"
     [columns]="columns" [pi]="1" [ps]="10" [total]="total"></st>
 </nz-card>

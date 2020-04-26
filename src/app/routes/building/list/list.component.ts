@@ -1,3 +1,4 @@
+import { EBuildingOperation } from './../dics/buildingOperation';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { _HttpClient, ModalHelper } from '@delon/theme';
 import { STColumn, STComponent, STRes, STData, STReq } from '@delon/abc/table';
@@ -13,9 +14,9 @@ export class BuildingListComponent implements OnInit {
   total;
   searchSchema: SFSchema = {
     properties: {
-      no: {
+      building_name: {
         type: 'string',
-        title: '编号'
+        title: '楼宇名称'
       }
     }
   };
@@ -111,42 +112,20 @@ export class BuildingListComponent implements OnInit {
     {
       title: '操作',
       fixed: 'right',
-      width: 140,
+      width: 100,
       className: 'text-center',
       buttons: [
         {
           // text: '查看',
-          icon: 'eye',
-          tooltip: '查看楼宇信息',
+          icon: 'edit',
+          tooltip: '编辑楼宇信息',
           type: 'modal',
           // acl: {
           //   ability: ['company:hxnsrxx:view']
           // },
           modal: {
             component: BuildingModelEditComponent,
-            params: record => ({ record }),
-            modalOptions: {
-              nzStyle: {
-                left: '26%',
-                position: 'fixed'
-              }
-            }
-          },
-          click: (_record, modal, comp) => {
-            // modal 为回传值，可自定义回传值
-
-          }
-        },
-        {
-          icon: 'edit',
-          tooltip: '编辑纳税人信息',
-          // acl: {
-          //   ability: ['company:hxnsrxx:edit']
-          // },
-          type: "modal",
-          modal: {
-            component: '',
-            params: record => record,
+            params: record => ({ record, type: EBuildingOperation.UPDATE, draw: false }),
             modalOptions: {
               nzStyle: {
                 left: '26%',
@@ -182,7 +161,9 @@ export class BuildingListComponent implements OnInit {
       ]
     }
   ];
-
+  params = {
+    building_name: ''
+  };
   // 请求配置
   companyReq: STReq = {
     type: 'page',
@@ -191,6 +172,7 @@ export class BuildingListComponent implements OnInit {
       pi: 'pageNum',
       ps: 'pageSize'
     },
+    params: this.params
 
   };
   // response 配置
@@ -206,9 +188,28 @@ export class BuildingListComponent implements OnInit {
   ngOnInit() { }
 
   add() {
-    // this.modal
-    //   .createStatic(FormEditComponent, { i: { id: 0 } })
-    //   .subscribe(() => this.st.reload());
+
+    this.modal
+      .createStatic(BuildingModelEditComponent, {
+        record:
+        {
+
+        },
+        type: EBuildingOperation.CREATE,
+        draw: true
+      }, {
+        modalOptions: {
+          nzStyle: {
+            left: '26%',
+            position: 'fixed'
+          }
+        }
+      })
+      .subscribe((res) => {
+        if (res.type === EBuildingOperation.CREATE && res.feature) {
+          this.st.reload();
+        }
+      });
   }
 
 }

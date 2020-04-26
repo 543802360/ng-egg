@@ -23,8 +23,11 @@ export class BuildingModelEditComponent implements OnInit {
   map: mapboxgl.Map;
 
   type: EBuildingOperation; // 编辑类型
+  draw: boolean;
   record: any; // 编辑item
   i: IBuilding;
+
+  //#region 表单Schema
   schema: SFSchema = {
     properties: {
       building_name: {
@@ -75,6 +78,7 @@ export class BuildingModelEditComponent implements OnInit {
       grid: { span: 24 },
     },
   };
+  //#endregion
 
   constructor(
     private modal: NzModalRef,
@@ -98,6 +102,11 @@ export class BuildingModelEditComponent implements OnInit {
    */
   save(value: any) {
 
+    if (!this.i.shape) {
+      this.msgSrv.warning('请绘制楼宇图形');
+      return false;
+    }
+
     const { department_id } = this.cacheSrv.get('userInfo', { mode: 'none' });
     const property = deepCopy(this.i);
     delete property.shape;
@@ -115,30 +124,22 @@ export class BuildingModelEditComponent implements OnInit {
     switch (this.type) {
       // 创建楼宇
       case EBuildingOperation.CREATE:
-        this.http.post('building/create', this.i).subscribe(resp => {
-          if (resp.success) {
-            this.msgSrv.success(resp.msg);
-            this.modal.close({
-              feature: buildingFeature,
-              type: EBuildingOperation.CREATE
-            })
-          } else {
-            this.msgSrv.error(resp.msg);
-          }
+        this.http.post('building/create', property).subscribe(resp => {
+          this.msgSrv.success(resp.msg);
+          this.modal.close({
+            feature: buildingFeature,
+            type: EBuildingOperation.CREATE
+          })
+
         });
         break;
       // 更新楼宇
       case EBuildingOperation.UPDATE:
-        this.http.post('building/update', this.i).subscribe(resp => {
-          if (resp.success) {
-            this.msgSrv.success(resp.msg);
-            this.modal.close({
-              feature: buildingFeature,
-              type: EBuildingOperation.UPDATE
-            })
-          } else {
-            this.msgSrv.error(resp.msg);
-          }
+        this.http.post('building/update', property).subscribe(resp => {
+          this.modal.close({
+            feature: buildingFeature,
+            type: EBuildingOperation.UPDATE
+          })
         });
         break;
       default:
@@ -150,27 +151,31 @@ export class BuildingModelEditComponent implements OnInit {
   mapboxglLoad(e) {
     this.loadingSrv.close();
     this.map = e;
+
     const drawCtrl = new MapboxDraw({
       keybindings: false,
       displayControlsDefault: false,
       controls: {
-        polygon: false,
-        trash: false
+        polygon: this.draw ? true : false,
+        trash: this.draw ? true : false
       }
     });
     this.map.addControl(drawCtrl, 'top-left');
-    const feature = {
-      type: 'Feature',
-      properties: this.i,
-      geometry: this.i.shape
-    }
-    const center = this.geoUtilSrv.center(feature);
+    if (!this.draw) {
+      const feature = {
+        type: 'Feature',
+        properties: this.i,
+        geometry: this.i.shape
+      }
+      const center = this.geoUtilSrv.center(feature);
 
-    this.map.flyTo({
-      center: center.geometry.coordinates as mapboxgl.LngLatLike,
-      zoom: 16
-    });
-    drawCtrl.add(feature);
+      this.map.flyTo({
+        center: center.geometry.coordinates as mapboxgl.LngLatLike,
+        zoom: 16
+      });
+      drawCtrl.add(feature);
+    }
+
     // add draw update event;
     this.map.on('draw.update', e => {
       console.log('update', e);
@@ -185,6 +190,17 @@ export class BuildingModelEditComponent implements OnInit {
     // add delete evnet;delete from buildings db;
     this.map.on('draw.delete', e => {
 
+    });
+
+    this.map.on('draw.create', e => {
+      const fc = e.features[0];
+      Object.defineProperty(this.i, 'shape', {
+        configurable: true,
+        writable: true,
+        enumerable: true,
+        value: deepCopy(fc.geometry)
+      });
+      this.i.building_id = fc.id;
     });
     setTimeout(() => {
       // mapbox-gl-draw_ctrl-draw-btn mapbox-gl-draw_trash

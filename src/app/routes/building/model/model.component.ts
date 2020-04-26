@@ -166,20 +166,15 @@ export class BuildingModelComponent implements OnInit {
   loadBuildings() {
     // 初始化时加载可编辑的楼宇2维底图
     this.http.get('building/listAllBuildingGeo').subscribe(resp => {
-      if (resp.success) {
-        // this.drawCtrl.add(resp.data);
-        this.buildingFeatures = resp.data.features;
-        const bounds = resp.bounds;
-        const v2 = new mapboxgl.LngLatBounds([bounds[0], bounds[1]], [bounds[2], bounds[3]]);
-        this.map_2d.fitBounds(v2);
+      // this.drawCtrl.add(resp.data);
+      this.buildingFeatures = resp.data.features;
+      const bounds = resp.bounds;
+      const v2 = new mapboxgl.LngLatBounds([bounds[0], bounds[1]], [bounds[2], bounds[3]]);
+      this.map_2d.fitBounds(v2);
 
-        this.initBuilding2D();
-        this.initBuilding3D();
+      this.initBuilding2D();
+      this.initBuilding3D();
 
-
-      } else {
-        this.msgSrv.error(resp.msg);
-      }
     });
   }
 
