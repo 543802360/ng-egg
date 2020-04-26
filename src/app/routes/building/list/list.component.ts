@@ -20,7 +20,7 @@ export class BuildingListComponent implements OnInit {
       }
     }
   };
-  @ViewChild('st', { static: false }) st: STComponent;
+  @ViewChild('st') st: STComponent;
   // 数据列配置
   columns: STColumn[] = [
     // {

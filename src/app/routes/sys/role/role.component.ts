@@ -16,7 +16,7 @@ import { CacheService } from '@delon/cache';
 })
 export class SysRoleComponent implements OnInit {
 
-  @ViewChild('st', { static: false }) st: STComponent;
+  @ViewChild('st') st: STComponent;
   roleData: IRole[];
   columns: STColumn[] = [
     // {

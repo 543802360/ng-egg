@@ -14,7 +14,7 @@ import { of } from 'rxjs';
 })
 export class SysUserEditComponent implements OnInit {
 
-  @ViewChild('sf', { static: false }) userSF: SFComponent;
+  @ViewChild('sf') userSF: SFComponent;
   record: IUser;
   i: any;
   schema: SFSchema = {

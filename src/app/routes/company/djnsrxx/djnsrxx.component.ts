@@ -18,7 +18,7 @@ import { NzModalService } from 'ng-zorro-antd';
   templateUrl: './djnsrxx.component.html',
 })
 export class CompanyDjnsrxxComponent implements OnInit {
-  @ViewChild('st', { static: false }) st: STComponent;
+  @ViewChild('st') st: STComponent;
   url = "nsr/list";
   total: number;
   nsrmcAutoDataSource = [];
