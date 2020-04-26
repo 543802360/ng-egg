@@ -327,9 +327,6 @@ export class BuildingModelComponent implements OnInit {
             }
 
           }
-
-
-
         });
       },
       nzOnCancel: () => {

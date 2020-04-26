@@ -145,16 +145,15 @@ export class BuildingListComponent implements OnInit {
           // acl: {
           //   ability: ['company:hxnsrxx:delete']
           // },
+          pop: {
+            title: '确认删除此楼宇吗？',
+            okType: 'danger',
+            icon: 'star',
+          },
           click: (record, _modal, comp) => {
-            // this.http.post('hx/nsr/del', [record.UUID]).subscribe(resp => {
-            //   if (resp.success) {
-            //     this.msgSrv.success(`${resp.msg}`);
-            //     comp!.removeRow(record);
-            //   }
-            //   else {
-            //     this.msgSrv.error(resp.msg);
-            //   };
-            // });
+            this.http.delete(`building/delete/${record.building_id}`).subscribe(resp => {
+              this.st.reload();
+            });
 
           },
         },
