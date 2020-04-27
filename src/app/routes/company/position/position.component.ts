@@ -29,7 +29,7 @@ export class CompanyPositionComponent implements OnInit {
 
 
   //#region ng-alain 表格
-  @ViewChild('st', { static: false }) st: STComponent;
+  @ViewChild('st') st: STComponent;
   url = "hx/nsr/list";
   total: number;
   expandForm = false;

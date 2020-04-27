@@ -19,6 +19,8 @@ import { ControlWidget } from '@delon/form';
 })
 // tslint:disable-next-line: component-class-suffix
 export class FontAwesomeWidget extends ControlWidget implements OnInit {
+  // TODO: add explicit constructor
+
   /* 用于注册小部件 KEY 值 */
   static readonly KEY = 'fontawesome';
 
