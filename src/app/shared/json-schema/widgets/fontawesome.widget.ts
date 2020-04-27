@@ -21,6 +21,8 @@ import { ControlWidget } from '@delon/form';
 export class FontAwesomeWidget extends ControlWidget implements OnInit {
   // TODO: add explicit constructor
 
+  // TODO: add explicit constructor
+
   /* 用于注册小部件 KEY 值 */
   static readonly KEY = 'fontawesome';
 
