@@ -33,6 +33,8 @@ export class FontAwesomeWidget extends ControlWidget implements OnInit {
   width: any;
   height: any;
   maxHeight: any;
+
+
   ngOnInit(): void {
     this.onIconPickerSelect = this.ui.onIconPickerSelect;
     this.prefix = this.ui.prefix ? this.ui.prefix : 'fa';
