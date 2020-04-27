@@ -15,7 +15,7 @@ import { CacheService } from '@delon/cache';
 })
 export class SysUserComponent implements OnInit {
 
-  @ViewChild('departmentTree') departmentTree: NzTreeComponent;
+  @ViewChild('departmentTree', { static: false }) departmentTree: NzTreeComponent;
   // 部门树节点s
   departmentTreeNodes: any[] = [];
   // 右键选中treenode
@@ -114,12 +114,12 @@ export class SysUserComponent implements OnInit {
     }
   };
   constructor(
-    private http: _HttpClient,
-    private modalSrv: NzModalService,
-    private modal: ModalHelper,
-    private cacheSrv: CacheService,
-    private contextSrv: NzContextMenuService,
-    private msgSrv: NzMessageService) { }
+    public http: _HttpClient,
+    public modalSrv: NzModalService,
+    public modal: ModalHelper,
+    public cacheSrv: CacheService,
+    public contextSrv: NzContextMenuService,
+    public msgSrv: NzMessageService) { }
 
   ngOnInit() {
     this.initDepartmentTree();

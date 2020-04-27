@@ -71,7 +71,7 @@
     "@types/jasmine": "~3.3.8",
     "@types/jasminewd2": "~2.0.3",
     "@types/mapbox-gl": "^1.8.1",
-    "@types/node": "~8.9.4",
+    "@types/node": "^8.9.5",
     "antd-theme-generator": "^1.1.7",
     "codelyzer": "^5.0.0",
     "husky": "^3.0.9",
@@ -120,5 +120,10 @@
     "hooks": {
       "pre-commit": "npm run lint-staged"
     }
+  },
+  "browser": {
+    "fs": false,
+    "path": false,
+    "os": false
   }
 }

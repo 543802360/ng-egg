@@ -16,7 +16,7 @@ import { CacheService } from '@delon/cache';
 })
 export class SysRoleComponent implements OnInit {
 
-  @ViewChild('st') st: STComponent;
+  @ViewChild('st', { static: false }) st: STComponent;
   roleData: IRole[];
   columns: STColumn[] = [
     // {
@@ -123,11 +123,11 @@ export class SysRoleComponent implements OnInit {
   ];
 
   constructor(
-    private http: _HttpClient,
-    private modal: ModalHelper,
-    private msgSrv: NzMessageService,
-    private cacheSrv: CacheService,
-    private startSrv: StartupService) { }
+    public http: _HttpClient,
+    public modal: ModalHelper,
+    public msgSrv: NzMessageService,
+    public cacheSrv: CacheService,
+    public startSrv: StartupService) { }
 
   ngOnInit() {
     this.initRoles();

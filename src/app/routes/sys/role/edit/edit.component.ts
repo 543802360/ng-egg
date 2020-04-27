@@ -13,7 +13,7 @@ import { CacheService } from '@delon/cache';
 })
 export class SysRoleEditComponent implements OnInit {
   // role 动态表单
-  @ViewChild('sf') roleSf: SFComponent;
+  @ViewChild('sf', { static: false }) roleSf: SFComponent;
   // 菜单树节点
   menusTreeNodes = [];
   // 菜单数组

@@ -18,12 +18,12 @@ import { NzModalService } from 'ng-zorro-antd';
   templateUrl: './djnsrxx.component.html',
 })
 export class CompanyDjnsrxxComponent implements OnInit {
-  @ViewChild('st') st: STComponent;
+  @ViewChild('st', { static: false }) st: STComponent;
   url = "nsr/list";
   total: number;
   nsrmcAutoDataSource = [];
   nsrsbhAutoDataSource = [];
-  searchAutoChangeS = new Subject<string>();
+  searchAutoChangeS = new Subject<any>();
   selectedRows: STData[] = [];
   expandForm = false;
   nsrztTag: STColumnTag = {
@@ -258,7 +258,7 @@ export class CompanyDjnsrxxComponent implements OnInit {
     this.searchAutoChangeS
       .pipe(
         filter(resp => {
-          return Object.values(resp)[0] && Object.values(resp)[0].length >= 2
+          return Object.values(resp)[0] && (Object.values(resp)[0] as any).length >= 2
         }),
         debounceTime(400),
         switchMap(res => {

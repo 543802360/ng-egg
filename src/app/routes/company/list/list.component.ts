@@ -16,13 +16,13 @@ import { CompanyListEditComponent } from './edit/edit.component';
   templateUrl: './list.component.html',
 })
 export class CompanyListComponent implements OnInit {
-  @ViewChild('st') st: STComponent;
+  @ViewChild('st', { static: false }) st: STComponent;
   url = "hx/nsr/list";
   upload = 'hx/nsr/upload';
   total: number;
   nsrmcAutoDataSource = [];
   nsrsbhAutoDataSource = [];
-  searchAutoChangeS = new Subject<string>();
+  searchAutoChangeS = new Subject<any>();
 
   selectedRows: IDjnsrxx[] = [];
   expandForm = false;
@@ -287,11 +287,11 @@ export class CompanyListComponent implements OnInit {
   //
   batchDelDisabled = true;
   constructor(
-    private http: _HttpClient,
-    private loadSrv: LoadingService,
-    private modal: ModalHelper,
-    private modalSrv: NzModalService,
-    private msgSrv: NzMessageService,
+    public http: _HttpClient,
+    public loadSrv: LoadingService,
+    public modal: ModalHelper,
+    public modalSrv: NzModalService,
+    public msgSrv: NzMessageService,
   ) { }
 
   ngOnInit() {
@@ -300,7 +300,7 @@ export class CompanyListComponent implements OnInit {
     this.searchAutoChangeS
       .pipe(
         filter(resp => {
-          return Object.values(resp)[0] && Object.values(resp)[0].length >= 2
+          return Object.values(resp)[0] && (Object.values(resp)[0] as any).length >= 2
         }),
         debounceTime(500),
         switchMap(res => {

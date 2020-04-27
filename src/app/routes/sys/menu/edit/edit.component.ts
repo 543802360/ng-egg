@@ -22,7 +22,7 @@ export class SysMenuEditComponent implements OnInit, AfterViewInit {
   menutype: MenuType;  // 节点类型
   selectedIcon: string; // 所选图标 font-awesome
 
-  @ViewChild('menuTree') menuTree: NzTreeSelectComponent;
+  @ViewChild('menuTree', { static: false }) menuTree: NzTreeSelectComponent;
 
   constructor(
     private modal: NzModalRef,

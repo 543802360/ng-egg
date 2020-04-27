@@ -17,7 +17,7 @@ export class SysLogComponent implements OnInit {
       }
     }
   };
-  @ViewChild('st') st: STComponent;
+  @ViewChild('st', { static: false }) st: STComponent;
   columns: STColumn[] = [
     { title: '编号', index: 'no' },
     { title: '调用次数', type: 'number', index: 'callNo' },

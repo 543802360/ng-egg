@@ -31,7 +31,7 @@ export class BuildingModelComponent implements OnInit {
   map_2d_subject = new BehaviorSubject({});
   map_3d_subject = new BehaviorSubject({});
 
-  @ViewChild('buildingEdit') buildingEdit: HTMLDivElement;
+  @ViewChild('buildingEdit', { static: false }) buildingEdit: HTMLDivElement;
 
   // draw
   drawCtrl;

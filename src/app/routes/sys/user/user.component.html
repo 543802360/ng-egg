@@ -15,7 +15,7 @@
         <div class="mb-md">
           <button acl [acl-ability]="'sys:user:refresh'" nzType="default" (click)="initUsers()" nz-button>刷新</button>
           <button acl [acl-ability]="'sys:user:add'" nzType="primary" (click)="addUser()" nz-button>添加</button>
-          <button acl [acl-ability]="'sys:user:deleteAll'" nzType="danger" (click)="deleteUser($event)"
+          <button acl [acl-ability]="'sys:user:deleteAll'" nzType="danger" (click)="deleteUser()"
             [disabled]="userEditDisabled" nz-button>
             删除</button>
           <button acl [acl-ability]="'sys:user:move'" nzType="primary" [disabled]="userEditDisabled"

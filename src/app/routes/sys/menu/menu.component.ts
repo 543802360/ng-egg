@@ -63,11 +63,11 @@ export class SysMenuComponent implements OnInit, AfterViewInit {
 
 
   constructor(
-    private http: _HttpClient,
-    private modal: ModalHelper,
-    private modalSrv: NzModalService,
-    private msgSrv: NzMessageService,
-    private menuSrv: MenuService) { }
+    public http: _HttpClient,
+    public modal: ModalHelper,
+    public modalSrv: NzModalService,
+    public msgSrv: NzMessageService,
+    public menuSrv: MenuService) { }
 
   ngOnInit() {
 
