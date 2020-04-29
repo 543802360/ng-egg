@@ -3,7 +3,7 @@ import { CompanyListEditComponent } from './../list/edit/edit.component';
 import { CompanyListViewComponent } from './../list/view/view.component';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { _HttpClient, ModalHelper } from '@delon/theme';
-import { STColumn, STComponent, STPage, STReq, STRequestOptions, STRes, STData } from '@delon/abc/table';
+import { STColumn, STComponent, STPage, STReq, STRequestOptions, STRes, STData } from '@delon/abc/st';
 import { SFSchema } from '@delon/form';
 import * as dark from "../../geo/styles/dark.json";
 import { NzMessageService } from 'ng-zorro-antd';
@@ -361,11 +361,20 @@ export class CompanyPositionComponent implements OnInit {
     });
   }
 
-  /** 重置位置
+  /**
+   *  重置位置
    */
   resetPos() {
     this.nsrMarker.setLngLat(this.nsrDefPosition);
     this.map.flyTo({ center: this.nsrDefPosition, zoom: 16 });
+  }
+
+  /**
+   * 重置表格
+   */
+  resetTable() {
+    this.params = { NSRMC: '', NSRSBH: '', SHXYDM: '' };
+    this.st.reset()
   }
 
   mapresize(e) {

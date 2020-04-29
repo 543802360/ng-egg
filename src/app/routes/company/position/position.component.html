@@ -4,7 +4,7 @@
     <input nz-input [(ngModel)]="params.NSRMC" name="NSRMC" nzPlaceHolder="请输入纳税人名称" style="width: 220px;"
       class="mr-sm">
     <button nz-button (click)="st.load(1,params)" [nzType]="'primary'">搜索</button>
-    <button nz-button (click)="params = {}; st.reset()">重置</button>
+    <button nz-button (click)="resetTable()">重置</button>
   </div>
   <st #st [data]="url" [req]="companyReq" [res]="companyRes" loading="false" size="middle" [bordered]="true"
     [columns]="columns" [pi]="1" [ps]="3" [total]="total" [scroll]="{x:'2220px'}">
@@ -15,8 +15,8 @@
       <button nz-button nzType="danger" (click)="resetPos()">重置位置</button>
     </div>
     <!-- <nz-spin *ngIf="!map" nzSize="large" style=""></nz-spin> -->
-    <mgl-map style="width: 100%;height:100%" [style]="style" [trackResize]="true" (resize)="mapresize($event)" [zoom]="[8]" [center]="[120.3,36.45]"
-      (load)="mapboxglLoad($event)">
+    <mgl-map style="width: 100%;height:100%" [style]="style" [trackResize]="true" (resize)="mapresize($event)"
+      [zoom]="[8]" [center]="[120.3,36.45]" (load)="mapboxglLoad($event)">
     </mgl-map>
   </div>
 </nz-card>

@@ -45,8 +45,7 @@
         <button nz-button type="submit" (click)="st.load(1,params)" [nzType]="'primary'"
           [nzLoading]="http.loading">查询</button>
         <button nz-button type="reset" (click)="reset()" class="mx-sm">重置</button>
-        <button nz-button acl [acl-ability]="'company:hxnsrxx:export'" type="button"
-          (click)="st.export(false, { filename: '纳税人信息.xlsx', sheetname: 'sheet1' })" nzType="primary"
+        <button nz-button acl [acl-ability]="'company:hxnsrxx:export'" type="button" (click)="export()" nzType="primary"
           class="mx-sm">导出</button>
         <a (click)="expandForm = !expandForm">
           {{ expandForm ? '收起' : '展开' }}
@@ -66,7 +65,7 @@
     <button acl [acl-ability]="'company:hxnsrxx:clear'" nzType="default" (click)="clear()" nz-button>清除</button>
     <button acl [acl-ability]="'company:hxnsrxx:refresh'" nzType="default" (click)="st.load(1)" nz-button>刷新</button>
     <button acl [acl-ability]="'company:hxnsrxx:add'" nzType="primary" (click)="add()" nz-button>添加</button>
-    <button acl [acl-ability]="'company:hxnsrxx:deleteAll'" nzType="danger" (click)="batchDel($event)"
+    <button acl [acl-ability]="'company:hxnsrxx:deleteAll'" nzType="danger" (click)="batchDel()"
       [disabled]="batchDelDisabled" nz-button>
       删除</button>
     <button acl [acl-ability]="'company:hxnsrxx:exportAll'" nzType="primary" down-file file-name="纳税人信息.xlsx"

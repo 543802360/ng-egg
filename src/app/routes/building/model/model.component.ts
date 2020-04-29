@@ -2,7 +2,7 @@ import { LoadingTypesService } from '@core/loading-types.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { _HttpClient, ModalHelper } from '@delon/theme';
-import { STColumn, STComponent } from '@delon/abc/table';
+import { STColumn, STComponent } from '@delon/abc/st';
 import { SFSchema } from '@delon/form';
 import { BuildingModelEditComponent } from './edit/edit.component';
 import * as dark from "../../geo/styles/dark.json";

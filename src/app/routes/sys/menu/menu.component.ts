@@ -8,7 +8,7 @@
  */
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { _HttpClient, ModalHelper, MenuService } from '@delon/theme';
-import { STColumn, STComponent } from '@delon/abc/table';
+import { STColumn, STComponent } from '@delon/abc/st';
 import { SFSchema } from '@delon/form';
 import { SysMenuEditComponent } from './edit/edit.component';
 import { IMenu, array2tree, MenuType } from '@shared';
@@ -63,11 +63,11 @@ export class SysMenuComponent implements OnInit, AfterViewInit {
 
 
   constructor(
-    private http: _HttpClient,
-    private modal: ModalHelper,
-    private modalSrv: NzModalService,
-    private msgSrv: NzMessageService,
-    private menuSrv: MenuService) { }
+    public http: _HttpClient,
+    public modal: ModalHelper,
+    public modalSrv: NzModalService,
+    public msgSrv: NzMessageService,
+    public menuSrv: MenuService) { }
 
   ngOnInit() {
 

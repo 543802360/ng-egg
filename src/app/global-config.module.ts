@@ -7,16 +7,26 @@ import { AlainConfig, ALAIN_CONFIG } from '@delon/util';
 // Please refer to: https://ng-alain.com/docs/global-config
 // #region NG-ALAIN Config
 
-import { DelonACLModule } from '@delon/acl';
+import { DelonACLModule, ACLCanType } from '@delon/acl';
 
 const alainConfig: AlainConfig = {
   st: { modal: { size: 'lg' } },
-  pageHeader: { homeI18n: 'home' },
+  pageHeader: { homeI18n: '首页' },
   lodop: {
     license: `A59B099A586B3851E0F0D7FDBF37B603`,
     licenseA: `C94CEE276DB2187AE6B65D56B3FC2848`,
   },
-  auth: { login_url: '/passport/login' },
+  // 用户认证
+  auth: {
+    login_url: '/passport/login',
+    store_key: "token",
+    token_invalid_redirect: true, // 无效时跳转至登录页，包括：无效token值、token已过期（限JWT）
+    token_send_key: 'token', // 发送token参数名
+  },
+  // 权限控制
+  acl: {
+
+  }
 };
 
 const alainModules = [AlainThemeModule.forRoot(), DelonACLModule.forRoot(), DelonMockModule.forRoot()];
@@ -41,13 +51,13 @@ if (!environment.production) {
  *  </section>
  *  ```
  */
-// import { RouteReuseStrategy } from '@angular/router';
-// import { ReuseTabService, ReuseTabStrategy } from '@delon/abc/reuse-tab';
-// alainProvides.push({
-//   provide: RouteReuseStrategy,
-//   useClass: ReuseTabStrategy,
-//   deps: [ReuseTabService],
-// } as any);
+import { RouteReuseStrategy } from '@angular/router';
+import { ReuseTabService, ReuseTabStrategy } from '@delon/abc/reuse-tab';
+alainProvides.push({
+  provide: RouteReuseStrategy,
+  useClass: ReuseTabStrategy,
+  deps: [ReuseTabService],
+} as any);
 
 // #endregion
 

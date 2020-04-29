@@ -1,7 +1,7 @@
 import { filter, switchMap, debounceTime, map } from 'rxjs/operators';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { _HttpClient, ModalHelper } from '@delon/theme';
-import { STColumn, STComponent, STData, STReq, STRes, STColumnTag, STPage, STRequestOptions, STChange } from '@delon/abc/table';
+import { STColumn, STComponent, STData, STReq, STRes, STColumnTag, STPage, STRequestOptions, STChange } from '@delon/abc/st';
 import { SFSchema } from '@delon/form';
 import { HttpParams } from '@angular/common/http';
 import { Subject } from 'rxjs';
@@ -22,7 +22,7 @@ export class CompanyListComponent implements OnInit {
   total: number;
   nsrmcAutoDataSource = [];
   nsrsbhAutoDataSource = [];
-  searchAutoChangeS = new Subject<string>();
+  searchAutoChangeS = new Subject<any>();
 
   selectedRows: IDjnsrxx[] = [];
   expandForm = false;
@@ -287,11 +287,11 @@ export class CompanyListComponent implements OnInit {
   //
   batchDelDisabled = true;
   constructor(
-    private http: _HttpClient,
-    private loadSrv: LoadingService,
-    private modal: ModalHelper,
-    private modalSrv: NzModalService,
-    private msgSrv: NzMessageService,
+    public http: _HttpClient,
+    public loadSrv: LoadingService,
+    public modal: ModalHelper,
+    public modalSrv: NzModalService,
+    public msgSrv: NzMessageService,
   ) { }
 
   ngOnInit() {
@@ -300,7 +300,7 @@ export class CompanyListComponent implements OnInit {
     this.searchAutoChangeS
       .pipe(
         filter(resp => {
-          return Object.values(resp)[0] && Object.values(resp)[0].length >= 2
+          return Object.values(resp)[0] && (Object.values(resp)[0] as any).length >= 2
         }),
         debounceTime(500),
         switchMap(res => {
@@ -391,6 +391,10 @@ export class CompanyListComponent implements OnInit {
     this.params.NSRMC = '';
     this.params.NSRSBH = '';
     this.st.reset(this.params);
+  }
+
+  export() {
+    this.st.export(true, { filename: '纳税人信息.xlsx', sheetname: 'sheet1' })
   }
 
   /**
