@@ -43,19 +43,19 @@ export class CompanyPositionComponent implements OnInit {
       className: 'text-center'
     },
     {
-      title: '纳税人识别号',
-      index: 'NSRSBH',
-      width: 220,
-      fixed: 'left',
-      className: 'text-center'
-    },
-    {
       title: '纳税人名称',
       index: 'NSRMC',
       width: 230,
       fixed: 'left',
       className: 'text-center'
     },
+    {
+      title: '纳税人识别号',
+      index: 'NSRSBH',
+      width: 220,
+      className: 'text-center'
+    },
+
     {
       title: '社会信用代码',
       index: 'SHXYDM',

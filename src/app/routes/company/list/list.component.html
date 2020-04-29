@@ -46,7 +46,7 @@
           [nzLoading]="http.loading">查询</button>
         <button nz-button type="reset" (click)="reset()" class="mx-sm">重置</button>
         <button nz-button acl [acl-ability]="'company:hxnsrxx:export'" type="button"
-          (click)="st.export(false, { filename: '纳税人信息.xlsx', sheetname: 'sheet1' })" nzType="primary"
+          (click)="st.export(true, { filename: '纳税人信息.xlsx', sheetname: 'sheet1' })" nzType="primary"
           class="mx-sm">导出</button>
         <a (click)="expandForm = !expandForm">
           {{ expandForm ? '收起' : '展开' }}
