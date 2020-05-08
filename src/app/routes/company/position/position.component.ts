@@ -324,7 +324,7 @@ export class CompanyPositionComponent implements OnInit {
   };
   //#endregion
 
-  constructor(private http: _HttpClient,
+  constructor(public http: _HttpClient,
     private loadingSrv: LoadingService,
     private loadingTypeSrv: LoadingTypesService,
     private msgSrv: NzMessageService,
