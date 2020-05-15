@@ -3,7 +3,8 @@ import { NzModalRef } from 'ng-zorro-antd/modal';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { _HttpClient } from '@delon/theme';
 import { SFSchema, SFUISchema } from '@delon/form';
-import { IDjnsrxx } from '@shared';
+import { IDjnsrxx, array2tree } from '@shared';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-company-list-edit',
@@ -16,17 +17,36 @@ export class CompanyListEditComponent implements OnInit {
   i: IDjnsrxx;
   schema: SFSchema = {
     properties: {
-      NSRMC: { type: 'string', title: '纳税人名称' },
-      NSRSBH: { type: 'string', title: '纳税人识别号' },
-      SHXYDM: { type: 'string', title: '社会信用代码' },
-      LXR: { type: 'string', title: '联系人' },
-      LXDH: { type: 'string', title: '联系电话' },
+      NSRMC: {
+        type: 'string',
+        title: '纳税人名称'
+      },
+      NSRSBH: {
+        type: 'string',
+        title: '纳税人识别号'
+      },
+      SHXYDM: {
+        type: 'string',
+        title: '社会信用代码'
+      },
+      LXR: {
+        type: 'string',
+        title: '联系人'
+      },
+      LXDH: {
+        type: 'string',
+        title: '联系电话'
+      },
       SSFC: {
         type: 'number',
         title: '税收留存比例',
         default: 100,
         minimum: 0,
         maximum: 100
+      },
+      JDXZ_DM: {
+        type: 'string',
+        title: '街道乡镇'
       },
       ZCDZ: { type: 'string', title: '注册地址' },
       BZ: { type: 'string', title: '备注' }
@@ -59,6 +79,33 @@ export class CompanyListEditComponent implements OnInit {
       optionalHelp: '此数值为该企业税收在本辖区的留存比例',
       spanLabelFixed: 150
     },
+    $JDXZ_DM: {
+      widget: 'tree-select',
+      checkable: false,
+      showLine: false,
+      allowClear: true,
+      dropdownStyle: {
+        'max-height': '300px'
+      },
+      grid: {
+        span: 12
+      },
+      asyncData: () => {
+        return this.http.get('sys/departments').pipe(
+          map(resp => {
+            const node = resp.data.map(item => {
+              return {
+                title: item.department_name,
+                key: item.department_id,
+                parent_id: item.parent_id,
+                parent_name: item.parent_name
+              };
+            });
+            return array2tree(node, 'key', 'parent_id', 'children');
+          }))
+      }
+
+    },
     $ZCDZ: {
       widget: 'string',
       grid: {
@@ -68,7 +115,7 @@ export class CompanyListEditComponent implements OnInit {
     $BZ: {
       widget: 'textarea',
       grid: {
-        span: 12
+        span: 24
       }
     }
   };
