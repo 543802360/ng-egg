@@ -32,12 +32,14 @@
           </nz-form-control>
         </nz-form-item>
       </div>
+
       <div nz-col nzMd="8" nzSm="24" *ngIf="expandForm">
         <nz-form-item>
-          <nz-form-label nzFor="SHXYDM">社会信用代码</nz-form-label>
+          <nz-form-label nzFor="JDXZ_DM">街道乡镇</nz-form-label>
           <nz-form-control>
-            <input nz-input [(ngModel)]="params.SHXYDM" (ngModelChange)="searchAutoChangeS.next({'SHXYDM':$event})"
-              [nzAutocomplete]="nsrsbhAuto" name="SHXYDM" placeholder="请输入" id="SHXYDM" />
+            <nz-tree-select [ngModelOptions]="{standalone: true}" [nzNodes]="jdxzItems" nzShowSearch
+              [(ngModel)]="params.JDXZ_DM" [nzDropdownStyle]="{'max-height':'300px'}" id="JDXZ_DM" name="JDXZ_DM">
+            </nz-tree-select>
           </nz-form-control>
         </nz-form-item>
       </div>

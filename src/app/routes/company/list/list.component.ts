@@ -2,12 +2,11 @@ import { filter, switchMap, debounceTime, map } from 'rxjs/operators';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { _HttpClient, ModalHelper } from '@delon/theme';
 import { STColumn, STComponent, STData, STReq, STRes, STColumnTag, STPage, STRequestOptions, STChange } from '@delon/abc/table';
-import { SFSchema } from '@delon/form';
-import { HttpParams } from '@angular/common/http';
+
 import { Subject } from 'rxjs';
 import { XlsxService, LoadingService } from '@delon/abc';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { IDjnsrxx } from '@shared';
+import { IDjnsrxx, array2tree } from '@shared';
 import { NzModalService, UploadChangeParam } from 'ng-zorro-antd';
 import { CompanyListViewComponent } from './view/view.component';
 import { CompanyListEditComponent } from './edit/edit.component';
@@ -23,6 +22,7 @@ export class CompanyListComponent implements OnInit {
   nsrmcAutoDataSource = [];
   nsrsbhAutoDataSource = [];
   searchAutoChangeS = new Subject<any>();
+  jdxzItems = [];
 
   selectedRows: IDjnsrxx[] = [];
   expandForm = false;
@@ -86,7 +86,7 @@ export class CompanyListComponent implements OnInit {
     {
       title: '所属街道',
       width: 100,
-      index: 'department_name',
+      index: 'JDXZMC',
       className: 'text-center',
       // 超管可见
       acl: {
@@ -246,7 +246,8 @@ export class CompanyListComponent implements OnInit {
   params = {
     NSRMC: '',
     NSRSBH: '',
-    SHXYDM: ''
+    SHXYDM: '',
+    JDXZ_DM: '',
   }
   // 请求配置
   companyReq: STReq = {
@@ -257,7 +258,7 @@ export class CompanyListComponent implements OnInit {
       ps: 'pageSize'
     },
     process: (requestOpt: STRequestOptions) => {
-      const { NSRMC, NSRSBH } = requestOpt.params as any;
+      const { NSRMC, NSRSBH, JDXZ_DM } = requestOpt.params as any;
       if (NSRMC === null) {
         // (requestOpt.params as any).set('NSRMC', ['']);
         Object.defineProperty(requestOpt.params, 'NSRMC', {
@@ -269,6 +270,14 @@ export class CompanyListComponent implements OnInit {
       if (NSRSBH === null) {
         // (requestOpt.params as any).set('NSRSBH', ['']);
         Object.defineProperty(requestOpt.params, 'NSRSBH', {
+          enumerable: true,
+          configurable: true,
+          value: ''
+        })
+      }
+      if (JDXZ_DM === null) {
+        // (requestOpt.params as any).set('NSRSBH', ['']);
+        Object.defineProperty(requestOpt.params, 'JDXZ_DM', {
           enumerable: true,
           configurable: true,
           value: ''
@@ -323,6 +332,23 @@ export class CompanyListComponent implements OnInit {
             break;
         }
       });
+    //
+    this.http.get('sys/departments')
+      .pipe(
+        map(resp => {
+          const node = resp.data.map(item => {
+            return {
+              title: item.department_name,
+              key: item.department_id,
+              parent_id: item.parent_id,
+              parent_name: item.parent_name
+            };
+          });
+          return array2tree(node, 'key', 'parent_id', 'children');
+        })).subscribe(res => {
+          this.jdxzItems = res;
+        })
+
   }
 
   add() {
@@ -390,6 +416,7 @@ export class CompanyListComponent implements OnInit {
   reset() {
     this.params.NSRMC = '';
     this.params.NSRSBH = '';
+    this.params.JDXZ_DM = '';
     this.st.reset(this.params);
   }
 
