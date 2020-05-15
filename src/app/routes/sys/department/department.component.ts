@@ -13,6 +13,7 @@ import { SysDepartmentEditComponent } from './edit/edit.component';
 @Component({
   selector: 'app-sys-department',
   templateUrl: './department.component.html',
+  styleUrls: ['./department.component.less']
 })
 export class SysDepartmentComponent implements OnInit {
   @ViewChild('departmentTree', { static: false }) departmentTree: NzTreeComponent;
@@ -69,7 +70,8 @@ export class SysDepartmentComponent implements OnInit {
       nzTitle: '新建部门',
       nzContent: SysDepartmentEditComponent,
       nzComponentParams: {
-        record: parent
+        record: parent,
+        type: 'new'
       },
       nzFooter: null
     }).afterClose.subscribe(res => {
@@ -101,7 +103,8 @@ export class SysDepartmentComponent implements OnInit {
         nzTitle: '编辑部门',
         nzContent: SysDepartmentEditComponent,
         nzComponentParams: {
-          record
+          record,
+          type: 'update'
         },
         nzFooter: null
       }).afterClose.subscribe(res => {

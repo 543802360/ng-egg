@@ -4,16 +4,17 @@ import { NzModalRef } from 'ng-zorro-antd/modal';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { _HttpClient } from '@delon/theme';
 import { SFSchema, SFUISchema } from '@delon/form';
-
+import { v4 as uuidv4 } from "uuid";
 @Component({
   selector: 'app-sys-department-edit',
   templateUrl: './edit.component.html',
 })
 export class SysDepartmentEditComponent implements OnInit {
   @Input() record: IDepartment;
+  @Input() type: string;
   schema: SFSchema = {
     properties: {
-      department_id: { type: 'string', title: '部门ID' },
+      department_id: { type: 'string', title: '部门ID', default: uuidv4() },
       department_name: { type: 'string', title: '部门名称' },
       parent_name: { type: 'string', title: '上级部门', readOnly: true }
     },
@@ -53,7 +54,7 @@ export class SysDepartmentEditComponent implements OnInit {
   }
 
   save(depart: IDepartment) {
-    if (depart.department_id) {
+    if (this.type === 'update') {
       this.http.put(`sys/departments/${depart.department_id}`, depart).subscribe(resp => {
         this.success(resp);
       }, error => {
