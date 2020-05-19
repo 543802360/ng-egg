@@ -13,6 +13,7 @@ export interface IDjnsrxx {
   DJZCLXMC?: string;
   DJZCLXDM?: string;
   JDXZDM?: string;
+  JDXZMC?: string;
   JYFW?: string;
   DJRQ?: Date;
   LRRQ?: Date;
