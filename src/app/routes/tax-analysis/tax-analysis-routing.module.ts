@@ -11,6 +11,9 @@ const routes: Routes = [
     canActivateChild: [ACLGuard],
     children: [
       {
+
+      },
+      {
         path: 'order',
         component: TaxAnalysisOrderComponent,
         data: {

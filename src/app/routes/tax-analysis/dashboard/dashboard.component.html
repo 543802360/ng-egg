@@ -1,0 +1,138 @@
+<!-- summary -->
+<div nz-row nzGutter="18" class="pt-lg">
+  <div nz-col nzXs="24" nzSm="12" nzMd="12" nzLg="6">
+    <g2-card title="总收入" [action]="action1" bordered="true" [total]="'¥ 126,560.00'">
+      <ng-template #action1>
+        <i nz-tooltip [nzTooltipTitle]="'财政总收入'" nz-icon nzType="info-circle"></i>
+      </ng-template>
+      同比<trend flag="up" style="margin: 0 16px 0 8px; color: rgba(0,0,0,.85)">12%</trend>
+      同比<trend flag="down" style="margin: 0 0 0 8px; color: rgba(0,0,0,.85)">11%</trend>
+    </g2-card>
+  </div>
+  <div nz-col nzXs="24" nzSm="12" nzMd="12" nzLg="6">
+    <g2-card title="税收收入" [action]="action2" bordered="true" [total]="'¥ 126,0.00'">
+      <ng-template #action2>
+        <i nz-tooltip [nzTooltipTitle]="'纯税收收入'" nz-icon nzType="info-circle"></i>
+      </ng-template>
+      同比<trend flag="up" style="margin: 0 16px 0 8px; color: rgba(0,0,0,.85)">12%</trend>
+      同比<trend flag="down" style="margin: 0 0 0 8px; color: rgba(0,0,0,.85)">11%</trend>
+    </g2-card>
+  </div>
+  <div nz-col nzXs="24" nzSm="12" nzMd="12" nzLg="6">
+    <g2-card title="非税收入" [action]="action3" bordered="true" [total]="'¥ 1,560.00'">
+      <ng-template #action3>
+        <i nz-tooltip [nzTooltipTitle]="'非税项目收入'" nz-icon nzType="info-circle"></i>
+      </ng-template>
+      同比<trend flag="up" style="margin: 0 16px 0 8px; color: rgba(0,0,0,.85)">12%</trend>
+      同比<trend flag="down" style="margin: 0 0 0 8px; color: rgba(0,0,0,.85)">11%</trend>
+    </g2-card>
+  </div>
+  <div nz-col nzXs="24" nzSm="12" nzMd="12" nzLg="6">
+    <g2-card title="基金收入" [action]="action4" bordered="true" [total]="'¥ 12,60.00'">
+      <ng-template #action4>
+        <i nz-tooltip [nzTooltipTitle]="'政府性基金收入'" nz-icon nzType="info-circle"></i>
+      </ng-template>
+      同比<trend flag="up" style="margin: 0 16px 0 8px; color: rgba(0,0,0,.85)">12%</trend>
+      同比<trend flag="down" style="margin: 0 0 0 8px; color: rgba(0,0,0,.85)">11%</trend>
+    </g2-card>
+  </div>
+</div>
+<!--行业税收 -->
+<nz-card [nzTitle]="'行业税收'" [nzBordered]="false" [nzExtra]="extraTemplate1" class="ant-card__body-nopadding sales-card">
+  <ng-template #extraTemplate1>
+    <div class="sales-extra-wrap">
+
+      <div class="sales-extra">
+        <a (click)="setDate('month')">本月</a>
+        <a (click)="setDate('year')">本年</a>
+      </div>
+
+      <nz-tree-select style="width: 260px; margin: 0 5px;" [(ngModel)]="budgetValue" [nzNodes]="budgetNodes" nzCheckable
+        [nzPlaceHolder]="'预算级次'">
+      </nz-tree-select>
+
+      <nz-month-picker [(ngModel)]="startDate" nzFormat="YYYY-MM" nzPlaceHolder="起始月份">
+      </nz-month-picker>
+      <span style="margin: 0 5px;">~</span>
+      <nz-month-picker [(ngModel)]="endDate" nzFormat="YYYY-MM" nzPlaceHolder="结束月份"></nz-month-picker>
+      <button nz-button (click)="getTaxSummary()" nzType="primary" style="margin-left: 6px;">查询</button>
+
+    </div>
+  </ng-template>
+  <div nz-row nzGutter="8">
+    <div nz-col [nzXs]="24" [nzSm]="24" nzMd="12" nzLg="12">
+      <div class="bar">
+        <g2-pie [data]="hyData" [hasLegend]="false" subTitle="总收入" [height]="298" [lineWidth]="4" [total]="tpl_total"
+          [valueFormat]="handlePieValueFormat">
+        </g2-pie>
+        <ng-template #tpl_total>
+          {{total | number}} 万元
+        </ng-template>
+        <!-- <g2-bar height="300" [autoLabel]="true" style="width: 100%" [data]="hyData"></g2-bar> -->
+      </div>
+    </div>
+    <div nz-col [nzXs]="24" [nzSm]="24" nzMd="12" nzLg="12">
+      <div class="rank">
+        <h4 class="ranking-title">行业税收排名</h4>
+        <ul class="rank-list">
+          <li *ngFor="let i of hyData; let idx = index">
+            <span class="number" [ngClass]="{ active: idx < 3 }">{{ idx + 1 }}</span>
+            <span class="title">{{ i.x }}</span>
+            <span class="value">{{ i.y *100 / total | number:'1.2-2' }} %</span>
+            <span class="value">{{ i.y | number: '1.0' }} 万元</span>
+
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</nz-card>
+
+<!-- 征收项目税收  -->
+<nz-card [nzTitle]="'分税种税收'" [nzBordered]="false" class="ant-card__body-nopadding sales-card">
+  <div nz-row nzGutter="8">
+    <div nz-col [nzXs]="24" [nzSm]="24" nzMd="12" nzLg="12">
+      <div class="bar">
+        <g2-bar height="300" style="width: 100%" [data]="zsxmData"></g2-bar>
+      </div>
+    </div>
+    <div nz-col [nzXs]="24" [nzSm]="24" nzMd="12" nzLg="12">
+      <div class="rank">
+        <h4 class="ranking-title">分税种税收排名</h4>
+        <ul class="rank-list">
+          <li *ngFor="let i of zsxmData; let idx = index">
+            <span class="number" [ngClass]="{ active: idx < 3 }">{{ idx + 1 }}</span>
+            <span class="title">{{ i.x }}</span>
+            <span class="value">{{ i.y * 100 / total | number:'1.2-2' }} %</span>
+            <span class="value">{{ i.y | number: '1.2' }} 万元</span>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</nz-card>
+
+
+<div nz-row [nzGutter]="24">
+  <div nz-col [nzSm]="24" [nzXs]="24" [nzMd]="12" [nzLg]="12">
+    <!-- 产业税收  -->
+    <nz-card [nzLoading]="loading" [nzTitle]="'产业税收'" [nzBordered]="false" class="ant-card__body-nopadding sales-card">
+      <div nz-row nzGutter="8">
+        <div nz-col [nzXs]="24" [nzSm]="24" nzMd="24" nzLg="24">
+          <div class="bar">
+            <g2-pie [hasLegend]="true" title="总税收" subTitle="总税收" [total]="tpl_total"
+              [valueFormat]="handlePieValueFormat" [data]="cyData" height="294"></g2-pie>
+            <!-- <g2-bar height="300" style="width: 100%" [data]="zsxmData"></g2-bar> -->
+          </div>
+        </div>
+
+      </div>
+    </nz-card>
+  </div>
+  <div nz-col [nzSm]="24" [nzXs]="24" [nzMd]="12" [nzLg]="12">
+    <nz-card nzTitle="开票统计">
+
+    </nz-card>
+  </div>
+</div>
