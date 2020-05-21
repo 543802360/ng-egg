@@ -41,22 +41,44 @@ export class StartupService {
 
   private viaHttp(resolve: any, reject: any) {
     zip(
-      this.httpClient.get('sys/user/admin/permmenu')
-    ).subscribe(([permsData]) => {
+      this.httpClient.get('sys/user/admin/permmenu'),
+      this.httpClient.get('sys/departments')
+    ).subscribe(([permsData, deparments]) => {
       // this.settingService.setApp(res.app);
       // this.settingService.setUser(res.user);
       // this.aclService.setFull(true);
+
+
+      //#region  持久化部门行政区划数据
+
+      const node = (deparments as any).data.map(item => {
+        return {
+          title: item.department_name,
+          key: item.department_id,
+          parent_id: item.parent_id,
+          parent_name: item.parent_name
+        };
+      });
+      const depTreeNodes = array2tree(node, 'key', 'parent_id', 'children');
+      this.cacheSrv.set('departments', depTreeNodes);
+      //#endregion
+
+
+
+      //#region 持久化角色权限
       // 设置角色对应的权限
       const { perms, menus, departments } = (permsData as any).data;
       this.aclService.setAbility(perms);
       const groupid = this.cacheSrv.get('userInfo', { mode: 'none' }).groupid;
-      // this.aclService.setRole([`${groupid}`]);
       /////// 若为超管，直接设置当前用户为全量，不受限制
       if (groupid === 1) {
         this.aclService.setFull(true);
       }
-      // 持久化
+      // 持久化权限数据
       this.cacheSrv.set('perms', perms);
+      //#endregion
+
+
       // 设置角色对应的菜单
       const menusArray = menus.filter(item => item.menutype !== MenuType.PERMISSION).map(item => {
         let menu;
@@ -93,7 +115,7 @@ export class StartupService {
         resolve(null);
       }, 100);
 
-      // Can be set page suffix title, https://ng-alain.com/theme/title
+
       // this.titleService.suffix = res.app.name;
     },
       () => {
