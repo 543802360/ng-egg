@@ -46,7 +46,7 @@ export class CompanyListEditComponent implements OnInit {
       },
       JDXZ_DM: {
         type: 'string',
-        title: '街道乡镇'
+        title: '镇街'
       },
       ZCDZ: { type: 'string', title: '注册地址' },
       BZ: { type: 'string', title: '备注' }
