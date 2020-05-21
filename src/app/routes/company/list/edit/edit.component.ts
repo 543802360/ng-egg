@@ -5,6 +5,7 @@ import { _HttpClient } from '@delon/theme';
 import { SFSchema, SFUISchema } from '@delon/form';
 import { IDjnsrxx, array2tree } from '@shared';
 import { map } from 'rxjs/operators';
+import { CacheService } from '@delon/cache';
 
 @Component({
   selector: 'app-company-list-edit',
@@ -46,7 +47,8 @@ export class CompanyListEditComponent implements OnInit {
       },
       JDXZ_DM: {
         type: 'string',
-        title: '镇街'
+        title: '镇街',
+        enum: this.cacheSrv.get('departments', { mode: 'none' })
       },
       ZCDZ: { type: 'string', title: '注册地址' },
       BZ: { type: 'string', title: '备注' }
@@ -89,22 +91,7 @@ export class CompanyListEditComponent implements OnInit {
       },
       grid: {
         span: 12
-      },
-      asyncData: () => {
-        return this.http.get('sys/departments').pipe(
-          map(resp => {
-            const node = resp.data.map(item => {
-              return {
-                title: item.department_name,
-                key: item.department_id,
-                parent_id: item.parent_id,
-                parent_name: item.parent_name
-              };
-            });
-            return array2tree(node, 'key', 'parent_id', 'children');
-          }))
       }
-
     },
     $ZCDZ: {
       widget: 'string',
@@ -121,6 +108,7 @@ export class CompanyListEditComponent implements OnInit {
   };
 
   constructor(
+    private cacheSrv: CacheService,
     private modal: NzModalRef,
     private msgSrv: NzMessageService,
     public http: _HttpClient,
