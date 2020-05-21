@@ -4,6 +4,7 @@ import { NzModalRef } from 'ng-zorro-antd/modal';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { _HttpClient } from '@delon/theme';
 import { SFSchema, SFUISchema, SFNumberWidgetSchema } from '@delon/form';
+import { CacheService } from '@delon/cache';
 
 @Component({
   selector: 'app-company-djnsrxx-edit',
@@ -55,6 +56,11 @@ export class CompanyDjnsrxxEditComponent implements OnInit {
           spanLabelFixed: 150
         }
       },
+      JDXZ_DM: {
+        type: 'string',
+        title: '镇街',
+        enum: this.cacheSrv.get('departments', { mode: 'none' })
+      },
 
     },
     required: ['NSRMC', 'NSRSBH', 'SSFC'],
@@ -63,10 +69,23 @@ export class CompanyDjnsrxxEditComponent implements OnInit {
     '*': {
       spanLabelFixed: 120,
       grid: { span: 12 },
-    }
+    },
+    $JDXZ_DM: {
+      widget: 'tree-select',
+      checkable: false,
+      showLine: false,
+      allowClear: true,
+      dropdownStyle: {
+        'max-height': '300px'
+      },
+      grid: {
+        span: 12
+      }
+    },
   };
 
   constructor(
+    private cacheSrv: CacheService,
     private modal: NzModalRef,
     private msgSrv: NzMessageService,
     public http: _HttpClient,
