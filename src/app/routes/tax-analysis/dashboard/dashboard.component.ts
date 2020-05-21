@@ -3,7 +3,7 @@ import { _HttpClient } from '@delon/theme';
 import { NzMessageService } from 'ng-zorro-antd';
 import { getTimeDistance } from '@delon/util';
 import { CacheService } from '@delon/cache';
-import { yuan } from '@shared';
+import { yuan, order } from '@shared';
 
 @Component({
   selector: 'app-dashboard',
@@ -89,7 +89,7 @@ export class DashboardComponent implements OnInit {
           x: item.ZSXMMC,
           y: Number((item.VALUE / 10000).toFixed(2))
         }
-      }).filter(item => item.y > 0);
+      }).filter(item => item.y !== 0).sort(order('y'));
     });
   }
 
@@ -103,7 +103,7 @@ export class DashboardComponent implements OnInit {
           x: item.MLMC,
           y: Number((item.VALUE / 10000).toFixed(2))
         }
-      }).filter(item => item.y > 0);
+      }).sort(order('y'));
 
       this.total = this.hyData.reduce((pre, now) => (now as any).y + pre, 0);
 
@@ -120,7 +120,7 @@ export class DashboardComponent implements OnInit {
           x: item.CYMC,
           y: Number((item.VALUE / 10000).toFixed(2))
         }
-      });
+      }).sort(order('y'));
     });
   }
 
