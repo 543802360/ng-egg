@@ -12,6 +12,7 @@ import { XlsxService, XlsxExportOptions, LoadingService } from '@delon/abc';
 import { CompanyDjnsrxxViewComponent } from './view/view.component';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalService } from 'ng-zorro-antd';
+import { CompanyDjnsrxxAddComponent } from './add/add.component';
 
 @Component({
   selector: 'app-company-djnsrxx',
@@ -162,7 +163,7 @@ export class CompanyDjnsrxxComponent implements OnInit {
         },
         {
           icon: 'check-circle',
-          tooltip: '确定为本街道企业',
+          tooltip: '选择企业',
           type: 'modal',
           acl: {
             ability: ['company:djnsrxx:confirm']
@@ -290,27 +291,54 @@ export class CompanyDjnsrxxComponent implements OnInit {
   }
 
   batchadd() {
-    this.modalSrv.confirm({
-      nzTitle: '提示',
-      nzContent: '确认添加至本辖区企业库吗？',
-      nzCancelText: '取消',
-      nzOnOk: () => {
-        this.loadingSrv.open({
-          type: 'custom',
-          custom: this.loadingTypeSrv.loadingTypes.Cubes,
-          text: '正在处理……'
-        });
-        this.http.post('hx/nsr', this.selectedRows).subscribe(res => {
-          this.loadingSrv.close();
-          if (res.success) {
-            this.msgSrv.success(res.msg);
-          } else {
-            this.msgSrv.error(res.msg);
 
-          }
-        });
-      }
-    })
+    this.modal.create(CompanyDjnsrxxAddComponent, { i: null }, {
+      size: 'lg',
+      // modalOptions: {
+      //   nzWidth: '600px',
+      //   nzStyle: {
+      //     left: '25%',
+      //   }
+      // }
+    }).subscribe(resp => {
+      const data = this.selectedRows.map(item => ({ ...item, ...resp }));
+      this.loadingSrv.open({
+        type: 'custom',
+        custom: this.loadingTypeSrv.loadingTypes.Cubes,
+        text: '正在处理……'
+      });
+      this.http.post('hx/nsr', data).subscribe(res => {
+        this.loadingSrv.close();
+        if (res.success) {
+          this.msgSrv.success(res.msg);
+        } else {
+          this.msgSrv.error(res.msg);
+
+        }
+      });
+
+    });
+    // this.modalSrv.confirm({
+    //   nzTitle: '提示',
+    //   nzContent: '确认添加至本辖区企业库吗？',
+    //   nzCancelText: '取消',
+    //   nzOnOk: () => {
+    //     this.loadingSrv.open({
+    //       type: 'custom',
+    //       custom: this.loadingTypeSrv.loadingTypes.Cubes,
+    //       text: '正在处理……'
+    //     });
+    //     this.http.post('hx/nsr', this.selectedRows).subscribe(res => {
+    //       this.loadingSrv.close();
+    //       if (res.success) {
+    //         this.msgSrv.success(res.msg);
+    //       } else {
+    //         this.msgSrv.error(res.msg);
+
+    //       }
+    //     });
+    //   }
+    // });
 
   }
 

@@ -10,11 +10,13 @@ import { IDjnsrxx, array2tree } from '@shared';
 import { NzModalService, UploadChangeParam } from 'ng-zorro-antd';
 import { CompanyListViewComponent } from './view/view.component';
 import { CompanyListEditComponent } from './edit/edit.component';
+import { CacheService } from '@delon/cache';
 @Component({
   selector: 'app-company-list',
   templateUrl: './list.component.html',
 })
 export class CompanyListComponent implements OnInit {
+
   @ViewChild('st', { static: false }) st: STComponent;
   url = "hx/nsr/list";
   upload = 'hx/nsr/upload';
@@ -120,7 +122,7 @@ export class CompanyListComponent implements OnInit {
     {
       title: '登记注册类型',
       index: 'DJZCLXMC',
-      width: 150,
+      width: 130,
       className: 'text-center'
     },
     {
@@ -153,7 +155,7 @@ export class CompanyListComponent implements OnInit {
       title: '登记日期',
       type: 'date',
       index: 'DJRQ',
-      width: 100,
+      width: 120,
       dateFormat: 'YYYY-MM-DD',
       className: 'text-center'
     },
@@ -161,7 +163,7 @@ export class CompanyListComponent implements OnInit {
       title: '修改日期',
       type: 'date',
       index: 'XGRQ',
-      width: 100,
+      width: 120,
       dateFormat: 'YYYY-MM-DD',
       className: 'text-center'
     },
@@ -296,6 +298,7 @@ export class CompanyListComponent implements OnInit {
   //
   batchDelDisabled = true;
   constructor(
+    private cacheSrv: CacheService,
     public http: _HttpClient,
     public loadSrv: LoadingService,
     public modal: ModalHelper,
@@ -332,23 +335,8 @@ export class CompanyListComponent implements OnInit {
             break;
         }
       });
-    //
-    this.http.get('sys/departments')
-      .pipe(
-        map(resp => {
-          const node = resp.data.map(item => {
-            return {
-              title: item.department_name,
-              key: item.department_id,
-              parent_id: item.parent_id,
-              parent_name: item.parent_name
-            };
-          });
-          return array2tree(node, 'key', 'parent_id', 'children');
-        })).subscribe(res => {
-          this.jdxzItems = res;
-        })
-
+    // 获取组织树节点
+    this.jdxzItems = this.cacheSrv.get('departments', { mode: 'none' });
   }
 
   add() {

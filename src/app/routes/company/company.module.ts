@@ -17,6 +17,7 @@ import { CompanyDjnsrxxViewComponent } from './djnsrxx/view/view.component';
 import { CompanyNewComponent } from './new/new.component';
 import { CompanyNewEditComponent } from './new/edit/edit.component';
 import { CompanyNewViewComponent } from './new/view/view.component';
+import { CompanyDjnsrxxAddComponent } from './djnsrxx/add/add.component';
 
 
 const COMPONENTS = [
@@ -35,7 +36,8 @@ const COMPONENTS_NOROUNT = [
   CompanyDjnsrxxEditComponent,
   CompanyDjnsrxxViewComponent,
   CompanyNewEditComponent,
-  CompanyNewViewComponent];
+  CompanyNewViewComponent,
+  CompanyDjnsrxxAddComponent];
 
 @NgModule({
   imports: [
