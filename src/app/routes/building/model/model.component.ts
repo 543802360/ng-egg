@@ -2,17 +2,16 @@ import { LoadingTypesService } from '@core/loading-types.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { _HttpClient, ModalHelper } from '@delon/theme';
-import { STColumn, STComponent } from '@delon/abc/table';
-import { SFSchema } from '@delon/form';
+
 import { BuildingModelEditComponent } from './edit/edit.component';
-import * as dark from "../../geo/styles/dark.json";
 import * as mapboxgl from "mapbox-gl";
 import * as MapboxDraw from "@mapbox/mapbox-gl-draw";
 import * as syncMove from "@mapbox/mapbox-gl-sync-move";
 import { LoadingService } from '@delon/abc';
-import { Subject, combineLatest, forkJoin, BehaviorSubject } from 'rxjs';
-import { NzButtonGroupComponent, NzModalService } from 'ng-zorro-antd';
+import { forkJoin, BehaviorSubject } from 'rxjs';
+import { NzModalService } from 'ng-zorro-antd';
 import { EBuildingOperation } from '../dics/buildingOperation';
+import { dark } from '@geo';
 
 
 @Component({
@@ -59,7 +58,7 @@ export class BuildingModelComponent implements OnInit {
   // }
 
   ngOnInit() {
-    this.style = (dark as any).default;
+    this.style = dark;
     this.loadingSrv.open({
       type: 'custom',
       custom: this.loadingTypeSrv.loadingTypes.Cubes,

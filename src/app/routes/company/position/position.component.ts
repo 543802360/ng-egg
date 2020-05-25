@@ -4,12 +4,12 @@ import { CompanyListViewComponent } from './../list/view/view.component';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { _HttpClient, ModalHelper } from '@delon/theme';
 import { STColumn, STComponent, STPage, STReq, STRequestOptions, STRes, STData } from '@delon/abc/table';
-import { SFSchema } from '@delon/form';
-import * as dark from "../../geo/styles/dark.json";
 import { NzMessageService } from 'ng-zorro-antd';
 import * as mapboxgl from "mapbox-gl";
 import { LoadingService } from '@delon/abc';
+import { dark } from "@geo";
 
+// import {  } from "@shared";
 @Component({
   selector: 'app-company-position',
   templateUrl: './position.component.html',
@@ -45,21 +45,21 @@ export class CompanyPositionComponent implements OnInit {
     {
       title: '纳税人名称',
       index: 'NSRMC',
-      width: 230,
+      width: 245,
       fixed: 'left',
       className: 'text-center'
     },
     {
       title: '纳税人识别号',
       index: 'NSRSBH',
-      width: 220,
+      width: 210,
       className: 'text-center'
     },
 
     {
       title: '社会信用代码',
       index: 'SHXYDM',
-      width: 220,
+      width: 210,
       className: 'text-center'
     },
     {
@@ -72,8 +72,8 @@ export class CompanyPositionComponent implements OnInit {
     },
     {
       title: '所属街道',
-      index: 'department_name',
-      width: 160,
+      index: 'JDXZMC',
+      width: 120,
       className: 'text-center',
       // 超管可见
       acl: {
@@ -331,7 +331,7 @@ export class CompanyPositionComponent implements OnInit {
     private modal: ModalHelper) { }
 
   ngOnInit() {
-    this.style = (dark as any).default;
+    this.style = dark;
     this.loadingSrv.open({
       type: 'custom',
       custom: this.loadingTypeSrv.loadingTypes.Cubes

@@ -8,10 +8,10 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 import { _HttpClient } from '@delon/theme';
 import { SFSchema, SFUISchema } from '@delon/form';
 import { deepCopy } from '@delon/util';
-import * as dark from "../../../geo/styles/dark.json";
 import * as mapboxgl from "mapbox-gl";
 import * as MapboxDraw from "@mapbox/mapbox-gl-draw";
 import { LoadingService } from '@delon/abc';
+import { dark } from '@geo';
 
 @Component({
   selector: 'app-building-model-edit',
@@ -19,7 +19,7 @@ import { LoadingService } from '@delon/abc';
   styleUrls: ['./edit.component.less']
 })
 export class BuildingModelEditComponent implements OnInit {
-  style = (dark as any).default;
+  style = dark;
   map: mapboxgl.Map;
 
   type: EBuildingOperation; // 编辑类型

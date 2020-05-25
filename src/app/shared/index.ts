@@ -19,5 +19,6 @@ export * from "./models/IBuilding";
 
 // 数据类型
 export * from './models/LoadingTypes';
+
 // 模块
 export * from './shared.module';

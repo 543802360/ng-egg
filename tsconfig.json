@@ -34,6 +34,12 @@
       "@core/*": [
         "src/app/core/*"
       ],
+      "@geo":[
+        "src/app/geo/index"
+      ],
+      "@geo/*":[
+        "src/app/geo/*"
+      ],
       "@env/*": [
         "src/environments/*"
       ]

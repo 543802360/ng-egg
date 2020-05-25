@@ -1,4 +1,4 @@
-<nz-card style="margin-top: 10px; height: calc(100% - 120px);">
+<nz-card style="margin-top: 10px;">
 
   <div nz-row nzGutter="8" style="height: 100%;">
     <div nz-col nzSpan="12" style="height: 100%;">
@@ -9,7 +9,7 @@
         <button nz-button (click)="params = {NSRMC:'',NSRSBH:'',SHXYDM:''}; st.reset()">重置</button>
       </div>
       <st #st [data]="url" [req]="companyReq" [res]="companyRes" loading="false" size="middle" [bordered]="true"
-        [columns]="columns" [pi]="1" [ps]="8" [total]="total" [scroll]="{x:'2220px'}" [loading]="http.loading">
+        [columns]="columns" [pi]="1" [ps]="10" [total]="total" [scroll]="{x:'2220px'}" [loading]="http.loading">
       </st>
     </div>
     <div nz-col nzSpan="12" style="height: 100%;">
@@ -21,6 +21,8 @@
         <!-- <nz-spin *ngIf="!map" nzSize="large" style=""></nz-spin> -->
         <mgl-map [style]="style" [trackResize]="true" (resize)="mapresize($event)" [zoom]="[8]" [center]="[120.3,36.45]"
           (load)="mapboxglLoad($event)">
+          <mgl-control mglNavigation></mgl-control>
+          <mgl-control mglFullscreen></mgl-control>
         </mgl-map>
       </div>
     </div>
