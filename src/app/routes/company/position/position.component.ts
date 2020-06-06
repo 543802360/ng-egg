@@ -140,7 +140,7 @@ export class CompanyPositionComponent implements OnInit {
       title: '登记日期',
       type: 'date',
       index: 'DJRQ',
-      width: 130,
+      width: 120,
       dateFormat: 'YYYY-MM-DD',
       className: 'text-center'
     },
@@ -148,14 +148,14 @@ export class CompanyPositionComponent implements OnInit {
       title: '修改日期',
       type: 'date',
       index: 'XGRQ',
-      width: 130,
+      width: 120,
       dateFormat: 'YYYY-MM-DD',
       className: 'text-center'
     },
     {
       title: '操作',
       fixed: 'right',
-      width: 140,
+      width: 150,
       className: 'text-center',
       buttons: [
         {
