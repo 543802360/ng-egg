@@ -1,0 +1,114 @@
+<div class="page-wrapper" #pageHost>
+  <div class="top">
+    <div class="top-title"> 即墨区亩均税收</div>
+    <button nz-button nzType="link" (click)="fullScreen($event)" nzGhost="true"
+      class="fullscreen-btn">{{ isFullScreen?'退出全屏': '全屏预览'}}</button>
+
+  </div>
+  <div class="content-wrapper">
+    <div nz-row nzGutter="6" style="height: 100%;">
+      <!-- 左 -->
+      <div nz-col nzSpan="6" style="height: 100%;">
+        <div class="panel-25 left-top fg-summary">
+          <div class="panel-title"></div>
+          <div class="panel-content">
+            <div style="width: 100%;height: 50%;display: flex;align-items: center;justify-content: center;">
+              <h3 class="summary-title" style="padding-top: 5%;"> {{10239.32 | number }} </h3>
+            </div>
+            <div style="width: 100%;height: 50%;">
+              <div nz-row nzGutter="0" style="height: 100%;">
+                <div nz-col nzSpan="12" style="height: 100%;display: flex;align-items: center;justify-content: center;">
+                  <h3 class="summary-subtitle"> 企业数：{{12981 | number }} </h3>
+                </div>
+                <div nz-col nzSpan="12" style="height: 100%;display: flex;align-items: center;justify-content: center;">
+                  <h3 class="summary-subtitle"> 地块数：{{6328 | number }} </h3>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel-3 left-common" style="margin-top: 4.5%;">
+          <div class="panel-title"></div>
+          <div class="panel-content"></div>
+        </div>
+
+        <div class="panel-3 left-common" style="margin-top: 4.5%;">
+          <div class="panel-title"></div>
+          <div class="panel-content" echarts [options]="qyfghyBarOpt2"></div>
+        </div>
+
+      </div>
+      <!-- 地图 -->
+      <div nz-col nzSpan="12" style="height: 100%;">
+
+        <div class="mapbox-container" mapbox [options]="mapboxOptions" id="l7_map"></div>
+
+        <!-- <mgl-map class="mapbox-container" [style]="style" [trackResize]="true" [zoom]="[8]" [center]="[120.3,36.45]"
+          (load)="mapboxglLoad($event)">
+          <mgl-control mglNavigation></mgl-control>
+          <mgl-control mglFullscreen></mgl-control>
+        </mgl-map> -->
+        <!-- 复工企业经营问题统计 -->
+        <!-- <div nz-row *ngIf="!qyTaxInfoVisible" nzGutter="0" style="margin-top: 0.833%;height:34%">
+          <div nz-col nzSpan="12" class="bottom-left-common" style="height: 100%;">
+            <div class="panel-title">企业经营问题统计</div>
+            <div class="panel-content" echarts [options]="qyjyknPieOpt" (chartInit)="onChartInit($event)">
+            </div>
+          </div>
+          <div nz-col nzSpan="12" class="bottom-right-common" style="height: 100%;">
+            <div class="panel-title">复工企业按行业统计</div>
+            <div class="panel-content" echarts [options]="qyfghyBarOpt2"></div>
+          </div>
+        </div> -->
+        <!-- 企业详细信息 -->
+        <!-- <div nz-row *ngIf="qyTaxInfoVisible" nzGutter="0" style="margin-top: 0.833%;height:34%">
+          <div nz-col nzSpan="12" class="bottom-left-common" style="height: 100%;">
+            <div class="panel-title">企业经营问题统计</div>
+            <div class="panel-content" echarts [options]="qyjyknPieOpt" (chartInit)="onChartInit($event)">
+            </div>
+          </div>
+          <div nz-col nzSpan="12" class="bottom-right-common" style="height: 100%;">
+            <div class="panel-title">复工企业按行业统计</div>
+            <div class="panel-content" echarts [options]="qyfghyBarOpt2"></div>
+          </div>
+        </div> -->
+      </div>
+      <!-- 右税收 -->
+      <div nz-col nzSpan="6" style="height: 100%;">
+        <div class="panel-25 right-top fg-summary">
+          <div class="panel-title"> </div>
+          <div class="panel-content"></div>
+
+        </div>
+
+        <div class="panel-3 right-common" style="margin-top: 4.5%;">
+          <div class="panel-title">亩均税收排名<span style="margin-left: 6px; font-size: 14px;">单位：万元</span></div>
+          <div class="panel-content" style="overflow:hidden;">
+            <div style="width: 100%;height: 100%;" #totalQypmHost>
+              <div nz-row (click)="permItemClick(item)" class="row-4" *ngFor="let item of permOrderData;let i =index"
+                nzGutter="8">
+                <div nz-col nzSpan="2">
+                  {{i+1}}
+                </div>
+                <div nz-col nzSpan="17">
+                  {{item.nsrmc }}
+                </div>
+                <div nz-col nzSpan="5">
+                  {{item.perm_all | number}}
+                </div>
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+
+        <div class="panel-3 right-common" style="margin-top: 4.5%;">
+          <div class="panel-title"></div>
+          <div class="panel-content"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

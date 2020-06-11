@@ -1,9 +1,17 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { PermuTaxDatavmapComponent } from './datavmap/datavmap.component';
+import { PermuTaxPermDatavComponent } from './perm-datav/perm-datav.component';
 
 const routes: Routes = [
-  { path: 'datavmap', component: PermuTaxDatavmapComponent }];
+  {
+    path: 'perm-datav',
+    component: PermuTaxPermDatavComponent
+  },
+  {
+    path: '',
+    pathMatch: 'full',
+    redirectTo: 'perm-datav'
+  }];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

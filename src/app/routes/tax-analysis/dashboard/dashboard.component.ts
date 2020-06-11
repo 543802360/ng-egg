@@ -132,7 +132,7 @@ export class DashboardComponent implements OnInit {
     const startMonth = this.startDate.getMonth() + 1;
     const endMonth = this.endDate.getMonth() + 1;
     const budgetValue = this.budgetValue.toLocaleString();
-    const adminCode = '3302110000';
+    const adminCode = '3302130000';
     // const adminCode = this.cacheSrv.get('userInfo', { mode: 'none' }).department_id;
 
     return { adminCode, year, startMonth, endMonth, budgetValue };

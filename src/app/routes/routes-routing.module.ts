@@ -57,6 +57,7 @@ const routes: Routes = [
         path: 'analysis',
         loadChildren: () => import('./tax-analysis/tax-analysis.module').then(m => m.TaxAnalysisModule)
       },
+
       // 楼宇经济子模块
       {
         path: 'building',
@@ -77,12 +78,21 @@ const routes: Routes = [
   },
 
   // 全屏布局
-  // {
-  //     path: 'fullscreen',
-  //     component: LayoutFullScreenComponent,
-  //     children: [
-  //     ]
-  // },
+  {
+    path: 'fullscreen',
+    component: LayoutFullScreenComponent,
+    children: [
+      {
+        path: 'permtax',
+        loadChildren: () => import('./permu-tax/permu-tax.module').then(m => m.PermuTaxModule)
+      },
+      {
+        path: '',
+        redirectTo: 'permtax',
+        pathMatch: 'full'
+      }
+    ]
+  },
   // passport
   {
     path: 'passport',

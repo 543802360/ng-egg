@@ -1,22 +1,29 @@
+import { NgxEchartsModule } from 'ngx-echarts';
 import { NgModule } from '@angular/core';
 import { SharedModule } from '@shared';
 import { PermuTaxRoutingModule } from './permu-tax-routing.module';
-import { PermuTaxDatavmapComponent } from './datavmap/datavmap.component';
+import { PermuTaxPermDatavComponent } from './perm-datav/perm-datav.component';
+import { NgxMapboxGLModule } from 'ngx-mapbox-gl';
+
+import { NgMapboxModule } from '@core/ng-mapbox/ng-mapbox.module';
 
 const COMPONENTS = [
-
-  PermuTaxDatavmapComponent];
+  PermuTaxPermDatavComponent];
 const COMPONENTS_NOROUNT = [];
 
 @NgModule({
   imports: [
     SharedModule,
+    NgxMapboxGLModule,
+    NgMapboxModule,
+    NgxEchartsModule,
     PermuTaxRoutingModule
   ],
-  declarations: [
-    ...COMPONENTS,
-    ...COMPONENTS_NOROUNT
-  ],
+  declarations:
+    [
+      ...COMPONENTS,
+      ...COMPONENTS_NOROUNT
+    ],
   entryComponents: COMPONENTS_NOROUNT
 })
 export class PermuTaxModule { }
