@@ -1,6 +1,6 @@
 <div class="page-wrapper" #pageHost>
   <div class="top">
-    <div class="top-title"> 即墨区亩均税收</div>
+    <div class="top-title"> 即墨区亩均税收2019</div>
     <button nz-button nzType="link" (click)="fullScreen($event)" nzGhost="true"
       class="fullscreen-btn">{{ isFullScreen?'退出全屏': '全屏预览'}}</button>
 
@@ -13,15 +13,15 @@
           <div class="panel-title"></div>
           <div class="panel-content">
             <div style="width: 100%;height: 50%;display: flex;align-items: center;justify-content: center;">
-              <h3 class="summary-title" style="padding-top: 5%;"> {{10239.32 | number }} </h3>
+              <h3 class="summary-title" style="padding-top: 5%;"> 增收：{{2360 | number }} 万</h3>
             </div>
             <div style="width: 100%;height: 50%;">
               <div nz-row nzGutter="0" style="height: 100%;">
                 <div nz-col nzSpan="12" style="height: 100%;display: flex;align-items: center;justify-content: center;">
-                  <h3 class="summary-subtitle"> 企业数：{{12981 | number }} </h3>
+                  <h3 class="summary-subtitle"> 企业数：{{3482 | number }} </h3>
                 </div>
                 <div nz-col nzSpan="12" style="height: 100%;display: flex;align-items: center;justify-content: center;">
-                  <h3 class="summary-subtitle"> 地块数：{{6328 | number }} </h3>
+                  <h3 class="summary-subtitle"> 地块数：{{6248 | number }} </h3>
                 </div>
               </div>
             </div>
@@ -29,21 +29,24 @@
         </div>
 
         <div class="panel-3 left-common" style="margin-top: 4.5%;">
-          <div class="panel-title"></div>
-          <div class="panel-content"></div>
+          <div class="panel-title">行业亩均税收情况<span style="margin-left: 6px; font-size: 14px;">单位：万元</span></div>
+          <div class="panel-content" echarts [options]="permTaxMlmcChartOpt"></div>
         </div>
 
         <div class="panel-3 left-common" style="margin-top: 4.5%;">
-          <div class="panel-title"></div>
-          <div class="panel-content" echarts [options]="qyfghyBarOpt2"></div>
+          <div class="panel-title">行业用地情况<span style="margin-left: 6px; font-size: 14px;">单位：亩</span></div>
+          <div class="panel-content" echarts [options]="permAreaMlmcChartOpt"></div>
         </div>
 
       </div>
       <!-- 地图 -->
       <div nz-col nzSpan="12" style="height: 100%;">
 
-        <div class="mapbox-container" mapbox [options]="mapboxOptions" id="l7_map"></div>
-
+        <div class="mapbox-container" mapbox [options]="mapboxOptions" id="l7_map">
+        </div>
+        <div style="  bottom: 10px; width: 96%; margin: 5px 2%;">
+          <nz-slider [(ngModel)]="filter" (ngModelChange)="filterPerm()"></nz-slider>
+        </div>
         <!-- <mgl-map class="mapbox-container" [style]="style" [trackResize]="true" [zoom]="[8]" [center]="[120.3,36.45]"
           (load)="mapboxglLoad($event)">
           <mgl-control mglNavigation></mgl-control>
@@ -76,26 +79,26 @@
       </div>
       <!-- 右税收 -->
       <div nz-col nzSpan="6" style="height: 100%;">
-        <div class="panel-25 right-top fg-summary">
+        <!-- <div class="panel-25 right-top fg-summary">
           <div class="panel-title"> </div>
           <div class="panel-content"></div>
 
-        </div>
+        </div> -->
 
-        <div class="panel-3 right-common" style="margin-top: 4.5%;">
-          <div class="panel-title">亩均税收排名<span style="margin-left: 6px; font-size: 14px;">单位：万元</span></div>
+        <div class="panel-3 right-common" style="height: 47%;">
+          <div class="panel-title">亩均税收排名<span style="margin-left: 6px; font-size: 14px;">单位：万元/亩</span></div>
           <div class="panel-content" style="overflow:hidden;">
             <div style="width: 100%;height: 100%;" #totalQypmHost>
               <div nz-row (click)="permItemClick(item)" class="row-4" *ngFor="let item of permOrderData;let i =index"
                 nzGutter="8">
-                <div nz-col nzSpan="2">
+                <div style="font-size: 14px;" nz-col nzSpan="2">
                   {{i+1}}
                 </div>
-                <div nz-col nzSpan="17">
-                  {{item.nsrmc }}
+                <div style="font-size: 14px;" nz-col nzSpan="17">
+                  {{item.NSRMC }}
                 </div>
-                <div nz-col nzSpan="5">
-                  {{item.perm_all | number}}
+                <div style="font-size: 14px;" nz-col nzSpan="5">
+                  {{item.PERM_ALL | number}}
                 </div>
               </div>
             </div>
@@ -104,9 +107,9 @@
           </div>
         </div>
 
-        <div class="panel-3 right-common" style="margin-top: 4.5%;">
-          <div class="panel-title"></div>
-          <div class="panel-content"></div>
+        <div class="panel-3 right-common" style="margin-top: 4.5%;height: 48.5%;">
+          <div class="panel-title">亩均税收规模分布</div>
+          <div class="panel-content" echarts [options]="permScaleChartOpt"></div>
         </div>
       </div>
     </div>

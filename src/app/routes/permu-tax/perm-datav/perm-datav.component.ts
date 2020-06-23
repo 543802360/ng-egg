@@ -7,6 +7,9 @@ import { dark } from "@geo";
 import { LoadingTypesService } from '@core/loading-types.service';
 import { PERM } from 'src/app/dictionary/PERM';
 import { MapboxService } from '@core/ng-mapbox/services/mapbox/mapbox.service';
+import { order } from '@shared';
+import { pipe, Observable, observable, of, from } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 @Component({
   selector: 'app-permu-tax-perm-datav',
   templateUrl: './perm-datav.component.html',
@@ -27,15 +30,12 @@ export class PermuTaxPermDatavComponent implements OnInit, AfterViewInit {
     zoom: 8.8
   };
 
+  filter = 0;
   //#endregion
-  // transform: translate3d(0.001px, -270px, 0.001px);
-  //   transition: transform 0.5s linear 0s;
+
   isFullScreen = false;
   // 按总额企业排名
   permOrderData: any[] = [];
-
-  // 按总额企业排名
-  qyTaxInfoVisible = false;
 
   // 蓝色系--淡蓝
   colors = [
@@ -77,153 +77,15 @@ export class PermuTaxPermDatavComponent implements OnInit, AfterViewInit {
     "#9415FF",
     "#421EB2"
   ];
-  // 复工企业按行业统计图表
-  qyfghyChartInstance;
 
-  qyfghyBarOpt = {
-    background: "transparent",
-    color: ["#30C7C4"],
-    tooltip: {
-      trigger: "axis",
-      axisPointer: {
-        type: "shadow"
-      }
-    },
-    grid: {
-      left: "10%",
-      right: "4%",
-      bottom: "3%",
-      top: "2%",
-      containLabel: true
-    },
-    xAxis: {
-      show: false,
-      type: "value",
-      axisLabel: {
-        color: "white",
-        fontSize: 14,
-        textShadowColor: "rgb(65, 202, 255)",
-        textShadowBlur: 4
-      },
-      boundaryGap: [0, 0.01]
-    },
-    yAxis: {
-      type: "category",
-      axisLabel: {
-        color: "white",
-        fontSize: 14,
-        textShadowColor: "rgb(65, 202, 255)",
-        textShadowBlur: 4
-      },
-      data: [
-        "制造业",
-        "房地产业",
-        "建筑业",
-        "金融业",
-        "批发和零售业",
-        "教育"
-      ].reverse()
-    },
-    series: [
-      {
-        name: "2012年",
-        type: "bar",
-        barGap: "50%",
-        barCategoryGap: "60%",
-        itemStyle: {
-          color: {
-            type: "linear",
-            x: 0,
-            y: 0,
-            x2: 1,
-            y2: 1,
-            colorStops: [{
-              offset: 0, color: "rgb(174,52,242)" // 0% 处的颜色
-            }, {
-              offset: 1, color: "rgb(224,45,111)" // 100% 处的颜色
-            }],
-            global: false // 缺省为 false
-          }
-        },
-        data: [19325, 23438, 121594, 31000, 121594, 134141]
-      }
-    ]
-  };
+  //#region 图表
+  permAreaMlmcChartOpt;
+  permTaxMlmcChartOpt;
+  permScatterChartOpt;
 
-  qyfghyBarOpt2 = {
-    background: "transparent",
-    color: ["#30C7C4"],
-    tooltip: {
-      trigger: "axis",
-      axisPointer: {
-        type: "shadow"
-      }
-    },
-    grid: {
-      left: "6%",
-      right: "4%",
-      bottom: "3%",
-      top: "2%",
-      containLabel: true
-    },
-    xAxis: {
-      show: false,
-      type: "value",
-      axisLabel: {
-        color: "white",
-        fontSize: 14,
-        textShadowColor: "rgb(65, 202, 255)",
-        textShadowBlur: 4
-      },
-      boundaryGap: [0, 0.01]
-    },
-    yAxis: {
-      type: "category",
-      axisLabel: {
-        color: "white",
-        fontSize: 14,
-        textShadowColor: "rgb(65, 202, 255)",
-        textShadowBlur: 4
-      },
-      data: [
-        "制造业",
-        "房地产业",
-        "建筑业",
-        "金融业",
-        "批发和零售业",
-        "住宿和餐饮业",
-        "农、林、牧、渔业",
-        "教育"
-      ].reverse()
-    },
-    series: [
-      {
-        name: "2012年",
-        type: "bar",
-        barGap: "50%",
-        barCategoryGap: "60%",
-        itemStyle: {
-          color: {
-            type: "linear",
-            x: 0,
-            y: 0,
-            x2: 1,
-            y2: 1,
-            colorStops: [{
-              offset: 0, color: "rgb(106,140,247)" // 0% 处的颜色
-            }, {
-              offset: 1, color: "rgb(208,57,254)" // 100% 处的颜色
-            }],
-            global: false // 缺省为 false
-          }
-        },
-        data: [19325, 23438, 31000, 121594, 134141, 31000, 121594, 134141]
-      }
-    ]
-  };
-
-
-
+  permScaleData;
+  permScaleChartOpt;
+  //#endregion
   constructor(
     private render2: Renderer2,
     private http: _HttpClient,
@@ -233,13 +95,21 @@ export class PermuTaxPermDatavComponent implements OnInit, AfterViewInit {
     private mapboxSrv: MapboxService) { }
 
   ngOnInit() {
-    this.style = dark;
     this.loadingSrv.open({
       type: 'custom',
       custom: this.loadingTypeSrv.loadingTypes.Cubes
     });
 
-
+    this.permScaleData = {
+      "data": {
+        "<=0": 289,
+        "0-10": 2518,
+        "10-100": 547,
+        "100-500": 98,
+        ">500": 30
+      },
+      "success": true
+    }
   }
 
   ngAfterViewInit() {
@@ -247,6 +117,8 @@ export class PermuTaxPermDatavComponent implements OnInit, AfterViewInit {
       this.map = this.mapboxSrv.Map;
       this.initPermMap();
       this.initPermOrder();
+      this.initPermByMlmc();
+      this.drawPermScatterChart();
     });
 
     window.addEventListener("resize", e => {
@@ -320,9 +192,8 @@ export class PermuTaxPermDatavComponent implements OnInit, AfterViewInit {
    */
   initPermMap() {
     this.http.get('perm/all').subscribe(resp => {
-      // tslint:disable-next-line: no-string-literal
-      window['mapboxmap'] = this.map
       this.loadingSrv.close();
+      this.initJtqyNsgm();
       this.map.flyTo({
         center: [120.44105743994783, 36.38193748780279],
         pitch: 60,
@@ -331,7 +202,8 @@ export class PermuTaxPermDatavComponent implements OnInit, AfterViewInit {
         zoom: 14,
         speed: 1,
         essential: true
-      })
+      });
+
       this.map.addSource("permSource", {
         type: "geojson",
         data: resp.data
@@ -352,10 +224,12 @@ export class PermuTaxPermDatavComponent implements OnInit, AfterViewInit {
       //       stops: [
       //         [0, this.colors[0]],
       //         [10, this.colors[1]],
-      //         [50, this.colors[2]],
-      //         [100, this.colors[3]],
-      //         [500, this.colors[4]],
-      //         [1000, this.colors[5]],
+      //         [25, this.colors[2]],
+      //         [50, this.colors[3]],
+      //         [100, this.colors[4]],
+      //         [200, this.colors[5]],
+      //         [500, this.colors[6]],
+      //         [1000, this.colors[7]],
       //       ]
       //     },
       //     "fill-extrusion-height":
@@ -373,46 +247,37 @@ export class PermuTaxPermDatavComponent implements OnInit, AfterViewInit {
       //   }
       // });
       // 添加2d亩均图层
-      //       fill - color': [
-      //       'interpolate',
-      //         ['cubic-bezier', 0, 0.5, 1, 0.5],
-      //         ['get', 'DEPTH'],
-      //         200,
-      //         '#78bced',
-      //         9000,
-      //         '#15659f'
+      // fill - color': [
+      // 'interpolate',
+      //   ['cubic-bezier', 0, 0.5, 1, 0.5],
+      //   ['get', 'DEPTH'],
+      //   200,
+      //   '#78bced',
+      //   9000,
+      //   '#15659f'
       //      ]
       this.map.addLayer({
         id: 'perm_2d_layer',
         type: 'fill',
         source: 'permSource',
         paint: {
-          // "fill-color": [
-          //   'interpolate',
-          //   ['linear'],
-          //   ['get', 'perm_all'],
-          //   0, this.colors[0],
-          //   10, this.colors[1],
-          //   50, this.colors[2],
-          //   100, this.colors[3],
-          //   500, this.colors[4],
-          //   1000, this.colors[5]
-          // ],
-          // "fill-color": 'green',
           "fill-color": {
             property: "perm_all",
             stops: [
               [0, this.colors[0]],
               [10, this.colors[1]],
-              [50, this.colors[2]],
-              [100, this.colors[3]],
-              [500, this.colors[4]],
-              [1000, this.colors[5]],
+              [25, this.colors[2]],
+              [50, this.colors[3]],
+              [100, this.colors[4]],
+              [200, this.colors[5]],
+              [500, this.colors[6]],
+              [1000, this.colors[7]],
             ]
           },
           "fill-opacity": 0.7
         }
       });
+      // 添加标注
       this.map.addLayer({
         "id": "perm_label",
         "type": "symbol",
@@ -438,7 +303,7 @@ export class PermuTaxPermDatavComponent implements OnInit, AfterViewInit {
             // "亩均税收：", { "font-scale": 0.8 },
             ['get', 'perm_all'], { "font-scale": 0.8 }
           ],
-          "text-padding": 66,
+          "text-padding": 50,
           "text-max-width": 20
         },
         "paint": {
@@ -450,8 +315,7 @@ export class PermuTaxPermDatavComponent implements OnInit, AfterViewInit {
           "text-translate": [0, 0]
         }
       });
-
-
+      // 点击
       this.map.on('click', 'perm_2d_layer', e => {
         console.log('mouseenter', e, e.features);
 
@@ -497,18 +361,328 @@ export class PermuTaxPermDatavComponent implements OnInit, AfterViewInit {
     }, 5000);
   }
 
+  initPermByMlmc() {
+    this.http.get('perm/mlmc').subscribe(resp => {
+
+      //#region 行业占地情况
+      const zymjSort = resp.data.sort(order('zymj_mu')).reverse();
+      const axisArray = zymjSort.map(item => item.MLMC);
+      const zymjArray = zymjSort.map(item => item.zymj_mu);
+
+      this.drawPermAreaMlmcChart(axisArray, zymjArray);
+      //#endregion
+
+      //#region 行业亩均税收情况
+      const taxSort = resp.data.sort(order('perm_all_avg')).reverse();
+      const axisArray1 = zymjSort.map(item => item.MLMC);
+      const taxArray = zymjSort.map(item => item.perm_all_avg);
+
+      this.drawPermTaxMlmcChart(axisArray1, taxArray);
+      //#endregion
+
+    });
+  }
+
+  initJtqyNsgm() {
+
+    const seriesData = Object.keys(this.permScaleData.data).map(key => {
+      return { value: this.permScaleData.data[key], name: key }
+    });
+
+    this.permScaleChartOpt = {
+      backgroundColor: 'transparent',
+      tooltip: {
+        trigger: 'item',
+        formatter: "{a} <br/>{b}: {c} ({d}%)"
+      },
+      series: [
+        {
+          name: '亩均税收规模',
+          type: "pie",
+          radius: ["35%", "50%"],
+          center: ["50%", "50%"],
+          minAngle: 20,
+          avoidLabelOverlap: true,
+          label: {
+            formatter: '{b}\n{c}户 ({d}%)',
+            // color: (params) => {
+            //   //自定义颜色
+            //   let color_list = [
+            //     'rgb(33,107,198)', 'rgb(57,153,219)', 'rgb(82,182,96)'
+            //     , 'rgb(92,206,115)', 'rgb(70,162,136)', 'rgb(86,201,171)', 'rgb(192,47,36)', 'rgb(228,75,57)'
+            //     , 'rgb(240,157,40)', 'rgb(217,178,35)'
+            //   ];
+            //   console.log(params, color_list[params.dataIndex]);
+            //   return color_list[params.dataIndex];
+            // }
+          },
+          itemStyle: {
+            normal: {
+              color: (params) => {
+                // 自定义颜色
+                const colorList = [
+                  'rgb(33,107,198)',
+                  'rgb(82,182,96)',
+                  'rgb(70,162,136)',
+                  'rgb(192,47,36)',
+                  'rgb(240,157,40)'
+                ];
+                // console.log(params, colorList[params.dataIndex]);
+                return colorList[params.dataIndex]
+              }
+            },
+            emphasis: {
+              shadowBlur: 10,
+              shadowOffsetX: 0,
+              shadowColor: 'rgba(0, 0, 0, 0.5)'
+            }
+          },
+          data: seriesData
+        }
+      ]
+    };
+  }
+
+  /**
+   * 行业占地情况
+   * @param axisData
+   * @param seriesData
+   */
+  drawPermAreaMlmcChart(axisData: any[], seriesData: any[]) {
+    this.permAreaMlmcChartOpt = {
+      background: "transparent",
+      color: ["#30C7C4"],
+      tooltip: {
+        trigger: "axis",
+        axisPointer: {
+          type: "shadow"
+        }
+      },
+      grid: {
+        left: "6%",
+        right: "4%",
+        bottom: "3%",
+        top: "2%",
+        containLabel: true
+      },
+      xAxis: {
+        show: false,
+        type: "value",
+        axisLabel: {
+          color: "white",
+          fontSize: 14,
+          textShadowColor: "rgb(65, 202, 255)",
+          textShadowBlur: 4
+        },
+        boundaryGap: [0, 0.01]
+      },
+      yAxis: {
+        type: "category",
+        axisLabel: {
+          interval: 0,
+          color: "white",
+          fontSize: 14,
+          textShadowColor: "rgb(65, 202, 255)",
+          textShadowBlur: 2,
+          formatter: val => {
+            return val.length > 6 ? `${val.substring(0, 6)}..` : val
+          }
+        },
+        data: axisData
+      },
+      series: [
+        {
+          type: "bar",
+          barGap: "50%",
+          barCategoryGap: "60%",
+          itemStyle: {
+            color: {
+              type: "linear",
+              x: 0,
+              y: 0,
+              x2: 1,
+              y2: 1,
+              colorStops: [{
+                offset: 0, color: "rgb(106,140,247)" // 0% 处的颜色
+              }, {
+                offset: 1, color: "rgb(208,57,254)" // 100% 处的颜色
+              }],
+              global: false // 缺省为 false
+            }
+          },
+          data: seriesData
+        }
+      ],
+      dataZoom: {
+        type: 'slider', // 滑动条
+        show: true,      // 开启
+        yAxisIndex: [0],
+        right: 18,  // 滑动条位置
+        start: 50,    // 初始化时，滑动条宽度开始标度
+        end: 100      // 初始化时，滑动条宽度结束标度<br>
+      }
+    };
+  }
+
+  /**
+   * 行业亩均税收情况
+   * @param axisData
+   * @param seriesData
+   */
+  drawPermTaxMlmcChart(axisData: any[], seriesData: any[]) {
+    this.permTaxMlmcChartOpt = {
+      background: "transparent",
+      color: ["#30C7C4"],
+      tooltip: {
+        trigger: "axis",
+        axisPointer: {
+          type: "shadow"
+        }
+      },
+      grid: {
+        left: "10%",
+        right: "4%",
+        bottom: "3%",
+        top: "2%",
+        containLabel: true
+      },
+      xAxis: {
+        show: false,
+        type: "value",
+        axisLabel: {
+          color: "white",
+          fontSize: 14,
+          textShadowColor: "rgb(65, 202, 255)",
+          textShadowBlur: 4
+        },
+        boundaryGap: [0, 0.01]
+      },
+      yAxis: {
+        type: "category",
+        axisLabel: {
+          color: "white",
+          fontSize: 14,
+          textShadowColor: "rgb(65, 202, 255)",
+          textShadowBlur: 2,
+          formatter: val => {
+            return val.length > 6 ? `${val.substring(0, 6)}..` : val
+          }
+        },
+        data: axisData
+      },
+      series: [
+        {
+          type: "bar",
+          barGap: "50%",
+          barCategoryGap: "60%",
+          itemStyle: {
+            color: {
+              type: "linear",
+              x: 0,
+              y: 0,
+              x2: 1,
+              y2: 1,
+              colorStops: [{
+                offset: 0, color: "rgb(174,52,242)" // 0% 处的颜色
+              }, {
+                offset: 1, color: "rgb(224,45,111)" // 100% 处的颜色
+              }],
+              global: false // 缺省为 false
+            }
+          },
+          data: seriesData
+        }
+      ],
+      dataZoom: {
+        type: 'slider', // 滑动条
+        show: true,      // 开启
+        yAxisIndex: [0],
+        right: 18,  // 滑动条位置
+        start: 50,    // 初始化时，滑动条宽度开始标度
+        end: 100      // 初始化时，滑动条宽度结束标度<br>
+      }
+    };
+  }
+
+  drawPermScatterChart() {
+
+    this.http.get('perm/scatter').subscribe(resp => {
+
+      //#region 散点相关图
+
+      const scatterData = resp.data.map(item => {
+        const { ZYMJ_MU, ALL_VALUE } = item;
+        return [ZYMJ_MU, ALL_VALUE];
+      });
+      console.log('散点相关图：', scatterData);
+      this.permScatterChartOpt = {
+        title: {
+          text: 'Linear Regression',
+          left: 'center'
+        },
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'cross'
+          }
+        },
+        xAxis: {
+          type: 'value',
+          splitLine: {
+            lineStyle: {
+              type: 'dashed'
+            }
+          },
+        },
+        yAxis: {
+          type: 'value',
+          min: 1.5,
+          splitLine: {
+            lineStyle: {
+              type: 'dashed'
+            }
+          },
+        },
+        series: [{
+          name: 'scatter',
+          type: 'scatter',
+          emphasis: {
+            label: {
+              show: true,
+              position: 'left',
+              color: 'blue',
+              fontSize: 16
+            }
+          },
+          data: scatterData
+        }]
+      };
+      //#endregion
+    });
+
+
+  }
   /**
    * 单个企业点击飞行
    * @param item
    */
   permItemClick(item) {
     console.log(item);
-    this.http.get('perm/center', { polygon: JSON.stringify(item.geom) }).subscribe(res => {
-      console.log('center:', res);
-      this.map.flyTo({
-        center: res.center,
-        zoom: 19
+    this.http.get('perm/info', { nsrsbh: item.NSRSBH }).pipe(switchMap(resp =>
+      this.http.get('perm/center', { polygon: JSON.stringify(resp.data[0].geom) })
+    ))
+      .subscribe(res => {
+        console.log('center:', res);
+        this.map.flyTo({
+          center: res.center,
+          zoom: 19
+        })
       })
-    })
+  }
+  filterPerm() {
+    console.log(this.filter);
+    this.map.setFilter('perm_2d_layer', ['>=', ['get', 'perm_all'], this.filter]);
+    this.map.setFilter('perm_3d_layer', ['>=', ['get', 'perm_all'], this.filter])
+
   }
 }

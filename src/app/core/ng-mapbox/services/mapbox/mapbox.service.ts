@@ -43,7 +43,7 @@ export class MapboxService {
   initControl() {
     this.map.addControl(new ZoomControl(), "top-right");
     this.map.addControl(new CompassControl(), "top-right");
-
+    this.map.addControl(new mapboxgl.FullscreenControl());
     const styles = [
       {
         title: "dark",
