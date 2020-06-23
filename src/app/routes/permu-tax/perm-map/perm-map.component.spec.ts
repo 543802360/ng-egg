@@ -1,19 +1,19 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { <%= componentName %> } from './<%= dasherize(name) %>.component';
+import { PermuTaxPermMapComponent } from './perm-map.component';
 
-describe('<%= componentName %>', () => {
-  let component: <%= componentName %>;
-  let fixture: ComponentFixture<<%= componentName %>>;
+describe('PermuTaxPermMapComponent', () => {
+  let component: PermuTaxPermMapComponent;
+  let fixture: ComponentFixture<PermuTaxPermMapComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ <%= componentName %> ]
+      declarations: [ PermuTaxPermMapComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(<%= componentName %>);
+    fixture = TestBed.createComponent(PermuTaxPermMapComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

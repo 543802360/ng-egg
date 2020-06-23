@@ -1,70 +1,18 @@
-import { Component, OnInit, ViewChild as % if (!!viewEncapsulation) { %>, ViewEncapsulation <% }%> as % if (changeDetection !== 'Default') { %>, ChangeDetectionStrategy <% }%> } from '@angular/core'; as % if (!modal) { %>
-import { ActivatedRoute } from '@angular/router';
-  import { Location } from '@angular/common'; as % } %> as % if (modal) { %>
-import { NzModalRef } from 'ng-zorro-antd/modal'; as % } %>
-import { NzMessageService } from 'ng-zorro-antd/message';
+import { Component, OnInit<% if(!!viewEncapsulation) { %>, ViewEncapsulation<% }%><% if(changeDetection !== 'Default') { %>, ChangeDetectionStrategy<% }%> } from '@angular/core';
 import { _HttpClient } from '@delon/theme';
-import { SFSchema, SFUISchema } from '@delon/form';
+import { NzMessageService } from 'ng-zorro-antd';
 
 @Component({
   selector: '<%= selector %>',
-  templateUrl: './<%= dasherize(name) %>.component.html',<% if (!inlineStyle) { %> as % } else { %>
-    styleUrls: ['./<%= dasherize(name) %>.component.<%= style %>'] <% } %> as % if (!!viewEncapsulation) { %>,
-      encapsulation: ViewEncapsulation.<%= viewEncapsulation %> as % } if (changeDetection !== 'Default') { %>,
-        changeDetection: ChangeDetectionStrategy.<%= changeDetection %> as % } %>
+  templateUrl: './<%= dasherize(name) %>.component.html',<% if(!inlineStyle) { %><% } else { %>
+  styleUrls: ['./<%= dasherize(name) %>.component.<%= styleext %>']<% } %><% if(!!viewEncapsulation) { %>,
+  encapsulation: ViewEncapsulation.<%= viewEncapsulation %><% } if (changeDetection !== 'Default') { %>,
+  changeDetection: ChangeDetectionStrategy.<%= changeDetection %><% } %>
 })
 export class <%= componentName %> implements OnInit {
-  as % if (modal) { %> record: any = {}; as % } else { %>
-    id = this.route.snapshot.params.id; as % } %>
-      i: any;
-  schema: SFSchema = {
-    properties: {
-      no: { type: 'string', title: '编号' },
-      owner: { type: 'string', title: '姓名', maxLength: 15 },
-      callNo: { type: 'number', title: '调用次数' },
-      href: { type: 'string', title: '链接', format: 'uri' },
-      description: { type: 'string', title: '描述', maxLength: 140 },
-    },
-    required: ['owner', 'callNo', 'href', 'description'],
-  };
-  ui: SFUISchema = {
-    '*': {
-      spanLabelFixed: 100,
-      grid: { span: 12 },
-    },
-    $no: {
-      widget: 'text'
-    },
-    $href: {
-      widget: 'string',
-    },
-    $description: {
-      widget: 'textarea',
-      grid: { span: 24 },
-    },
-  };
 
-  constructor(as % if (modal) { %>
-    private modal: NzModalRef, as % } else { %>
-      private route: ActivatedRoute,
-        public location: Location, as % } %>
-          private msgSrv: NzMessageService,
-            public http: _HttpClient,
-  ) { }
+  constructor(private http: _HttpClient, private msg: NzMessageService) { }
 
-  ngOnInit(): void {
-    <% if (modal) { %>if (this.record.id > 0) as % } else { %>if (this.id > 0) as % } %>
-    this.http.get(`/user/${this.record.id}`).subscribe(res => (this.i = res));
-}
+  ngOnInit() { }
 
-save(value: any) {
-  this.http.post(`/user/${this.record.id}`, value).subscribe(res => {
-    this.msgSrv.success('保存成功');
-    this.modal.close(true);
-  });
-} as % if (modal) { %>
-
-  close() {
-    this.modal.destroy();
-  } as % } %>
 }

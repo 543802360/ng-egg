@@ -6,9 +6,11 @@ import { PermuTaxPermDatavComponent } from './perm-datav/perm-datav.component';
 import { NgxMapboxGLModule } from 'ngx-mapbox-gl';
 
 import { NgMapboxModule } from '@core/ng-mapbox/ng-mapbox.module';
+import { PermuTaxPermMapComponent } from './perm-map/perm-map.component';
 
 const COMPONENTS = [
-  PermuTaxPermDatavComponent];
+  PermuTaxPermDatavComponent,
+  PermuTaxPermMapComponent];
 const COMPONENTS_NOROUNT = [];
 
 @NgModule({
