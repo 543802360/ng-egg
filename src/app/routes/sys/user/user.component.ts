@@ -182,7 +182,6 @@ export class SysUserComponent implements OnInit {
     if (e.type === "checkbox" && e.checkbox.length) {
       this.userEditDisabled = false;
       this.userSelected = e.checkbox as any;
-      console.table('edit users', e.checkbox);
     } else if (e.type === "checkbox" && !e.checkbox.length) {
       this.userEditDisabled = true;
     }

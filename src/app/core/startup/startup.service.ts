@@ -42,8 +42,9 @@ export class StartupService {
   private viaHttp(resolve: any, reject: any) {
     zip(
       this.httpClient.get('sys/user/admin/permmenu'),
-      this.httpClient.get('sys/departments')
-    ).subscribe(([permsData, deparments]) => {
+      this.httpClient.get('sys/departments'),
+      this.httpClient.get('util/hymc')
+    ).subscribe(([permsData, deparmentsRes, hymcRes]) => {
       // this.settingService.setApp(res.app);
       // this.settingService.setUser(res.user);
       // this.aclService.setFull(true);
@@ -51,7 +52,7 @@ export class StartupService {
 
       //#region  持久化部门行政区划数据
 
-      const node = (deparments as any).data.map(item => {
+      const departmentArray = (deparmentsRes as any).data.map(item => {
         return {
           title: item.department_name,
           key: item.department_id,
@@ -59,11 +60,23 @@ export class StartupService {
           parent_name: item.parent_name
         };
       });
-      const depTreeNodes = array2tree(node, 'key', 'parent_id', 'children');
+      const depTreeNodes = array2tree(departmentArray, 'key', 'parent_id', 'children');
       this.cacheSrv.set('departments', depTreeNodes);
       //#endregion
 
+      //#region 持久化行业分类数据
+      const hymcArray = (hymcRes as any).data.map(item => {
+        return {
+          title: item.HYMC,
+          key: item.HY_DM,
+          parent_id: item.SJHY_DM
+        }
+      });
+      const hymcTreeNodes = array2tree(hymcArray, 'key', 'parent_id', 'children');
+      this.cacheSrv.set('hymc', hymcTreeNodes);
 
+
+      //#endregion
 
       //#region 持久化角色权限
       // 设置角色对应的权限

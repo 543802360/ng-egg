@@ -3,12 +3,20 @@ import { _HttpClient, ModalHelper } from '@delon/theme';
 import { STColumn, STComponent } from '@delon/abc/table';
 import { SFSchema } from '@delon/form';
 
+import { NzMessageService } from 'ng-zorro-antd';
+import * as mapnboxgl from "mapbox-gl";
+import {dark} from "@geo";
+
 @Component({
-  selector: 'app-tax-analysis-batch',
-  templateUrl: './batch.component.html',
+  selector: 'app-permu-tax-perm-risk',
+  templateUrl: './perm-risk.component.html',
+  styleUrls: ['./perm-risk.component.less']
 })
-export class TaxAnalysisBatchComponent implements OnInit {
+export class PermuTaxPermRiskComponent implements OnInit {
+
   url = `/user`;
+  style=dark;
+  map:mapboxgl.Map;
   searchSchema: SFSchema = {
     properties: {
       no: {
@@ -32,7 +40,7 @@ export class TaxAnalysisBatchComponent implements OnInit {
     }
   ];
 
-  constructor(private http: _HttpClient, private modal: ModalHelper) { }
+  constructor(private http: _HttpClient, private modal: ModalHelper,private msgSrv:NzMessageService) { }
 
   ngOnInit() { }
 
@@ -40,6 +48,10 @@ export class TaxAnalysisBatchComponent implements OnInit {
     // this.modal
     //   .createStatic(FormEditComponent, { i: { id: 0 } })
     //   .subscribe(() => this.st.reload());
+  }
+
+  mapboxLoad(e){
+    this.map=e;
   }
 
 }

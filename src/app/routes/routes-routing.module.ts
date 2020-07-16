@@ -48,10 +48,10 @@ const routes: Routes = [
         loadChildren: () => import('./exception/exception.module').then(m => m.ExceptionModule)
       },
       // 税源管理模块
-      {
-        path: 'company',
-        loadChildren: () => import('./company/company.module').then(m => m.CompanyModule)
-      },
+      // {
+      //   path: 'company',
+      //   loadChildren: () => import('./company/company.module').then(m => m.CompanyModule)
+      // },
       // 税收分析模块
       {
         path: 'analysis',
@@ -62,6 +62,10 @@ const routes: Routes = [
       {
         path: 'building',
         loadChildren: () => import('./building/building.module').then(m => m.BuildingModule)
+      },
+      {
+        path: 'permtax',
+        loadChildren: () => import('./permu-tax/permu-tax.module').then(m => m.PermuTaxModule)
       },
       // 系统设置子模块
       {

@@ -26,7 +26,8 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {
     const username = this.cacheSrv.get('userInfo', { mode: 'none' }).username;
     const name = this.cacheSrv.get('userInfo', { mode: 'none' }).name;
-    username === 'admin' ? this.sysTitle = '智慧财图系统管理后台' : this.sysTitle = `${name}财源管理系统`;
+    // username === 'admin' ? this.sysTitle = '智慧财图系统管理后台' : this.sysTitle = `${name}财源管理系统`;
+    this.sysTitle = "城阳区智慧财源空间信息管理系统"
   }
 
 }

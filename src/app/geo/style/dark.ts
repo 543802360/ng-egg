@@ -1,57 +1,50 @@
 const dark = {
   "version": 8,
-  "sprite": "http://10.211.55.7:10010/mapbox/sprite",
-  "glyphs": "http://10.211.55.7:10010/mapbox/font/{fontstack}/{range}.pbf",
+  "sprite": "http://127.0.0.1:10010/mapbox/sprite",
+  "glyphs": "http://127.0.0.1:10010/mapbox/font/{fontstack}/{range}.pbf",
   "sources": {
     "world": {
       "type": "vector",
       "scheme": "tms",
       "tiles": [
-        "http://127.0.0.1:10010/vtiles/world/{z}/{x}/{y}.pbf",
-        "http://10.211.55.7:10010/vtiles/world/{z}/{x}/{y}.pbf"
+        "http://127.0.0.1:10010/vtiles/world/{z}/{x}/{y}.pbf"
       ]
     },
     "dtbj": {
       "type": "vector",
       "scheme": "tms",
       "tiles": [
-        "http://127.0.0.1:10010/vtiles/dtbj/{z}/{x}/{y}.pbf",
-        "http://10.211.55.7:10010/vtiles/dtbj/{z}/{x}/{y}.pbf"]
+        "http://127.0.0.1:10010/vtiles/dtbj/{z}/{x}/{y}.pbf"]
     },
     "xzbz": {
       "type": "vector",
       "scheme": "tms",
       "tiles": [
-        "http://127.0.0.1:10010/vtiles/xzbz/{z}/{x}/{y}.pbf",
-        "http://10.211.55.7:10010/vtiles/xzbz/{z}/{x}/{y}.pbf"]
+        "http://127.0.0.1:10010/vtiles/xzbz/{z}/{x}/{y}.pbf"]
     },
     "poi": {
       "type": "vector",
       "scheme": "tms",
       "tiles": [
-        "http://127.0.0.1:10010/vtiles/poi/{z}/{x}/{y}.pbf",
-        "http://10.211.55.7:10010/vtiles/poi/{z}/{x}/{y}.pbf"]
+        "http://127.0.0.1:10010/vtiles/poi/{z}/{x}/{y}.pbf"]
     },
     "road": {
       "type": "vector",
       "scheme": "tms",
       "tiles": [
-        "http://127.0.0.1:10010/vtiles/road/{z}/{x}/{y}.pbf",
-        "http://10.211.55.7:10010/vtiles/road/{z}/{x}/{y}.pbf"]
+        "http://127.0.0.1:10010/vtiles/road/{z}/{x}/{y}.pbf"]
     },
     "road2": {
       "type": "vector",
       "scheme": "tms",
       "tiles": [
-        "http://127.0.0.1:10010/vtiles/road2/{z}/{x}/{y}.pbf",
-        "http://10.211.55.7:10010/vtiles/road2/{z}/{x}/{y}.pbf"]
+        "http://127.0.0.1:10010/vtiles/road2/{z}/{x}/{y}.pbf"]
     },
     "jzw": {
       "type": "vector",
       "scheme": "tms",
       "tiles": [
-        "http://127.0.0.1:10010/vtiles/road2/{z}/{x}/{y}.pbf",
-        "http://10.211.55.7:10010/vtiles/road2/{z}/{x}/{y}.pbf"]
+        "http://127.0.0.1:10010/vtiles/road2/{z}/{x}/{y}.pbf"]
     }
   },
   "layers": [{

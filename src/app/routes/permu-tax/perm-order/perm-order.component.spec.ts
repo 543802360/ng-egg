@@ -1,19 +1,19 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { <%= componentName %> } from './<%= dasherize(name) %>.component';
+import { PermuTaxPermOrderComponent } from './perm-order.component';
 
-describe('<%= componentName %>', () => {
-  let component: <%= componentName %>;
-  let fixture: ComponentFixture<<%= componentName %>>;
+describe('PermuTaxPermOrderComponent', () => {
+  let component: PermuTaxPermOrderComponent;
+  let fixture: ComponentFixture<PermuTaxPermOrderComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ <%= componentName %> ]
+      declarations: [ PermuTaxPermOrderComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(<%= componentName %>);
+    fixture = TestBed.createComponent(PermuTaxPermOrderComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
