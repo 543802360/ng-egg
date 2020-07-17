@@ -50,7 +50,7 @@ const routes: Routes = [
           path: 'used-name',
           component: CompanyUsedNameComponent,
           data: {
-            title: '企业曾用名管理',
+            title: '企业曾用名分析',
             guard: {
               ability: ['/company/used-name'],
             },
