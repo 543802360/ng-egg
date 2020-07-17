@@ -14,8 +14,6 @@ import { environment } from '@env/environment';
 import { LayoutDefaultComponent } from '../layout/default/default.component';
 import { LayoutFullScreenComponent } from '../layout/fullscreen/fullscreen.component';
 import { LayoutPassportComponent } from '../layout/passport/passport.component';
-// dashboard pages
-import { DashboardComponent } from './tax-analysis/dashboard/dashboard.component';
 // passport pages
 import { UserLoginComponent } from './passport/login/login.component';
 import { UserRegisterComponent } from './passport/register/register.component';
@@ -33,14 +31,23 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'dashboard',
+        redirectTo: 'economic',
         pathMatch: 'full'
       },
       // 系统首页仪表盘（一览性）
+      // {
+      //   path: 'dashboard',
+      //   component: DashboardComponent,
+      //   data: { title: '税收仪表盘' }
+      // },
       {
-        path: 'dashboard',
-        component: DashboardComponent,
-        data: { title: '税收仪表盘' }
+        path: 'economic',
+        loadChildren: () => import('./economic-analysis/economic-analysis.module').then(m => m.EconomicAnalysisModule)
+      },
+      // 预算管理
+      {
+        path: 'budget',
+        loadChildren: () => import('./budget/budget.module').then(m => m.BudgetModule)
       },
       // 异常处理模块
       {
@@ -52,11 +59,6 @@ const routes: Routes = [
       //   path: 'company',
       //   loadChildren: () => import('./company/company.module').then(m => m.CompanyModule)
       // },
-      // 税收分析模块
-      {
-        path: 'analysis',
-        loadChildren: () => import('./tax-analysis/tax-analysis.module').then(m => m.TaxAnalysisModule)
-      },
 
       // 楼宇经济子模块
       {

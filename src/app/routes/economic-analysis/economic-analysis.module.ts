@@ -1,20 +1,17 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from '@shared';
-import { TaxAnalysisRoutingModule } from './tax-analysis-routing.module';
-import { DelonChartModule } from '@delon/chart';
+import { EconomicAnalysisRoutingModule } from './economic-analysis-routing.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { DelonChartModule } from '@delon/chart';
 
-const COMPONENTS = [
-
-  DashboardComponent];
-
+const COMPONENTS = [DashboardComponent];
 const COMPONENTS_NOROUNT = [];
 
 @NgModule({
   imports: [
     SharedModule,
     DelonChartModule,
-    TaxAnalysisRoutingModule
+    EconomicAnalysisRoutingModule
   ],
   declarations: [
     ...COMPONENTS,
@@ -22,4 +19,4 @@ const COMPONENTS_NOROUNT = [];
   ],
   entryComponents: COMPONENTS_NOROUNT
 })
-export class TaxAnalysisModule { }
+export class EconomicAnalysisModule { }

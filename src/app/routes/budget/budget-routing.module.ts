@@ -4,9 +4,18 @@ import { BudgetBdgSettingBdgCountyComponent } from './bdg-setting/bdg-county/bdg
 import { BudgetBdgSettingBdgTownComponent } from './bdg-setting/bdg-town/bdg-town.component';
 
 const routes: Routes = [
-
-  { path: 'bdg-county', component: BudgetBdgSettingBdgCountyComponent },
-  { path: 'bdg-town', component: BudgetBdgSettingBdgTownComponent }];
+  {
+    path: 'company',
+    loadChildren: () => import('./company/company.module').then(m => m.CompanyModule)
+  },
+  {
+    path: 'bdg-county',
+    component: BudgetBdgSettingBdgCountyComponent
+  },
+  {
+    path: 'bdg-town',
+    component: BudgetBdgSettingBdgTownComponent
+  }];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
