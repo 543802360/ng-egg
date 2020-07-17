@@ -1,8 +1,12 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from '@shared';
 import { BudgetRoutingModule } from './budget-routing.module';
+import { BudgetBdgSettingBdgCountyComponent } from './bdg-setting/bdg-county/bdg-county.component';
+import { BudgetBdgSettingBdgTownComponent } from './bdg-setting/bdg-town/bdg-town.component';
 
-const COMPONENTS = [];
+const COMPONENTS = [
+  BudgetBdgSettingBdgCountyComponent,
+  BudgetBdgSettingBdgTownComponent];
 const COMPONENTS_NOROUNT = [];
 
 @NgModule({
