@@ -1,0 +1,18 @@
+<nz-card style="margin-top: 10px;">
+
+  <div nz-row nzGutter="8" style="height: 100%;">
+    <div nz-col nzSpan="12" style="height: 100%;">
+      <sf mode="search" [schema]="searchSchema" (formSubmit)="st.reset($event)" (formReset)="st.reset($event)"></sf>
+      <st #st [data]="url" [columns]="columns"></st>
+    </div>
+    <div nz-col nzSpan="12" style="height: 100%;">
+      <div style="height: 100%;min-height: 660px; width: 100%;margin-top: 10px;">
+        <!-- <nz-spin *ngIf="!map" nzSize="large" style=""></nz-spin> -->
+        <mgl-map [style]="style" [trackResize]="true" [zoom]="[8]" [center]="[120.3,36.45]" (load)="mapboxLoad($event)">
+          <mgl-control mglNavigation></mgl-control>
+          <mgl-control mglFullscreen></mgl-control>
+        </mgl-map>
+      </div>
+    </div>
+  </div>
+</nz-card>

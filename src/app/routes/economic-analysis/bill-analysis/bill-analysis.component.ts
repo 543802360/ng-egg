@@ -1,24 +1,14 @@
-import { Component, OnInit, ViewChild<% if(!!viewEncapsulation) { %>, ViewEncapsulation<% }%><% if(changeDetection !== 'Default') { %>, ChangeDetectionStrategy<% }%> } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { _HttpClient, ModalHelper } from '@delon/theme';
 import { STColumn, STComponent } from '@delon/abc/table';
 import { SFSchema } from '@delon/form';
 
-import { NzMessageService } from 'ng-zorro-antd';
-import * as mapboxgl from "mapbox-gl";
-import {dark} from "@geo";
-
 @Component({
-  selector: '<%= selector %>',
-  templateUrl: './<%= dasherize(name) %>.component.html',<% if(!inlineStyle) { %><% } else { %>
-  styleUrls: ['./<%= dasherize(name) %>.component.<%= styleext %>']<% } %><% if(!!viewEncapsulation) { %>,
-  encapsulation: ViewEncapsulation.<%= viewEncapsulation %><% } if (changeDetection !== 'Default') { %>,
-  changeDetection: ChangeDetectionStrategy.<%= changeDetection %><% } %>
+  selector: 'app-economic-analysis-bill-analysis',
+  templateUrl: './bill-analysis.component.html',
 })
-export class <%= componentName %> implements OnInit {
-
+export class EconomicAnalysisBillAnalysisComponent implements OnInit {
   url = `/user`;
-  style=dark;
-  map:mapboxgl.Map;
   searchSchema: SFSchema = {
     properties: {
       no: {
@@ -42,7 +32,7 @@ export class <%= componentName %> implements OnInit {
     }
   ];
 
-  constructor(private http: _HttpClient, private modal: ModalHelper,private msgSrv:NzMessageService) { }
+  constructor(private http: _HttpClient, private modal: ModalHelper) { }
 
   ngOnInit() { }
 
@@ -50,10 +40,6 @@ export class <%= componentName %> implements OnInit {
     // this.modal
     //   .createStatic(FormEditComponent, { i: { id: 0 } })
     //   .subscribe(() => this.st.reload());
-  }
-
-  mapboxLoad(e){
-    this.map=e;
   }
 
 }
