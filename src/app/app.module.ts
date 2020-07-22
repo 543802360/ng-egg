@@ -98,7 +98,7 @@ import { RoutesModule } from './routes/routes.module';
 import { SharedModule } from './shared/shared.module';
 import { STWidgetModule } from './shared/st-widget/st-widget.module';
 import { GeoModule } from './geo/geo.module';
-import { LoadingTypesService } from '@core/loading-types.service';
+import { LoadingTypesService } from '@core';
 
 
 @NgModule({

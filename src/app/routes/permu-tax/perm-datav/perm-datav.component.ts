@@ -3,10 +3,11 @@ import { _HttpClient } from '@delon/theme';
 import { NzMessageService } from 'ng-zorro-antd';
 import * as mapboxgl from "mapbox-gl";
 import { LoadingService } from '@delon/abc';
-import { dark } from "@geo";
-import { LoadingTypesService } from '@core/loading-types.service';
+import { LoadingTypesService } from '@core';
 import { PERM } from 'src/app/dictionary/PERM';
-import { MapboxService } from '@core/ng-mapbox/services/mapbox/mapbox.service';
+
+
+
 import { order } from '@shared';
 import { pipe, Observable, observable, of, from } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
@@ -91,8 +92,7 @@ export class PermuTaxPermDatavComponent implements OnInit, AfterViewInit {
     private http: _HttpClient,
     private loadingSrv: LoadingService,
     private loadingTypeSrv: LoadingTypesService,
-    private msgSrv: NzMessageService,
-    private mapboxSrv: MapboxService) { }
+    private msgSrv: NzMessageService) { }
 
   ngOnInit() {
     this.loadingSrv.open({
@@ -113,13 +113,13 @@ export class PermuTaxPermDatavComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.mapboxSrv.Map.on('load', e => {
-      this.map = this.mapboxSrv.Map;
-      this.initPermMap();
-      this.initPermOrder();
-      this.initPermByMlmc();
-      this.drawPermScatterChart();
-    });
+    // this.mapboxSrv.Map.on('load', e => {
+    //   this.map = this.mapboxSrv.Map;
+    //   this.initPermMap();
+    //   this.initPermOrder();
+    //   this.initPermByMlmc();
+    //   this.drawPermScatterChart();
+    // });
 
     window.addEventListener("resize", e => {
       const { clientHeight, clientWidth } = this.pageHost.nativeElement;

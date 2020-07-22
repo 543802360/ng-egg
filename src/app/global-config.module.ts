@@ -27,14 +27,14 @@ const alainConfig: AlainConfig = {
     login_url: '/passport/login', // 登录页路由地址
     token_send_key: 'token', // 发送token参数名
   },
-  acl: {
-    ...{
-      preCan: (roleOrAbility: ACLCanType) => {
-        const str = roleOrAbility.toString();
-        return str.startsWith('ability.') ? { ability: [str] } : null;
-      }
-    }
-  }
+  // acl: {
+  //   ...{
+  //     preCan: (roleOrAbility: ACLCanType) => {
+  //       const str = roleOrAbility.toString();
+  //       return str.startsWith('ability.') ? { ability: [str] } : null;
+  //     }
+  //   }
+  // }
 };
 
 const alainModules = [AlainThemeModule.forRoot(), DelonACLModule.forRoot(), DelonMockModule.forRoot()];
@@ -72,7 +72,7 @@ if (!environment.production) {
 // #endregion
 import { RouteReuseStrategy } from '@angular/router';
 import { ReuseTabService, ReuseTabStrategy } from '@delon/abc/reuse-tab';
-const REUSETAB_PROVIDES = [
+const reuseTabProviders = [
   {
     provide: RouteReuseStrategy,
     useClass: ReuseTabStrategy,
@@ -105,7 +105,7 @@ export class GlobalConfigModule {
   static forRoot(): ModuleWithProviders<GlobalConfigModule> {
     return {
       ngModule: GlobalConfigModule,
-      providers: [...alainProvides, ...zorroProvides],
+      providers: [...alainProvides, ...zorroProvides, ...reuseTabProviders],
     };
   }
 }

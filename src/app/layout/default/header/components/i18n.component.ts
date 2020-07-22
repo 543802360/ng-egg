@@ -1,6 +1,6 @@
-import { Component, Inject, Input, ChangeDetectionStrategy } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
-import { SettingsService, ALAIN_I18N_TOKEN } from '@delon/theme';
+import { ChangeDetectionStrategy, Component, Inject, Input } from '@angular/core';
+import { ALAIN_I18N_TOKEN, SettingsService } from '@delon/theme';
 import { InputBoolean } from '@delon/util';
 
 import { I18NService } from '@core';
@@ -53,7 +53,7 @@ export class HeaderI18nComponent {
     private settings: SettingsService,
     @Inject(ALAIN_I18N_TOKEN) private i18n: I18NService,
     @Inject(DOCUMENT) private doc: any,
-  ) {}
+  ) { }
 
   change(lang: string) {
     const spinEl = this.doc.createElement('div');

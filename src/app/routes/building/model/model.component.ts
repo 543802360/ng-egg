@@ -1,4 +1,4 @@
-import { LoadingTypesService } from '@core/loading-types.service';
+import { LoadingTypesService } from '@core';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { _HttpClient, ModalHelper } from '@delon/theme';

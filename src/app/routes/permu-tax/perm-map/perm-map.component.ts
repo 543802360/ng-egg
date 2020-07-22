@@ -1,11 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { _HttpClient, ModalHelper } from '@delon/theme';
-import { STColumn, STComponent } from '@delon/abc/table';
+import { STColumn, STComponent } from '@delon/abc/st';
 import { SFSchema } from '@delon/form';
 
 import { NzMessageService } from 'ng-zorro-antd';
 import * as mapnboxgl from "mapbox-gl";
-import {dark} from "@geo";
+import { dark } from "@geo";
 
 @Component({
   selector: 'app-permu-tax-perm-map',
@@ -15,8 +15,8 @@ import {dark} from "@geo";
 export class PermuTaxPermMapComponent implements OnInit {
 
   url = `/user`;
-  style=dark;
-  map:mapboxgl.Map;
+  style = dark;
+  map: mapboxgl.Map;
   searchSchema: SFSchema = {
     properties: {
       no: {
@@ -40,7 +40,7 @@ export class PermuTaxPermMapComponent implements OnInit {
     }
   ];
 
-  constructor(private http: _HttpClient, private modal: ModalHelper,private msgSrv:NzMessageService) { }
+  constructor(private http: _HttpClient, private modal: ModalHelper, private msgSrv: NzMessageService) { }
 
   ngOnInit() { }
 
@@ -50,8 +50,8 @@ export class PermuTaxPermMapComponent implements OnInit {
     //   .subscribe(() => this.st.reload());
   }
 
-  mapboxLoad(e){
-    this.map=e;
+  mapboxLoad(e) {
+    this.map = e;
   }
 
 }

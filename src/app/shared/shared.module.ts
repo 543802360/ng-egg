@@ -4,7 +4,6 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 // delon
 import { AlainThemeModule } from '@delon/theme';
-import { DelonABCModule } from '@delon/abc';
 import { DelonACLModule } from '@delon/acl';
 import { DelonFormModule } from '@delon/form';
 import { DelonChartModule } from "@delon/chart";
@@ -12,12 +11,17 @@ import { DelonChartModule } from "@delon/chart";
 import { TranslateModule } from '@ngx-translate/core';
 
 // #region third libs
-import { NgZorroAntdModule } from 'ng-zorro-antd';
 import { CountdownModule } from 'ngx-countdown';
+import { NgxTinymceModule } from 'ngx-tinymce';
+import { UEditorModule } from 'ngx-ueditor';
 import { IconPickerModule } from 'ngx-icon-picker';
+import { SHARED_ZORRO_MODULES } from './shared-zorro.module';
+import { SHARED_DELON_MODULES } from './shared-delon.module';
+
+
+
 const THIRDMODULES = [
-  NgZorroAntdModule,
-  CountdownModule,
+  CountdownModule, UEditorModule, NgxTinymceModule,
   IconPickerModule
 ];
 // #endregion
@@ -33,13 +37,14 @@ const DIRECTIVES = [];
     FormsModule,
     RouterModule,
     ReactiveFormsModule,
-    AlainThemeModule.forChild(),
-    DelonABCModule,
+    AlainThemeModule,
     DelonACLModule,
     DelonFormModule,
     DelonChartModule,
     // third libs
-    ...THIRDMODULES
+    ...THIRDMODULES,
+    ...SHARED_ZORRO_MODULES,
+    ...SHARED_DELON_MODULES,
   ],
   declarations: [
     // your components
@@ -50,16 +55,18 @@ const DIRECTIVES = [];
   exports: [
     CommonModule,
     FormsModule,
-    ReactiveFormsModule,
     RouterModule,
+    ReactiveFormsModule,
     AlainThemeModule,
-    DelonABCModule,
     DelonACLModule,
     DelonFormModule,
+    DelonChartModule,
     // i18n
     TranslateModule,
     // third libs
     ...THIRDMODULES,
+    ...SHARED_DELON_MODULES,
+    ...SHARED_ZORRO_MODULES,
     // your components
     ...COMPONENTS,
     ...DIRECTIVES

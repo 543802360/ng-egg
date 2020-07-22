@@ -19,6 +19,7 @@ import { ACLService } from '@delon/acl';
 })
 export class UserLoginComponent implements OnDestroy {
 
+  formTitle = '城阳区智慧财源信息管理系统';
   constructor(
     fb: FormBuilder,
     modalSrv: NzModalService,

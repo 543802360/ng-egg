@@ -59,21 +59,15 @@ const routes: Routes = [
         path: 'exception',
         loadChildren: () => import('./exception/exception.module').then(m => m.ExceptionModule)
       },
-      // 税源管理模块
-      // {
-      //   path: 'company',
-      //   loadChildren: () => import('./company/company.module').then(m => m.CompanyModule)
-      // },
-
       // 楼宇经济子模块
       {
         path: 'building',
         loadChildren: () => import('./building/building.module').then(m => m.BuildingModule)
       },
-      {
-        path: 'permtax',
-        loadChildren: () => import('./permu-tax/permu-tax.module').then(m => m.PermuTaxModule)
-      },
+      // {
+      //   path: 'permtax',
+      //   loadChildren: () => import('./permu-tax/permu-tax.module').then(m => m.PermuTaxModule)
+      // },
       // 系统设置子模块
       {
         path: 'sys',
@@ -89,21 +83,21 @@ const routes: Routes = [
   },
 
   // 全屏布局
-  {
-    path: 'fullscreen',
-    component: LayoutFullScreenComponent,
-    children: [
-      {
-        path: 'permtax',
-        loadChildren: () => import('./permu-tax/permu-tax.module').then(m => m.PermuTaxModule)
-      },
-      {
-        path: '',
-        redirectTo: 'permtax',
-        pathMatch: 'full'
-      }
-    ]
-  },
+  // {
+  //   path: 'fullscreen',
+  //   component: LayoutFullScreenComponent,
+  //   children: [
+  //     {
+  //       path: 'permtax',
+  //       loadChildren: () => import('./permu-tax/permu-tax.module').then(m => m.PermuTaxModule)
+  //     },
+  //     {
+  //       path: '',
+  //       redirectTo: 'permtax',
+  //       pathMatch: 'full'
+  //     }
+  //   ]
+  // },
   // passport
   {
     path: 'passport',

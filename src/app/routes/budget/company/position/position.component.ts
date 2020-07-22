@@ -1,9 +1,9 @@
-import { LoadingTypesService } from '@core/loading-types.service';
+import { LoadingTypesService } from '@core';
 import { CompanyListEditComponent } from './../list/edit/edit.component';
 import { CompanyListViewComponent } from './../list/view/view.component';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { _HttpClient, ModalHelper } from '@delon/theme';
-import { STColumn, STComponent, STPage, STReq, STRequestOptions, STRes, STData } from '@delon/abc/table';
+import { STColumn, STComponent, STPage, STReq, STRequestOptions, STRes, STData } from '@delon/abc/st';
 import { NzMessageService } from 'ng-zorro-antd';
 import * as mapboxgl from "mapbox-gl";
 import { LoadingService } from '@delon/abc';

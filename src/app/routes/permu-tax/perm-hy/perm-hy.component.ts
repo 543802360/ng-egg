@@ -1,8 +1,8 @@
-import { LoadingTypesService } from '@core/loading-types.service';
+import { LoadingTypesService } from '@core';
 import { CacheService } from '@delon/cache';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { _HttpClient, ModalHelper } from '@delon/theme';
-import { STColumn, STComponent, STPage, STSingleSort } from '@delon/abc/table';
+import { STColumn, STComponent, STPage, STSingleSort } from '@delon/abc/st';
 import { SFSchema, SFUISchema } from '@delon/form';
 
 import { NzMessageService } from 'ng-zorro-antd';

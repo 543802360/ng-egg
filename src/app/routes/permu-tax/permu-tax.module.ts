@@ -5,7 +5,6 @@ import { PermuTaxRoutingModule } from './permu-tax-routing.module';
 import { PermuTaxPermDatavComponent } from './perm-datav/perm-datav.component';
 import { NgxMapboxGLModule } from 'ngx-mapbox-gl';
 
-import { NgMapboxModule } from '@core/ng-mapbox/ng-mapbox.module';
 import { PermuTaxPermHyComponent } from './perm-hy/perm-hy.component';
 import { PermuTaxPermOrderComponent } from './perm-order/perm-order.component';
 import { PermuTaxPermMapComponent } from './perm-map/perm-map.component';
@@ -24,7 +23,6 @@ const COMPONENTS_NOROUNT = [];
   imports: [
     SharedModule,
     NgxMapboxGLModule,
-    NgMapboxModule,
     NgxEchartsModule,
     PermuTaxRoutingModule
   ],

@@ -1,9 +1,9 @@
-import { LoadingTypesService } from '@core/loading-types.service';
+import { LoadingTypesService } from '@core';
 import { CompanyDjnsrxxEditComponent } from './edit/edit.component';
 import { filter, switchMap, debounceTime, map } from 'rxjs/operators';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { _HttpClient, ModalHelper } from '@delon/theme';
-import { STColumn, STComponent, STData, STReq, STRes, STColumnTag, STPage, STRequestOptions, STChange } from '@delon/abc/table';
+import { STColumn, STComponent, STData, STReq, STRes, STColumnTag, STPage, STRequestOptions, STChange } from '@delon/abc/st';
 import { SFSchema } from '@delon/form';
 import { Subject } from 'rxjs';
 import { XlsxService, XlsxExportOptions, LoadingService } from '@delon/abc';
@@ -232,6 +232,8 @@ export class CompanyDjnsrxxComponent implements OnInit {
   // response 配置
   companyRes: STRes = {
     process: (data: STData[], rawData?: any) => {
+      console.log('STData:', data);
+      console.log('rawData:', rawData);
       this.total = rawData.data.count;
       return rawData.data.rows;
     }

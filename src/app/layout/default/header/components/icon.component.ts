@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 
 @Component({
   selector: 'header-icon',
@@ -59,7 +59,7 @@ import { Component, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/
 export class HeaderIconComponent {
   loading = true;
 
-  constructor(private cdr: ChangeDetectorRef) {}
+  constructor(private cdr: ChangeDetectorRef) { }
 
   change() {
     setTimeout(() => {

@@ -5,12 +5,10 @@ import { MapboxStyleSwitcherControl } from "mapbox-gl-style-switcher";
 import ZoomControl from "mapbox-gl-controls/lib/zoom";
 import CompassControl from "mapbox-gl-controls/lib/compass";
 import RulerControl from "mapbox-gl-controls/lib/ruler";
-import { dark } from '@core/ng-mapbox/styles/dark';
-import { decimal } from '@core/ng-mapbox/styles/decimal';
+import { decimal } from '../../styles/decimal';
+import { dark } from '../../styles/dark';
 
-@Injectable({
-  providedIn: "root"
-})
+@Injectable()
 export class MapboxService {
   private map: mapboxgl.Map;
   private defaultOptions = {
