@@ -22,3 +22,5 @@ export * from './models/LoadingTypes';
 
 // 模块
 export * from './shared.module';
+export * from './json-schema/json-schema.module';
+

@@ -1,7 +1,7 @@
 import { filter, switchMap, debounceTime, map } from 'rxjs/operators';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { _HttpClient, ModalHelper } from '@delon/theme';
-import { STColumn, STComponent, STData, STReq, STRes, STColumnTag, STPage, STRequestOptions, STChange } from '@delon/abc/table';
+import { STColumn, STComponent, STData, STReq, STRes, STColumnTag, STPage, STRequestOptions, STChange } from '@delon/abc/st';
 
 import { Subject } from 'rxjs';
 import { XlsxService, LoadingService } from '@delon/abc';
