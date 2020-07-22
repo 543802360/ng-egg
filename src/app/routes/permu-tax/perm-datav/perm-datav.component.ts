@@ -18,7 +18,7 @@ import { map, switchMap } from 'rxjs/operators';
 export class PermuTaxPermDatavComponent implements OnInit, AfterViewInit {
   // pagehost，获取host元素，当屏幕缩放时，自适应
   @ViewChild("pageHost", { static: true }) pageHost: any;
-  @ViewChild("totalQypmHost", { static: false }) totalQypmHost: any;
+  @ViewChild("totalQypmHost") totalQypmHost: any;
   //#region 地图相关参数
   style;
   center;

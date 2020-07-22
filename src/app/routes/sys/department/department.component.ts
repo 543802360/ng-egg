@@ -16,7 +16,7 @@ import { SysDepartmentEditComponent } from './edit/edit.component';
   styleUrls: ['./department.component.less']
 })
 export class SysDepartmentComponent implements OnInit {
-  @ViewChild('departmentTree', { static: false }) departmentTree: NzTreeComponent;
+  @ViewChild('departmentTree') departmentTree: NzTreeComponent;
   // 部门树节点s
   departmentTreeNodes: any[] = [];
   // 右键选中treenode

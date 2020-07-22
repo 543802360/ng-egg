@@ -25,7 +25,7 @@ export class BudgetBdgSettingBdgTownComponent implements OnInit {
       return rawData.data;
     }
   }
-  @ViewChild('st', { static: false }) st: STComponent;
+  @ViewChild('st') st: STComponent;
   columns: STColumn[] = [
     { title: '街道名称', index: 'JDXZMC', className: 'text-center' },
     { title: '预算目标（万元）', type: 'number', index: 'BDG_VALUE', className: 'text-center' },

@@ -48,7 +48,7 @@ export class PermuTaxPermHyComponent implements OnInit {
 
   //#region 行业亩均税收表格
   hyPermTaxData;
-  @ViewChild('st', { static: false }) st: STComponent;
+  @ViewChild('st') st: STComponent;
   columns: STColumn[] = [
     {
       title: '排名',

@@ -17,7 +17,7 @@ import { CacheService } from '@delon/cache';
 })
 export class CompanyListComponent implements OnInit {
 
-  @ViewChild('st', { static: false }) st: STComponent;
+  @ViewChild('st') st: STComponent;
   url = "hx/nsr/list";
   upload = 'hx/nsr/upload';
   total: number;

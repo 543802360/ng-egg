@@ -17,7 +17,7 @@ import { CompanyDjnsrxxAddComponent } from './add/add.component';
   templateUrl: './djnsrxx.component.html',
 })
 export class CompanyDjnsrxxComponent implements OnInit {
-  @ViewChild('st', { static: false }) st: STComponent;
+  @ViewChild('st') st: STComponent;
   url = "nsr/list";
   total: number;
   nsrmcAutoDataSource = [];
