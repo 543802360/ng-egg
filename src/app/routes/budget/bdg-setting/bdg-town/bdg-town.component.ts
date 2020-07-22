@@ -18,7 +18,7 @@ export class BudgetBdgSettingBdgTownComponent implements OnInit {
       }
     }
   };
-  params = { year: new Date().getFullYear() };
+  params: any = { year: new Date().getFullYear() };
 
   res: STRes = {
     process: (data: STData[], rawData?: any) => {
