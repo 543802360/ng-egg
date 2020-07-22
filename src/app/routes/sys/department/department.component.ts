@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { _HttpClient, ModalHelper } from '@delon/theme';
-import { STColumn, STComponent } from '@delon/abc/table';
+import { STColumn, STComponent } from '@delon/abc/st';
 import { SFSchema } from '@delon/form';
 import { LoadingService } from '@delon/abc';
 
@@ -16,7 +16,7 @@ import { SysDepartmentEditComponent } from './edit/edit.component';
   styleUrls: ['./department.component.less']
 })
 export class SysDepartmentComponent implements OnInit {
-  @ViewChild('departmentTree', { static: false }) departmentTree: NzTreeComponent;
+  @ViewChild('departmentTree') departmentTree: NzTreeComponent;
   // 部门树节点s
   departmentTreeNodes: any[] = [];
   // 右键选中treenode
@@ -26,12 +26,12 @@ export class SysDepartmentComponent implements OnInit {
   isDraged = false;
   i: IDepartment;
   constructor(
-    private http: _HttpClient,
-    private loadingSrv: LoadingService,
-    private modalSrv: NzModalService,
-    private modal: ModalHelper,
-    private contextSrv: NzContextMenuService,
-    private msgSrv: NzMessageService
+    public http: _HttpClient,
+    public loadingSrv: LoadingService,
+    public modalSrv: NzModalService,
+    public modal: ModalHelper,
+    public contextSrv: NzContextMenuService,
+    public msgSrv: NzMessageService
   ) { }
 
   ngOnInit() {

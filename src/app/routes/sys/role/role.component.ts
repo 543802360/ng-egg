@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { _HttpClient, ModalHelper } from '@delon/theme';
-import { STColumn, STComponent, STData, STColumnButton } from '@delon/abc/table';
+import { STColumn, STComponent, STData, STColumnButton } from '@delon/abc/st';
 
 import { SFSchema } from '@delon/form';
 import { SysRoleEditComponent } from './edit/edit.component';
@@ -16,7 +16,7 @@ import { CacheService } from '@delon/cache';
 })
 export class SysRoleComponent implements OnInit {
 
-  @ViewChild('st', { static: false }) st: STComponent;
+  @ViewChild('st') st: STComponent;
   roleData: IRole[];
   columns: STColumn[] = [
     // {

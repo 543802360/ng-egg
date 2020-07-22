@@ -361,11 +361,20 @@ export class CompanyPositionComponent implements OnInit {
     });
   }
 
-  /** 重置位置
+  /**
+   *  重置位置
    */
   resetPos() {
     this.nsrMarker.setLngLat(this.nsrDefPosition);
     this.map.flyTo({ center: this.nsrDefPosition, zoom: 16 });
+  }
+
+  /**
+   * 重置表格
+   */
+  resetTable() {
+    this.params = { NSRMC: '', NSRSBH: '', SHXYDM: '' };
+    this.st.reset()
   }
 
   mapresize(e) {

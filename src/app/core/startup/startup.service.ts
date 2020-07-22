@@ -93,7 +93,7 @@ export class StartupService {
 
 
       // 设置角色对应的菜单
-      const menusArray = menus.filter(item => item.menutype !== MenuType.PERMISSION).map(item => {
+      const menusArray = menus.filter(item => item.menutype !== MenuType.PERMISSION.toString()).map(item => {
         let menu;
         item.parent_id ?
           menu = {

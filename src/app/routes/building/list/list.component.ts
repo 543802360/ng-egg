@@ -1,7 +1,7 @@
 import { EBuildingOperation } from './../dics/buildingOperation';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { _HttpClient, ModalHelper } from '@delon/theme';
-import { STColumn, STComponent, STRes, STData, STReq } from '@delon/abc/table';
+import { STColumn, STComponent, STRes, STData, STReq } from '@delon/abc/st';
 import { SFSchema } from '@delon/form';
 import { BuildingModelEditComponent } from '../model/edit/edit.component';
 
@@ -20,7 +20,7 @@ export class BuildingListComponent implements OnInit {
       }
     }
   };
-  @ViewChild('st', { static: false }) st: STComponent;
+  @ViewChild('st') st: STComponent;
   // 数据列配置
   columns: STColumn[] = [
     // {

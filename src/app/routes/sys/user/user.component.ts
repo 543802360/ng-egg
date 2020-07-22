@@ -1,7 +1,7 @@
 import { SysUserEditComponent } from './edit/edit.component';
 import { Component, OnInit, ViewChild, Renderer2 } from '@angular/core';
 import { _HttpClient, ModalHelper } from '@delon/theme';
-import { STColumn, STComponent, STData, STChange, STColumnButton } from '@delon/abc/table';
+import { STColumn, STComponent, STData, STChange, STColumnButton } from '@delon/abc/st';
 import { SFSchema } from '@delon/form';
 import { IDepartment, IUser, array2tree, tree2array } from '@shared';
 import { NzMenuDirective, NzContextMenuService, NzFormatEmitEvent, NzModalService, NzTreeNode, NzMessageService, NzTreeComponent } from 'ng-zorro-antd';
@@ -15,14 +15,14 @@ import { CacheService } from '@delon/cache';
 })
 export class SysUserComponent implements OnInit {
 
-  @ViewChild('departmentTree', { static: false }) departmentTree: NzTreeComponent;
+  @ViewChild('departmentTree') departmentTree: NzTreeComponent;
   // 部门树节点s
   departmentTreeNodes: any[] = [];
   // 右键选中treenode
   selectedNode: NzTreeNode;
 
   // 用户表操作
-  userData: IUser[];
+  userData;
   userEditDisabled = true;
   userSelected: IUser[];
   userColumns: STColumn[] = [
@@ -34,19 +34,59 @@ export class SysUserComponent implements OnInit {
       width: 40
     },
     // { title: '头像', index: 'photo', type: 'img', fixed: 'left', width: 100, className: 'text-center' },
-    { title: '用户名', index: 'username', fixed: 'left', width: 100, className: 'text-center' },
-    { title: '姓名', index: 'name', fixed: 'left' },
-
-    { title: '部门', index: 'department_name', className: 'text-center' },
-    { title: '角色', index: 'rolename', className: 'text-center' },
-    { title: '手机号码', index: 'phone', className: 'text-center' },
-    { title: '邮箱', index: 'email', className: 'text-center' },
     {
-      title: '状态', index: 'is_login', type: 'tag', className: 'text-center',
+      title: '用户名',
+      index: 'username',
+      fixed: 'left',
+      width: 100,
+      className: 'text-center'
+    },
+    {
+      title: '姓名',
+      index: 'name',
+      fixed: 'left',
+      width: 100
+    },
+
+    {
+      title: '部门',
+      index: 'department_name',
+      className: 'text-center'
+    },
+    {
+      title: '角色',
+      index: 'rolename',
+      className: 'text-center'
+    },
+    {
+      title: '手机号码',
+      index: 'phone',
+      className: 'text-center'
+    },
+    {
+      title: '邮箱',
+      index: 'email',
+      className: 'text-center'
+    },
+    {
+      title: '状态',
+      index: 'is_login',
+      type: 'tag',
+      className: 'text-center',
       render: 'login_status'
     },
-    { title: '创建时间', index: 'created_at', type: 'date', className: 'text-center' },
-    { title: '更新时间', index: 'updated_at', type: 'date', className: 'text-center' },
+    {
+      title: '创建时间',
+      index: 'created_at',
+      type: 'date',
+      className: 'text-center'
+    },
+    {
+      title: '更新时间',
+      index: 'updated_at',
+      type: 'date',
+      className: 'text-center'
+    },
     {
       title: '操作',
       fixed: 'right',
@@ -106,13 +146,7 @@ export class SysUserComponent implements OnInit {
       ]
     }
   ];
-  userSearchSchema: SFSchema = {
-    properties: {
-      username: {
-        type: 'string',
-      }
-    }
-  };
+
   constructor(
     public http: _HttpClient,
     public modalSrv: NzModalService,
@@ -132,6 +166,9 @@ export class SysUserComponent implements OnInit {
   initUsers() {
     this.http.get('sys/user/list').subscribe(resp => {
       this.userData = resp.data;
+      console.log('userData:', this.userData);
+      console.log('userColumns:', this.userColumns);
+
     });
   }
 

@@ -2,7 +2,6 @@ import { LoadingTypesService } from '@core/loading-types.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { _HttpClient, ModalHelper } from '@delon/theme';
-
 import { BuildingModelEditComponent } from './edit/edit.component';
 import * as mapboxgl from "mapbox-gl";
 import * as MapboxDraw from "@mapbox/mapbox-gl-draw";
@@ -30,7 +29,7 @@ export class BuildingModelComponent implements OnInit {
   map_2d_subject = new BehaviorSubject({});
   map_3d_subject = new BehaviorSubject({});
 
-  @ViewChild('buildingEdit', { static: false }) buildingEdit: HTMLDivElement;
+  @ViewChild('buildingEdit') buildingEdit: HTMLDivElement;
 
   // draw
   drawCtrl;

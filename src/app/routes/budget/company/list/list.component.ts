@@ -408,6 +408,10 @@ export class CompanyListComponent implements OnInit {
     this.st.reset(this.params);
   }
 
+  export() {
+    this.st.export(true, { filename: '纳税人信息.xlsx', sheetname: 'sheet1' })
+  }
+
   /**
    * 表格change
    * @param e

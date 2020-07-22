@@ -3,7 +3,7 @@ import { CompanyDjnsrxxEditComponent } from './edit/edit.component';
 import { filter, switchMap, debounceTime, map } from 'rxjs/operators';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { _HttpClient, ModalHelper } from '@delon/theme';
-import { STColumn, STComponent, STData, STReq, STRes, STColumnTag, STPage, STRequestOptions, STChange } from '@delon/abc/table';
+import { STColumn, STComponent, STData, STReq, STRes, STColumnTag, STPage, STRequestOptions, STChange } from '@delon/abc/st';
 import { SFSchema } from '@delon/form';
 import { Subject } from 'rxjs';
 import { XlsxService, XlsxExportOptions, LoadingService } from '@delon/abc';
@@ -17,7 +17,7 @@ import { CompanyDjnsrxxAddComponent } from './add/add.component';
   templateUrl: './djnsrxx.component.html',
 })
 export class CompanyDjnsrxxComponent implements OnInit {
-  @ViewChild('st', { static: false }) st: STComponent;
+  @ViewChild('st') st: STComponent;
   url = "nsr/list";
   total: number;
   nsrmcAutoDataSource = [];
@@ -370,6 +370,9 @@ export class CompanyDjnsrxxComponent implements OnInit {
     this.params.NSRMC = '';
     this.params.NSRSBH = '';
     this.st.reset(this.params);
+  }
+  export() {
+    this.st.export(true, { filename: '登记纳税人信息.xlsx', sheetname: 'sheet1' })
   }
   // exportNsrData() {
   //   const data = [this.columns.filter(i => i.title !== '操作' && i.title !== '序号' && i.title !== '编号').map(i => i.title)];
