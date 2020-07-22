@@ -6,9 +6,31 @@ import { BigEnterpriseHyAnalysisComponent } from './hy-analysis/hy-analysis.comp
 
 const routes: Routes = [
 
-  { path: 'list', component: BigEnterpriseListComponent },
-  { path: 'tax-analysis', component: BigEnterpriseTaxAnalysisComponent },
-  { path: 'hy-analysis', component: BigEnterpriseHyAnalysisComponent }];
+  {
+    path: 'list',
+    component: BigEnterpriseListComponent,
+    data: {
+      title: '大企业名录'
+    }
+  },
+  {
+    path: 'tax-analysis',
+    component: BigEnterpriseTaxAnalysisComponent,
+    data: {
+      title: '大企业税收总体分析'
+    }
+  },
+  {
+    path: 'hy-analysis',
+    component: BigEnterpriseHyAnalysisComponent,
+    data: {
+      title: '大企业行业分析'
+    }
+  }, {
+    path: '',
+    redirectTo: 'list',
+    pathMatch: 'full'
+  }];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { _HttpClient, ModalHelper } from '@delon/theme';
-import { STColumn, STComponent } from '@delon/abc/table';
+import { STColumn, STComponent, STReq, STRes, STData } from '@delon/abc/table';
 import { SFSchema } from '@delon/form';
 
 @Component({
@@ -8,21 +8,28 @@ import { SFSchema } from '@delon/form';
   templateUrl: './bdg-town.component.html',
 })
 export class BudgetBdgSettingBdgTownComponent implements OnInit {
-  url = `/user`;
+  url = `bdg/setting/town`;
+
   searchSchema: SFSchema = {
     properties: {
-      no: {
+      YEAR: {
         type: 'string',
         title: '编号'
       }
     }
   };
+  params = { year: new Date().getFullYear() };
+
+  res: STRes = {
+    process: (data: STData[], rawData?: any) => {
+      return rawData.data;
+    }
+  }
   @ViewChild('st', { static: false }) st: STComponent;
   columns: STColumn[] = [
-    { title: '编号', index: 'no' },
-    { title: '调用次数', type: 'number', index: 'callNo' },
-    { title: '头像', type: 'img', width: '50px', index: 'avatar' },
-    { title: '时间', type: 'date', index: 'updatedAt' },
+    { title: '街道名称', index: 'JDXZMC', className: 'text-center' },
+    { title: '预算目标（万元）', type: 'number', index: 'BDG_VALUE', className: 'text-center' },
+    { title: '年度', index: 'YEAR', className: 'text-center' },
     {
       title: '',
       buttons: [

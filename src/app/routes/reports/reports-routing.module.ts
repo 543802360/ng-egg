@@ -8,11 +8,41 @@ import { ReportsBankingComponent } from './banking/banking.component';
 
 const routes: Routes = [
 
-  { path: 'finance-all', component: ReportsFinanceAllComponent },
-  { path: 'hy', component: ReportsHyComponent },
-  { path: 'town', component: ReportsTownComponent },
-  { path: 'enterprise', component: ReportsEnterpriseComponent },
-  { path: 'banking', component: ReportsBankingComponent }];
+  {
+    path: 'finance-all',
+    component: ReportsFinanceAllComponent,
+    data: {
+      title: '财政总收入报表'
+    }
+  },
+  {
+    path: 'hy',
+    component: ReportsHyComponent,
+    data: {
+      title: '分产业行业收入报表'
+    }
+  },
+  {
+    path: 'town',
+    component: ReportsTownComponent,
+    data: {
+      title: '街道一般公共预算收入'
+    }
+  },
+  {
+    path: 'enterprise',
+    component: ReportsEnterpriseComponent,
+    data: {
+      title: '大企业收入报表'
+    }
+  },
+  {
+    path: 'banking',
+    component: ReportsBankingComponent,
+    data: {
+      title: '银行、保险业税收报表'
+    }
+  }];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

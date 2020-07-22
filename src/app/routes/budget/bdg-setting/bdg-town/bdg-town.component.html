@@ -1,9 +1,26 @@
-<page-header [action]="phActionTpl">
-  <ng-template #phActionTpl>
-    <button (click)="add()" nz-button nzType="primary">新建</button>
-  </ng-template>
-</page-header>
-<nz-card>
-  <sf mode="search" [schema]="searchSchema" (formSubmit)="st.reset($event)" (formReset)="st.reset($event)"></sf>
-  <st #st [data]="url" [columns]="columns"></st>
-</nz-card>
+<div nz-row nzGutter="8" style="margin-top:10px;">
+  <div nz-col nzSpan="16">
+    <nz-card>
+      <!-- <sf mode="search" [schema]="searchSchema" (formSubmit)="st.load()" (formReset)="st.reset($event)"></sf> -->
+
+      <input nz-input [(ngModel)]="params.year" name="year" nzPlaceHolder="请输入年份" style="width: 100px;" class="mr-sm">
+      <button nz-button (click)="st.load(1,params)" [nzType]="'primary'">搜索</button>
+      <button nz-button (click)="params = {}; st.reset()">重置</button>
+
+      <st style="margin-top: 10px;" #st [data]="url" [columns]="columns" [req]="{params: params}" [res]="res"
+        [page]="false"></st>
+    </nz-card>
+  </div>
+
+  <div nz-col nzSpan="8">
+    <nz-card>
+      <!-- <sf mode="search" [schema]="searchSchema" (formSubmit)="st.load()" (formReset)="st.reset($event)"></sf> -->
+
+      <input nz-input [(ngModel)]="params.year" name="year" nzPlaceHolder="请输入年份" style="width: 100px;" class="mr-sm">
+      <button nz-button (click)="st.load(1,params)" [nzType]="'primary'">搜索</button>
+      <button nz-button (click)="params = {}; st.reset()">重置</button>
+
+      <st #st [data]="url" [columns]="columns" [req]="{params: params}" [res]="res" [page]="false"></st>
+    </nz-card>
+  </div>
+</div>

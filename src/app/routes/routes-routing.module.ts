@@ -34,12 +34,7 @@ const routes: Routes = [
         redirectTo: 'economic',
         pathMatch: 'full'
       },
-      // 系统首页仪表盘（一览性）
-      // {
-      //   path: 'dashboard',
-      //   component: DashboardComponent,
-      //   data: { title: '税收仪表盘' }
-      // },
+      // 经济运行分析
       {
         path: 'economic',
         loadChildren: () => import('./economic-analysis/economic-analysis.module').then(m => m.EconomicAnalysisModule)
@@ -48,6 +43,16 @@ const routes: Routes = [
       {
         path: 'budget',
         loadChildren: () => import('./budget/budget.module').then(m => m.BudgetModule)
+      },
+      // 大企业管理模块
+      {
+        path: 'big-enterprise',
+        loadChildren: () => import('./big-enterprise/big-enterprise.module').then(m => m.BigEnterpriseModule)
+      },
+      // 自动化分析报表模块
+      {
+        path: 'reports',
+        loadChildren: () => import('./reports/reports.module').then(m => m.ReportsModule)
       },
       // 异常处理模块
       {
