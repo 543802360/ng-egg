@@ -1,15 +1,16 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { IBDG_TOWN } from './../../../../dictionary/interfaces/IBDG_TOWN';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { _HttpClient, ModalHelper } from '@delon/theme';
-import { STColumn, STComponent, STReq, STRes, STData } from '@delon/abc/st';
+import { STColumn, STComponent, STReq, STRes, STData, STChange } from '@delon/abc/st';
 import { SFSchema } from '@delon/form';
 
 @Component({
   selector: 'app-budget-bdg-setting-bdg-town',
   templateUrl: './bdg-town.component.html',
 })
-export class BudgetBdgSettingBdgTownComponent implements OnInit {
+export class BudgetBdgSettingBdgTownComponent implements OnInit, AfterViewInit {
   url = `bdg/setting/town`;
-
+  i: IBDG_TOWN = {};
   searchSchema: SFSchema = {
     properties: {
       YEAR: {
@@ -18,7 +19,10 @@ export class BudgetBdgSettingBdgTownComponent implements OnInit {
       }
     }
   };
-  params: any = { year: new Date().getFullYear() };
+
+  selectedYear = new Date();
+
+  params: any = { year: this.selectedYear.getFullYear() };
 
   res: STRes = {
     process: (data: STData[], rawData?: any) => {
@@ -41,12 +45,19 @@ export class BudgetBdgSettingBdgTownComponent implements OnInit {
 
   constructor(private http: _HttpClient, private modal: ModalHelper) { }
 
-  ngOnInit() { }
+  ngOnInit() {
+  }
+  ngAfterViewInit() {
+
+  }
 
   add() {
-    // this.modal
-    //   .createStatic(FormEditComponent, { i: { id: 0 } })
-    //   .subscribe(() => this.st.reload());
+
+  }
+
+  _click(e: STChange) {
+    console.log(e);
+    this.i = (e.click.item as any);
   }
 
 }

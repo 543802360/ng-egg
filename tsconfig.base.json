@@ -15,9 +15,11 @@
     "paths": {
       "@shared": ["src/app/shared/index"],
       "@geo":["src/app/geo/index"],
+      "@dictionary":["./src/app/dictionary/index"],
       "@core": ["src/app/core/index"],
       "@ngMapbox":["src/app/ng-mapbox/index"],
       "@env/*": ["src/environments/*"]
+     
     }
   },
   "angularCompilerOptions": {

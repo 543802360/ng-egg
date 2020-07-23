@@ -1,21 +1,41 @@
 <div nz-row nzGutter="8" style="margin-top:10px;">
-  <div nz-col nzSpan="16">
+  <div nz-col nzSpan="12">
     <nz-card>
       <!-- <sf mode="search" [schema]="searchSchema" (formSubmit)="st.load()" (formReset)="st.reset($event)"></sf> -->
-
-      <input nz-input [(ngModel)]="params.year" name="year" nzPlaceHolder="请输入年份" style="width: 100px;" class="mr-sm">
+      <nz-year-picker [(ngModel)]="selectedYear" name="year" nzPlaceHolder="请输入年份" style="width: 150px;"
+        (ngModelChange)="params.year=$event.getFullYear()" class="mr-sm">
+      </nz-year-picker>
+      <!-- <input nz-input [(ngModel)]="params.year" name="year" nzPlaceHolder="请输入年份" style="width: 100px;" class="mr-sm"> -->
       <button nz-button (click)="st.load(1,params)" [nzType]="'primary'">搜索</button>
       <button nz-button (click)="params = {}; st.reset()">重置</button>
 
       <st style="margin-top: 10px;" #st [data]="url" [columns]="columns" [req]="{params: params}" [res]="res"
-        [page]="false"></st>
+        [page]="false" (change)="_click($event)"></st>
     </nz-card>
   </div>
 
-  <div nz-col nzSpan="8">
+  <div nz-col nzSpan="12">
     <nz-card>
-      <!-- <sf mode="search" [schema]="searchSchema" (formSubmit)="st.load()" (formReset)="st.reset($event)"></sf> -->
 
+      <form nz-form #f="ngForm" se-container col="2" nzLayout="horizontal">
+
+        <!-- <se label="镇街代码" col=" 2">
+          <input nz-input disabled [(ngModel)]="i.JDXZDM" [ngModelOptions]="{standalone: true}" id="JDXZDM"
+            placeholder="">
+        </se>
+        <se label="镇街名称" col="2">
+          <input nz-input [(ngModel)]="i.JDXZMC" [ngModelOptions]="{standalone: true}" id="JDXZMC" name="JDXZMC"
+            placeholder="">
+        </se>
+        <se label="预算目标" col="2">
+          <input nz-input [(ngModel)]="i.BDG_VALUE" [ngModelOptions]="{standalone: true}" id="BDG_VALUE"
+            name="BDG_VALUE" placeholder="">
+        </se>
+        <se label="预算年度" col="2">
+          <input nz-input disabled [(ngModel)]="i.YEAR" [ngModelOptions]="{standalone: true}" id="YEAR" name="YEAR"
+            placeholder="">
+        </se> -->
+      </form>
 
     </nz-card>
   </div>

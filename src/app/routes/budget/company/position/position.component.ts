@@ -132,7 +132,7 @@ export class CompanyPositionComponent implements OnInit {
     {
       title: '联系电话',
       index: 'LXDH',
-      width: 100,
+      width: 110,
       className: 'text-center'
     },
 
@@ -141,7 +141,7 @@ export class CompanyPositionComponent implements OnInit {
       type: 'date',
       index: 'DJRQ',
       width: 120,
-      dateFormat: 'YYYY-MM-DD',
+      dateFormat: 'yyyy-MM-dd',
       className: 'text-center'
     },
     {
@@ -149,7 +149,7 @@ export class CompanyPositionComponent implements OnInit {
       type: 'date',
       index: 'XGRQ',
       width: 120,
-      dateFormat: 'YYYY-MM-DD',
+      dateFormat: 'yyyy-MM-dd',
       className: 'text-center'
     },
     {

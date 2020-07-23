@@ -15,14 +15,14 @@ const routes: Routes = [
     path: 'bdg-county',
     component: BudgetBdgSettingBdgCountyComponent,
     data: {
-      title: '区年度预算目标设置'
+      title: '区年度预算目标'
     }
   },
   {
     path: 'bdg-town',
     component: BudgetBdgSettingBdgTownComponent,
     data: {
-      title: '镇街年度预算目标设置'
+      title: '街道年度预算目标'
     }
   },
   {

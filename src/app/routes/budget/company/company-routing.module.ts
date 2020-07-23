@@ -17,7 +17,7 @@ const routes: Routes = [
           path: 'list',
           component: CompanyListComponent,
           data: {
-            title: '企业名录管理',
+            title: '分街道企业库',
             guard: {
               ability: ['/company/list'],
             },
@@ -39,7 +39,7 @@ const routes: Routes = [
           path: 'position',
           component: CompanyPositionComponent,
           data: {
-            title: '企业位置管理',
+            title: '税源位置管理',
             guard: {
               ability: ['/company/position'],
             },
@@ -61,7 +61,7 @@ const routes: Routes = [
           path: 'djnsrxx',
           component: CompanyDjnsrxxComponent,
           data: {
-            title: '登记纳税人信息',
+            title: '税务登记信息',
             guard: {
               ability: ['/company/djnsrxx'],
             },

@@ -113,6 +113,7 @@ export class CompanyDjnsrxxComponent implements OnInit {
     {
       title: '联系电话',
       index: 'LXDH',
+      width: 110,
       className: 'text-center'
     },
 
@@ -120,14 +121,14 @@ export class CompanyDjnsrxxComponent implements OnInit {
       title: '登记日期',
       type: 'date',
       index: 'DJRQ',
-      dateFormat: 'YYYY-MM-DD',
+      dateFormat: 'yyyy-MM-dd',
       className: 'text-center'
     },
     {
       title: '修改日期',
       type: 'date',
       index: 'XGRQ',
-      dateFormat: 'YYYY-MM-DD',
+      dateFormat: 'yyyy-MM-dd',
       className: 'text-center'
     },
     {
