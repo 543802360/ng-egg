@@ -1,16 +1,19 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, AfterViewInit } from '@angular/core';
 import { _HttpClient } from '@delon/theme';
 import { NzMessageService } from 'ng-zorro-antd';
 import { getTimeDistance } from '@delon/util';
 import { CacheService } from '@delon/cache';
 import { yuan, order } from '@shared';
+import { G2PieData } from '@delon/chart/pie';
+import { forkJoin } from 'rxjs';
+import { G2BarData } from '@delon/chart/bar';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.less']
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, AfterViewInit {
 
   // date
   date_range: Date[] = [];
@@ -18,9 +21,9 @@ export class DashboardComponent implements OnInit {
   endDate: Date;
 
   // data
-  zsxmData: [] = [];
-  hyData: [] = [];
-  cyData: [] = [];
+  zsxmData: G2BarData[] = [];
+  hyData: G2PieData[];
+  cyData: G2PieData[];
   total: number;
 
   //#region 预算级次
@@ -54,8 +57,12 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit() {
+
+  }
+
+  ngAfterViewInit() {
     setTimeout(() => {
-      this.getTaxSummary()
+      this.getTaxSummary();
     });
   }
 
@@ -72,58 +79,50 @@ export class DashboardComponent implements OnInit {
   }
 
 
+  /**
+   * 获取税收统计概况（电子税票）
+   */
   getTaxSummary() {
     this.budgetValue.length === 0 ? this.budgetValue = [4] : null;
-    this.getTaxZsxmSummary();
-    this.getTaxHySummary();
-    this.getTaxCySummary();
-  }
+    // 行业税收
+    const $taxHySummary = this.http.get('analysis/tax/hy', this.getCondition());
+    // 
+    const $taxCySummary = this.http.get('analysis/tax/cy', this.getCondition());
+    const $taxZsxmSummary = this.http.get('analysis/tax/zsxm', this.getCondition());
 
-  /**
-   * 获取税收 分税种信息
-   */
-  getTaxZsxmSummary() {
-    this.http.get('analysis/tax/zsxm', this.getCondition()).subscribe(resp => {
-      this.zsxmData = (resp.data).map(item => {
-        return {
-          x: item.ZSXMMC,
-          y: Number((item.VALUE / 10000).toFixed(2))
-        }
-      }).filter(item => item.y !== 0).sort(order('y'));
-    });
-  }
+    forkJoin([$taxHySummary, $taxCySummary, $taxZsxmSummary]).subscribe(resp => {
 
-  /**
-   * 获取税收 分行业信息
-   */
-  getTaxHySummary() {
-    this.http.get('analysis/tax/hy', this.getCondition()).subscribe(resp => {
-      this.hyData = (resp.data).map(item => {
+      const hyPieData = (resp[0].data).map(item => {
         return {
           x: item.MLMC,
           y: Number((item.VALUE / 10000).toFixed(2))
         }
       }).sort(order('y'));
 
-      this.total = this.hyData.reduce((pre, now) => (now as any).y + pre, 0);
-
-    });
-  }
-
-  /**
-   * 获取税收 分产业信息
-   */
-  getTaxCySummary() {
-    this.http.get('analysis/tax/cy', this.getCondition()).subscribe(resp => {
-      this.cyData = (resp.data).map(item => {
+      const cyPieData = (resp[1].data).map(item => {
         return {
           x: item.CYMC,
           y: Number((item.VALUE / 10000).toFixed(2))
         }
       }).sort(order('y'));
+
+      this.zsxmData = (resp[2].data).map(item => {
+        return {
+          x: item.ZSXMMC,
+          y: Number((item.VALUE / 10000).toFixed(2))
+        }
+      }).filter(item => item.y !== 0).sort(order('y'));
+
+
+      setTimeout(() => {
+        this.hyData = hyPieData;
+        this.cyData = cyPieData;
+        this.total = this.hyData.reduce((pre, now) => (now as any).y + pre, 0);
+
+      });
+
     });
   }
-
   /**
    * 获取查询条件参数
    */

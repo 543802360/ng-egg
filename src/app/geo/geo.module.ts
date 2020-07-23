@@ -1,10 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
 // #region third libs
-import { NgZorroAntdModule } from 'ng-zorro-antd';
 const THIRDMODULES = [
-  NgZorroAntdModule];
+];
 // #endregion
 
 // #region your componets & directives

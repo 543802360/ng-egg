@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 
 import { SharedModule } from '@shared';
+
 import { RouteRoutingModule } from './routes-routing.module';
 // dashboard pages
 // passport pages

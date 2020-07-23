@@ -6,7 +6,6 @@ import { RouterModule } from '@angular/router';
 import { AlainThemeModule } from '@delon/theme';
 import { DelonACLModule } from '@delon/acl';
 import { DelonFormModule } from '@delon/form';
-import { DelonChartModule } from "@delon/chart";
 // i18n
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -40,7 +39,6 @@ const DIRECTIVES = [];
     AlainThemeModule,
     DelonACLModule,
     DelonFormModule,
-    DelonChartModule,
     // third libs
     ...THIRDMODULES,
     ...SHARED_ZORRO_MODULES,
@@ -60,7 +58,6 @@ const DIRECTIVES = [];
     AlainThemeModule,
     DelonACLModule,
     DelonFormModule,
-    DelonChartModule,
     // i18n
     TranslateModule,
     // third libs

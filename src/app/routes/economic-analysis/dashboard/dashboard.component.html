@@ -62,7 +62,7 @@
   <div nz-row nzGutter="8">
     <div nz-col [nzXs]="24" [nzSm]="24" nzMd="12" nzLg="12">
       <div class="bar">
-        <g2-pie [data]="hyData" [hasLegend]="false" subTitle="总收入" [height]="298" [lineWidth]="4" [total]="tpl_total"
+        <g2-pie *ngIf="hyData" [data]="hyData" subTitle="总收入" height="298" [total]="tpl_total"
           [valueFormat]="handlePieValueFormat">
         </g2-pie>
         <ng-template #tpl_total>
@@ -121,7 +121,7 @@
       <div nz-row nzGutter="8">
         <div nz-col [nzXs]="24" [nzSm]="24" nzMd="24" nzLg="24">
           <div class="bar">
-            <g2-pie [hasLegend]="true" title="总税收" subTitle="总税收" [total]="tpl_total"
+            <g2-pie *ngIf="cyData" hasLegend="true" title="总税收" subTitle="总税收" [total]="tpl_total"
               [valueFormat]="handlePieValueFormat" [data]="cyData" height="294"></g2-pie>
             <!-- <g2-bar height="300" style="width: 100%" [data]="zsxmData"></g2-bar> -->
           </div>

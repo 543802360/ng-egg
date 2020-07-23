@@ -1,11 +1,11 @@
 <div nz-row nzGutter="8" style="margin-top:10px;">
   <div nz-col nzSpan="12">
-    <nz-card>
+    <nz-card nzTitle="预算目标预览">
       <!-- <sf mode="search" [schema]="searchSchema" (formSubmit)="st.load()" (formReset)="st.reset($event)"></sf> -->
+      <span style="font-weight:bolder;margin-right:6px;">当前年度：</span>
       <nz-year-picker [(ngModel)]="selectedYear" name="year" nzPlaceHolder="请输入年份" style="width: 150px;"
         (ngModelChange)="params.year=$event.getFullYear()" class="mr-sm">
       </nz-year-picker>
-      <!-- <input nz-input [(ngModel)]="params.year" name="year" nzPlaceHolder="请输入年份" style="width: 100px;" class="mr-sm"> -->
       <button nz-button (click)="st.load(1,params)" [nzType]="'primary'">搜索</button>
       <button nz-button (click)="params = {}; st.reset()">重置</button>
 
@@ -15,7 +15,7 @@
   </div>
 
   <div nz-col nzSpan="12">
-    <nz-card>
+    <nz-card nzTitle="预算目标编辑">
 
       <form nz-form #f="ngForm" se-container col="2" nzLayout="horizontal">
 

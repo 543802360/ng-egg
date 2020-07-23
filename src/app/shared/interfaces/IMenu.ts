@@ -1,4 +1,4 @@
-import { MenuType } from './MenuType';
+import { MenuType } from '../models/MenuType';
 
 /*
  * @Author: 刘硕
