@@ -10,33 +10,24 @@
       <button nz-button (click)="params = {}; st.reset()">重置</button>
 
       <st style="margin-top: 10px;" #st [data]="url" [columns]="columns" [req]="{params: params}" [res]="res"
-        [page]="false" (change)="_click($event)"></st>
+        [page]="false" (change)="stChange($event)"></st>
     </nz-card>
   </div>
 
   <div nz-col nzSpan="12">
     <nz-card nzTitle="预算目标编辑">
-
       <form nz-form #f="ngForm" se-container col="2" nzLayout="horizontal">
-
-        <!-- <se label="镇街代码" col=" 2">
-          <input nz-input disabled [(ngModel)]="i.JDXZDM" [ngModelOptions]="{standalone: true}" id="JDXZDM"
-            placeholder="">
+        <se *ngFor="let item of bdgData" label="{{item.JDXZMC}}" col="1" required>
+          <input nz-input [(ngModel)]="item.BDG_VALUE" type="number" name="item.JDXZMC" id="item.JDXZDM"
+            [ngModelOptions]="{standalone: true}" required>
         </se>
-        <se label="镇街名称" col="2">
-          <input nz-input [(ngModel)]="i.JDXZMC" [ngModelOptions]="{standalone: true}" id="JDXZMC" name="JDXZMC"
-            placeholder="">
+        <se col="2">
+          <button nz-button nzType="primary" [disabled]="f.invalid" (click)="save(f)">保存</button>
         </se>
-        <se label="预算目标" col="2">
-          <input nz-input [(ngModel)]="i.BDG_VALUE" [ngModelOptions]="{standalone: true}" id="BDG_VALUE"
-            name="BDG_VALUE" placeholder="">
+        <se col="2">
+          <button nz-button nzType="primary">重置</button>
         </se>
-        <se label="预算年度" col="2">
-          <input nz-input disabled [(ngModel)]="i.YEAR" [ngModelOptions]="{standalone: true}" id="YEAR" name="YEAR"
-            placeholder="">
-        </se> -->
       </form>
-
     </nz-card>
   </div>
 </div>

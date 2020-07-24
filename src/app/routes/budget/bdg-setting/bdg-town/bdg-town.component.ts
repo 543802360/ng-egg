@@ -4,24 +4,17 @@ import { _HttpClient, ModalHelper } from '@delon/theme';
 import { STColumn, STComponent, STReq, STRes, STData, STChange } from '@delon/abc/st';
 import { SFSchema } from '@delon/form';
 import { IBDG_TOWN } from "@shared";
+import { NzMessageService } from 'ng-zorro-antd';
 @Component({
   selector: 'app-budget-bdg-setting-bdg-town',
   templateUrl: './bdg-town.component.html',
 })
 export class BudgetBdgSettingBdgTownComponent implements OnInit, AfterViewInit {
   url = `bdg/setting/town`;
+  bdgData = [];
   i: IBDG_TOWN = {};
-  searchSchema: SFSchema = {
-    properties: {
-      YEAR: {
-        type: 'string',
-        title: '编号'
-      }
-    }
-  };
 
   selectedYear = new Date();
-
   params: any = { year: this.selectedYear.getFullYear() };
 
   res: STRes = {
@@ -43,7 +36,9 @@ export class BudgetBdgSettingBdgTownComponent implements OnInit, AfterViewInit {
     }
   ];
 
-  constructor(private http: _HttpClient, private modal: ModalHelper) { }
+  constructor(private http: _HttpClient,
+    private msgSrv: NzMessageService,
+    private modal: ModalHelper) { }
 
   ngOnInit() {
   }
@@ -55,9 +50,28 @@ export class BudgetBdgSettingBdgTownComponent implements OnInit, AfterViewInit {
 
   }
 
-  _click(e: STChange) {
-    console.log(e);
-    this.i = (e.click.item as any);
+  save(e) {
+    this.http.post('bdg/setting/town', this.bdgData).subscribe(resp => {
+      console.log(resp);
+      this.msgSrv.success(resp.msg);
+      this.st.reload(this.params);
+    });
+  }
+
+  stChange(e: STChange) {
+
+    switch (e.type) {
+      case 'loaded':
+        this.bdgData = e.loaded;
+        break;
+      case 'click':
+        this.i = (e.click.item as any);
+
+        break;
+
+      default:
+        break;
+    }
   }
 
 }

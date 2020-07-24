@@ -23,6 +23,8 @@ export class CompanyListComponent implements OnInit {
   total: number;
   nsrmcAutoDataSource = [];
   nsrsbhAutoDataSource = [];
+  shxydmAutoDataSource = [];
+
   searchAutoChangeS = new Subject<any>();
   jdxzItems = [];
 
@@ -255,12 +257,13 @@ export class CompanyListComponent implements OnInit {
   companyReq: STReq = {
     type: 'page',
     method: 'GET',
+    params: this.params,
     reName: {
       pi: 'pageNum',
       ps: 'pageSize'
     },
     process: (requestOpt: STRequestOptions) => {
-      const { NSRMC, NSRSBH, JDXZ_DM } = requestOpt.params as any;
+      const { NSRMC, NSRSBH, SHXYDM, JDXZ_DM } = requestOpt.params as any;
       if (NSRMC === null) {
         // (requestOpt.params as any).set('NSRMC', ['']);
         Object.defineProperty(requestOpt.params, 'NSRMC', {
@@ -272,6 +275,14 @@ export class CompanyListComponent implements OnInit {
       if (NSRSBH === null) {
         // (requestOpt.params as any).set('NSRSBH', ['']);
         Object.defineProperty(requestOpt.params, 'NSRSBH', {
+          enumerable: true,
+          configurable: true,
+          value: ''
+        })
+      }
+      if (SHXYDM === null) {
+        // (requestOpt.params as any).set('NSRSBH', ['']);
+        Object.defineProperty(requestOpt.params, 'SHXYDM', {
           enumerable: true,
           configurable: true,
           value: ''
@@ -328,7 +339,7 @@ export class CompanyListComponent implements OnInit {
             this.nsrsbhAutoDataSource = resp.data;
             break;
           case 'SHXYDM':
-
+            this.shxydmAutoDataSource = resp.data;
             break;
 
           default:
@@ -405,6 +416,7 @@ export class CompanyListComponent implements OnInit {
     this.params.NSRMC = '';
     this.params.NSRSBH = '';
     this.params.JDXZ_DM = '';
+    this.params.SHXYDM = '';
     this.st.reset(this.params);
   }
 

@@ -1,9 +1,11 @@
-<page-header [action]="phActionTpl">
-  <ng-template #phActionTpl>
-    <button (click)="add()" nz-button nzType="primary">新建</button>
-  </ng-template>
-</page-header>
-<nz-card>
-  <sf mode="search" [schema]="searchSchema" (formSubmit)="st.reset($event)" (formReset)="st.reset($event)"></sf>
-  <st #st [data]="url" [columns]="columns"></st>
+<nz-card nzTitle="一般公共预算收入" style="margin: 10px 0;">
+  <nz-collapse>
+    <nz-collapse-panel nzHeader="税收收入"></nz-collapse-panel>
+    <nz-collapse-panel nzHeader="非税收入"></nz-collapse-panel>
+
+  </nz-collapse>
+</nz-card>
+
+<nz-card nzTitle="政府性基金收入" style="margin: 10px 0;">
+
 </nz-card>
