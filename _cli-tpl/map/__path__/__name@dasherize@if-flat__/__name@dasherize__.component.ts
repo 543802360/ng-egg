@@ -1,24 +1,24 @@
-import { Component, OnInit, ViewChild<% if(!!viewEncapsulation) { %>, ViewEncapsulation<% }%><% if(changeDetection !== 'Default') { %>, ChangeDetectionStrategy<% }%> } from '@angular/core';
+import { Component, OnInit, ViewChild as % if (!!viewEncapsulation) { %>, ViewEncapsulation <% }%> as % if (changeDetection !== 'Default') { %>, ChangeDetectionStrategy <% }%> } from '@angular/core';
 import { _HttpClient, ModalHelper } from '@delon/theme';
 import { STColumn, STComponent } from '@delon/abc/table';
 import { SFSchema } from '@delon/form';
 
 import { NzMessageService } from 'ng-zorro-antd';
 import * as mapboxgl from "mapbox-gl";
-import {dark} from "@geo";
+import { dark } from "@geo";
 
 @Component({
   selector: '<%= selector %>',
-  templateUrl: './<%= dasherize(name) %>.component.html',<% if(!inlineStyle) { %><% } else { %>
-  styleUrls: ['./<%= dasherize(name) %>.component.<%= styleext %>']<% } %><% if(!!viewEncapsulation) { %>,
-  encapsulation: ViewEncapsulation.<%= viewEncapsulation %><% } if (changeDetection !== 'Default') { %>,
-  changeDetection: ChangeDetectionStrategy.<%= changeDetection %><% } %>
+  templateUrl: './<%= dasherize(name) %>.component.html',<% if (!inlineStyle) { %> as % } else { %>
+    styleUrls: ['./<%= dasherize(name) %>.component.<%= styleext %>'] <% } %> as % if (!!viewEncapsulation) { %>,
+      encapsulation: ViewEncapsulation.<%= viewEncapsulation %> as % } if (changeDetection !== 'Default') { %>,
+        changeDetection: ChangeDetectionStrategy.<%= changeDetection %> as % } %>
 })
 export class <%= componentName %> implements OnInit {
 
   url = `/user`;
-  style=dark;
-  map:mapboxgl.Map;
+  style = dark;
+  map: mapboxgl.Map;
   searchSchema: SFSchema = {
     properties: {
       no: {
@@ -42,7 +42,7 @@ export class <%= componentName %> implements OnInit {
     }
   ];
 
-  constructor(private http: _HttpClient, private modal: ModalHelper,private msgSrv:NzMessageService) { }
+  constructor(private http: _HttpClient, private modal: ModalHelper, private msgSrv: NzMessageService) { }
 
   ngOnInit() { }
 
@@ -53,7 +53,7 @@ export class <%= componentName %> implements OnInit {
   }
 
   mapboxLoad(e){
-    this.map=e;
+    this.map = e;
   }
 
 }
