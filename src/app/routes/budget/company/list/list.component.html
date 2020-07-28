@@ -55,8 +55,8 @@
         <button nz-button type="submit" (click)="st.load(1,params)" [nzType]="'primary'"
           [nzLoading]="http.loading">查询</button>
         <button nz-button type="reset" (click)="reset()" class="mx-sm">重置</button>
-        <button nz-button acl [acl-ability]="'company:hxnsrxx:export'" type="button"
-          (click)="st.export(true, { filename: '纳税人信息.xlsx', sheetname: 'sheet1' })" nzType="primary"
+        <button nz-button acl [acl-ability]="'company:hxnsrxx:export'" type="button" nzType="primary" down-file
+          file-name="纳税人信息.xlsx" [http-method]="'GET'" http-url="hx/nsr/export/all" [http-data]="params"
           class="mx-sm">导出</button>
         <a (click)="expandForm = !expandForm">
           {{ expandForm ? '收起' : '展开' }}
@@ -83,7 +83,7 @@
       [disabled]="batchDelDisabled" nz-button>
       删除</button>
     <button acl [acl-ability]="'company:hxnsrxx:exportAll'" nzType="primary" down-file file-name="纳税人信息.xlsx"
-      [http-method]="'GET'" http-url="hx/nsr/export/all" nz-button>
+      [http-method]="'GET'" http-url="hx/nsr/export/all" [http-data]="params" nz-button>
       全部导出</button>
   </div>
   <st #st [data]="url" [req]="companyReq" [res]="companyRes" size="middle" [bordered]="true" [scroll]="{x:'2400px'}"
