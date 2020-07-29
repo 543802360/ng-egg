@@ -2,13 +2,14 @@ import { LazyService } from '@delon/util';
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpParams } from "@angular/common/http";
 import * as L from "leaflet";
+import * as esri from "esri-leaflet";
 import { environment } from "../../../environments/environment"
 @Injectable({
-  providedIn: 'root'
+  providedIn: "any"
 })
 export class LeafletService {
-  private _layerControl;
-  private _map;
+  private _layerControl: L.Control.Layers;
+  private _map: L.Map;
 
   constructor(private http: HttpClient,
     private lazySrv: LazyService) {
@@ -80,7 +81,7 @@ export class LeafletService {
     this._map = L.map(container, qdDefaultOptions);
 
 
-    const _vecBaseLayer = L.esri.tiledMapLayer({
+    const _vecBaseLayer = new L.esri.TiledMapLayer({
       url: environment.map.VECTOR_MAP,
       maxZoom: 10,
       minZoom: 0

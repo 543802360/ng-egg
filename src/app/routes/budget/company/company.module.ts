@@ -1,3 +1,4 @@
+import { NgLeafletModule } from './../../../ng-leaflet/ng-leaflet.module';
 import { NgModule } from '@angular/core';
 import { SharedModule } from '@shared';
 import { CompanyRoutingModule } from './company-routing.module';
@@ -43,7 +44,8 @@ const COMPONENTS_NOROUNT = [
   imports: [
     SharedModule,
     CompanyRoutingModule,
-    NgxMapboxGLModule
+    NgxMapboxGLModule,
+    NgLeafletModule,
   ],
   declarations: [
     ...COMPONENTS,

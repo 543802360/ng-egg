@@ -1,7 +1,8 @@
+import { LeafletService } from './../../../../ng-leaflet/services/leaflet.service';
 import { LoadingTypesService } from '@core';
 import { CompanyListEditComponent } from './../list/edit/edit.component';
 import { CompanyListViewComponent } from './../list/view/view.component';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { _HttpClient, ModalHelper } from '@delon/theme';
 import { STColumn, STComponent, STPage, STReq, STRequestOptions, STRes, STData } from '@delon/abc/st';
 import { NzMessageService } from 'ng-zorro-antd';
@@ -15,7 +16,7 @@ import { dark } from "@geo";
   templateUrl: './position.component.html',
   styleUrls: ['./position.component.less']
 })
-export class CompanyPositionComponent implements OnInit {
+export class CompanyPositionComponent implements OnInit, AfterViewInit {
 
   //#region 地图相关参数
   style;
@@ -328,14 +329,17 @@ export class CompanyPositionComponent implements OnInit {
     private loadingSrv: LoadingService,
     private loadingTypeSrv: LoadingTypesService,
     private msgSrv: NzMessageService,
-    private modal: ModalHelper) { }
+  ) { }
 
   ngOnInit() {
     this.style = dark;
-    this.loadingSrv.open({
-      type: 'custom',
-      custom: this.loadingTypeSrv.loadingTypes.Cubes
-    });
+    // this.loadingSrv.open({
+    //   type: 'custom',
+    //   custom: this.loadingTypeSrv.loadingTypes.Cubes
+    // });
+  }
+
+  ngAfterViewInit() {
   }
 
   /**
@@ -343,6 +347,7 @@ export class CompanyPositionComponent implements OnInit {
    * @param e
    */
   mapboxglLoad(e) {
+    console.log('map loaded!', e);
     this.map = e;
     this.loadingSrv.close();
   }

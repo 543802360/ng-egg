@@ -19,11 +19,12 @@
           <button nz-button nzType="danger" (click)="resetPos()">重置位置</button>
         </div>
         <!-- <nz-spin *ngIf="!map" nzSize="large" style=""></nz-spin> -->
-        <mgl-map [style]="style" [trackResize]="true" (resize)="mapresize($event)" [zoom]="[8]" [center]="[120.3,36.45]"
+        <!-- <mgl-map [style]="style" [trackResize]="true" (resize)="mapresize($event)" [zoom]="[8]" [center]="[120.3,36.45]"
           (load)="mapboxglLoad($event)">
           <mgl-control mglNavigation></mgl-control>
           <mgl-control mglFullscreen></mgl-control>
-        </mgl-map>
+        </mgl-map> -->
+        <div leaflet class="map-container" (loaded)="mapboxglLoad($event)"></div>
       </div>
     </div>
   </div>
