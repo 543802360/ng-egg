@@ -4,4 +4,4 @@
 
 // G2
 
-
+declare var L: any;
