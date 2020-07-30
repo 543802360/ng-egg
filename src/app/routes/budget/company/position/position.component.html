@@ -9,15 +9,16 @@
         <button nz-button (click)="params = {NSRMC:'',NSRSBH:'',SHXYDM:''}; st.reset()">重置</button>
       </div>
       <st #st [data]="url" [req]="companyReq" [res]="companyRes" loading="false" size="middle" [bordered]="true"
-        [columns]="columns" [pi]="1" [ps]="10" [total]="total" [scroll]="{x:'2220px'}" [loading]="http.loading">
+        [columns]="columns" (change)="onStChange($event)" [pi]="1" [ps]="10" [total]="total" [scroll]="{x:'2220px'}"
+        [loading]="http.loading">
       </st>
     </div>
     <div nz-col nzSpan="12" style="height: 100%;">
       <div style="height: 100%;min-height: 660px; width: 100%;margin-top: 10px;">
-        <div class="mb-md" *ngIf="map">
+        <!-- <div class="mb-md" *ngIf="map">
           <button nz-button [nzType]="'primary'" (click)="confirmPos()">确定位置</button>
           <button nz-button nzType="danger" (click)="resetPos()">重置位置</button>
-        </div>
+        </div> -->
         <!-- <nz-spin *ngIf="!map" nzSize="large" style=""></nz-spin> -->
         <!-- <mgl-map [style]="style" [trackResize]="true" (resize)="mapresize($event)" [zoom]="[8]" [center]="[120.3,36.45]"
           (load)="mapboxglLoad($event)">

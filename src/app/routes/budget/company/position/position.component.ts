@@ -1,16 +1,15 @@
-import { LeafletService } from './../../../../ng-leaflet/services/leaflet.service';
 import { LoadingTypesService } from '@core';
 import { CompanyListEditComponent } from './../list/edit/edit.component';
 import { CompanyListViewComponent } from './../list/view/view.component';
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { _HttpClient, ModalHelper } from '@delon/theme';
-import { STColumn, STComponent, STPage, STReq, STRequestOptions, STRes, STData } from '@delon/abc/st';
+import { STColumn, STComponent, STPage, STReq, STRequestOptions, STRes, STData, STChange } from '@delon/abc/st';
 import { NzMessageService } from 'ng-zorro-antd';
-import * as mapboxgl from "mapbox-gl";
 import { LoadingService } from '@delon/abc';
-import { dark } from "@geo";
 
-// import {  } from "@shared";
+// import * as L from "leaflet";
+
+
 @Component({
   selector: 'app-company-position',
   templateUrl: './position.component.html',
@@ -19,13 +18,19 @@ import { dark } from "@geo";
 export class CompanyPositionComponent implements OnInit, AfterViewInit {
 
   //#region 地图相关参数
-  style;
   center;
-  zoom;
-  map: mapboxgl.Map;
-  nsrMarker: mapboxgl.Marker;
+  // 纳税人位置marker
+  nsrMarker;
+  // 纳税人默认坐标
   nsrDefPosition;
+  // 当前所选纳税人
   selected;
+  // 纳税人位置可编辑图层
+  editableLayer = L.featureGroup();
+  // leafletMap: L.Map;
+  leafletMap;
+
+
   //#endregion
 
 
@@ -215,42 +220,52 @@ export class CompanyPositionComponent implements OnInit, AfterViewInit {
 
             // console.log(_record);
             this.selected = _record;
-            const { NSRMC, ZCDZ, NSRSBH } = _record;
-            const params = ZCDZ ? { address: ZCDZ } : { address: NSRMC };
-            const popupContent = `
-            <h5>纳税人名称：${NSRMC}</h5>
-            <h5>纳税人识别号：${NSRSBH}</h5>
-            <h5>注册地址：${ZCDZ}</h5>`;
-            this.http.get('geo/amap/geocode', params).subscribe(resp => {
+            const { DJXH, NSRMC, ZCDZ, NSRSBH, DJZCLXMC, HYMC, LXR, LXDH, JDXZMC, LAT, LNG } = _record;
 
-              if (!resp.success) {
-                this.msgSrv.error(resp.msg);
-              }
-              const center = {
-                lat: resp.data.lat,
-                lng: resp.data.lng
-              };
-              this.nsrDefPosition = center;
-              if (resp.success) {
-                this.map.flyTo({
-                  center,
-                  zoom: 16
+            this.leafletMap.flyTo([LAT, LNG], 7);
+            this.editableLayer.eachLayer(layer => {
+              if (layer.DJXH === DJXH) {
+                setTimeout(() => {
+                  layer.openPopup();
                 });
               }
-              if (this.nsrMarker) {
-                this.nsrMarker.setLngLat(center).setPopup(new mapboxgl.Popup({
-                }).setHTML(popupContent).setMaxWidth('600'));
-              } else {
-                this.nsrMarker = new mapboxgl.Marker({ draggable: true });
-                this.nsrMarker.setLngLat(center).addTo(this.map).setPopup(new mapboxgl.Popup({
-                }).setHTML(popupContent).setMaxWidth('600'));
-                this.nsrMarker.getElement().addEventListener("click", e => {
-                  // console.log('clcik');
-
-                });
-              }
-
             });
+
+            // const params = ZCDZ ? { address: ZCDZ } : { address: NSRMC };
+            // const popupContent = `
+            // <h5>纳税人名称：${NSRMC}</h5>
+            // <h5>纳税人识别号：${NSRSBH}</h5>
+            // <h5>登记注册类型：${DJZCLXMC}</h5>
+            // <h5>所属行业：${HYMC}</h5>
+            // <h5>所属街道：${JDXZMC}</h5>
+            // <h5>联系人：${LXR}</h5>
+            // <h5>联系电话：${LXDH}</h5>
+            // <h5>注册地址：${ZCDZ}</h5>
+            // `;
+            // this.http.get('geo/amap/geocode', params).subscribe(resp => {
+
+            //   if (!resp.success) {
+            //     this.msgSrv.error(resp.msg);
+            //   }
+            //   const center = {
+            //     lat: resp.data.lat,
+            //     lng: resp.data.lng
+            //   };
+            //   this.nsrDefPosition = center;
+            //   if (resp.success) {
+            //     this.leafletMap.flyTo([center.lat, center.lng], 7);
+            //   }
+            //   if (this.nsrMarker) {
+            //     // L.marker([center.lat,center.lng]).
+            //     this.nsrMarker.setLatLng([center.lat, center.lng]).bindPopup(popupContent, { maxWidth: 600 });
+
+            //   } else {
+
+            //     this.nsrMarker = L.marker([center.lat, center.lng]).addTo(this.leafletMap).bindPopup(popupContent, { maxWidth: 600 });
+            //     this.editableLayer.addLayer(this.nsrMarker);
+            //   }
+
+            // });
 
           }
         },
@@ -332,11 +347,10 @@ export class CompanyPositionComponent implements OnInit, AfterViewInit {
   ) { }
 
   ngOnInit() {
-    this.style = dark;
-    // this.loadingSrv.open({
-    //   type: 'custom',
-    //   custom: this.loadingTypeSrv.loadingTypes.Cubes
-    // });
+    this.loadingSrv.open({
+      type: 'custom',
+      custom: this.loadingTypeSrv.loadingTypes.Cubes
+    });
   }
 
   ngAfterViewInit() {
@@ -347,9 +361,40 @@ export class CompanyPositionComponent implements OnInit, AfterViewInit {
    * @param e
    */
   mapboxglLoad(e) {
-    console.log('map loaded!', e);
-    this.map = e;
+    this.leafletMap = e;
     this.loadingSrv.close();
+
+    //#region 添加draw 控件
+
+    //#endregion
+    this.leafletMap.addLayer(this.editableLayer);
+    const defaultDrawOptions = {
+      position: 'topleft',
+      draw: {
+        polyline: false,
+        polygon: false,
+        rectangle: false,
+        circle: false,
+        circlemarker: false
+      },
+      edit: {
+        featureGroup: this.editableLayer
+      }
+    };
+    const drawCtrl = new L.Control.Draw(defaultDrawOptions);
+    this.leafletMap.addControl(drawCtrl);
+
+    this.leafletMap.on(L.Draw.Event.CREATED, e => {
+      const type = e.layerType;
+      const layer = e.layer;
+
+      if (type === 'marker') {
+      }
+
+      this.editableLayer.addLayer(layer);
+    });
+
+
   }
 
   /** 确认位置
@@ -370,11 +415,32 @@ export class CompanyPositionComponent implements OnInit, AfterViewInit {
    */
   resetPos() {
     this.nsrMarker.setLngLat(this.nsrDefPosition);
-    this.map.flyTo({ center: this.nsrDefPosition, zoom: 16 });
+    // this.mapboxMap.flyTo({ center: this.nsrDefPosition, zoom: 16 });
   }
 
-  mapresize(e) {
-    console.log('resize:', e);
+  onStChange(e: STChange) {
+    if (e.loaded) {
+      this.editableLayer.clearLayers();
+      e.loaded.forEach(item => {
+        const { NSRMC, ZCDZ, NSRSBH, DJZCLXMC, HYMC, LXR, LXDH, JDXZMC, LAT, LNG } = item;
+
+        const popupContent = `
+        <h5>纳税人名称：${NSRMC}</h5>
+        <h5>纳税人识别号：${NSRSBH}</h5>
+        <h5>登记注册类型：${DJZCLXMC}</h5>
+        <h5>所属行业：${HYMC}</h5>
+        <h5>所属街道：${JDXZMC}</h5>
+        <h5>联系人：${LXR}</h5>
+        <h5>联系电话：${LXDH}</h5>
+        <h5>注册地址：${ZCDZ}</h5>
+        `;
+        const marker = L.marker([LAT, LNG]).bindPopup(popupContent).addTo(this.editableLayer);
+        Object.defineProperty(marker, 'DJXH', {
+          value: item.DJXH,
+          enumerable: true
+        })
+      })
+    }
   }
 
 }
