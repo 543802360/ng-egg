@@ -378,7 +378,8 @@ export class CompanyPositionComponent implements OnInit, AfterViewInit {
         circlemarker: false
       },
       edit: {
-        featureGroup: this.editableLayer
+        featureGroup: this.editableLayer,
+        remove: false
       }
     };
     const drawCtrl = new L.Control.Draw(defaultDrawOptions);
