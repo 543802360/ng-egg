@@ -28,6 +28,11 @@
               "node_modules/@fortawesome/fontawesome-free/css/all.min.css"
             ],
             "scripts": [
+              "node_modules/leaflet/dist/leaflet-src.js",
+              "node_modules/leaflet-draw/dist/leaflet.draw.js",
+              "node_modules/esri-leaflet/dist/esri-leaflet.js",
+              "node_modules/proj4/dist/proj4.js",
+              "node_modules/proj4leaflet/src/proj4leaflet.js",
               "node_modules/ajv/dist/ajv.bundle.js",
               "node_modules/qrious/dist/qrious.min.js"
             ]
