@@ -8,10 +8,6 @@ import {
   Output,
   EventEmitter
 } from "@angular/core";
-import * as L from 'leaflet';
-import * as proj4 from "proj4";
-import * as proj4leaflet from "proj4leaflet";
-import * as esri from "esri-leaflet";
 
 import { environment } from "@env/environment";
 
@@ -26,36 +22,36 @@ export class LeafletDirective implements OnInit {
   @Input() leafletOptions: any;
   /** map loaded event
    */
-  @Output() loaded = new EventEmitter<L.Map>();
+  @Output() loaded = new EventEmitter<any>();
 
-  private _map: L.Map;
-  private _layerControl: L.Control.Layers;
+  private _map;
+  private _layerControl;
 
 
-  public get Map(): L.Map {
+  public get Map() {
     return this._map;
   }
 
-  public get layerControl(): L.Control.Layers {
+  public get layerControl() {
     return this._layerControl;
   }
 
 
 
-  constructor(private el: ElementRef, private leafletService: LeafletService) { }
+  constructor(private el: ElementRef, private leafletSrv: LeafletService) { }
 
   // 组件的初始化周期钩子函数
   ngOnInit() {
 
-    Object.defineProperty(L, 'esri',
-      {
-        value: esri,
-        configurable: true,
-        writable: true
-      });
-    console.log(L);
-    console.log(proj4);
-    console.log(proj4leaflet);
+    // Object.defineProperty(L, 'esri',
+    //   {
+    //     value: esri,
+    //     configurable: true,
+    //     writable: true
+    //   });
+    // console.log(L);
+    // console.log(proj4);
+    // console.log(proj4leaflet);
 
     this.init(this.el.nativeElement, this.leafletOptions);
 
@@ -66,7 +62,7 @@ export class LeafletDirective implements OnInit {
    * @param container 
    * @param options 
    */
-  init(container: HTMLElement, options?: L.MapOptions) {
+  init(container: HTMLElement, options?: any) {
 
     const crs = new (L as any).Proj.CRS(
       "EPSG:4326",
@@ -161,4 +157,6 @@ export class LeafletDirective implements OnInit {
     // this.addDrawControl();
     // this.addMeasureCtrl();
   }
+
+
 }
