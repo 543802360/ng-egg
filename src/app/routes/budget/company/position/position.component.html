@@ -9,7 +9,7 @@
         <button nz-button (click)="params = {NSRMC:'',NSRSBH:'',SHXYDM:''}; st.reset()">重置</button>
       </div>
       <st #st [data]="url" [req]="companyReq" [res]="companyRes" loading="false" size="middle" [bordered]="true"
-        [columns]="columns" (change)="onStChange($event)" [pi]="1" [ps]="10" [total]="total" [page]="page"
+        [columns]="columns" (change)="onStChange($event)" [pi]="1" [ps]="8" [total]="total" [page]="page"
         [scroll]="{x:'2220px'}" [loading]="http.loading">
       </st>
     </div>

@@ -1,9 +1,43 @@
-<page-header [action]="phActionTpl">
-  <ng-template #phActionTpl>
-    <button (click)="add()" nz-button nzType="primary">新建</button>
+<!--行业税收 -->
+<nz-card [nzBordered]="false" [nzExtra]="extraTemplate1" class="ant-card__body-nopadding sales-card">
+  <ng-template #extraTemplate1>
+    <div class="sales-extra-wrap">
+
+      <div class="sales-extra">
+        <a (click)="setDate('month')">本月</a>
+        <a (click)="setDate('year')">本年</a>
+      </div>
+
+      <nz-tree-select style="width: 260px; margin: 0 5px;" [(ngModel)]="budgetValue" [nzNodes]="budgetNodes" nzCheckable
+        [nzPlaceHolder]="'预算级次'">
+      </nz-tree-select>
+
+      <nz-month-picker [(ngModel)]="startDate" nzFormat="YYYY-MM" nzPlaceHolder="起始月份">
+      </nz-month-picker>
+      <span style="margin: 0 5px;">~</span>
+      <nz-month-picker [(ngModel)]="endDate" nzFormat="YYYY-MM" nzPlaceHolder="结束月份"></nz-month-picker>
+      <button nz-button (click)="getData()" nzType="primary" style="margin-left: 6px;">查询</button>
+      <button nz-button nzType="primary" style="margin-left: 6px;">导出</button>
+
+    </div>
   </ng-template>
-</page-header>
-<nz-card>
-  <sf mode="search" [schema]="searchSchema" (formSubmit)="st.reset($event)" (formReset)="st.reset($event)"></sf>
-  <st #st [data]="url" [columns]="columns"></st>
+  <div nz-row nzGutter="8">
+    <st #st style="width: 100%; margin-top: 10px;" header="税收排名（单位：万元）" [data]="data" [columns]="columns" [page]="page"
+      [total]="total" [loading]="http.loading" [ps]="5" [pi]="1" (change)="change($event)">
+      <ng-template st-row="tbzjz-tpl" let-item let-index="index">
+
+        <nz-tag *ngIf="item.TBZJZ<0" nzColor="red">
+          <span nz-tooltip [nzTooltipTitle]="'同比增减：' + item.TBZJZ"> {{item.TBZJZ|number}}</span>
+        </nz-tag>
+        <span *ngIf="item.TBZJZ>=0" nz-tooltip [nzTooltipTitle]="'同比增减：' + item.TBZJZ"> {{item.TBZJZ|number}}</span>
+      </ng-template>
+      <ng-template st-row="tbzjf-tpl" let-item let-index="index">
+
+        <nz-tag *ngIf="item.TBZJZ<0" nzColor="red">
+          <span nz-tooltip [nzTooltipTitle]="'同比增减：' + item.TBZJF"> {{item.TBZJF}}</span>
+        </nz-tag>
+        <span *ngIf="item.TBZJZ>=0" nz-tooltip [nzTooltipTitle]="'同比增减幅：' + item.TBZJF"> {{item.TBZJF}}</span>
+      </ng-template>
+    </st>
+  </div>
 </nz-card>
