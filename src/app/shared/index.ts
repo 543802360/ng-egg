@@ -15,6 +15,7 @@ export * from "./interfaces/IUser";
 export * from './interfaces/IDjnsrxx';
 export * from "./interfaces/IBuilding";
 export * from "./interfaces/IBDG_TOWN";
+export * from "./interfaces/IEOrder";
 
 // 数据类型
 export * from './models/LoadingTypes';
