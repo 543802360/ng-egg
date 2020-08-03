@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, AfterViewInit, ChangeDetectorRef } from '
 import { _HttpClient, ModalHelper } from '@delon/theme';
 import { STColumn, STComponent, STRes, STData, STPage, STChange } from '@delon/abc/st';
 import { SFSchema } from '@delon/form';
-import { NzMessageService } from 'ng-zorro-antd';
+import { NzMessageService, NzTreeSelectComponent } from 'ng-zorro-antd';
 import { CacheService } from '@delon/cache';
 import { yuan, IEOrder } from '@shared';
 import { getTimeDistance } from '@delon/util';
@@ -14,11 +14,13 @@ import { getTimeDistance } from '@delon/util';
 })
 export class BudgetBdgAnalysisCompanyOrderComponent implements OnInit, AfterViewInit {
 
+
+  //#region 预算级次
   // date
   date_range: Date[] = [];
   startDate: Date;
   endDate: Date;
-  //#region 预算级次
+  // 预算级次value
   budgetValue: number[] = [4]
   budgetNodes = [{
     title: '中央级',
@@ -35,6 +37,12 @@ export class BudgetBdgAnalysisCompanyOrderComponent implements OnInit, AfterView
     value: 4,
     key: 4
   }];
+  // 行业名称tree-select
+  @ViewChild('hyTreeSelect') hyTreeSelect: NzTreeSelectComponent;
+  hymcNodes;
+  selectedHymc: string;
+
+  selectedOrder = 100;
 
   //#endregion
   @ViewChild('st') st: STComponent;
@@ -49,13 +57,14 @@ export class BudgetBdgAnalysisCompanyOrderComponent implements OnInit, AfterView
     count: 100
   };
   total = 0;
-
+  // response预处理
   res: STRes = {
     process: (data: STData[], rawData?: any) => {
       this.total = rawData.data.length;
       return rawData.data;
     }
   };
+  // 表头设置
   columns: STColumn[] = [
     {
       title: '排名',
@@ -108,7 +117,7 @@ export class BudgetBdgAnalysisCompanyOrderComponent implements OnInit, AfterView
 
     }
   ]
-
+  // 分页设置
   page: STPage = {
     show: true,
     front: true,
@@ -123,6 +132,8 @@ export class BudgetBdgAnalysisCompanyOrderComponent implements OnInit, AfterView
     const date = new Date();
     this.startDate = new Date(date.getFullYear(), 0);
     this.endDate = date;
+
+    this.hymcNodes = this.cacheSrv.get('hymc', { mode: 'none' });
 
   }
 
@@ -169,11 +180,21 @@ export class BudgetBdgAnalysisCompanyOrderComponent implements OnInit, AfterView
     const startMonth = this.startDate.getMonth() + 1;
     const endMonth = this.endDate.getMonth() + 1;
     const budgetValue = this.budgetValue.toLocaleString();
+    const mlmc = this.hyTreeSelect.getSelectedNodeList();
+    const count = this.selectedOrder;
     const adminCode = '3302130000';
 
     // const adminCode = this.cacheSrv.get('userInfo', { mode: 'none' }).department_id;
 
-    return { adminCode, year, startMonth, endMonth, budgetValue };
+    if (!this.hyTreeSelect.getSelectedNodeList().length) {
+      return { adminCode, year, startMonth, endMonth, budgetValue, count };
+    }
+    if (this.hyTreeSelect.getSelectedNodeList().length !== 0) {
+      const selectedNode = this.hyTreeSelect.getSelectedNodeList()[0];
+      return selectedNode.parentNode ? { adminCode, year, startMonth, endMonth, budgetValue, count, hymc: selectedNode.title } :
+        { adminCode, year, startMonth, endMonth, budgetValue, count, mlmc: selectedNode.title };
+    }
+
   }
   /**
    * G2 PIE 图表tooltip
