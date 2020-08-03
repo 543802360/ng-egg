@@ -14,6 +14,13 @@ import { getTimeDistance } from '@delon/util';
 })
 export class BudgetBdgAnalysisCompanyOrderComponent implements OnInit, AfterViewInit {
 
+  //#region 地图相关
+
+  map;
+  nsrFeatureGroup;
+
+  //#endregion
+
 
   //#region 预算级次
   // date
@@ -78,12 +85,12 @@ export class BudgetBdgAnalysisCompanyOrderComponent implements OnInit, AfterView
       }
 
     },
-    {
-      index: 'PAYER_ID',
-      title: '纳税人识别号',
-      className: 'text-center',
+    // {
+    //   index: 'PAYER_ID',
+    //   title: '纳税人识别号',
+    //   className: 'text-center',
 
-    },
+    // },
     {
       index: 'PAYMENT_NAME',
       title: '纳税人名称',
@@ -92,7 +99,7 @@ export class BudgetBdgAnalysisCompanyOrderComponent implements OnInit, AfterView
     },
     {
       index: 'BNDSR',
-      title: '本年度收入',
+      title: '本年度',
       className: 'text-center',
       type: 'number'
     },
@@ -134,7 +141,7 @@ export class BudgetBdgAnalysisCompanyOrderComponent implements OnInit, AfterView
     this.endDate = date;
 
     this.hymcNodes = this.cacheSrv.get('hymc', { mode: 'none' });
-
+    this.nsrFeatureGroup = L.markerClusterGroup();
   }
 
   ngOnInit() {
@@ -164,11 +171,46 @@ export class BudgetBdgAnalysisCompanyOrderComponent implements OnInit, AfterView
    * 获取税收统计概况（电子税票）
    */
   getData() {
+    this.nsrFeatureGroup.clearLayers();
     this.budgetValue.length === 0 ? this.budgetValue = [4] : null;
     this.http.get(this.url, this.getCondition()).subscribe(resp => {
       this.data = resp.data;
       this.total = resp.data.length;
-    })
+
+      // 添加至地图
+      this.data.forEach((item, index) => {
+        const marker = L.marker([item.lat, item.lng], {
+          icon: L.BeautifyIcon.icon({
+            icon: 'leaf',
+            // iconSize: [28, 28],
+            isAlphaNumericIcon: true,
+            text: index + 1,
+            iconShape: 'marker',
+            borderColor: '#00ABCD',
+            textColor: 'red'
+          })
+        });
+
+
+        Object.defineProperty(marker, 'NSRMC', {
+          enumerable: true,
+          value: item.PAYMENT_NAME
+        });
+
+        const popupContent = `
+        <h5>纳税人名称：${item.PAYMENT_NAME}</h5>
+        <h5>本年度收入：${item.BNDSR}</h5>
+        <h5>上年同期：${item.SNTQ}</h5>
+        <h5>同比增减值：${item.TBZJZ}</h5>
+        <h5>同比增减幅：${item.TBZJF}</h5>
+        `;
+        marker.bindPopup(popupContent);
+        this.nsrFeatureGroup.addLayer(marker);
+
+      });
+      // 
+      this.map.fitBounds(this.nsrFeatureGroup.getBounds());
+    });
 
 
   }
@@ -202,5 +244,24 @@ export class BudgetBdgAnalysisCompanyOrderComponent implements OnInit, AfterView
    */
   change(e: STChange) {
     console.log(e);
+    if (e.click && e.click.item) {
+
+      const { PAYMENT_NAME, lat, lng } = e.click.item;
+
+      this.nsrFeatureGroup.eachLayer(layer => {
+        if (layer.NSRMC === PAYMENT_NAME) {
+          this.map.setView([lat, lng], 8);
+          setTimeout(() => {
+            layer.openPopup();
+          });
+        }
+      })
+    }
+  }
+  mapload(e) {
+    const { map, layerControl } = e;
+    this.map = map;
+    this.map.addLayer(this.nsrFeatureGroup);
+    layerControl.addOverlay(this.nsrFeatureGroup, '企业分布');
   }
 }

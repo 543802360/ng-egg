@@ -361,9 +361,10 @@ export class CompanyPositionComponent implements OnInit, AfterViewInit {
    * @param e
    */
   mapboxglLoad(e) {
-    this.leafletMap = e;
-    this.loadingSrv.close();
 
+    const { map } = e
+    this.leafletMap = map;
+    this.loadingSrv.close();
     //#region 添加draw 控件
 
     //#endregion

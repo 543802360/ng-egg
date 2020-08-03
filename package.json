@@ -55,6 +55,8 @@
     "font-awesome": "^4.7.0",
     "leaflet": "^1.6.0",
     "leaflet-draw": "^1.0.4",
+    "leaflet.beautifymarker": "^1.1.1",
+    "leaflet.markercluster": "^1.4.1",
     "mapbox-gl": "^1.9.0",
     "mapbox-gl-controls": "^1.5.7",
     "mapbox-gl-infobox": "^1.0.3",

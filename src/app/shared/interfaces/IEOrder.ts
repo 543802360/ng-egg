@@ -16,4 +16,7 @@ export interface IEOrder {
     // 同比增减幅
     TBZJF?: string;
 
+    lat?: number;
+    lng?: number;
+
 }

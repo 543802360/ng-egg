@@ -16,8 +16,7 @@ import { environment } from "@env/environment";
 })
 export class LeafletDirective implements OnInit {
 
-  /**
-   leaflet map options
+  /** leaflet map options
    */
   @Input() leafletOptions: any;
   /** map loaded event
@@ -27,7 +26,6 @@ export class LeafletDirective implements OnInit {
   private _map;
   private _layerControl;
 
-
   public get Map() {
     return this._map;
   }
@@ -36,22 +34,10 @@ export class LeafletDirective implements OnInit {
     return this._layerControl;
   }
 
-
-
   constructor(private el: ElementRef, private leafletSrv: LeafletService) { }
 
   // 组件的初始化周期钩子函数
   ngOnInit() {
-
-    // Object.defineProperty(L, 'esri',
-    //   {
-    //     value: esri,
-    //     configurable: true,
-    //     writable: true
-    //   });
-    // console.log(L);
-    // console.log(proj4);
-    // console.log(proj4leaflet);
 
     this.init(this.el.nativeElement, this.leafletOptions);
 
@@ -151,7 +137,10 @@ export class LeafletDirective implements OnInit {
       setTimeout(() => {
         this._map.invalidateSize(true);
       });
-      this.loaded.emit(this._map);
+      this.loaded.emit({
+        map: this.Map,
+        layerControl: this.layerControl
+      });
     })
 
     // this.addDrawControl();

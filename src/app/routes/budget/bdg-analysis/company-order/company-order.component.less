@@ -4,6 +4,11 @@
     margin: 0 3px;
     font-weight: bolder;
   }
+  .map-container{
+    width: 100%;
+    height: calc(100% - 60px);  
+    z-index: 1;
+  }
   .hymc-tree-select{
     width: 240px;
     margin: 0 5px;
@@ -14,8 +19,6 @@
       max-height: 400px !important;
     }
   }
-
-
 
   .g2-card__meta-title {
     font-size: 16px;
@@ -55,7 +58,14 @@
 
   .sales-card {
 
-    margin-top: 10px;
+      width: 100%;
+      height: calc(100% - 60px);
+      margin:  10px 0;
+
+      .ant-card-body{
+        height: 100%;
+        padding: 0;
+      }
     .ant-tabs-bar {
       padding-left: 16px;
 

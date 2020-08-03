@@ -1,7 +1,7 @@
 <nz-card style="margin-top: 10px;">
 
   <div nz-row nzGutter="8" style="height: 100%;">
-    <div nz-col nzSpan="12" style="height: 100%;">
+    <div nz-col nzSpan="15" style="height: 100%;">
       <div class="mb-md" style="margin: 10px;">
         <input nz-input [(ngModel)]="params.NSRMC" name="NSRMC" nzPlaceHolder="请输入纳税人名称" style="width: 220px;"
           class="mr-sm">
@@ -9,12 +9,12 @@
         <button nz-button (click)="params = {NSRMC:'',NSRSBH:'',SHXYDM:''}; st.reset()">重置</button>
       </div>
       <st #st [data]="url" [req]="companyReq" [res]="companyRes" loading="false" size="middle" [bordered]="true"
-        [columns]="columns" (change)="onStChange($event)" [pi]="1" [ps]="8" [total]="total" [page]="page"
+        [columns]="columns" (change)="onStChange($event)" [pi]="1" [ps]="10" [total]="total" [page]="page"
         [scroll]="{x:'2220px'}" [loading]="http.loading">
       </st>
     </div>
-    <div nz-col nzSpan="12" style="height: 100%;">
-      <div style="height: 100%;min-height: 660px; width: 100%;margin-top: 10px;">
+    <div nz-col nzSpan="9" style="height: 100%;">
+      <div style="height: 100%;min-height: 660px; width: 100%">
         <!-- <div class="mb-md" *ngIf="map">
           <button nz-button [nzType]="'primary'" (click)="confirmPos()">确定位置</button>
           <button nz-button nzType="danger" (click)="resetPos()">重置位置</button>

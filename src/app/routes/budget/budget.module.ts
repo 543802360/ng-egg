@@ -8,6 +8,7 @@ import { BudgetCompanyOrderEditComponent } from "./bdg-analysis/company-order/ed
 import { BudgetCompanyOrderViewComponent } from './bdg-analysis/company-order/view/view.component';
 import { BudgetBdgAnalysisBatchQueryComponent } from './bdg-analysis/batch-query/batch-query.component';
 import { BudgetBdgAnalysisSingleQueryComponent } from './bdg-analysis/single-query/single-query.component';
+import { NgLeafletModule } from '../../ng-leaflet/ng-leaflet.module';
 
 const COMPONENTS = [
   BudgetBdgSettingBdgCountyComponent,
@@ -21,6 +22,7 @@ const COMPONENTS_NOROUNT = [
 
 @NgModule({
   imports: [
+    NgLeafletModule,
     SharedModule,
     BudgetRoutingModule
   ],
