@@ -1,3 +1,5 @@
+import { MonthRangeComponent } from './components/month-range/month-range.component';
+import { BdgSelectComponent } from './components/bdg-select/bdg-select.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
@@ -26,7 +28,7 @@ const THIRDMODULES = [
 // #endregion
 
 // #region your componets & directives
-const COMPONENTS = [];
+const COMPONENTS = [BdgSelectComponent, MonthRangeComponent];
 const DIRECTIVES = [];
 // #endregion
 
