@@ -7,7 +7,7 @@ import { _HttpClient } from '@delon/theme';
 })
 export class BdgSelectComponent implements OnInit {
   // 预算级次value
-  _budgetValue: number[] = [4]
+  _budgetValue: number[] = []
   budgetNodes = [{
     title: '中央级',
     value: 1,
@@ -28,6 +28,11 @@ export class BdgSelectComponent implements OnInit {
   public get budgetValue(): any[] {
     return this._budgetValue;
   }
+
+  public set budgetValue(v: any[]) {
+    this._budgetValue = v;
+  }
+
 
 
   constructor(private http: _HttpClient) { }
