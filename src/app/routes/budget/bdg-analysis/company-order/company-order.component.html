@@ -8,10 +8,7 @@
         <a (click)="setDate('year')">本年</a>
       </div> -->
 
-      <span class="header-label"> 预算级次:</span>
-      <nz-tree-select style="width: 238px; margin: 0 5px;" [(ngModel)]="budgetValue" [nzNodes]="budgetNodes" nzCheckable
-        [nzPlaceHolder]="'请选择预算级次'">
-      </nz-tree-select>
+      <app-bdg-select #bdgSelect></app-bdg-select>
 
       <span class="header-label"> 所属行业:</span>
       <nz-tree-select #hyTreeSelect class="hymc-tree-select" [(ngModel)]="selectedHymc" [nzNodes]="hymcNodes"
@@ -36,20 +33,18 @@
         </nz-option>
       </nz-select>
 
-      <nz-month-picker [(ngModel)]="startDate" nzFormat="YYYY-MM" nzPlaceHolder="起始月份">
-      </nz-month-picker>
-      <span style="margin: 0 5px;">~</span>
-      <nz-month-picker [(ngModel)]="endDate" nzFormat="YYYY-MM" nzPlaceHolder="结束月份"></nz-month-picker>
+      <app-month-range #monthRange style="margin-right: 5px;"></app-month-range>
       <button nz-button (click)="getData()" nzType="primary" style="margin-left: 6px;">查询</button>
       <button nz-button nzType="primary" style="margin-left: 6px;">导出</button>
 
     </div>
   </ng-template>
   <!-- 表格数据 -->
-  <div nz-row nzGutter="8" style="height: 100%;">
-    <div nz-col nzSpan="15" style="height: 100%;">
+  <div nz-row nzGutter="4" style="height: 100%;">
+    <div nz-col nzSpan="14" style="height: 100%;">
       <st #st style="width: 100%; margin-top: 10px;" header="税收排名（单位：万元）" [data]="data" [columns]="columns"
-        [page]="page" [total]="total" [loading]="http.loading" [ps]="10" [pi]="1" (change)="change($event)">
+        [page]="page" [total]="total" [loading]="http.loading" [ps]="10" [pi]="1" bordered="true" size="middle"
+        [scroll]="{x:'1000px',y:'576px'}" (change)="change($event)">
         <ng-template st-row="tbzjz-tpl" let-item let-index="index">
 
           <nz-tag *ngIf="item.TBZJZ<0" nzColor="red">
@@ -67,7 +62,7 @@
       </st>
     </div>
     <!-- 地图 -->
-    <div nz-col nzSpan="9" style="height: 100%">
+    <div nz-col nzSpan="10" style="height: 100%">
       <div leaflet class="map-container" (loaded)="mapload($event)"></div>
     </div>
 

@@ -6,6 +6,8 @@ import { NzMessageService, NzTreeSelectComponent } from 'ng-zorro-antd';
 import { CacheService } from '@delon/cache';
 import { yuan, IEOrder } from '@shared';
 import { getTimeDistance } from '@delon/util';
+import { BdgSelectComponent } from 'src/app/shared/components/bdg-select/bdg-select.component';
+import { MonthRangeComponent } from 'src/app/shared/components/month-range/month-range.component';
 
 @Component({
   selector: 'app-budget-bdg-analysis-company-order',
@@ -21,29 +23,9 @@ export class BudgetBdgAnalysisCompanyOrderComponent implements OnInit, AfterView
 
   //#endregion
 
+  @ViewChild('bdgSelect') bdgSelect: BdgSelectComponent;
+  @ViewChild('monthRange') monthRange: MonthRangeComponent;
 
-  //#region 预算级次
-  // date
-  date_range: Date[] = [];
-  startDate: Date;
-  endDate: Date;
-  // 预算级次value
-  budgetValue: number[] = [4]
-  budgetNodes = [{
-    title: '中央级',
-    value: 1,
-    key: 1
-  },
-  {
-    title: '市级',
-    value: 3,
-    key: 3
-  },
-  {
-    title: '区县级',
-    value: 4,
-    key: 4
-  }];
   // 行业名称tree-select
   @ViewChild('hyTreeSelect') hyTreeSelect: NzTreeSelectComponent;
   hymcNodes;
@@ -55,14 +37,7 @@ export class BudgetBdgAnalysisCompanyOrderComponent implements OnInit, AfterView
   @ViewChild('st') st: STComponent;
   url = "bdg/enterprise/order";
   data: IEOrder[];
-  params = {
-    adminCode: 3302130000,
-    year: 2020,
-    startMonth: 1,
-    endMonth: 7,
-    bdg_value: this.budgetValue,
-    count: 100
-  };
+
   total = 0;
   // response预处理
   res: STRes = {
@@ -77,6 +52,7 @@ export class BudgetBdgAnalysisCompanyOrderComponent implements OnInit, AfterView
       title: '排名',
       width: 60,
       className: 'text-center',
+      fixed: 'left',
       format: (item: STData, col: STColumn, index: number) => {
         // console.log('index', index, item, col);
         // console.log(this.st);
@@ -95,37 +71,44 @@ export class BudgetBdgAnalysisCompanyOrderComponent implements OnInit, AfterView
       index: 'PAYMENT_NAME',
       title: '纳税人名称',
       className: 'text-center',
-
+      fixed: 'left',
+      // width: 400
     },
     {
       index: 'BNDSR',
       title: '本年度',
       className: 'text-center',
-      type: 'number'
+      type: 'number',
+      width: 120
     },
     {
       index: 'SNTQ',
       title: '上年同期',
       className: 'text-center',
-      type: 'number'
+      type: 'number',
+      width: 120
     },
     {
       index: 'TBZJZ',
       title: '同比增减',
       className: 'text-center',
       // type: 'number'
-      render: 'tbzjz-tpl'
+      render: 'tbzjz-tpl',
+      width: 120
     },
     {
       index: 'TBZJF',
       title: '同比增减幅',
       className: 'text-center',
-      render: 'tbzjf-tpl'
+      render: 'tbzjf-tpl',
+      width: 120
 
     },
     {
       title: '操作',
       className: 'text-center',
+      width: 60,
+      fixed: 'right',
       buttons: [
         {
           tooltip: '详情',
@@ -149,10 +132,6 @@ export class BudgetBdgAnalysisCompanyOrderComponent implements OnInit, AfterView
     private cdr: ChangeDetectorRef,
     private cacheSrv: CacheService
   ) {
-    const date = new Date();
-    this.startDate = new Date(date.getFullYear(), 0);
-    this.endDate = date;
-
     this.hymcNodes = this.cacheSrv.get('hymc', { mode: 'none' });
     this.nsrFeatureGroup = L.markerClusterGroup();
   }
@@ -173,9 +152,9 @@ export class BudgetBdgAnalysisCompanyOrderComponent implements OnInit, AfterView
    * @param flag
    */
   setDate(type: any) {
-    this.date_range = getTimeDistance(type);
-    this.startDate = this.date_range[0];
-    this.endDate = this.date_range[1];
+    // this.date_range = getTimeDistance(type);
+    // this.startDate = this.date_range[0];
+    // this.endDate = this.date_range[1];
     setTimeout(() => this.cdr.detectChanges());
   }
 
@@ -185,7 +164,7 @@ export class BudgetBdgAnalysisCompanyOrderComponent implements OnInit, AfterView
    */
   getData() {
     this.nsrFeatureGroup.clearLayers();
-    this.budgetValue.length === 0 ? this.budgetValue = [4] : null;
+    this.bdgSelect.budgetValue.length === 0 ? this.bdgSelect.budgetValue = [4] : null;
     this.http.get(this.url, this.getCondition()).subscribe(resp => {
       this.data = resp.data;
       this.total = resp.data.length;
@@ -231,10 +210,11 @@ export class BudgetBdgAnalysisCompanyOrderComponent implements OnInit, AfterView
    * 获取查询条件参数
    */
   getCondition() {
-    const year = this.startDate.getFullYear();
-    const startMonth = this.startDate.getMonth() + 1;
-    const endMonth = this.endDate.getMonth() + 1;
-    const budgetValue = this.budgetValue.toLocaleString();
+    const { startDate, endDate } = this.monthRange;
+    const year = startDate.getFullYear();
+    const startMonth = startDate.getMonth() + 1;
+    const endMonth = endDate.getMonth() + 1;
+    const budgetValue = this.bdgSelect.budgetValue.toLocaleString();
     const mlmc = this.hyTreeSelect.getSelectedNodeList();
     const count = this.selectedOrder;
     const adminCode = '3302130000';
