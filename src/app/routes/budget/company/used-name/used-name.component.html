@@ -1,9 +1,29 @@
-<page-header [action]="phActionTpl">
-  <ng-template #phActionTpl>
-    <button (click)="add()" nz-button nzType="primary">新建</button>
-  </ng-template>
-</page-header>
-<nz-card>
-  <sf mode="search" [schema]="searchSchema" (formSubmit)="st.reset($event)" (formReset)="st.reset($event)"></sf>
-  <st #st [data]="url" [columns]="columns"></st>
-</nz-card>
+<div nz-row nzGutter="8">
+  <div nz-col nzSpan="12">
+    <nz-card nzTitle="企业曾用名名录" class="usedname-card" [nzExtra]="headerTpl">
+
+      <ng-template #headerTpl>
+        <button nz-button nzType="primary" style="margin-left: 6px;">更新</button>
+        <button nz-button (click)="download()" nzType="primary" style="margin-left: 6px;">导出</button>
+      </ng-template>
+
+      <st [data]="data" [pi]="1" [ps]="10" [page]="page" [columns]="columns" [scroll]="{y:'576px'}"></st>
+    </nz-card>
+  </div>
+  <div nz-col nzSpan="12">
+    <nz-card nzTitle="企业曾用名匹配" class="usedname-card" [nzExtra]="usedNameTpl">
+      <ng-template #usedNameTpl>
+
+        <input class="file-input ml-sm" type="file" (change)="change($event)" multiple="false" />
+        <nz-select [(ngModel)]="selectedField" style="width: 200px;" nzPlaceHolder="请选择匹配字段" nzAllowClear>
+          <nz-option *ngFor="let item of selectNodes" [nzLabel]="item.label" [nzValue]="item.value"></nz-option>
+
+        </nz-select>
+        <button nz-button (click)="match()" nzType="primary" style="margin-left: 6px;">匹配</button>
+
+      </ng-template>
+
+      <st #st [data]="xlsxData" [pi]="1" [ps]="10" [page]="page" [scroll]="{y:'576px'}" [columns]="xlsxColumns"></st>
+    </nz-card>
+  </div>
+</div>
