@@ -122,6 +122,19 @@ export class BudgetBdgAnalysisCompanyOrderComponent implements OnInit, AfterView
       className: 'text-center',
       render: 'tbzjf-tpl'
 
+    },
+    {
+      title: '操作',
+      className: 'text-center',
+      buttons: [
+        {
+          tooltip: '详情',
+          icon: 'eye',
+          click: (record: STData, modal: true) => {
+            console.log(record);
+          }
+        }
+      ]
     }
   ]
   // 分页设置
