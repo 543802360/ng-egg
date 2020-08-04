@@ -37,25 +37,6 @@
       }
     }
   }
-
-  .sales-extra {
-    display: inline-block;
-    margin-right: 24px;
-
-    a {
-      margin-left: 24px;
-      color: @text-color;
-
-      &:hover {
-        color: @primary-color;
-      }
-
-      &.currentDate {
-        color: @primary-color;
-      }
-    }
-  }
-
   .sales-card {
 
       width: 100%;
@@ -81,6 +62,9 @@
       line-height: 55px;
     }
 
+    .ant-card-extra{
+      margin-left:initial ;
+    }
     .ant-card-head {
       position: relative;
     }
@@ -106,9 +90,7 @@
   }
 
   @media screen and (max-width: @screen-lg) {
-    .sales-extra {
-      display: none;
-    }
+
 
     .rank-list {
       li {
