@@ -8,6 +8,7 @@ import { yuan, IEOrder } from '@shared';
 import { getTimeDistance } from '@delon/util';
 import { BdgSelectComponent } from 'src/app/shared/components/bdg-select/bdg-select.component';
 import { MonthRangeComponent } from 'src/app/shared/components/month-range/month-range.component';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-budget-bdg-analysis-company-order',
@@ -111,10 +112,14 @@ export class BudgetBdgAnalysisCompanyOrderComponent implements OnInit, AfterView
       fixed: 'right',
       buttons: [
         {
-          tooltip: '详情',
+          // tooltip: '详情',
           icon: 'eye',
           click: (record: STData, modal: true) => {
             console.log(record);
+            this.router.navigate(['../single-query'], {
+              queryParams: { nsrmc: record.PAYMENT_NAME },
+              relativeTo: this.route
+            });
           }
         }
       ]
@@ -130,7 +135,9 @@ export class BudgetBdgAnalysisCompanyOrderComponent implements OnInit, AfterView
   constructor(public http: _HttpClient,
     public msg: NzMessageService,
     private cdr: ChangeDetectorRef,
-    private cacheSrv: CacheService
+    private cacheSrv: CacheService,
+    private router: Router,
+    private route: ActivatedRoute
   ) {
     this.hymcNodes = this.cacheSrv.get('hymc', { mode: 'none' });
     this.nsrFeatureGroup = L.markerClusterGroup();
