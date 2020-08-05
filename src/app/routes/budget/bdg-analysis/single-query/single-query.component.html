@@ -12,8 +12,8 @@
   <!-- 分税种税收明细表 -->
   <div nz-row nzGutter="8">
     <div nz-col nzSpan="24">
-      <st #st *ngIf="taxByZsxmData" [data]="taxByZsxmData" [columns]="columns" [header]="headerTpl"
-        [page]="{show:false}" [footer]="footerTpl">
+      <st #st *ngIf="taxByZsxmData" [data]="taxByZsxmData" [columns]="columns" size="middle" bordered="true"
+        [header]="headerTpl" [page]="{show:false}" [footer]="footerTpl">
         <ng-template #headerTpl>
           <ng-container>
             <div>企业分税种税收明细（单位：万元）</div>

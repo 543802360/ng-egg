@@ -49,9 +49,10 @@ export class BudgetBdgAnalysisSingleQueryComponent implements OnInit, AfterViewI
       setTimeout(() => {
         this.nsrmc = nsrmc;
         this.bdgSelect.budgetValue = [4];
-        this.search();
+        if (this.nsrmc && this.bdgSelect.budgetValue) {
+          this.search();
+        }
       });
-
     });
   }
   /**
@@ -76,12 +77,15 @@ export class BudgetBdgAnalysisSingleQueryComponent implements OnInit, AfterViewI
    */
   search() {
 
+    if (!this.nsrmc) {
+      this.msgSrv.warning('请输入纳税人名称!');
+      return;
+    }
     if (!this.bdgSelect.budgetValue.length) {
       this.msgSrv.warning('请选择预算级次');
       return;
     }
     this.loadSrv.open({ text: '正在查询……' });
-
 
     const $stream1 = this.http.get(this.zsxmUrl, this.getCondition());
     const $stream2 = this.http.get(this.historyUrl, {
