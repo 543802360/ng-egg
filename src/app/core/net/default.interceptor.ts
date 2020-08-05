@@ -15,6 +15,7 @@ import { NzMessageService, NzNotificationService } from 'ng-zorro-antd';
 import { _HttpClient } from '@delon/theme';
 import { environment } from '@env/environment';
 import { DA_SERVICE_TOKEN, ITokenService } from '@delon/auth';
+import { LoadingService } from '@delon/abc';
 
 const CODEMESSAGE = {
   200: '服务器成功返回请求的数据。',
@@ -39,7 +40,7 @@ const CODEMESSAGE = {
  */
 @Injectable()
 export class DefaultInterceptor implements HttpInterceptor {
-  constructor(private injector: Injector, private msg: NzMessageService) { }
+  constructor(private injector: Injector, private msg: NzMessageService, private load: LoadingService) { }
 
 
   private get notification(): NzNotificationService {
@@ -93,6 +94,7 @@ export class DefaultInterceptor implements HttpInterceptor {
           if (body && body.success === false) {
             // console.log('injector error:', body);
             this.msg.error(body.msg);
+            this.load.close();
             // 继续抛出错误中断后续所有 Pipe、subscribe 操作，因此：
             // this.http.get('/').subscribe() 并不会触发
             return throwError({ status: 400 });
