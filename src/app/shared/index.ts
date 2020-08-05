@@ -7,6 +7,7 @@ export * from './utils/array2tree';
 export * from './utils/tree2array';
 export * from "./utils/geoUtil";
 export * from "./utils/order";
+export * from "./utils/export2excel";
 // 接口类
 export * from './interfaces/IMenu';
 export * from './interfaces/IDepartment';
@@ -22,6 +23,8 @@ export * from './models/LoadingTypes';
 export * from "./models/MenuType";
 export * from './models/TableOperator';
 export * from './models/BudgetLevel';
+export * from "./dics/zsxm";
+export * from "./dics/EOrder";
 
 // 模块
 export * from './shared.module';

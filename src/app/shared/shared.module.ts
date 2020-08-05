@@ -18,6 +18,7 @@ import { UEditorModule } from 'ngx-ueditor';
 import { IconPickerModule } from 'ngx-icon-picker';
 import { SHARED_ZORRO_MODULES } from './shared-zorro.module';
 import { SHARED_DELON_MODULES } from './shared-delon.module';
+import { XlsxModule } from '@delon/abc';
 
 
 
@@ -41,6 +42,7 @@ const DIRECTIVES = [];
     AlainThemeModule,
     DelonACLModule,
     DelonFormModule,
+    XlsxModule,
     // third libs
     ...THIRDMODULES,
     ...SHARED_ZORRO_MODULES,
