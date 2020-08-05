@@ -4,11 +4,12 @@ import { STColumn, STComponent, STRes, STData, STPage, STChange } from '@delon/a
 import { SFSchema } from '@delon/form';
 import { NzMessageService, NzTreeSelectComponent } from 'ng-zorro-antd';
 import { CacheService } from '@delon/cache';
-import { yuan, IEOrder } from '@shared';
+import { yuan, IEOrder, export2excel, EOrder, ZSXM } from '@shared';
 import { getTimeDistance } from '@delon/util';
 import { BdgSelectComponent } from 'src/app/shared/components/bdg-select/bdg-select.component';
 import { MonthRangeComponent } from 'src/app/shared/components/month-range/month-range.component';
 import { Router, ActivatedRoute } from '@angular/router';
+import { XlsxService } from '@delon/abc/xlsx';
 
 @Component({
   selector: 'app-budget-bdg-analysis-company-order',
@@ -31,7 +32,6 @@ export class BudgetBdgAnalysisCompanyOrderComponent implements OnInit, AfterView
   @ViewChild('hyTreeSelect') hyTreeSelect: NzTreeSelectComponent;
   hymcNodes;
   selectedHymc: string;
-
   selectedOrder = 100;
 
   //#endregion
@@ -137,7 +137,8 @@ export class BudgetBdgAnalysisCompanyOrderComponent implements OnInit, AfterView
     private cdr: ChangeDetectorRef,
     private cacheSrv: CacheService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private xlsx: XlsxService
   ) {
     this.hymcNodes = this.cacheSrv.get('hymc', { mode: 'none' });
     this.nsrFeatureGroup = L.markerClusterGroup();
@@ -258,10 +259,53 @@ export class BudgetBdgAnalysisCompanyOrderComponent implements OnInit, AfterView
       })
     }
   }
+
   mapload(e) {
     const { map, layerControl } = e;
     this.map = map;
     this.map.addLayer(this.nsrFeatureGroup);
     layerControl.addOverlay(this.nsrFeatureGroup, '企业分布');
+  }
+
+  download() {
+
+    const nsrmcs = this.data.map(item => item.PAYMENT_NAME);
+
+    this.http.post('bdg/tools/batchQuery', {
+      nsrmcs,
+      ...this.getCondition()
+    }).subscribe(resp => {
+
+      // console.log(this.data);
+
+      // console.log(resp.data);
+
+      const rawData = this.data.map(item => {
+        const el = {};
+        Object.keys(EOrder).forEach(key => {
+          el[EOrder[key]] = item[key];
+        });
+        const t = (resp.data as any[]).find(i => i.nsrmc === item.PAYMENT_NAME);
+        Object.keys(ZSXM).forEach(key => {
+          el[ZSXM[key]] = t[key] ? t[key] : 0;
+        });
+
+        return el;
+
+      });
+
+      export2excel('税收排名.xlsx', '税收排名', rawData);
+      // console.log('batch query：', resp)
+      // this.xlsx.export({
+      //   sheets: [
+      //     {
+      //       data: resp.data,
+      //       name: '税收排名',
+      //     },
+      //   ],
+      //   filename: `企业曾用名-${this.selectedOrder}.xlsx`
+      // });
+    });
+
   }
 }
