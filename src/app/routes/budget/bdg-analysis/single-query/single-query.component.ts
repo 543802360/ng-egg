@@ -1,45 +1,137 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { G2BarData } from '@delon/chart/bar';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { _HttpClient, ModalHelper } from '@delon/theme';
 import { STColumn, STComponent } from '@delon/abc/st';
 import { SFSchema } from '@delon/form';
+import { BdgSelectComponent } from 'src/app/shared/components/bdg-select/bdg-select.component';
+import { MonthRangeComponent } from 'src/app/shared/components/month-range/month-range.component';
+import { forkJoin } from 'rxjs';
+import { NzMessageService } from 'ng-zorro-antd';
+import { order } from '@shared';
+import { delay } from 'rxjs/operators';
+import { LoadingService } from '@delon/abc';
+import { deepCopy } from '@delon/util';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-budget-bdg-analysis-single-query',
   templateUrl: './single-query.component.html',
+  styleUrls: ['./single-query.component.less']
 })
-export class BudgetBdgAnalysisSingleQueryComponent implements OnInit {
-  url = `/user`;
-  searchSchema: SFSchema = {
-    properties: {
-      no: {
-        type: 'string',
-        title: '编号'
-      }
-    }
-  };
+export class BudgetBdgAnalysisSingleQueryComponent implements OnInit, AfterViewInit {
+  zsxmUrl = `bdg/enterprise/tax/zsxm`;
+  taxByZsxmData;
+  zsxmBarData;
+
+  total: number;
+  historyUrl = `bdg/enterprise/tax/history`;
+  taxByYearData: G2BarData[];
+
+  nsrmc = '';
+  @ViewChild('bdgSelect') bdgSelect: BdgSelectComponent;
+  @ViewChild('monthRange') monthRange: MonthRangeComponent;
+
   @ViewChild('st') st: STComponent;
-  columns: STColumn[] = [
-    { title: '编号', index: 'no' },
-    { title: '调用次数', type: 'number', index: 'callNo' },
-    { title: '头像', type: 'img', width: '50px', index: 'avatar' },
-    { title: '时间', type: 'date', index: 'updatedAt' },
-    {
-      title: '',
-      buttons: [
-        // { text: '查看', click: (item: any) => `/form/${item.id}` },
-        // { text: '编辑', type: 'static', component: FormEditComponent, click: 'reload' },
-      ]
+  columns: STColumn[];
+
+  constructor(private http: _HttpClient,
+    private loadSrv: LoadingService,
+    private msgSrv: NzMessageService,
+    private route: ActivatedRoute) { }
+
+  ngOnInit() {
+
+  }
+
+  ngAfterViewInit() {
+    this.route.queryParams.subscribe(params => {
+      const { nsrmc } = params;
+      setTimeout(() => {
+        this.nsrmc = nsrmc;
+        this.bdgSelect.budgetValue = [4];
+        this.search();
+      });
+
+    });
+  }
+  /**
+   * 
+   */
+  getCondition() {
+    const { startDate, endDate } = this.monthRange;
+    const year = startDate.getFullYear();
+    const startMonth = startDate.getMonth() + 1;
+    const endMonth = endDate.getMonth() + 1;
+    const budgetValue = this.bdgSelect.budgetValue.toLocaleString();
+
+    // const adminCode = this.cacheSrv.get('userInfo', { mode: 'none' }).department_id;
+
+    return { nsrmc: this.nsrmc, year, startMonth, endMonth, budgetValue };
+  }
+
+
+  /**
+   * 查询
+   * @param e 
+   */
+  search() {
+
+    if (!this.bdgSelect.budgetValue.length) {
+      this.msgSrv.warning('请选择预算级次');
+      return;
     }
-  ];
+    this.loadSrv.open({ text: '正在查询……' });
 
-  constructor(private http: _HttpClient, private modal: ModalHelper) { }
 
-  ngOnInit() { }
+    const $stream1 = this.http.get(this.zsxmUrl, this.getCondition());
+    const $stream2 = this.http.get(this.historyUrl, {
+      nsrmc: this.nsrmc,
+      ...this.getCondition()
+    });
 
-  add() {
-    // this.modal
-    //   .createStatic(FormEditComponent, { i: { id: 0 } })
-    //   .subscribe(() => this.st.reload());
+    forkJoin([$stream1, $stream2]).pipe(delay(1000)).subscribe(resp => {
+      this.loadSrv.close();
+      // 分税种明细
+      const zsxmData = resp[0].data;
+      // 设置征收项目表头
+      this.columns = Object.keys(zsxmData).map(item => {
+        return {
+          title: item,
+          index: item,
+          className: 'text-center',
+          type: 'number'
+        }
+      });
+      // 计算合计数
+      this.total = Object.values(zsxmData).reduce((prev: number, cur: number) => {
+        return prev + cur;
+      }) as number;
+      this.taxByZsxmData = [zsxmData];
+      // 设置G2 Bar、Pie 数据
+      const data = Object.entries(zsxmData).map(item => {
+        return {
+          x: item[0],
+          y: item[1]
+        }
+      }).filter(item => item.y !== 0).sort(order('y'));
+      this.zsxmBarData = deepCopy(data);
+      // 获取历年税收
+      this.taxByYearData = resp[1].data.map(item => {
+        return {
+          x: item.YEAR,
+          y: item.VALUE
+        }
+      })
+
+    });
+  }
+
+  /**
+   * 查询结果导出
+   * @param e 
+   */
+  export(e) {
+
   }
 
 }
