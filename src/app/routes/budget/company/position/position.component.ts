@@ -396,6 +396,24 @@ export class CompanyPositionComponent implements OnInit, AfterViewInit {
       this.editableLayer.addLayer(layer);
     });
 
+    this.leafletMap.on('draw:edited', e => {
+      const layers = e.layers;
+      layers.eachLayer(layer => {
+        // console.log(layer);
+        const latlng = layer.getLatLng();
+        const property = {
+          ...layer.property,
+          LAT: latlng.lat,
+          LNG: latlng.lng
+        }
+        // 更新
+        this.http.put(`hx/nsr/${property.UUID}`, property).subscribe(res => {
+          this.msgSrv.success(res.msg);
+        });
+
+      });
+    });
+
 
   }
 
@@ -436,11 +454,23 @@ export class CompanyPositionComponent implements OnInit, AfterViewInit {
         <h5>联系电话：${LXDH}</h5>
         <h5>注册地址：${ZCDZ}</h5>
         `;
-        const marker = L.marker([LAT, LNG]).bindPopup(popupContent).addTo(this.editableLayer);
-        Object.defineProperty(marker, 'DJXH', {
-          value: item.DJXH,
+        // const marker = L.marker([LAT, LNG]).bindPopup(popupContent).addTo(this.editableLayer);
+
+        const marker = L.marker([LAT, LNG], {
+          icon: L.BeautifyIcon.icon({
+            icon: 'building',
+            // iconSize: [28, 28],
+            // isAlphaNumericIcon: true,
+            iconShape: 'circle',
+            borderColor: '#00ABCD',
+            textColor: 'red'
+          })
+        }).bindPopup(popupContent).addTo(this.editableLayer);
+
+        Object.defineProperty(marker, 'property', {
+          value: item,
           enumerable: true
-        })
+        });
       })
     }
   }

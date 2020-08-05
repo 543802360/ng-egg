@@ -64,19 +64,20 @@ export class CompanyListComponent implements OnInit {
       title: '纳税人识别号',
       index: 'NSRSBH',
       fixed: 'left',
-      width: 220,
+      width: 180,
       className: 'text-center'
     },
     {
       title: '纳税人名称',
       index: 'NSRMC',
       fixed: 'left',
-      width: 230,
+      width: 250,
       className: 'text-center'
     },
     {
       title: '社会信用代码',
       index: 'SHXYDM',
+      width: 180,
       className: 'text-center'
     },
     {
@@ -142,14 +143,13 @@ export class CompanyListComponent implements OnInit {
     {
       title: '联系人',
       index: 'LXR',
-      width: 100,
+      width: 120,
       className: 'text-center'
     },
     {
       title: '联系电话',
       index: 'LXDH',
       width: 110,
-
       className: 'text-center'
     },
 

@@ -58,19 +58,20 @@ export class CompanyDjnsrxxComponent implements OnInit {
       title: '纳税人识别号',
       index: 'NSRSBH',
       fixed: 'left',
-      width: 220,
+      width: 180,
       className: 'text-center'
     },
     {
       title: '纳税人名称',
       index: 'NSRMC',
       fixed: 'left',
-      width: 220,
+      width: 250,
       className: 'text-center'
     },
     {
       title: '社会信用代码',
       index: 'SHXYDM',
+      width: 180,
       className: 'text-center'
     },
     {
@@ -108,7 +109,8 @@ export class CompanyDjnsrxxComponent implements OnInit {
     {
       title: '联系人',
       index: 'LXR',
-      className: 'text-center'
+      className: 'text-center',
+      width: 120
     },
     {
       title: '联系电话',
@@ -122,14 +124,16 @@ export class CompanyDjnsrxxComponent implements OnInit {
       type: 'date',
       index: 'DJRQ',
       dateFormat: 'yyyy-MM-dd',
-      className: 'text-center'
+      className: 'text-center',
+      width: 120
     },
     {
       title: '修改日期',
       type: 'date',
       index: 'XGRQ',
       dateFormat: 'yyyy-MM-dd',
-      className: 'text-center'
+      className: 'text-center',
+      width: 120
     },
     {
       title: '操作',

@@ -132,21 +132,15 @@ export class CompanyListEditComponent implements OnInit {
     if (this.record.UUID) {
       // 更新
       this.http.put(`hx/nsr/${this.record.UUID}`, value).subscribe(res => {
-        if (res.success) {
-          this.msgSrv.success(res.msg);
-        } else {
-          this.msgSrv.error(res.msg);
-        }
+        this.msgSrv.success(res.msg);
+
         this.modal.close(true);
       });
     } else {
       // 创建
       this.http.post('hx/nsr', [value]).subscribe(res => {
-        if (res.success) {
-          this.msgSrv.success(res.msg);
-        } else {
-          this.msgSrv.error(res.msg);
-        }
+        this.msgSrv.success(res.msg);
+
         this.modal.close(true);
       });
     }

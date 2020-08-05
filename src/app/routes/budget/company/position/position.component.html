@@ -8,7 +8,7 @@
         <button nz-button (click)="st.load(1,params)" [nzType]="'primary'">搜索</button>
         <button nz-button (click)="params = {NSRMC:'',NSRSBH:'',SHXYDM:''}; st.reset()">重置</button>
       </div>
-      <st #st [data]="url" [req]="companyReq" [res]="companyRes" loading="false" size="middle" [bordered]="true"
+      <st #st [data]="url" [req]="companyReq" [res]="companyRes" loading="false" size="small" [bordered]="true"
         [columns]="columns" (change)="onStChange($event)" [pi]="1" [ps]="10" [total]="total" [page]="page"
         [scroll]="{x:'2220px',y:'576px'}" [loading]="http.loading">
       </st>

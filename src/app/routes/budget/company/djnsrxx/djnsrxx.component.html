@@ -56,8 +56,8 @@
     <button acl [acl-ability]="'company:djnsrxx:exportAll'" nzType="primary" down-file file-name="登记纳税人信息.xlsx"
       http-url="nsr/export/all" nz-button>全部导出</button>
   </div>
-  <st #st [data]="url" [req]="companyReq" [res]="companyRes" size="middle" [bordered]="true"
-    [scroll]="{x:'2222px',y:'576px'}" [columns]="columns" [pi]="1" [ps]="10" [total]="total" [page]="page"
+  <st #st [data]="url" [req]="companyReq" [res]="companyRes" size="small" [bordered]="true"
+    [scroll]="{x:'2000px',y:'576px'}" [columns]="columns" [pi]="1" [ps]="10" [total]="total" [page]="page"
     (change)="stChange($event)">
   </st>
 </nz-card>

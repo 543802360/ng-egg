@@ -7,7 +7,8 @@
         <button nz-button (click)="download()" nzType="primary" style="margin-left: 6px;">导出</button>
       </ng-template>
 
-      <st [data]="data" [pi]="1" [ps]="10" [page]="page" [columns]="columns" [scroll]="{y:'576px'}"></st>
+      <st [data]="data" [pi]="1" [ps]="10" [page]="page" [columns]="columns" bordered="true" size="middle"
+        [scroll]="{y:'576px'}"></st>
     </nz-card>
   </div>
   <div nz-col nzSpan="12">
@@ -23,7 +24,8 @@
 
       </ng-template>
 
-      <st #st [data]="xlsxData" [pi]="1" [ps]="10" [page]="page" [scroll]="{y:'576px'}" [columns]="xlsxColumns"></st>
+      <st #st [data]="xlsxData" [pi]="1" [ps]="10" [page]="page" [scroll]="{y:'576px'}" bordered="true" size="middle"
+        [columns]="xlsxColumns"></st>
     </nz-card>
   </div>
 </div>
