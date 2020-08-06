@@ -1,9 +1,17 @@
-<page-header [action]="phActionTpl">
-  <ng-template #phActionTpl>
-    <button (click)="add()" nz-button nzType="primary">新建</button>
+<nz-card class="batch-card" [nzExtra]="extraTpl">
+  <ng-template #extraTpl>
+    <input class="file-input ml-sm" type="file" (change)="change($event)" multiple="false" />
+    <span style="font-weight: bolder;">查询字段：</span>
+    <nz-select [(ngModel)]="selectedMatchedField" style="width: 200px;" nzPlaceHolder="请选择匹配字段" nzAllowClear>
+      <nz-option *ngFor="let item of matchNodes" [nzLabel]="item.label" [nzValue]="item.value"></nz-option>
+
+    </nz-select>
+    <app-bdg-select style="margin-left: 5px;" #bdgSelect></app-bdg-select>
+    <app-month-range #monthRange style="margin-right: 5px;"></app-month-range>
+    <button (click)="export()" nz-button nzType="primary">查询</button>
+    <button (click)="export()" nz-button nzType="primary">导出</button>
+
   </ng-template>
-</page-header>
-<nz-card>
-  <sf mode="search" [schema]="searchSchema" (formSubmit)="st.reset($event)" (formReset)="st.reset($event)"></sf>
-  <st #st [data]="url" [columns]="columns"></st>
+  <st *ngIf="xlsxColumns.length" #st [bordered]="true" size="small" [data]="xlsxData" [columns]="xlsxColumns"
+    [page]="page" pi="1" ps="10"></st>
 </nz-card>
