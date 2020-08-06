@@ -1,21 +1,23 @@
-:host{
-  nz-card{
-    width: 100%;
-    height: calc(100% - 60px);
-    margin:  10px 0;
-  }
+@import '~@delon/theme/index';
+:host {
   ::ng-deep {
-    .ant-card-body{
-      height: 100%;
-      padding: 0;
+    .map-container {
+      width: 100%;
+      height: calc(100% - 60px);
+      min-height: 600px;
+      z-index: 1;
     }
-  }
+    .position-card {
+      width: 100%;
+      height: calc(100% - 60px);
+      margin: 10px 0;
 
-  mgl-map,.map-container{
-    width: 100%;
-    // height: calc(100% - 60px);
-    padding: 0 5px;
-    height: 100%;
-    z-index: 1;
+      .ant-card-body {
+        height: 100%;
+        padding: 0;
+      }
+
+     
+    }
   }
 }

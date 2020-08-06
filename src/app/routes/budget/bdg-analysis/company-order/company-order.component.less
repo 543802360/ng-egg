@@ -1,22 +1,22 @@
 @import '~@delon/theme/index';
 :host ::ng-deep {
-  .header-label{
+  .header-label {
     margin: 0 3px;
     font-weight: bolder;
   }
-  .map-container{
+  .map-container {
     width: 100%;
-    height: calc(100% - 60px);  
+    height: calc(100% - 60px);
     min-height: 600px;
     z-index: 1;
   }
-  .hymc-tree-select{
+  .hymc-tree-select {
     width: 240px;
     margin: 0 5px;
-    .ant-select-dropdown{
+    .ant-select-dropdown {
       max-height: 400px !important;
     }
-    .ant-select-dropdown.ant-select-tree-dropdown{
+    .ant-select-dropdown.ant-select-tree-dropdown {
       max-height: 400px !important;
     }
   }
@@ -26,7 +26,7 @@
     font-weight: bolder;
   }
 
-  .icon-group  {
+  .icon-group {
     i {
       margin-left: 16px;
       color: @text-color-secondary;
@@ -39,15 +39,14 @@
     }
   }
   .sales-card {
+    width: 100%;
+    height: calc(100% - 60px);
+    margin: 10px 0;
 
-      width: 100%;
-      height: calc(100% - 60px);
-      margin:  10px 0;
-
-      .ant-card-body{
-        height: 100%;
-        padding: 0;
-      }
+    .ant-card-body {
+      height: 100%;
+      padding: 0;
+    }
     .ant-tabs-bar {
       padding-left: 16px;
 
@@ -63,8 +62,8 @@
       line-height: 55px;
     }
 
-    .ant-card-extra{
-      margin-left:initial ;
+    .ant-card-extra {
+      margin-left: initial;
     }
     .ant-card-head {
       position: relative;
@@ -91,8 +90,6 @@
   }
 
   @media screen and (max-width: @screen-lg) {
-
-
     .rank-list {
       li {
         span:first-child {
@@ -128,5 +125,4 @@
   .ant-table-pagination {
     margin-bottom: 0;
   }
-
 }

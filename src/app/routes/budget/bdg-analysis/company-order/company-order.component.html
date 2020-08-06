@@ -39,8 +39,9 @@
 
     </div>
   </ng-template>
-  <!-- 表格数据 -->
   <div nz-row nzGutter="4" style="height: 100%;">
+    <!-- 表格数据 -->
+
     <div nz-col nzSpan="14" style="height: 100%;">
       <st #st style="width: 100%; margin-top: 10px;" header="税收排名（单位：万元）" [data]="data" [columns]="columns"
         [page]="page" [total]="total" [loading]="http.loading" [ps]="10" [pi]="1" bordered="true" size="middle"

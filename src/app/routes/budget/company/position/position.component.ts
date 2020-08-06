@@ -461,7 +461,7 @@ export class CompanyPositionComponent implements OnInit, AfterViewInit {
             icon: 'building',
             // iconSize: [28, 28],
             // isAlphaNumericIcon: true,
-            iconShape: 'circle',
+            iconShape: 'marker',
             borderColor: '#00ABCD',
             textColor: 'red'
           })
