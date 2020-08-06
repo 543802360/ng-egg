@@ -194,11 +194,11 @@ export class BudgetBdgAnalysisCompanyOrderComponent implements OnInit, AfterView
 
         Object.defineProperty(marker, 'NSRMC', {
           enumerable: true,
-          value: item.PAYMENT_NAME
+          value: item.NSRMC
         });
 
         const popupContent = `
-        <h5>纳税人名称：${item.PAYMENT_NAME}</h5>
+        <h5>纳税人名称：${item.NSRMC}</h5>
         <h5>本年度收入：${item.BNDSR}</h5>
         <h5>上年同期：${item.SNTQ}</h5>
         <h5>同比增减值：${item.TBZJZ}</h5>
@@ -267,9 +267,12 @@ export class BudgetBdgAnalysisCompanyOrderComponent implements OnInit, AfterView
     layerControl.addOverlay(this.nsrFeatureGroup, '企业分布');
   }
 
+  /**
+   * 导出查询结果
+   */
   download() {
 
-    const nsrmcs = this.data.map(item => item.PAYMENT_NAME);
+    const nsrmcs = this.data.map(item => item.NSRMC);
 
     this.http.post('bdg/tools/batchQuery', {
       nsrmcs,
@@ -285,7 +288,7 @@ export class BudgetBdgAnalysisCompanyOrderComponent implements OnInit, AfterView
         Object.keys(EOrder).forEach(key => {
           el[EOrder[key]] = item[key];
         });
-        const t = (resp.data as any[]).find(i => i.nsrmc === item.PAYMENT_NAME);
+        const t = (resp.data as any[]).find(i => i.nsrmc === item.NSRMC);
         Object.keys(ZSXM).forEach(key => {
           el[ZSXM[key]] = t[key] ? t[key] : 0;
         });

@@ -6,7 +6,7 @@ export interface IEOrder {
     // 纳税人识别号
     PAYER_ID?: string;
     // 纳税人名称
-    PAYMENT_NAME?: string;
+    NSRMC?: string;
     // 本年度收入
     BNDSR?: number;
     // 上年同期收入
