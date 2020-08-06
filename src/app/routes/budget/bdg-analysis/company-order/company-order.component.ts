@@ -10,6 +10,7 @@ import { BdgSelectComponent } from 'src/app/shared/components/bdg-select/bdg-sel
 import { MonthRangeComponent } from 'src/app/shared/components/month-range/month-range.component';
 import { Router, ActivatedRoute } from '@angular/router';
 import { XlsxService } from '@delon/abc/xlsx';
+import { LoadingService } from '@delon/abc';
 
 @Component({
   selector: 'app-budget-bdg-analysis-company-order',
@@ -62,14 +63,8 @@ export class BudgetBdgAnalysisCompanyOrderComponent implements OnInit, AfterView
       }
 
     },
-    // {
-    //   index: 'PAYER_ID',
-    //   title: '纳税人识别号',
-    //   className: 'text-center',
-
-    // },
     {
-      index: 'PAYMENT_NAME',
+      index: 'NSRMC',
       title: '纳税人名称',
       className: 'text-center',
       fixed: 'left',
@@ -114,10 +109,10 @@ export class BudgetBdgAnalysisCompanyOrderComponent implements OnInit, AfterView
         {
           // tooltip: '详情',
           icon: 'eye',
+          // 点击查询详细税收
           click: (record: STData, modal: true) => {
-            console.log(record);
             this.router.navigate(['../single-query'], {
-              queryParams: { nsrmc: record.PAYMENT_NAME },
+              queryParams: { nsrmc: record.NSRMC },
               relativeTo: this.route
             });
           }
@@ -138,7 +133,7 @@ export class BudgetBdgAnalysisCompanyOrderComponent implements OnInit, AfterView
     private cacheSrv: CacheService,
     private router: Router,
     private route: ActivatedRoute,
-    private xlsx: XlsxService
+    private loadSrv: LoadingService
   ) {
     this.hymcNodes = this.cacheSrv.get('hymc', { mode: 'none' });
     this.nsrFeatureGroup = L.markerClusterGroup();
@@ -247,10 +242,10 @@ export class BudgetBdgAnalysisCompanyOrderComponent implements OnInit, AfterView
     console.log(e);
     if (e.click && e.click.item) {
 
-      const { PAYMENT_NAME, lat, lng } = e.click.item;
+      const { NSRMC, lat, lng } = e.click.item;
 
       this.nsrFeatureGroup.eachLayer(layer => {
-        if (layer.NSRMC === PAYMENT_NAME) {
+        if (layer.NSRMC === NSRMC) {
           this.map.setView([lat, lng], 8);
           setTimeout(() => {
             layer.openPopup();
@@ -260,6 +255,10 @@ export class BudgetBdgAnalysisCompanyOrderComponent implements OnInit, AfterView
     }
   }
 
+  /**
+   * leaflet map load event
+   * @param e 
+   */
   mapload(e) {
     const { map, layerControl } = e;
     this.map = map;
@@ -271,7 +270,9 @@ export class BudgetBdgAnalysisCompanyOrderComponent implements OnInit, AfterView
    * 导出查询结果
    */
   download() {
-
+    this.loadSrv.open({
+      text: '正在处理……'
+    });
     const nsrmcs = this.data.map(item => item.NSRMC);
 
     this.http.post('bdg/tools/batchQuery', {
@@ -279,35 +280,20 @@ export class BudgetBdgAnalysisCompanyOrderComponent implements OnInit, AfterView
       ...this.getCondition()
     }).subscribe(resp => {
 
-      // console.log(this.data);
-
-      // console.log(resp.data);
-
-      const rawData = this.data.map(item => {
+      const rawData = resp.data.map(item => {
         const el = {};
         Object.keys(EOrder).forEach(key => {
           el[EOrder[key]] = item[key];
         });
-        const t = (resp.data as any[]).find(i => i.nsrmc === item.NSRMC);
         Object.keys(ZSXM).forEach(key => {
-          el[ZSXM[key]] = t[key] ? t[key] : 0;
+          el[ZSXM[key]] = item[key] ? item[key] : 0;
         });
-
         return el;
 
       });
+      this.loadSrv.close();
+      export2excel(`税收排名-${new Date().toLocaleString()}.xlsx`, '税收排名', rawData);
 
-      export2excel('税收排名.xlsx', '税收排名', rawData);
-      // console.log('batch query：', resp)
-      // this.xlsx.export({
-      //   sheets: [
-      //     {
-      //       data: resp.data,
-      //       name: '税收排名',
-      //     },
-      //   ],
-      //   filename: `企业曾用名-${this.selectedOrder}.xlsx`
-      // });
     });
 
   }

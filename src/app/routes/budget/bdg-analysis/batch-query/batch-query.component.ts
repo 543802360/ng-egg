@@ -63,13 +63,16 @@ export class BudgetBdgAnalysisBatchQueryComponent implements OnInit {
       this.msgSrv.warning('请选择预算级次');
       return;
     }
-
+    this.loadSrv.open({
+      text: '正在处理……'
+    });
+    // 批量查询税收
     const nsrmcs = this.xlsxData.map(item => item[this.selectedMatchedField]);
     this.http.post('bdg/tools/batchQuery', {
       nsrmcs,
       ...this.getCondition()
     }).subscribe(resp => {
-
+      // 查询结果按指定字典排序映射
       const rawData = resp.data.map(item => {
         const el = {};
         Object.keys(EOrder).forEach(key => {
@@ -78,11 +81,9 @@ export class BudgetBdgAnalysisBatchQueryComponent implements OnInit {
         Object.keys(ZSXM).forEach(key => {
           el[ZSXM[key]] = item[key] ? item[key] : 0;
         });
-
         return el;
-
       });
-
+      this.loadSrv.close();
       export2excel(`税收导出-${new Date().toLocaleString()}.xlsx`, '税收导出', rawData);
 
     });
