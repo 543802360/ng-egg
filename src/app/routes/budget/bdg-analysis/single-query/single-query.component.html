@@ -1,8 +1,9 @@
 <nz-card class="single-card" [nzExtra]="extraTpl">
   <ng-template #extraTpl>
     <span style="font-weight: bolder;">纳税人名称：</span>
-    <input nz-input [(ngModel)]="nsrmc" id="nsrmc" name="nsrmc" placeholder="请输入纳税人名称"
-      style="display: inline-block;width: 284px;">
+    <app-nsrmc-suggestion #nsrSug></app-nsrmc-suggestion>
+    <!-- <input nz-input [(ngModel)]="nsrmc" id="nsrmc" name="nsrmc" placeholder="请输入纳税人名称"
+      style="display: inline-block;width: 284px;"> -->
     <app-bdg-select #bdgSelect></app-bdg-select>
     <app-month-range #monthRange style="margin-right: 5px;"></app-month-range>
     <button (click)="search()" nz-button nzType="primary">查询</button>
@@ -38,7 +39,7 @@
   <div nz-row nzGutter="8">
     <div nz-col nzSpan="12">
       <div class="chart">
-        <g2-bar height="315" [padding]="[32,0,68,40]" style="width: 100%" [data]="zsxmBarData">
+        <g2-bar height="335" [padding]="[32,0,68,40]" style="width: 100%" [data]="zsxmBarData">
         </g2-bar>
       </div>
     </div>
@@ -46,7 +47,7 @@
     <div nz-col nzSpan="12">
       <div class="chart">
         <g2-pie title="总税收" [hasLegend]="true" [inner]="0.75" subTitle="总税收" [total]="tpl_total" [data]="zsxmBarData"
-          height="315">
+          height="335">
         </g2-pie>
         <ng-template #tpl_total>
           {{total | number}} 万元

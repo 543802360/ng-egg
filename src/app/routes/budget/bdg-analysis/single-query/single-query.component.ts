@@ -12,6 +12,7 @@ import { delay } from 'rxjs/operators';
 import { LoadingService } from '@delon/abc';
 import { deepCopy } from '@delon/util';
 import { ActivatedRoute } from '@angular/router';
+import { NsrmcSuggestionComponent } from 'src/app/shared/components/nsrmc-suggestion/nsrmc-suggestion.component';
 
 @Component({
   selector: 'app-budget-bdg-analysis-single-query',
@@ -28,6 +29,7 @@ export class BudgetBdgAnalysisSingleQueryComponent implements OnInit, AfterViewI
   taxByYearData: G2BarData[];
 
   nsrmc = '';
+  @ViewChild('nsrSug') nsrSug: NsrmcSuggestionComponent;
   @ViewChild('bdgSelect') bdgSelect: BdgSelectComponent;
   @ViewChild('monthRange') monthRange: MonthRangeComponent;
 
@@ -40,14 +42,13 @@ export class BudgetBdgAnalysisSingleQueryComponent implements OnInit, AfterViewI
     private route: ActivatedRoute) { }
 
   ngOnInit() {
-
   }
 
   ngAfterViewInit() {
     this.route.queryParams.subscribe(params => {
       const { nsrmc } = params;
       setTimeout(() => {
-        this.nsrmc = nsrmc;
+        this.nsrmc = nsrmc ? nsrmc : '';
         this.bdgSelect.budgetValue = [4];
         if (this.nsrmc && this.bdgSelect.budgetValue) {
           this.search();
@@ -76,7 +77,9 @@ export class BudgetBdgAnalysisSingleQueryComponent implements OnInit, AfterViewI
    * @param e 
    */
   search() {
-
+    if (!this.nsrmc) {
+      this.nsrmc = this.nsrSug._nsrmc;
+    }
     if (!this.nsrmc) {
       this.msgSrv.warning('请输入纳税人名称!');
       return;
@@ -96,7 +99,9 @@ export class BudgetBdgAnalysisSingleQueryComponent implements OnInit, AfterViewI
     forkJoin([$stream1, $stream2]).pipe(delay(1000)).subscribe(resp => {
       this.loadSrv.close();
       // 分税种明细
-      const zsxmData = resp[0].data;
+      const zsxmMap = new Map(Object.entries(resp[0].data).filter(item => item[1] !== 0));
+      const zsxmData = (Object as any).fromEntries(zsxmMap);
+
       // 设置征收项目表头
       this.columns = Object.keys(zsxmData).map(item => {
         return {
