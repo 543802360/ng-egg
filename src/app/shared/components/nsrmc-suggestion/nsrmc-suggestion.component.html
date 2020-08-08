@@ -1,0 +1,5 @@
+<input nz-input [(ngModel)]="_nsrmc" (ngModelChange)="autoChangeSub.next($event)" [nzAutocomplete]="nsrmcAuto"
+    name="NSRMC" placeholder="请输入纳税人名称" id="NSRMC" style="display: inline-block;width: 284px;" />
+<nz-autocomplete nzBackfill #nsrmcAuto>
+    <nz-auto-option *ngFor="let item of dataSource" [nzValue]="item" (click)="setNsrmc(item)">{{item}}</nz-auto-option>
+</nz-autocomplete>
