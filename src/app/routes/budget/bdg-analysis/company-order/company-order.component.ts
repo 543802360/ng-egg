@@ -1,11 +1,9 @@
 import { Component, OnInit, ViewChild, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { _HttpClient, ModalHelper } from '@delon/theme';
 import { STColumn, STComponent, STRes, STData, STPage, STChange } from '@delon/abc/st';
-import { SFSchema } from '@delon/form';
 import { NzMessageService, NzTreeSelectComponent } from 'ng-zorro-antd';
 import { CacheService } from '@delon/cache';
 import { yuan, IEOrder, export2excel, EOrder, ZSXM } from '@shared';
-import { getTimeDistance } from '@delon/util';
 import { BdgSelectComponent } from 'src/app/shared/components/bdg-select/bdg-select.component';
 import { MonthRangeComponent } from 'src/app/shared/components/month-range/month-range.component';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -133,7 +131,7 @@ export class BudgetBdgAnalysisCompanyOrderComponent implements OnInit, AfterView
     private cacheSrv: CacheService,
     private router: Router,
     private route: ActivatedRoute,
-    private loadSrv: LoadingService
+    private loadSrv: LoadingService,
   ) {
     this.hymcNodes = this.cacheSrv.get('hymc', { mode: 'none' });
     this.nsrFeatureGroup = L.markerClusterGroup();
@@ -295,6 +293,11 @@ export class BudgetBdgAnalysisCompanyOrderComponent implements OnInit, AfterView
       export2excel(`税收排名-${new Date().toLocaleString()}.xlsx`, '税收排名', rawData);
 
     });
+
+  }
+
+  boarding() {
+
 
   }
 }
