@@ -5,6 +5,7 @@
         <nz-form-item>
           <nz-form-label nzFor="NSRMC">纳税人名称</nz-form-label>
           <nz-form-control>
+            <!-- <app-nsrmc-suggestion></app-nsrmc-suggestion> -->
             <input nz-input [(ngModel)]="params.NSRMC" (ngModelChange)="searchAutoChangeS.next({'NSRMC':$event})"
               [nzAutocomplete]="nsrmcAuto" name="NSRMC" placeholder="请输入" id="NSRMC" />
           </nz-form-control>

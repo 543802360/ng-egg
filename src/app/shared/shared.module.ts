@@ -1,3 +1,4 @@
+import { NsrmcSuggestionComponent } from './components/nsrmc-suggestion/nsrmc-suggestion.component';
 import { MonthRangeComponent } from './components/month-range/month-range.component';
 import { BdgSelectComponent } from './components/bdg-select/bdg-select.component';
 import { NgModule } from '@angular/core';
@@ -29,7 +30,7 @@ const THIRDMODULES = [
 // #endregion
 
 // #region your componets & directives
-const COMPONENTS = [BdgSelectComponent, MonthRangeComponent];
+const COMPONENTS = [BdgSelectComponent, MonthRangeComponent, NsrmcSuggestionComponent];
 const DIRECTIVES = [];
 // #endregion
 
@@ -51,7 +52,7 @@ const DIRECTIVES = [];
   declarations: [
     // your components
     ...COMPONENTS,
-    ...DIRECTIVES
+    ...DIRECTIVES,
   ],
   entryComponents: [],
   exports: [
