@@ -26,6 +26,12 @@ export * from './models/BudgetLevel';
 export * from "./dics/zsxm";
 export * from "./dics/EOrder";
 
+// 组件类
+
+export * from "./components/bdg-select/bdg-select.component";
+export * from "./components/month-range/month-range.component";
+export * from "./components/nsrmc-suggestion/nsrmc-suggestion.component";
+
 // 模块
 export * from './shared.module';
 export * from './json-schema/json-schema.module';
