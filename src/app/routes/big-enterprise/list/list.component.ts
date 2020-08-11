@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ChangeDetectorRef, AfterViewInit } from '@angular/core';
 import { _HttpClient, ModalHelper } from '@delon/theme';
-import { STColumn, STComponent, STPage, STData, STChange } from '@delon/abc/st';
+import { STColumn, STComponent, STPage, STData, STChange, STRes } from '@delon/abc/st';
 import { SFSchema } from '@delon/form';
 import { BdgSelectComponent } from 'src/app/shared/components/bdg-select/bdg-select.component';
 import { MonthRangeComponent } from 'src/app/shared/components/month-range/month-range.component';
@@ -16,71 +16,125 @@ import { LoadingService } from '@delon/abc';
   styleUrls: ['./list.component.less']
 })
 export class BigEnterpriseListComponent implements OnInit, AfterViewInit {
-  url = `bdg/enterprise/tax`;
-  createUrl = `big-enterprise/create`;
+  url = `manage/big-enterprises`;
   @ViewChild('st') st: STComponent;
-  @ViewChild('bdgSelect') bdgSelect: BdgSelectComponent;
-  @ViewChild('monthRange') monthRange: MonthRangeComponent;
-  @ViewChild('hyTreeSelect') hyTreeSelect: NzTreeSelectComponent;
-  hymcNodes;
-  selectedHymc: string;
-  selectedValue = 1000;
-
-  data: IEOrder[];
+  data: any[];
   total: number;
-
   // 表头设置
   columns: STColumn[] = [
-    {
-      title: '排名',
-      width: 60,
-      className: 'text-center',
-      fixed: 'left',
-      format: (item: STData, col: STColumn, index: number) => {
-        // console.log('index', index, item, col);
-        // console.log(this.st);
-        return `${(this.st.pi - 1) * this.st.ps + index + 1}`;
-
-      }
-
-    },
     {
       index: 'NSRMC',
       title: '纳税人名称',
       className: 'text-center',
-      fixed: 'left',
-      // width: 400
+      sort: {
+        compare: (a, b) => a.NSRMC.length - b.NSRMC.length,
+      },
+      filter: {
+        type: 'keyword',
+        fn: (filter, record) => !filter.value || record.NSRMC.indexOf(filter.value) !== -1,
+      }
     },
     {
-      index: 'BNDSR',
-      title: '本年度',
+      index: 'NSRSBH',
+      title: '纳税人识别号',
       className: 'text-center',
-      type: 'number',
     },
     {
-      index: 'SNTQ',
-      title: '上年同期',
+      index: 'SHXYDM',
+      title: '社会信用代码',
       className: 'text-center',
-      type: 'number',
     },
     {
-      index: 'TBZJZ',
-      title: '同比增减',
+      index: 'MLMC',
+      title: '所属门类',
       className: 'text-center',
-      // type: 'number'
-      render: 'tbzjz-tpl'
+      sort: {
+        compare: (a, b) => {
+          const val1 = a.MLMC;
+          const val2 = b.MLMC;
+          if (val1 < val2) {
+            return 1;
+          } else if (val1 > val2) {
+            return -1;
+          } else {
+            return 0
+          }
+        }
+      },
+      filter: {
+        multiple: false,
+        menus: [
+          { text: '制造业', value: '制造业' },
+          { text: '建筑业', value: '建筑业' },
+          { text: '金融业', value: '金融业' },
+          { text: '房地产业', value: '房地产业' },
+          { text: '批发和零售业', value: '批发和零售业' },
+          { text: '交通运输、仓储和邮政业', value: '交通运输、仓储和邮政业' }
+        ],
+        fn: (filter, record) => !filter.value || record.MLMC.indexOf(filter.value) !== -1,
+
+      }
     },
     {
-      index: 'TBZJF',
-      title: '同比增减幅',
+      index: 'HYMC',
+      title: '所属行业',
       className: 'text-center',
-      render: 'tbzjf-tpl'
+
+    },
+    {
+      index: 'CYMC',
+      title: '所属产业',
+      className: 'text-center',
+      sort: {
+        compare: (a, b) => {
+          const val1 = a.CYMC;
+          const val2 = b.CYMC;
+          if (val1 < val2) {
+            return 1;
+          } else if (val1 > val2) {
+            return -1;
+          } else {
+            return 0
+          }
+        }
+      },
+      filter: {
+        multiple: false,
+        menus: [
+          { text: '第一产业', value: '第一产业' },
+          { text: '第二产业', value: '第二产业' },
+          { text: '第三产业', value: '第三产业' }
+        ],
+        fn: (filter, record) => !filter.value || record.CYMC.indexOf(filter.value) !== -1,
+
+      }
+    },
+    {
+      index: 'YEAR',
+      title: '年度',
+      className: 'text-center',
+    },
+    {
+      index: 'RANK',
+      title: '年度排名',
+      className: 'text-center',
+      sort: {
+        compare: (a, b) => {
+          const val1 = a.RANK;
+          const val2 = b.RANK;
+          if (val1 < val2) {
+            return 1;
+          } else if (val1 > val2) {
+            return -1;
+          } else {
+            return 0
+          }
+        }
+      }
     },
     {
       title: '操作',
       className: 'text-center',
-      width: 60,
-      fixed: 'right',
       buttons: [
         {
           // tooltip: '详情',
@@ -96,6 +150,13 @@ export class BigEnterpriseListComponent implements OnInit, AfterViewInit {
       ]
     }
   ]
+  // response
+  res: STRes = {
+    process: (data: STData, rawData: any) => {
+      this.total = rawData.data.count;
+      return rawData.data.rows;
+    }
+  }
   // 分页设置
   page: STPage = {
     show: true,
@@ -104,15 +165,15 @@ export class BigEnterpriseListComponent implements OnInit, AfterViewInit {
     pageSizes: [10, 20, 30, 50, 100]
   }
 
+  selectedYear: Date;
+
   constructor(public http: _HttpClient,
     public msg: NzMessageService,
     private cdr: ChangeDetectorRef,
-    private cacheSrv: CacheService,
     private router: Router,
     private route: ActivatedRoute,
-    private loadSrv: LoadingService
   ) {
-    this.hymcNodes = this.cacheSrv.get('hymc', { mode: 'none' });
+    this.selectedYear = new Date();
   }
 
 
@@ -122,50 +183,19 @@ export class BigEnterpriseListComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     setTimeout(() => {
-      this.getData();
+      this.search();
     });
   }
-  /**
-   * 获取税收统计概况（电子税票）
-   */
-  getData() {
-    this.bdgSelect.budgetValue.length === 0 ? this.bdgSelect.budgetValue = [4] : null;
-    this.http.get(this.url, this.getCondition()).subscribe(resp => {
-      this.data = resp.data;
-      this.total = resp.data.length;
 
+
+  search() {
+    this.http.get('big-enterprises/list', {
+      year: this.selectedYear.getFullYear()
+    }).subscribe(res => {
+      this.data = res.data;
     });
-
-
   }
-  /**
-   * 获取查询条件参数
-   */
-  getCondition() {
-    const { startDate, endDate } = this.monthRange;
-    const year = startDate.getFullYear();
-    const startMonth = startDate.getMonth() + 1;
-    const endMonth = endDate.getMonth() + 1;
-    const budgetValue = this.bdgSelect.budgetValue.toLocaleString();
-    const value = this.selectedValue;
-    const adminCode = '3302130000';
 
-    // const adminCode = this.cacheSrv.get('userInfo', { mode: 'none' }).department_id;
-
-    if (!this.hyTreeSelect.getSelectedNodeList().length) {
-      return { adminCode, year, startMonth, endMonth, budgetValue, value };
-    }
-    if (this.hyTreeSelect.getSelectedNodeList().length !== 0) {
-      const selectedNode = this.hyTreeSelect.getSelectedNodeList()[0];
-      return selectedNode.parentNode ? { adminCode, year, startMonth, endMonth, budgetValue, value, hymc: selectedNode.title } :
-        { adminCode, year, startMonth, endMonth, budgetValue, value, mlmc: selectedNode.title };
-    }
-
-  }
-  /**
-   * G2 PIE 图表tooltip
-   * @param value
-   */
   change(e: STChange) {
     console.log(e);
     if (e.click && e.click.item) {
@@ -177,14 +207,5 @@ export class BigEnterpriseListComponent implements OnInit, AfterViewInit {
 
   }
 
-  create() {
-    const nsrmcs = this.data.map(item => item.NSRMC);
-    this.http.post(this.createUrl, {
-      nsrmcs,
-      year: this.monthRange.startDate.getFullYear(),
-      filter: this.selectedValue
-    }).subscribe(resp => {
-      this.msg.success(resp.msg);
-    });
-  }
+
 }
