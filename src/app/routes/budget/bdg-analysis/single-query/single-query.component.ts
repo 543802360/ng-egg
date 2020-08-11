@@ -36,7 +36,7 @@ export class BudgetBdgAnalysisSingleQueryComponent implements OnInit, AfterViewI
   @ViewChild('st') st: STComponent;
   columns: STColumn[];
 
-  constructor(private http: _HttpClient,
+  constructor(public http: _HttpClient,
     private loadSrv: LoadingService,
     private msgSrv: NzMessageService,
     private route: ActivatedRoute) { }
@@ -140,7 +140,7 @@ export class BudgetBdgAnalysisSingleQueryComponent implements OnInit, AfterViewI
    * 查询结果导出
    * @param e 
    */
-  export(e) {
+  export() {
 
   }
 

@@ -33,7 +33,7 @@ export class BudgetBdgAnalysisBatchQueryComponent implements OnInit {
 
   constructor(
     private cdr: ChangeDetectorRef,
-    private http: _HttpClient,
+    public http: _HttpClient,
     private loadSrv: LoadingService,
     private xlsx: XlsxService,
     private msgSrv: NzMessageService) { }

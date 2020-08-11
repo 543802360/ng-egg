@@ -8,8 +8,8 @@
     </nz-select>
     <app-bdg-select style="margin-left: 5px;" #bdgSelect></app-bdg-select>
     <app-month-range #monthRange style="margin-right: 5px;"></app-month-range>
-    <button (click)="export()" nz-button nzType="primary">查询</button>
-    <button (click)="export()" nz-button nzType="primary">导出</button>
+    <button (click)="export()" [disabled]="http.loading" nz-button nzType="primary">查询</button>
+    <button (click)="export()" [disabled]="http.loading" nz-button nzType="primary">导出</button>
 
   </ng-template>
   <st *ngIf="xlsxColumns.length" #st [bordered]="true" size="small" [data]="xlsxData" [columns]="xlsxColumns"

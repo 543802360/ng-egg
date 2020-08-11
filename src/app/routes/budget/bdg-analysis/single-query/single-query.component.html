@@ -6,8 +6,8 @@
       style="display: inline-block;width: 284px;"> -->
     <app-bdg-select #bdgSelect></app-bdg-select>
     <app-month-range #monthRange style="margin-right: 5px;"></app-month-range>
-    <button (click)="search()" nz-button nzType="primary">查询</button>
-    <button (click)="export($event)" nz-button nzType="primary">导出</button>
+    <button (click)="search()" [disabled]="http.loading" nz-button nzType="primary">查询</button>
+    <button (click)="export()" [disabled]="http.loading" nz-button nzType="primary">导出</button>
 
   </ng-template>
   <!-- 分税种税收明细表 -->

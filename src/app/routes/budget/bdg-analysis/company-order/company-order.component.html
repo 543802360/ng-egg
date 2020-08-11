@@ -34,8 +34,10 @@
       </nz-select>
 
       <app-month-range #monthRange style="margin-right: 5px;"></app-month-range>
-      <button nz-button (click)="getData()" nzType="primary" style="margin-left: 6px;">查询</button>
-      <button nz-button (click)="download()" nzType="primary" style="margin-left: 6px;">导出</button>
+      <button nz-button (click)="getData()" [disabled]="http.loading" nzType="primary"
+        style="margin-left: 6px;">查询</button>
+      <button nz-button (click)="download()" [disabled]="http.loading" nzType="primary"
+        style="margin-left: 6px;">导出</button>
 
     </div>
   </ng-template>
