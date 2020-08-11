@@ -8,7 +8,7 @@
     </nz-tree-select>
 
     <span class="header-label"> 纳税额:</span>
-    <nz-select style="margin: 0 5px;width: 100px;" [(ngModel)]="selectedOrder" nzPlaceHolder="请选择排名" nzAllowClear>
+    <nz-select style="margin: 0 5px;width: 100px;" [(ngModel)]="selectedValue" nzPlaceHolder="请选择排名" nzAllowClear>
       <nz-option nzLabel="亿元以上" [nzValue]="10000">
       </nz-option>
       <nz-option nzLabel="千万以上" [nzValue]="1000">
@@ -27,9 +27,9 @@
 
     <app-month-range #monthRange style="margin-right: 5px;"></app-month-range>
     <button nz-button (click)="getData()" nzType="primary" style="margin-left: 6px;">查询</button>
-    <button nz-button (click)="download()" nzType="primary" style="margin-left: 6px;">导出</button>
+    <button nz-button (click)="create()" nzType="primary" style="margin-left: 6px;">添加</button>
 
   </ng-template>
-  <st #st [data]="data" [columns]="columns" [loading]="http.loading" [ps]="10" [pi]="1" bordered="true" size="middle"
-    (change)="change($event)"></st>
+  <st #st [data]="data" [columns]="columns" [loading]="http.loading" [ps]="10" [pi]="1" [page]="page" bordered="true"
+    size="middle" [scroll]="{'y':'576px'}" (change)="change($event)"></st>
 </nz-card>

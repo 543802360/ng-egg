@@ -17,16 +17,15 @@ import { LoadingService } from '@delon/abc';
 })
 export class BigEnterpriseListComponent implements OnInit, AfterViewInit {
   url = `bdg/enterprise/tax`;
+  createUrl = `big-enterprise/create`;
+  @ViewChild('st') st: STComponent;
   @ViewChild('bdgSelect') bdgSelect: BdgSelectComponent;
   @ViewChild('monthRange') monthRange: MonthRangeComponent;
-
-  // 行业名称tree-select
   @ViewChild('hyTreeSelect') hyTreeSelect: NzTreeSelectComponent;
   hymcNodes;
   selectedHymc: string;
-  selectedOrder = 100;
+  selectedValue = 1000;
 
-  @ViewChild('st') st: STComponent;
   data: IEOrder[];
   total: number;
 
@@ -57,30 +56,25 @@ export class BigEnterpriseListComponent implements OnInit, AfterViewInit {
       title: '本年度',
       className: 'text-center',
       type: 'number',
-      width: 120
     },
     {
       index: 'SNTQ',
       title: '上年同期',
       className: 'text-center',
       type: 'number',
-      width: 120
     },
     {
       index: 'TBZJZ',
       title: '同比增减',
       className: 'text-center',
       // type: 'number'
-      render: 'tbzjz-tpl',
-      width: 120
+      render: 'tbzjz-tpl'
     },
     {
       index: 'TBZJF',
       title: '同比增减幅',
       className: 'text-center',
-      render: 'tbzjf-tpl',
-      width: 120
-
+      render: 'tbzjf-tpl'
     },
     {
       title: '操作',
@@ -93,7 +87,7 @@ export class BigEnterpriseListComponent implements OnInit, AfterViewInit {
           icon: 'eye',
           // 点击查询详细税收
           click: (record: STData, modal: true) => {
-            this.router.navigate(['../single-query'], {
+            this.router.navigate(['../../budget/single-query'], {
               queryParams: { nsrmc: record.NSRMC },
               relativeTo: this.route
             });
@@ -106,6 +100,7 @@ export class BigEnterpriseListComponent implements OnInit, AfterViewInit {
   page: STPage = {
     show: true,
     front: true,
+    showSize: true,
     pageSizes: [10, 20, 30, 50, 100]
   }
 
@@ -152,7 +147,7 @@ export class BigEnterpriseListComponent implements OnInit, AfterViewInit {
     const startMonth = startDate.getMonth() + 1;
     const endMonth = endDate.getMonth() + 1;
     const budgetValue = this.bdgSelect.budgetValue.toLocaleString();
-    const value = this.selectedOrder;
+    const value = this.selectedValue;
     const adminCode = '3302130000';
 
     // const adminCode = this.cacheSrv.get('userInfo', { mode: 'none' }).department_id;
@@ -180,5 +175,16 @@ export class BigEnterpriseListComponent implements OnInit, AfterViewInit {
 
   download() {
 
+  }
+
+  create() {
+    const nsrmcs = this.data.map(item => item.NSRMC);
+    this.http.post(this.createUrl, {
+      nsrmcs,
+      year: this.monthRange.startDate.getFullYear(),
+      filter: this.selectedValue
+    }).subscribe(resp => {
+      this.msg.success(resp.msg);
+    });
   }
 }
