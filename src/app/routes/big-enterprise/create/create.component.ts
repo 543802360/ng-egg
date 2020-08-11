@@ -153,17 +153,15 @@ export class BigEnterpriseCreateComponent implements OnInit, AfterViewInit {
     const budgetValue = this.bdgSelect.budgetValue.toLocaleString();
     const value = this.selectedValue;
     const adminCode = '3302130000';
-
-    // const adminCode = this.cacheSrv.get('userInfo', { mode: 'none' }).department_id;
-
-    if (!this.hyTreeSelect.getSelectedNodeList().length) {
-      return { adminCode, year, startMonth, endMonth, budgetValue, value };
-    }
-    if (this.hyTreeSelect.getSelectedNodeList().length !== 0) {
-      const selectedNode = this.hyTreeSelect.getSelectedNodeList()[0];
-      return selectedNode.parentNode ? { adminCode, year, startMonth, endMonth, budgetValue, value, hymc: selectedNode.title } :
-        { adminCode, year, startMonth, endMonth, budgetValue, value, mlmc: selectedNode.title };
-    }
+    return { adminCode, year, startMonth, endMonth, budgetValue, value };
+    // if (!this.hyTreeSelect.getSelectedNodeList().length) {
+    //   return { adminCode, year, startMonth, endMonth, budgetValue, value };
+    // }
+    // if (this.hyTreeSelect.getSelectedNodeList().length !== 0) {
+    //   const selectedNode = this.hyTreeSelect.getSelectedNodeList()[0];
+    //   return selectedNode.parentNode ? { adminCode, year, startMonth, endMonth, budgetValue, value, hymc: selectedNode.title } :
+    //     { adminCode, year, startMonth, endMonth, budgetValue, value, mlmc: selectedNode.title };
+    // }
 
   }
   /**
