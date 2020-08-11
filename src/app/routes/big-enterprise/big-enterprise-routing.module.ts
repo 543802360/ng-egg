@@ -3,9 +3,16 @@ import { Routes, RouterModule } from '@angular/router';
 import { BigEnterpriseListComponent } from './list/list.component';
 import { BigEnterpriseTaxAnalysisComponent } from './tax-analysis/tax-analysis.component';
 import { BigEnterpriseHyAnalysisComponent } from './hy-analysis/hy-analysis.component';
+import { BigEnterpriseCreateComponent } from './create/create.component';
 
 const routes: Routes = [
-
+  {
+    path: 'create',
+    component: BigEnterpriseCreateComponent,
+    data: {
+      title: '大企业创建'
+    }
+  },
   {
     path: 'list',
     component: BigEnterpriseListComponent,
@@ -26,11 +33,13 @@ const routes: Routes = [
     data: {
       title: '大企业行业分析'
     }
-  }, {
+  },
+  {
     path: '',
     redirectTo: 'list',
     pathMatch: 'full'
-  }];
+  }
+];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

@@ -6,11 +6,13 @@ import { BigEnterpriseListEditComponent } from './list/edit/edit.component';
 import { BigEnterpriseListViewComponent } from './list/view/view.component';
 import { BigEnterpriseTaxAnalysisComponent } from './tax-analysis/tax-analysis.component';
 import { BigEnterpriseHyAnalysisComponent } from './hy-analysis/hy-analysis.component';
+import { BigEnterpriseCreateComponent } from './create/create.component';
 
 const COMPONENTS = [
   BigEnterpriseListComponent,
   BigEnterpriseTaxAnalysisComponent,
-  BigEnterpriseHyAnalysisComponent];
+  BigEnterpriseHyAnalysisComponent,
+  BigEnterpriseCreateComponent];
 const COMPONENTS_NOROUNT = [
   BigEnterpriseListEditComponent,
   BigEnterpriseListViewComponent];
