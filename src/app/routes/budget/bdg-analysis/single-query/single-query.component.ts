@@ -49,6 +49,7 @@ export class BudgetBdgAnalysisSingleQueryComponent implements OnInit, AfterViewI
       const { nsrmc } = params;
       setTimeout(() => {
         this.nsrmc = nsrmc ? nsrmc : '';
+        this.nsrSug.nsrmc = this.nsrmc;
         this.bdgSelect.budgetValue = [4];
         if (this.nsrmc && this.bdgSelect.budgetValue) {
           this.search();
