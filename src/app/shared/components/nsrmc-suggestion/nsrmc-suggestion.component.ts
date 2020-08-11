@@ -23,6 +23,11 @@ export class NsrmcSuggestionComponent implements OnInit {
   }
 
 
+  public set nsrmc(v: string) {
+    this._nsrmc = v;
+  }
+
+
   constructor(private http: _HttpClient) { }
 
   ngOnInit(): void {
