@@ -69,7 +69,7 @@ export class BudgetBdgAnalysisSingleQueryComponent implements OnInit, AfterViewI
 
     // const adminCode = this.cacheSrv.get('userInfo', { mode: 'none' }).department_id;
 
-    return { nsrmc: this.nsrmc, year, startMonth, endMonth, budgetValue };
+    return { nsrmc: this.nsrmc.trim(), year, startMonth, endMonth, budgetValue };
   }
 
 

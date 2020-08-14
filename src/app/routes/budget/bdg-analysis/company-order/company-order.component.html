@@ -62,6 +62,10 @@
           </nz-tag>
           <span *ngIf="item.TBZJZ>=0" nz-tooltip [nzTooltipTitle]="'同比增减幅：' + item.TBZJF"> {{item.TBZJF}}</span>
         </ng-template>
+
+        <ng-template st-row='order-tpl' let-item let-index="index">
+          <nz-badge nzCount="{{(this.st.pi - 1) * this.st.ps + index + 1}}"></nz-badge>
+        </ng-template>
       </st>
     </div>
     <!-- 地图 -->

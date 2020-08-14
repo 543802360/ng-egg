@@ -31,6 +31,7 @@ export * from "./dics/EOrder";
 export * from "./components/bdg-select/bdg-select.component";
 export * from "./components/month-range/month-range.component";
 export * from "./components/nsrmc-suggestion/nsrmc-suggestion.component";
+export * from "./components/summary-card/summary-card.component";
 
 // 模块
 export * from './shared.module';

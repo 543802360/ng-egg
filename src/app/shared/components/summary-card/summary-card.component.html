@@ -1,0 +1,16 @@
+<nz-card>
+    <nz-statistic [nzTitle]="title" [nzValue]="value"></nz-statistic>
+    <hr>
+    <div *ngIf="status=='up'">
+        <ng-content></ng-content>
+        <span>
+            {{subValue}} <i style="color:green" nz-icon nzType="arrow-up"></i>
+        </span>
+    </div>
+    <div *ngIf="status=='down'">
+        <ng-content></ng-content>
+        <span>
+            {{subValue}} <i style="color:red" nz-icon nzType="arrow-down"></i>
+        </span>
+    </div>
+</nz-card>

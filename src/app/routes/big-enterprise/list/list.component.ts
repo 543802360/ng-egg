@@ -173,7 +173,9 @@ export class BigEnterpriseListComponent implements OnInit, AfterViewInit {
     private router: Router,
     private route: ActivatedRoute,
   ) {
-    this.selectedYear = new Date();
+    const date = new Date();
+    date.setFullYear(date.getFullYear() - 1, date.getMonth(), date.getDate());
+    this.selectedYear = date;
   }
 
 
@@ -187,7 +189,6 @@ export class BigEnterpriseListComponent implements OnInit, AfterViewInit {
     });
   }
 
-
   search() {
     this.http.get('big-enterprises/list', {
       year: this.selectedYear.getFullYear()
@@ -197,7 +198,7 @@ export class BigEnterpriseListComponent implements OnInit, AfterViewInit {
   }
 
   change(e: STChange) {
-    console.log(e);
+    // console.log(e);
     if (e.click && e.click.item) {
       const { NSRMC, lat, lng } = e.click.item;
     }

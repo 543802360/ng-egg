@@ -1,12 +1,12 @@
 <!-- summary -->
 <div nz-row nzGutter="18" class="pt-lg">
   <div nz-col nzXs="24" nzSm="12" nzMd="12" nzLg="6">
-    <g2-card title="总收入" [action]="action1" bordered="true" [total]="'¥ 126,560.00'">
+    <g2-card title="总收入" [action]="action1" bordered="true" [total]="126560.00|number">
       <ng-template #action1>
         <i nz-tooltip [nzTooltipTitle]="'财政总收入'" nz-icon nzType="info-circle"></i>
       </ng-template>
-      同比<trend flag="up" style="margin: 0 16px 0 8px; color: rgba(0,0,0,.85)">12%</trend>
-      同比<trend flag="down" style="margin: 0 0 0 8px; color: rgba(0,0,0,.85)">11%</trend>
+      同比 12%<i nz-icon style="color: red;" nzType="arrow-up"></i>
+      <!-- <trend flag="up" style="margin: 0 16px 0 8px; color: rgba(0,0,0,.85)">12%</trend> -->
     </g2-card>
   </div>
   <div nz-col nzXs="24" nzSm="12" nzMd="12" nzLg="6">
