@@ -3,6 +3,7 @@ import { _HttpClient, ModalHelper } from '@delon/theme';
 import { STColumn, STComponent, STData, STPage } from '@delon/abc/st';
 import { BdgSelectComponent, MonthRangeComponent } from '@shared';
 import { Router, ActivatedRoute } from '@angular/router';
+import { XlsxService, LoadingService } from '@delon/abc';
 
 @Component({
   selector: 'app-big-enterprise-tax-analysis',
@@ -147,6 +148,8 @@ export class BigEnterpriseTaxAnalysisComponent implements OnInit, AfterViewInit 
   constructor(public http: _HttpClient,
     private router: Router,
     private route: ActivatedRoute,
+    private xlsx: XlsxService,
+    private loadSrv: LoadingService,
     private modal: ModalHelper) { }
 
 
@@ -195,4 +198,29 @@ export class BigEnterpriseTaxAnalysisComponent implements OnInit, AfterViewInit 
     });
   }
 
+  download() {
+    this.loadSrv.open({
+      text: '正在处理……'
+    });
+    const columns = this.columns.filter(col => col.title !== '操作');
+    const data = [columns.map(i => i.title)];
+
+    this.data.forEach(i => {
+      data.push(
+        columns.map(c => i[c.index as string])
+      )
+    });
+
+    this.xlsx.export({
+      sheets: [
+        {
+          data,
+          name: '大企业税收'
+        }
+      ],
+      filename: `大企业税收统计-${new Date().toLocaleString()}.xlsx`
+    }).then(e => {
+      this.loadSrv.close();
+    });
+  }
 }

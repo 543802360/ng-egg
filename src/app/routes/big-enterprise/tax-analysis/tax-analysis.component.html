@@ -45,8 +45,8 @@
     <app-bdg-select #bdgSelect></app-bdg-select>
     <app-month-range #monthRange style="margin-right: 5px;"></app-month-range>
     <button nz-button (click)="query()" [disabled]="http.loading" nzType="primary" style="margin-left: 6px;">查询</button>
-    <button nz-button [disabled]="http.loading" nzType="primary" style="margin-left: 6px;">导出</button>
-
+    <button nz-button (click)="download()" [disabled]="http.loading" nzType="primary"
+      style="margin-left: 6px;">导出</button>
   </ng-template>
 
   <st #st [data]="data" [columns]="columns" [page]="page" [loading]="http.loading" pi="1" ps="10" bordered="true"
