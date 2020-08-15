@@ -62,7 +62,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     setTimeout(() => {
-      this.getTaxSummary();
+      // this.getTaxSummary();
     });
   }
 
