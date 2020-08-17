@@ -10,7 +10,7 @@ const routes: Routes = [
     path: 'create',
     component: BigEnterpriseCreateComponent,
     data: {
-      title: '大企业创建'
+      title: '大企业查询'
     }
   },
   {
