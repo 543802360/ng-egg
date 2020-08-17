@@ -33,5 +33,22 @@
 
   </ng-template>
   <st #st [data]="data" [columns]="columns" [loading]="http.loading" [ps]="10" [pi]="1" [page]="page" bordered="true"
-    size="middle" [scroll]="{'y':'576px'}" (change)="change($event)"></st>
+    size="middle" [scroll]="{'y':'576px'}" (change)="change($event)">
+    <ng-template st-row="tbzjz-tpl" let-item let-index="index">
+      <nz-tag *ngIf="item.TBZJZ<0" nzColor="red">
+        <span nz-tooltip [nzTooltipTitle]="'同比下降：' + item.TBZJZ"> {{item.TBZJZ|number}}</span>
+      </nz-tag>
+      <nz-tag *ngIf="item.TBZJZ>=0" nzColor="green">
+        <span nz-tooltip [nzTooltipTitle]="'同比增长：' + item.TBZJZ+' 万元'"> {{item.TBZJZ|number}}</span>
+      </nz-tag>
+    </ng-template>
+    <ng-template st-row="tbzjf-tpl" let-item let-index="index">
+      <nz-tag *ngIf="item.TBZJZ<0" nzColor="red">
+        <span nz-tooltip [nzTooltipTitle]="'同比下降：' + item.TBZJF"> {{item.TBZJF}}</span>
+      </nz-tag>
+      <nz-tag *ngIf="item.TBZJZ>=0" nzColor="green">
+        <span nz-tooltip [nzTooltipTitle]="'同比增长：' + item.TBZJF"> {{item.TBZJF}}</span>
+      </nz-tag>
+    </ng-template>
+  </st>
 </nz-card>

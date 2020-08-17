@@ -49,7 +49,7 @@ export class BigEnterpriseCreateComponent implements OnInit, AfterViewInit {
       title: '纳税人名称',
       className: 'text-center',
       fixed: 'left',
-      // width: 400
+      width: 260
     },
     {
       index: 'BNDSR',
