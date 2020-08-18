@@ -70,15 +70,16 @@ export class EconomicAnalysisBillAnalysisComponent implements OnInit, AfterViewI
       children: [
         {
           title: '本年度',
-          type: 'number',
+          type: 'currency',
           index: 'BND_VALUE',
           className: 'text-center',
+
           statistical: 'sum',
           key: 'BND_VALUE'
         },
         {
           title: '上年同期',
-          type: 'number',
+          type: 'currency',
           index: 'SNTQ_VALUE',
           className: 'text-center',
           statistical: 'sum',
@@ -86,7 +87,7 @@ export class EconomicAnalysisBillAnalysisComponent implements OnInit, AfterViewI
         },
         {
           title: '同比增减',
-          type: 'number',
+          type: 'currency',
           index: 'TBZJZ_VALUE',
           className: 'text-center',
           render: 'tbzjz-val-tpl'

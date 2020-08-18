@@ -27,9 +27,9 @@
           <td class="text-center">{{ (s.BND_COUNT.value-s.SNTQ_COUNT.value) |number}}</td>
           <td class="text-center">{{ ((s.BND_COUNT.value-s.SNTQ_COUNT.value)/s.SNTQ_COUNT.value*100).toFixed(2)+"%"}}
           </td>
-          <td class="text-center">{{ s.BND_VALUE.value |number}}</td>
-          <td class="text-center">{{ s.SNTQ_VALUE.value |number}}</td>
-          <td class="text-center">{{ (s.BND_VALUE.value-s.SNTQ_VALUE.value) |number}}</td>
+          <td class="text-center">{{ s.BND_VALUE.text}}</td>
+          <td class="text-center">{{ s.SNTQ_VALUE.text}}</td>
+          <td class="text-center">{{ (s.BND_VALUE.value-s.SNTQ_VALUE.value) |_currency}}</td>
           <td class="text-center">{{ ((s.BND_VALUE.value-s.SNTQ_VALUE.value)/s.SNTQ_VALUE.value*100).toFixed(2)+"%"}}
           </td>
         </tr>
