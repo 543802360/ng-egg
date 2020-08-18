@@ -1,9 +1,83 @@
-<page-header [action]="phActionTpl">
-  <ng-template #phActionTpl>
-    <button (click)="add()" nz-button nzType="primary">新建</button>
+<nz-card class="bill-card" [nzExtra]="extraTpl">
+  <ng-template #extraTpl>
+
+    <app-bdg-select #bdgSelect></app-bdg-select>
+    <span class="header-label">税种：</span>
+    <nz-select [(ngModel)]="selectedZsxm" nzPlaceHolder="请选择税种" style="width:120px" nzAllowClear>
+      <nz-option nzLabel="增值说" nzValue="增值税"></nz-option>
+      <nz-option nzLabel="企业所得税" nzValue="企业所得税"></nz-option>
+    </nz-select>
+    <span class="header-label">入库日期：</span>
+
+    <app-month-range #monthRange style="margin-right: 5px;"></app-month-range>
+
+    <button nz-button (click)="getData()" [disabled]="http.loading" nzType="primary"
+      style="margin-left: 6px;">查询</button>
+    <!-- <button nz-button [disabled]="http.loading" nzType="primary" style="margin-left: 6px;">添加</button> -->
   </ng-template>
-</page-header>
-<nz-card>
-  <sf mode="search" [schema]="searchSchema" (formSubmit)="st.reset($event)" (formReset)="st.reset($event)"></sf>
-  <st #st [data]="url" [columns]="columns"></st>
+  <st #st [data]="billData" [columns]="columns" pi="1" ps="12" bordered="true" size="middle" [page]="{show:false}"
+    [loading]="http.loading" [body]="bodyTpl">
+    <!-- 汇总数据 -->
+    <ng-template #bodyTpl let-s>
+      <ng-container *ngIf="st.count > 0">
+        <tr class="bg-grey-lighter text-magenta-dark">
+          <td>合计</td>
+          <td class="text-center">{{ s.BND_COUNT.value |number}}</td>
+          <td class="text-center">{{ s.SNTQ_COUNT.value |number}}</td>
+          <td class="text-center">{{ (s.BND_COUNT.value-s.SNTQ_COUNT.value) |number}}</td>
+          <td class="text-center">{{ ((s.BND_COUNT.value-s.SNTQ_COUNT.value)/s.SNTQ_COUNT.value*100).toFixed(2)+"%"}}
+          </td>
+          <td class="text-center">{{ s.BND_VALUE.value |number}}</td>
+          <td class="text-center">{{ s.SNTQ_VALUE.value |number}}</td>
+          <td class="text-center">{{ (s.BND_VALUE.value-s.SNTQ_VALUE.value) |number}}</td>
+          <td class="text-center">{{ ((s.BND_VALUE.value-s.SNTQ_VALUE.value)/s.SNTQ_VALUE.value*100).toFixed(2)+"%"}}
+          </td>
+        </tr>
+
+      </ng-container>
+    </ng-template>
+
+    <ng-template st-row="tbzjz-count-tpl" let-item let-index="index">
+      <nz-tag nzColor="{{item.TBZJZ_COUNT>0?'green':'red'}}">
+        <span> {{item.TBZJZ_COUNT|number}}</span>
+      </nz-tag>
+    </ng-template>
+    <ng-template st-row="tbzjf-count-tpl" let-item let-index="index">
+      <nz-tag nzColor="{{item.TBZJZ_COUNT>0?'green':'red'}}">
+        <span> {{item.TBZJF_COUNT}}</span>
+      </nz-tag>
+    </ng-template>
+
+    <ng-template st-row="tbzjz-val-tpl" let-item let-index="index">
+      <nz-tag nzColor="{{item.TBZJZ_VALUE>0?'green':'red'}}">
+        <span> {{item.TBZJZ_VALUE|number}}</span>
+      </nz-tag>
+    </ng-template>
+    <ng-template st-row="tbzjf-val-tpl" let-item let-index="index">
+      <nz-tag nzColor="{{item.TBZJZ_VALUE>0?'green':'red'}}">
+        <span> {{item.TBZJF_VALUE}}</span>
+      </nz-tag>
+    </ng-template>
+    <ng-template st-row='order-tpl' let-item let-index="index">
+      <nz-badge nzCount="{{index + 1}}"></nz-badge>
+    </ng-template>
+
+  </st>
+</nz-card>
+
+<!--行业税收 -->
+<nz-card [nzBordered]="false" class="ant-card__body-nopadding sales-card">
+
+  <div nz-row nzGutter="8">
+    <div nz-col style="padding: 10px 10px !important;" [nzXs]="24" [nzSm]="24" nzMd="12" nzLg="12">
+      <g2-timeline *ngIf='countG2LineData' [data]="countG2LineData" [titleMap]="titleMap" title="开票数量" height="308"
+        mask="YYYY-MM" slider="false">
+      </g2-timeline>
+    </div>
+    <div nz-col style="padding: 10px 10px !important;" [nzXs]="24" [nzSm]="24" nzMd="12" nzLg="12">
+      <g2-timeline *ngIf='valueG2LineData' [data]="valueG2LineData" [titleMap]="titleMap" title="开票金额(单位：万元)"
+        height="308" mask="YYYY-MM" slider="false">
+      </g2-timeline>
+    </div>
+  </div>
 </nz-card>
