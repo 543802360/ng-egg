@@ -158,8 +158,6 @@ export class EconomicAnalysisHyAnalysisComponent implements OnInit, AfterViewIni
       this.total = this.hyG2Data.reduce((pre, now) => (now as any).y + pre, 0);
     });
 
-
-
   }
   /**
    * 获取查询条件参数
