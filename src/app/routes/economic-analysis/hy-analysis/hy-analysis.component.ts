@@ -46,14 +46,18 @@ export class EconomicAnalysisHyAnalysisComponent implements OnInit, AfterViewIni
       title: '本年度收入',
       index: 'bndsr',
       className: 'text-center',
-      type: 'number'
+      type: 'number',
+      statistical: 'sum',
+      key: 'bndsr'
     }
     ,
     {
       title: '上年同期',
       index: 'sntq',
       className: 'text-center',
-      type: 'number'
+      type: 'number',
+      statistical: 'sum',
+      key: 'sntq'
     },
     {
       title: '同比增减',
@@ -88,14 +92,17 @@ export class EconomicAnalysisHyAnalysisComponent implements OnInit, AfterViewIni
       title: '本年度收入',
       index: 'bndsr',
       className: 'text-center',
-      type: 'number'
-    }
-    ,
+      type: 'number',
+      statistical: 'sum',
+      key: 'bndsr'
+    },
     {
       title: '上年同期',
       index: 'sntq',
       className: 'text-center',
-      type: 'number'
+      type: 'number',
+      statistical: 'sum',
+      key: 'sntq'
     },
     {
       title: '同比增减',
