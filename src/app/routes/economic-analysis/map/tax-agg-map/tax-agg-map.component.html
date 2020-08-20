@@ -1,13 +1,34 @@
-<nz-card style="margin-top: 10px;">
-
+<nz-card style="margin-top: 10px;" [nzExtra]="extraTpl">
+  <ng-template #extraTpl>
+    <app-bdg-select #bdgSelect></app-bdg-select>
+    <span class="header-label">入库日期：</span>
+    <app-month-range #monthRange style="margin-right: 5px;"></app-month-range>
+    <button nz-button (click)="getData()" [disabled]="http.loading" nzType="primary"
+      style="margin-left: 6px;">查询</button>
+    <!-- <button nz-button [disabled]="http.loading" nzType="primary" style="margin-left: 6px;">添加</button> -->
+  </ng-template>
   <div nz-row nzGutter="8" style="height: 100%;">
     <div nz-col nzSpan="12" style="height: 100%;">
-      <sf mode="search" [schema]="searchSchema" (formSubmit)="st.reset($event)" (formReset)="st.reset($event)"></sf>
-      <st #st [data]="url" [columns]="columns"></st>
+      <st #st [data]="townData" header="镇街收入（单位：万元）" [columns]="columns" size="small" bordered="true"
+        [page]="{show:false}" [loading]="http.loading">
+        <ng-template st-row="tbzjz-tpl" let-item let-index="index">
+          <nz-tag nzColor="{{item.tbzjz>0?'green':'red'}}">
+            <!-- <span> {{item.tbzjz|number}}（{{item.tbzjf}}）</span> -->
+            <span *ngIf="item.tbzjz>0" nz-tooltip
+              [nzTooltipTitle]="'同比增长：' + item.tbzjz+' 万元;&nbsp;' +'增幅：'+item.tbzjf">
+              {{item.tbzjz|number}}（{{item.tbzjf}}） </span>
+            <span *ngIf="item.tbzjz<0" nz-tooltip [nzTooltipOverlayStyle]="tooltipStyle" [nzTooltipTitle]="'同比下降：' +
+              item.tbzjz+' 万元;&nbsp;' +'降幅：'+item.tbzjf">
+              {{item.tbzjz|number}}（{{item.tbzjf}}）</span>
+
+          </nz-tag>
+        </ng-template>
+      </st>
+
+      <g2-bar style="padding: 10px;" *ngIf="townG2BarData" height="300" [data]="townG2BarData"></g2-bar>
     </div>
     <div nz-col nzSpan="12" style="height: 100%;">
       <div style="height: 100%;min-height: 660px; width: 100%;margin-top: 10px;">
-        <!-- <nz-spin *ngIf="!map" nzSize="large" style=""></nz-spin> -->
         <mgl-map [style]="style" [trackResize]="true" [zoom]="[8]" [center]="[120.3,36.45]" (load)="mapboxLoad($event)">
           <mgl-control mglNavigation></mgl-control>
           <mgl-control mglFullscreen></mgl-control>
