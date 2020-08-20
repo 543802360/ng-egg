@@ -101,9 +101,6 @@ export class EconomicAnalysisBillAnalysisComponent implements OnInit, AfterViewI
       ]
     },
   ];
-
-  padding = [40, 8, 64, 40]
-
   constructor(public http: _HttpClient,
     private msgSrv: NzMessageService,
     private modal: ModalHelper) { }
