@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { _HttpClient, ModalHelper } from '@delon/theme';
 import { STColumn, STComponent } from '@delon/abc/st';
-import { SFSchema } from '@delon/form';
 
 import { NzMessageService } from 'ng-zorro-antd';
 import * as mapboxgl from "mapbox-gl";
@@ -12,12 +11,11 @@ import { forkJoin } from 'rxjs';
 import { LoadingService } from '@delon/abc';
 
 @Component({
-  selector: 'app-economic-analysis-map-tax-agg-map',
-  templateUrl: './tax-agg-map.component.html',
-  styleUrls: ['./tax-agg-map.component.less']
+  templateUrl: './tax-hy-map.component.html',
+  styleUrls: ['./tax-hy-map.component.less']
 
 })
-export class EconomicAnalysisMapTaxAggMapComponent implements OnInit, AfterViewInit {
+export class EconomicAnalysisMapTaxHyMapComponent implements OnInit, AfterViewInit {
 
   url = `analysis/town`;
   style = dark;

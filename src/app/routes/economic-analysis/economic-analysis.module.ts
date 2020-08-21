@@ -1,3 +1,4 @@
+import { EconomicAnalysisMapTaxHyMapComponent } from './map/tax-hy-map/tax-hy-map.component';
 import { NgModule } from '@angular/core';
 import { SharedModule } from '@shared';
 import { EconomicAnalysisRoutingModule } from './economic-analysis-routing.module';
@@ -12,6 +13,7 @@ const COMPONENTS = [DashboardComponent,
   EconomicAnalysisHyAnalysisComponent,
   EconomicAnalysisMapTaxDotMapComponent,
   EconomicAnalysisMapTaxAggMapComponent,
+  EconomicAnalysisMapTaxHyMapComponent,
   EconomicAnalysisBillAnalysisComponent];
 const COMPONENTS_NOROUNT = [];
 

@@ -5,6 +5,7 @@ import { EconomicAnalysisHyAnalysisComponent } from './hy-analysis/hy-analysis.c
 import { EconomicAnalysisMapTaxDotMapComponent } from './map/tax-dot-map/tax-dot-map.component';
 import { EconomicAnalysisMapTaxAggMapComponent } from './map/tax-agg-map/tax-agg-map.component';
 import { EconomicAnalysisBillAnalysisComponent } from './bill-analysis/bill-analysis.component';
+import { EconomicAnalysisMapTaxHyMapComponent } from './map/tax-hy-map/tax-hy-map.component';
 
 const routes: Routes = [
   {
@@ -32,14 +33,21 @@ const routes: Routes = [
     path: 'tax-agg-map',
     component: EconomicAnalysisMapTaxAggMapComponent,
     data: {
-      title: '区域聚合图'
+      title: '镇街收入地图'
+    }
+  },
+  {
+    path: 'tax-hy-map',
+    component: EconomicAnalysisMapTaxHyMapComponent,
+    data: {
+      title: '行业收入地图'
     }
   },
   {
     path: 'bill-analysis',
     component: EconomicAnalysisBillAnalysisComponent,
     data: {
-      title: '开票分析'
+      title: '税票分析'
     }
   },
   {
