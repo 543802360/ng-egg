@@ -104,6 +104,7 @@ export class EconomicAnalysisMapTaxHyMapComponent implements OnInit, AfterViewIn
       .subscribe(resp => {
         // 1、获取镇街税收数据
         this.townData = resp[1].data;
+        // 若当前数据为空，则清空上次查询结果
         if (!this.townData.length) {
           this.msgSrv.warning('当前条件下无收入数据！');
           this.townG2BarData = [];
