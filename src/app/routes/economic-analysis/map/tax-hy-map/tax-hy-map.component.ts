@@ -2,13 +2,15 @@ import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { _HttpClient, ModalHelper } from '@delon/theme';
 import { STColumn, STComponent } from '@delon/abc/st';
 
-import { NzMessageService } from 'ng-zorro-antd';
+import { NzMessageService, NzTreeSelectComponent } from 'ng-zorro-antd';
 import * as mapboxgl from "mapbox-gl";
 import { dark } from "@geo";
 import { BdgSelectComponent, MonthRangeComponent, getColorRange } from '@shared';
 import { G2BarData } from '@delon/chart/bar';
 import { forkJoin } from 'rxjs';
 import { LoadingService } from '@delon/abc';
+import { CacheService } from '@delon/cache';
+import { deepCopy } from '@delon/util';
 
 @Component({
   templateUrl: './tax-hy-map.component.html',
@@ -22,6 +24,12 @@ export class EconomicAnalysisMapTaxHyMapComponent implements OnInit, AfterViewIn
   townData: any[];
   townG2BarData: G2BarData[];
   map: mapboxgl.Map;
+
+  // 行业名称tree-select
+  @ViewChild('hyTreeSelect') hyTreeSelect: NzTreeSelectComponent;
+  hymcNodes;
+  selectedHymc: string;
+
   @ViewChild('st') st: STComponent;
   @ViewChild('bdgSelect') bdgSelect: BdgSelectComponent;
   @ViewChild('monthRange') monthRange: MonthRangeComponent;
@@ -61,15 +69,6 @@ export class EconomicAnalysisMapTaxHyMapComponent implements OnInit, AfterViewIn
     // }
   ];
 
-  colorStops =
-    [
-      "rgb(1, 152, 189)",
-      "rgb(73, 227, 206)",
-      "rgb(216, 254, 181)",
-      "rgb(254, 237, 177)",
-      "rgb(254, 173, 84)",
-      "rgb(209, 55, 78)"
-    ];
   heightStop = 4000;
   gridActive = {
     type: "FeatureCollection",
@@ -83,10 +82,13 @@ export class EconomicAnalysisMapTaxHyMapComponent implements OnInit, AfterViewIn
 
   constructor(public http: _HttpClient,
     private loadSrv: LoadingService,
+    private cacheSrv: CacheService,
     private modal: ModalHelper,
     private msgSrv: NzMessageService) { }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.hymcNodes = this.cacheSrv.get('hymc', { mode: 'none' });
+  }
 
   ngAfterViewInit() {
     this.loadSrv.open({ text: '正在处理……' });
@@ -102,6 +104,28 @@ export class EconomicAnalysisMapTaxHyMapComponent implements OnInit, AfterViewIn
       .subscribe(resp => {
         // 1、获取镇街税收数据
         this.townData = resp[1].data;
+        if (!this.townData.length) {
+          this.msgSrv.warning('当前条件下无收入数据！');
+          this.townG2BarData = [];
+
+          // 判断是否存在高亮区域块数据源及图层
+          if (this.map.getLayer('grid-active')) {
+            this.map.removeLayer('grid-active');
+          }
+          if (this.map.getSource('grid-active')) {
+            this.map.removeSource('grid-active')
+          }
+
+          // 判断是否存在镇街税收图层
+          if (this.map.getLayer('town-layer')) {
+            this.map.removeLayer('town-layer');
+          }
+          if (this.map.getSource('town-geo')) {
+            this.map.removeSource('town-geo')
+          }
+
+          return;
+        }
         this.townG2BarData = this.townData.map(item => {
           return {
             x: item.jdxzmc,
@@ -111,11 +135,11 @@ export class EconomicAnalysisMapTaxHyMapComponent implements OnInit, AfterViewIn
         // 2、获取Geometry
         const fc = resp[0];
         const taxArray = [];
+        const taxFeatures = [];
         fc.features.forEach(f => {
           const target = this.townData.find(i => i.jdxzmc === f.properties.MC);
           if (target) {
             taxArray.push(target.bndsr);
-
             Object.defineProperties(f.properties, {
               'tax': {
                 value: target.bndsr,
@@ -128,17 +152,24 @@ export class EconomicAnalysisMapTaxHyMapComponent implements OnInit, AfterViewIn
                 configurable: true
               }
             });
+            taxFeatures.push(deepCopy(f));
           }
         });
         const mintax = Math.min(...taxArray);
         const maxtax = Math.max(...taxArray);
         const colorRange = getColorRange(mintax, maxtax);
+
+        const ds = {
+          type: 'FeatureCollection',
+          features: taxFeatures
+        };
+
         if (this.map.getSource('town-geo')) {
-          (this.map.getSource('town-geo') as mapboxgl.GeoJSONSource).setData(fc);
+          (this.map.getSource('town-geo') as mapboxgl.GeoJSONSource).setData(ds as any);
         } else {
           this.map.addSource('town-geo', {
             type: 'geojson',
-            data: fc as any
+            data: ds as any
           });
         }
         // 判断是否存在高亮区域块数据源及图层
@@ -242,7 +273,15 @@ export class EconomicAnalysisMapTaxHyMapComponent implements OnInit, AfterViewIn
     const startMonth = startDate.getMonth() + 1;
     const endMonth = endDate.getMonth() + 1;
     const budgetValue = this.bdgSelect.budgetValue.toLocaleString();
-    return { year, startMonth, endMonth, budgetValue };
+
+    if (!this.hyTreeSelect.getSelectedNodeList().length) {
+      return { year, startMonth, endMonth, budgetValue };
+    }
+    if (this.hyTreeSelect.getSelectedNodeList().length !== 0) {
+      const selectedNode = this.hyTreeSelect.getSelectedNodeList()[0];
+      return selectedNode.parentNode ? { year, startMonth, endMonth, budgetValue, hymc: selectedNode.title } :
+        { year, startMonth, endMonth, budgetValue, mlmc: selectedNode.title };
+    }
 
   }
 
