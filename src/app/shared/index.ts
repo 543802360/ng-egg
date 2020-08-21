@@ -8,6 +8,7 @@ export * from './utils/tree2array';
 export * from "./utils/geoUtil";
 export * from "./utils/order";
 export * from "./utils/export2excel";
+export * from './utils/getColorRange';
 // 接口类
 export * from './interfaces/IMenu';
 export * from './interfaces/IDepartment';
