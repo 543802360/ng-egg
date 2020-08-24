@@ -25,14 +25,12 @@
             <span *ngIf="item.tbzjz<0" nz-tooltip [nzTooltipOverlayStyle]="tooltipStyle" [nzTooltipTitle]="'同比下降：' +
               item.tbzjz+' 万元;&nbsp;' +'降幅：'+item.tbzjf">
               {{item.tbzjz|number}}（{{item.tbzjf}}）</span>
-
           </nz-tag>
         </ng-template>
         <ng-template st-row='order-tpl' let-item let-index="index">
           <nz-badge nzCount="{{index + 1}}"></nz-badge>
         </ng-template>
       </st>
-
       <g2-bar style="padding: 10px;" *ngIf="townG2BarData&&townG2BarData.length" height="300" [data]="townG2BarData">
       </g2-bar>
     </div>
