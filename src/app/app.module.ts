@@ -60,7 +60,7 @@ const GLOBAL_THIRD_MODULES = [];
 // #endregion
 
 // #region JSON Schema form (using @delon/form)
-import { JsonSchemaModule } from '@shared';
+import { JsonSchemaModule, SharedModule } from '@shared';
 const FORM_MODULES = [JsonSchemaModule];
 // #endregion
 
@@ -95,10 +95,10 @@ import { CoreModule } from './core/core.module';
 import { GlobalConfigModule } from './global-config.module';
 import { LayoutModule } from './layout/layout.module';
 import { RoutesModule } from './routes/routes.module';
-import { SharedModule } from './shared/shared.module';
 import { STWidgetModule } from './shared/st-widget/st-widget.module';
-import { GeoModule } from './geo/geo.module';
 import { LoadingTypesService } from '@core';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 
 @NgModule({
@@ -109,13 +109,17 @@ import { LoadingTypesService } from '@core';
     HttpClientModule,
     GlobalConfigModule.forRoot(),
     CoreModule,
-    SharedModule,
     LayoutModule,
+    SharedModule,
     RoutesModule,
     STWidgetModule,
     ...I18NSERVICE_MODULES,
     ...GLOBAL_THIRD_MODULES,
     ...FORM_MODULES,
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: environment.production,
+      registrationStrategy: 'registerImmediately'
+    }),
   ],
   providers: [...LANG_PROVIDES, ...INTERCEPTOR_PROVIDES, ...I18NSERVICE_PROVIDES, ...APPINIT_PROVIDES, LoadingTypesService],
   bootstrap: [AppComponent],

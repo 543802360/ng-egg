@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "npm run color-less && node --max_old_space_size=6190 ./node_modules/@angular/cli/bin/ng serve -o  --port 4300",
-    "build": "npm run color-less && node --max_old_space_size=8192 ./node_modules/@angular/cli/bin/ng build --prod --base-href /fbi/",
+    "build": "npm run color-less && node --max_old_space_size=8192 ./node_modules/@angular/cli/bin/ng build --prod --build-optimizer --base-href /fbi/",
     "test": "ng test",
     "lint": "npm run lint:ts && npm run lint:style",
     "e2e": "ng e2e",
@@ -16,7 +16,8 @@
     "lint:style": "stylelint \"src/**/*.less\" --syntax less --fix",
     "lint-staged": "lint-staged",
     "tslint-check": "tslint-config-prettier-check ./tslint.json",
-    "hmr": "ng serve -c=hmr"
+    "hmr": "ng serve -c=hmr",
+    "pwa:serve": "http-server -p 8090 -c-1 dist/"
   },
   "private": true,
   "dependencies": {
@@ -28,6 +29,7 @@
     "@angular/platform-browser": "~9.1.12",
     "@angular/platform-browser-dynamic": "~9.1.12",
     "@angular/router": "~9.1.12",
+    "@angular/service-worker": "~9.1.12",
     "@antv/data-set": "^0.10.2",
     "@antv/g2": "^3.5.11",
     "@antv/g2-plugin-slider": "^2.1.1",
