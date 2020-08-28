@@ -66,6 +66,7 @@
     "mapbox-gl-style-switcher": "^1.0.3",
     "ng-alain": "^9.5.5",
     "ng-zorro-antd": "^9.3.0",
+    "ng-zorro-antd-mobile": "^2.0.7",
     "ngx-echarts": "^4.2.2",
     "ngx-icon-picker": "0.0.11",
     "ngx-mapbox-gl": "^4.5.0",

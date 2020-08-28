@@ -3451,6 +3451,21 @@ this.tinycolor = tinycolor;
   background-color: rgba(0, 0, 0, 0.4);
   color: #32eaff;
 }
+
+.am-list-body {
+  background-color: #fff;
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+}
+.am-list-header {
+  color: #888;
+}
+ /deep/ .am-list-body InputItem:not(:last-child) .am-list-line {
+  border-bottom: 1px solid #ddd;
+}
+.am-list-item .am-list-line .am-list-content {
+  color: #000;
+}
 .fa-border {
   border: solid 0.08em #eee;
   border-radius: 0.1em;
