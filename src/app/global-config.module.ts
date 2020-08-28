@@ -37,7 +37,11 @@ const alainConfig: AlainConfig = {
   // }
 };
 
-const alainModules = [AlainThemeModule.forRoot(), DelonACLModule.forRoot(), DelonMockModule.forRoot()];
+const alainModules = [
+  AlainThemeModule.forRoot(),
+  DelonACLModule.forRoot(),
+  DelonMockModule.forRoot()];
+
 const alainProvides = [{ provide: ALAIN_CONFIG, useValue: alainConfig }];
 
 //  mock

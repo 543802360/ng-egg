@@ -53,9 +53,23 @@ const I18NSERVICE_PROVIDES = [{ provide: ALAIN_I18N_TOKEN, useClass: I18NService
 
 // #endregion
 
-// #region global third module
+// #region 第三方模块 global third module
 
 const GLOBAL_THIRD_MODULES = [];
+
+import { NzConfig, NZ_CONFIG } from "ng-zorro-antd/core/config";
+
+const ngZorroConfig: NzConfig = {
+  notification: {
+    nzMaxStack: 1
+  }
+}
+
+const NGZORRO_PROVIDES = [
+  {
+    provide: NZ_CONFIG, useValue: ngZorroConfig
+  }
+];
 
 // #endregion
 
@@ -64,7 +78,7 @@ import { JsonSchemaModule, SharedModule } from '@shared';
 const FORM_MODULES = [JsonSchemaModule];
 // #endregion
 
-// #region Http Interceptors
+// #region http拦截器 Http Interceptors
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { DefaultInterceptor } from '@core';
 import { SimpleInterceptor } from '@delon/auth';
@@ -74,7 +88,7 @@ const INTERCEPTOR_PROVIDES = [
 ];
 // #endregion
 
-// #region Startup Service
+// #region 启动服务  Startup Service
 import { StartupService } from '@core';
 export function StartupServiceFactory(startupService: StartupService) {
   return () => startupService.load();
@@ -121,7 +135,11 @@ import { environment } from '../environments/environment';
       registrationStrategy: 'registerImmediately'
     }),
   ],
-  providers: [...LANG_PROVIDES, ...INTERCEPTOR_PROVIDES, ...I18NSERVICE_PROVIDES, ...APPINIT_PROVIDES, LoadingTypesService],
+  providers: [...LANG_PROVIDES,
+  ...INTERCEPTOR_PROVIDES,
+  ...I18NSERVICE_PROVIDES,
+  ...APPINIT_PROVIDES,
+  ...NGZORRO_PROVIDES, LoadingTypesService],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

@@ -38,6 +38,7 @@ import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 import { NzUploadModule } from 'ng-zorro-antd/upload';
 import { NzTreeModule, NzTreeSelectModule, NzCollapseModule, NzStatisticModule } from 'ng-zorro-antd';
+import { NgZorroAntdMobileModule } from 'ng-zorro-antd-mobile';
 
 export const SHARED_ZORRO_MODULES = [
   NzButtonModule,
@@ -83,4 +84,5 @@ export const SHARED_ZORRO_MODULES = [
   NzTreeSelectModule,
   NzCollapseModule,
   NzStatisticModule,
+  NgZorroAntdMobileModule,
 ];

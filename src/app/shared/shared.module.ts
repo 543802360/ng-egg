@@ -22,6 +22,7 @@ import { IconPickerModule } from 'ngx-icon-picker';
 import { SHARED_ZORRO_MODULES } from './shared-zorro.module';
 import { SHARED_DELON_MODULES } from './shared-delon.module';
 import { XlsxModule } from '@delon/abc';
+import { DelonAuthModule } from '@delon/auth';
 
 
 
@@ -49,6 +50,7 @@ const DIRECTIVES = [];
     RouterModule,
     ReactiveFormsModule,
     AlainThemeModule,
+    DelonAuthModule,
     DelonACLModule,
     DelonFormModule,
     XlsxModule,
@@ -70,6 +72,7 @@ const DIRECTIVES = [];
     ReactiveFormsModule,
     AlainThemeModule,
     DelonACLModule,
+    DelonAuthModule,
     DelonFormModule,
     // i18n
     TranslateModule,

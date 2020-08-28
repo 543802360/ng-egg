@@ -26,13 +26,17 @@ import { ACLGuard } from '@delon/acl';
 const routes: Routes = [
   {
     path: '',
-    component: LayoutDefaultComponent,
     canActivate: [JWTGuard],
     children: [
       {
         path: '',
-        redirectTo: 'economic',
+        redirectTo: 'mobile',
         pathMatch: 'full'
+      },
+      // 移动端
+      {
+        path: 'mobile',
+        loadChildren: () => import('./mobile/mobile.module').then(m => m.MobileModule)
       },
       // 经济运行分析
       {
@@ -64,10 +68,6 @@ const routes: Routes = [
         path: 'building',
         loadChildren: () => import('./building/building.module').then(m => m.BuildingModule)
       },
-      // {
-      //   path: 'permtax',
-      //   loadChildren: () => import('./permu-tax/permu-tax.module').then(m => m.PermuTaxModule)
-      // },
       // 系统设置子模块
       {
         path: 'sys',
@@ -78,36 +78,12 @@ const routes: Routes = [
         path: 'account',
         loadChildren: () => import('./account/account.module').then(m => m.AccountModule)
       }
-      // { path: 'widgets', loadChildren: () => import('./widgets/widgets.module').then(m => m.WidgetsModule) },
     ]
   },
-
-  // 全屏布局
-  // {
-  //   path: 'fullscreen',
-  //   component: LayoutFullScreenComponent,
-  //   children: [
-  //     {
-  //       path: 'permtax',
-  //       loadChildren: () => import('./permu-tax/permu-tax.module').then(m => m.PermuTaxModule)
-  //     },
-  //     {
-  //       path: '',
-  //       redirectTo: 'permtax',
-  //       pathMatch: 'full'
-  //     }
-  //   ]
-  // },
   // passport
   {
     path: 'passport',
-    component: LayoutPassportComponent,
-    children: [
-      { path: 'login', component: UserLoginComponent, data: { title: '登录' } },
-      { path: 'register', component: UserRegisterComponent, data: { title: '注册' } },
-      { path: 'register-result', component: UserRegisterResultComponent, data: { title: '注册结果' } },
-      { path: 'lock', component: UserLockComponent, data: { title: '锁屏' } },
-    ]
+    loadChildren: () => import('./user/user.module').then(m => m.UserModule)
   },
   // 单页不包裹Layout
   { path: 'callback/:type', component: CallbackComponent },

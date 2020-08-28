@@ -3452,19 +3452,12 @@ this.tinycolor = tinycolor;
   color: #32eaff;
 }
 
-.am-list-body {
-  background-color: #fff;
-  border-top: 1px solid #ddd;
-  border-bottom: 1px solid #ddd;
+:host ::ng-deep .login-container {
+  border: 0;
+  background-size: 100% 100%;
 }
-.am-list-header {
-  color: #888;
-}
- /deep/ .am-list-body InputItem:not(:last-child) .am-list-line {
-  border-bottom: 1px solid #ddd;
-}
-.am-list-item .am-list-line .am-list-content {
-  color: #000;
+:host ::ng-deep .login-body {
+  border-radius: 8px;
 }
 .fa-border {
   border: solid 0.08em #eee;

@@ -1,9 +1,8 @@
 import { Injectable, Injector, Inject } from '@angular/core';
-import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { zip } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { MenuService, MenuIcon, SettingsService, TitleService, ALAIN_I18N_TOKEN } from '@delon/theme';
+import { MenuService, SettingsService, TitleService, ALAIN_I18N_TOKEN } from '@delon/theme';
 import { DA_SERVICE_TOKEN, ITokenService } from '@delon/auth';
 import { ACLService } from '@delon/acl';
 import { TranslateService } from '@ngx-translate/core';
@@ -74,7 +73,6 @@ export class StartupService {
       });
       const hymcTreeNodes = array2tree(hymcArray, 'key', 'parent_id', 'children');
       this.cacheSrv.set('hymc', hymcTreeNodes);
-
 
       //#endregion
 

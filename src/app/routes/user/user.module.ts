@@ -1,9 +1,10 @@
+import { LoginComponent } from './login/login.component';
 import { NgModule } from '@angular/core';
-import { SharedModule } from '@shared';
 import { UserRoutingModule } from './user-routing.module';
+import { SharedModule } from '@shared';
 
-const COMPONENTS = [];
-const COMPONENTS_NOROUNT = [];
+const COMPONENTS = [LoginComponent];
+const COMPONENTS_NOROUNT = [LoginComponent];
 
 @NgModule({
   imports: [
