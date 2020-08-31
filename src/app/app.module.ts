@@ -139,7 +139,8 @@ import { environment } from '../environments/environment';
   ...INTERCEPTOR_PROVIDES,
   ...I18NSERVICE_PROVIDES,
   ...APPINIT_PROVIDES,
-  ...NGZORRO_PROVIDES, LoadingTypesService],
+  ...NGZORRO_PROVIDES,
+    LoadingTypesService],
   bootstrap: [AppComponent],
 })
 export class AppModule { }
