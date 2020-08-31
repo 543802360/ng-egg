@@ -2,16 +2,17 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'home',
-  templateUrl: './home.component.html'
+  templateUrl: './home.component.html',
+  styleUrls: ['./home.component.less']
 })
 export class HomeComponent {
-  hidden: boolean = false;
-  fullScreen: boolean = false;
-  topFlag: boolean = false;
-  tintColor: string = '#108ee9';
-  unselectedTintColor: string = '#888';
+  hidden = false;
+  fullScreen = true;
+  topFlag = false;
+  tintColor = '#108ee9';
+  unselectedTintColor = '#888';
   tabbarStyle: object = { height: '400px' };
-  selectedIndex: number = 1;
+  selectedIndex = 1;
 
   showTabBar(event) {
     event.preventDefault();
@@ -34,11 +35,11 @@ export class HomeComponent {
     this.fullScreen = !this.fullScreen;
     this.tabbarStyle = this.fullScreen
       ? {
-          position: 'fixed',
-          height: '100%',
-          width: '100%',
-          top: 0
-        }
+        position: 'fixed',
+        height: '100%',
+        width: '100%',
+        top: 0
+      }
       : { height: '400px' };
   }
 
