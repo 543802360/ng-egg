@@ -24,58 +24,58 @@
 
 <!-- TabBar -->
 <TabBar [hidden]="hidden" [barTintColor]="'white'" [tintColor]="tintColor" [ngStyle]="tabbarStyle"
-  [activeTab]="selectedIndex" [unselectedTintColor]="unselectedTintColor" [tabBarPosition]="topFlag ? 'top' : 'bottom'"
+  [activeTab]="selectedIndex" [unselectedTintColor]="unselectedTintColor" [tabBarPosition]="'bottom'"
   (onPress)="tabBarTabOnPress($event)">
-  <TabBarItem [title]="'Life'" [key]="1" [badge]="1" [icon]="icon1" [selectedIcon]="icon11">
+  <TabBarItem [title]="'财政收入'" [key]="1" [icon]="icon1" [selectedIcon]="icon11">
     <ng-template #icon1>
-      <div
-        style="width:22px;height: 22px;background: url('https://zos.alipayobjects.com/rmsportal/sifuoDUQdAFKAVcFGROC.svg') center center / 21px 21px no-repeat;">
-      </div>
+      <i nz-icon nzType="dashboard" class="tab-icon"></i>
     </ng-template>
     <ng-template #icon11>
-      <div
-        style="width:22px;height: 22px;background: url('https://zos.alipayobjects.com/rmsportal/iSrlOTqrKddqbOmlvUfq.svg') center center / 21px 21px no-repeat;">
-      </div>
+      <i nz-icon nzType="dashboard" class="tab-icon tab-icon-active"></i>
     </ng-template>
-
+    <div style="background-color: white; height: 100%; text-align: center">
+      <ng-container>
+        <router-outlet name="eco-summary"></router-outlet>
+      </ng-container>
+    </div>
   </TabBarItem>
-  <TabBarItem [title]="'Koubei'" [key]="2" [badge]="'new'" [icon]="icon2" [selectedIcon]="icon22">
+  <TabBarItem [title]="'税收地图'" [key]="2" [icon]="icon2" [selectedIcon]="icon22">
     <ng-template #icon2>
-      <div
-        style="width:22px;height: 22px;background: url('https://gw.alipayobjects.com/zos/rmsportal/BTSsmHkPsQSPTktcXyTV.svg') center center / 21px 21px no-repeat;">
-      </div>
+      <i nz-icon nzType="global" nzTheme="outline" class="tab-icon"></i>
     </ng-template>
     <ng-template #icon22>
-      <div
-        style="width:22px;height: 22px;background: url('https://gw.alipayobjects.com/zos/rmsportal/ekLecvKBnRazVLXbWOnE.svg') center center / 21px 21px no-repeat;">
-      </div>
+      <i nz-icon nzType="global" nzTheme="outline" class="tab-icon tab-icon-active"></i>
     </ng-template>
-
+    <div style="background-color: white; height: 100%; text-align: center">
+      <ng-container>
+        <router-outlet name="eco-map"></router-outlet>
+      </ng-container>
+    </div>
   </TabBarItem>
-  <TabBarItem [title]="'Friend'" [key]="3" [dot]="true" [icon]="icon3" [selectedIcon]="icon33">
+  <TabBarItem [title]="'收入分析'" [key]="3" [dot]="true" [icon]="icon3" [selectedIcon]="icon33">
     <ng-template #icon3>
-      <div
-        style="width:22px;height: 22px;background: url('https://zos.alipayobjects.com/rmsportal/psUFoAMjkCcjqtUCNPxB.svg') center center / 21px 21px no-repeat;">
-      </div>
+      <i nz-icon nzType="bar-chart" nzTheme="outline" class="tab-icon"></i>
     </ng-template>
     <ng-template #icon33>
-      <div
-        style="width:22px;height: 22px;background: url('https://zos.alipayobjects.com/rmsportal/IIRLrXXrFAhXVdhMWgUI.svg') center center / 21px 21px no-repeat;">
-      </div>
+      <i nz-icon nzType="bar-chart" nzTheme="outline" class="tab-icon tab-icon-active"></i>
     </ng-template>
-
+    <div style="background-color: white; height: 100%; text-align: center">
+      <ng-container>
+        <router-outlet name="eco-thematic"></router-outlet>
+      </ng-container>
+    </div>
   </TabBarItem>
-  <TabBarItem [title]="'My'" [key]="4" [icon]="icon4" [selectedIcon]="icon44">
+  <TabBarItem [title]="'我的'" [key]="4" [icon]="icon4" [selectedIcon]="icon44">
     <ng-template #icon4>
-      <div
-        style="width:22px;height: 22px;background: url('https://zos.alipayobjects.com/rmsportal/asJMfBrNqpMMlVpeInPQ.svg') center center / 21px 21px no-repeat;">
-      </div>
+      <i nz-icon nzType="user" nzTheme="outline" class="tab-icon"></i>
     </ng-template>
     <ng-template #icon44>
-      <div
-        style="width:22px;height: 22px;background: url('https://zos.alipayobjects.com/rmsportal/gjpzzcrPMkhfEqgbYvmN.svg') center center / 21px 21px no-repeat;">
-      </div>
+      <i nz-icon nzType="user" nzTheme="outline" class="tab-icon tab-icon-active"></i>
     </ng-template>
-
+    <div style="background-color: white; height: 100%; text-align: center">
+      <ng-container>
+        <router-outlet name="user"></router-outlet>
+      </ng-container>
+    </div>
   </TabBarItem>
 </TabBar>

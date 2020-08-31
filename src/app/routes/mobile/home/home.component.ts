@@ -8,7 +8,6 @@ import { Component } from '@angular/core';
 export class HomeComponent {
   hidden = false;
   fullScreen = true;
-  topFlag = false;
   tintColor = '#108ee9';
   unselectedTintColor = '#888';
   tabbarStyle: object = { height: '400px' };
@@ -43,13 +42,17 @@ export class HomeComponent {
       : { height: '400px' };
   }
 
-  changePosition(event) {
-    event.preventDefault();
-    this.topFlag = !this.topFlag;
-  }
-
   tabBarTabOnPress(pressParam: any) {
     console.log('onPress Params: ', pressParam);
     this.selectedIndex = pressParam.index;
+  }
+
+
+  onSelect(event) {
+    console.log(event);
+  }
+
+  onVisibleChange(event) {
+    console.log(event);
   }
 }
