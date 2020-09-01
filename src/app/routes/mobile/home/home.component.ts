@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'home',
@@ -10,43 +11,44 @@ export class HomeComponent {
   fullScreen = true;
   tintColor = '#108ee9';
   unselectedTintColor = '#888';
-  tabbarStyle: object = { height: '400px' };
-  selectedIndex = 1;
+  selectedIndex = 0;
 
-  showTabBar(event) {
-    event.preventDefault();
-    this.hidden = !this.hidden;
+  summaryVisible = true;
+  mapVisible = false;
+  thematicVisible = false;
+  userVisible = false;
+
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute) {
+
   }
 
-  showNextTabBar(event) {
-    event.preventDefault();
-    const PANE_COUNT = 4;
-    if (this.selectedIndex == PANE_COUNT - 1) {
-      this.selectedIndex = 0;
-    } else {
-      this.selectedIndex++;
+
+
+  nav(routes: any) {
+
+    this.selectedIndex = routes.index;
+    this.toggle(routes.index);
+
+    switch (routes.index) {
+      case 0:
+        this.router.navigate(['./eco-summary/all-summary'], { relativeTo: this.route });
+        break;
+      case 1:
+        this.router.navigate(['./eco-map/agg-map'], { relativeTo: this.route });
+
+        break;
+      case 2:
+
+        break;
+      case 3:
+
+        break;
+      default:
+        break;
     }
-    console.log('selectedIndex: ', this.selectedIndex);
   }
-
-  showFullScreen(event) {
-    event.preventDefault();
-    this.fullScreen = !this.fullScreen;
-    this.tabbarStyle = this.fullScreen
-      ? {
-        position: 'fixed',
-        height: '100%',
-        width: '100%',
-        top: 0
-      }
-      : { height: '400px' };
-  }
-
-  tabBarTabOnPress(pressParam: any) {
-    console.log('onPress Params: ', pressParam);
-    this.selectedIndex = pressParam.index;
-  }
-
 
   onSelect(event) {
     console.log(event);
@@ -54,5 +56,36 @@ export class HomeComponent {
 
   onVisibleChange(event) {
     console.log(event);
+  }
+
+  toggle(index: number) {
+    switch (index) {
+      case 0:
+        this.mapVisible = false;
+        this.userVisible = false;
+        this.summaryVisible = true;
+        this.thematicVisible = false;
+        break;
+      case 1:
+        this.mapVisible = true;
+        this.userVisible = false;
+        this.summaryVisible = false;
+        this.thematicVisible = false;
+        break;
+      case 2:
+        this.mapVisible = false;
+        this.userVisible = false;
+        this.summaryVisible = false;
+        this.thematicVisible = true;
+        break;
+      case 3:
+        this.mapVisible = false;
+        this.userVisible = true;
+        this.summaryVisible = false;
+        this.thematicVisible = true;
+        break;
+      default:
+        break;
+    }
   }
 }
