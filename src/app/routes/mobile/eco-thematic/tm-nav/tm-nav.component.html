@@ -1,0 +1,34 @@
+<Navbar [rightContent]="popover">
+    专题分析
+</Navbar>
+
+<ng-template #popover>
+    <Icon Popover [ngStyle]="{ height: '100%', display: 'flex', 'align-items': 'center' }" [mask]="false"
+        [showArrow]="true" [overlay]="overlay" [type]="'ellipsis'" [placement]="'bottomRight'"></Icon>
+</ng-template>
+
+<ng-template #overlay>
+    <PopoverItem [icon]="icon1">大企业税收</PopoverItem>
+    <PopoverItem [icon]="icon2">企业排名</PopoverItem>
+    <PopoverItem [icon]="icon4">企业税收明细</PopoverItem>
+    <PopoverItem [icon]="icon3">财源建设企业</PopoverItem>
+</ng-template>
+
+<ng-template #icon1>
+    <i nz-icon nzType="bank" nzTheme="outline"></i>
+</ng-template>
+
+<ng-template #icon2>
+    <i nz-icon nzType="ordered-list" nzTheme="outline"></i>
+</ng-template>
+
+<ng-template #icon3>
+    <i nz-icon nzType="build" nzTheme="outline"></i>
+</ng-template>
+
+<ng-template #icon4>
+    <i nz-icon nzType="profile" nzTheme="outline"></i>
+</ng-template>
+
+
+<router-outlet></router-outlet>

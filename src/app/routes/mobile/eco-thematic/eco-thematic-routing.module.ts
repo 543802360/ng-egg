@@ -1,8 +1,36 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { MobileTmOrderComponent } from './tm-order/tm-order.component';
+import { MobileTmJdxzComponent } from './tm-jdxz/tm-jdxz.component';
+import { MobileTmBigEnterpriseComponent } from './tm-big-enterprise/tm-big-enterprise.component';
+import { MobileTmNavComponent } from './tm-nav/tm-nav.component';
 
-const routes: Routes = [
-];
+const routes: Routes =
+  [
+    {
+      path: '',
+      component: MobileTmNavComponent,
+      children: [
+        {
+          path: 'order',
+          component: MobileTmOrderComponent
+        },
+        {
+          path: 'big-enterprise',
+          component: MobileTmBigEnterpriseComponent
+        },
+        {
+          path: 'jdxz',
+          component: MobileTmJdxzComponent
+        },
+        {
+          path: '',
+          redirectTo: 'jdxz',
+          pathMatch: 'full'
+        }
+      ]
+    }
+  ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

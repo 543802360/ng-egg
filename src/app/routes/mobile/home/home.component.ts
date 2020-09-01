@@ -40,6 +40,7 @@ export class HomeComponent {
 
         break;
       case 2:
+        this.router.navigate(['./eco-thematic/jdxz'], { relativeTo: this.route });
 
         break;
       case 3:

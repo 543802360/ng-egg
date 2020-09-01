@@ -1,6 +1,5 @@
 import { EcoMapComponent } from './eco-map.component';
-import { SharedModule } from './../../../shared/shared.module';
-
+import { SharedModule } from '@shared';
 import { NgModule } from '@angular/core';
 import { EcoMapRoutingModule } from './eco-map-routing.module';
 import { EcoMapDotMapComponent } from './dot-map/dot-map.component';
