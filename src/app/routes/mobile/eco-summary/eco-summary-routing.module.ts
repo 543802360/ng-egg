@@ -5,6 +5,7 @@ import { EcoSummaryZsxmSummaryComponent } from './zsxm-summary/zsxm-summary.comp
 import { EcoSummaryInvoiceSummaryComponent } from './invoice-summary/invoice-summary.component';
 import { EcoSummaryAllSummaryComponent } from './all-summary/all-summary.component';
 import { EcoSummaryComponent } from './eco-summary.component';
+import { EcoSummaryCySummaryComponent } from './cy-summar/cy-summary.component';
 
 const routes: Routes = [
 
@@ -17,6 +18,13 @@ const routes: Routes = [
         component: EcoSummaryHySummaryComponent,
         data: {
           title: '行业分析'
+        }
+      },
+      {
+        path: 'cy-summary',
+        component: EcoSummaryCySummaryComponent,
+        data: {
+          title: '产业分析'
         }
       },
       {

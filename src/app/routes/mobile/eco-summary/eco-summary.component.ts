@@ -16,7 +16,8 @@ import { _HttpClient } from '@delon/theme';
         <PopoverItem [icon]="icon1">财政总收入分析</PopoverItem>
         <PopoverItem [icon]="icon2">分税种分析</PopoverItem>
         <PopoverItem [icon]="icon3">分行业分析</PopoverItem>
-        <PopoverItem [icon]="icon4">开票分析</PopoverItem>
+        <PopoverItem [icon]="icon4">分产业分析</PopoverItem>
+        <PopoverItem [icon]="icon5">开票分析</PopoverItem>
     </ng-template>
 
     <ng-template #icon1>
@@ -31,7 +32,11 @@ import { _HttpClient } from '@delon/theme';
         <i nz-icon nzType="line-chart" nzTheme="outline"></i>
     </ng-template>
 
-    <ng-template #icon4>
+    <ng-template  #icon4>
+        <i nz-icon nzType="pie-chart" nzTheme="outline"></i>
+    </ng-template>
+
+    <ng-template #icon5>
         <i nz-icon nzType="trademark" nzTheme="outline"></i>
     </ng-template>
 

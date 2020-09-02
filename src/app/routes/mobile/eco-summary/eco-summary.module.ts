@@ -1,3 +1,4 @@
+import { EcoSummaryCySummaryComponent } from './cy-summar/cy-summary.component';
 import { NgModule } from '@angular/core';
 import { EcoSummaryRoutingModule } from './eco-summary-routing.module';
 import { SharedModule } from '@shared';
@@ -8,6 +9,7 @@ import { EcoSummaryAllSummaryComponent } from './all-summary/all-summary.compone
 import { EcoSummaryComponent } from './eco-summary.component';
 
 const COMPONENTS = [
+  EcoSummaryCySummaryComponent,
   EcoSummaryComponent,
   EcoSummaryHySummaryComponent,
   EcoSummaryZsxmSummaryComponent,
