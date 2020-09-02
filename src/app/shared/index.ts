@@ -26,6 +26,7 @@ export * from './models/TableOperator';
 export * from './models/BudgetLevel';
 export * from "./dics/zsxm";
 export * from "./dics/EOrder";
+export * from "./dics/PERM";
 
 // 组件类
 

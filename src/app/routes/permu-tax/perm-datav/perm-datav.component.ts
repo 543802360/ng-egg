@@ -4,12 +4,10 @@ import { NzMessageService } from 'ng-zorro-antd';
 import * as mapboxgl from "mapbox-gl";
 import { LoadingService } from '@delon/abc';
 import { LoadingTypesService } from '@core';
-import { PERM } from 'src/app/dictionary/PERM';
+// import { PERM } from 'src/app/dictionary/PERM';
 
 
-
-import { order } from '@shared';
-import { pipe, Observable, observable, of, from } from 'rxjs';
+import { order, PERM } from '@shared';
 import { map, switchMap } from 'rxjs/operators';
 @Component({
   selector: 'app-permu-tax-perm-datav',
