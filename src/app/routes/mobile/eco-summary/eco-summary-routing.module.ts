@@ -50,7 +50,7 @@ const routes: Routes = [
       },
       {
         path: '',
-        redirectTo: 'all-summary',
+        redirectTo: 'zsxm-summary',
         pathMatch: 'full'
       }
     ]
