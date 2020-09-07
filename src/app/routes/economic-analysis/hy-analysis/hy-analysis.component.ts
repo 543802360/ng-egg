@@ -3,7 +3,7 @@ import { _HttpClient, ModalHelper } from '@delon/theme';
 import { STColumn, STComponent } from '@delon/abc/st';
 import { SFSchema } from '@delon/form';
 import { G2PieData } from '@delon/chart/pie';
-import { yuan, BdgSelectComponent, MonthRangeComponent, order } from '@shared';
+import { yuan, BdgSelectComponent, MonthRangeComponent, order, ExcelData, export2excel } from '@shared';
 import { forkJoin } from 'rxjs';
 
 @Component({
@@ -17,10 +17,10 @@ export class EconomicAnalysisHyAnalysisComponent implements OnInit, AfterViewIni
   selectedMlmcFlag = 'MLMC';
   // 行业数据
   hyG2Data: G2PieData[];
-  hyStData;
+  hyStData: any[];
   // 产业数据
   cyG2Data: G2PieData[];
-  cyStData;
+  cyStData: any[];
   // zong
   total: number;
 
@@ -178,5 +178,42 @@ export class EconomicAnalysisHyAnalysisComponent implements OnInit, AfterViewIni
   }
   handlePieValueFormat(value: any) {
     return yuan(value);
+  }
+
+  /**
+   * 导出表格数据
+   */
+  export() {
+    const filename = `产业行业税收-${new Date().toLocaleString()}.xlsx`;
+
+    const hyRowData = this.hyStData.map(i => {
+      return {
+        '门类名称': i.mlmc,
+        '本年度收入(万元)': i.bndsr,
+        '上年同期收入(万元)': i.sntq,
+        '同比增减（万元）': i.tbzjz,
+        '同比增减幅': i.tbzjf
+      }
+    });
+    const cyRowData = this.cyStData.map(i => {
+      return {
+        '产业名称': i.cymc,
+        '本年度收入(万元)': i.bndsr,
+        '上年同期收入(万元)': i.sntq,
+        '同比增减（万元）': i.tbzjz,
+        '同比增减幅': i.tbzjf
+      }
+    });
+
+    const data: ExcelData[] = [
+      {
+        sheetName: '行业收入',
+        rowData: hyRowData
+      }, {
+        sheetName: '产业收入',
+        rowData: cyRowData
+      }
+    ];
+    export2excel(filename, data);
   }
 }

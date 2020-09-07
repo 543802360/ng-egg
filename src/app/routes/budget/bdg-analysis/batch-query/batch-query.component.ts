@@ -73,7 +73,7 @@ export class BudgetBdgAnalysisBatchQueryComponent implements OnInit {
       ...this.getCondition()
     }).subscribe(resp => {
       // 查询结果按指定字典排序映射
-      const rawData = resp.data.map(item => {
+      const rowData = resp.data.map(item => {
         const el = {};
         Object.keys(EOrder).forEach(key => {
           el[EOrder[key]] = item[key];
@@ -84,7 +84,10 @@ export class BudgetBdgAnalysisBatchQueryComponent implements OnInit {
         return el;
       });
       this.loadSrv.close();
-      export2excel(`税收导出-${new Date().toLocaleString()}.xlsx`, '税收导出', rawData);
+      export2excel(`税收导出-${new Date().toLocaleString()}.xlsx`, [{
+        sheetName: '税收导出',
+        rowData
+      }]);
 
     });
   }

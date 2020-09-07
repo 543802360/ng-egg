@@ -277,7 +277,7 @@ export class BudgetBdgAnalysisCompanyOrderComponent implements OnInit, AfterView
       ...this.getCondition()
     }).subscribe(resp => {
 
-      const rawData = resp.data.map(item => {
+      const rowData = resp.data.map(item => {
         const el = {};
         Object.keys(EOrder).forEach(key => {
           el[EOrder[key]] = item[key];
@@ -289,7 +289,11 @@ export class BudgetBdgAnalysisCompanyOrderComponent implements OnInit, AfterView
 
       });
       this.loadSrv.close();
-      export2excel(`税收排名-${new Date().toLocaleString()}.xlsx`, '税收排名', rawData);
+      console.log('excel data:', rowData);
+      export2excel(`税收排名-${new Date().toLocaleString()}.xlsx`, [{
+        rowData,
+        sheetName: '税收排名'
+      }]);
 
     });
 

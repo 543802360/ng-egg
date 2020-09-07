@@ -1,25 +1,32 @@
 import * as XLSX from "xlsx";
 import * as FileSaver from "file-saver";
 
-export function export2excel(fileName: string, sheetName: string, rowData: any[]) {
+export interface ExcelData {
+    sheetName: string;
+    rowData: any[]
+}
+
+export function export2excel(fileName: string, data: ExcelData[]) {
     const wb: XLSX.WorkBook = {
         Sheets: {},
         Props: {},
-        SheetNames: [sheetName]
+        SheetNames: data.map(i => i.sheetName)
     };
 
-    wb.Sheets[sheetName] = XLSX.utils.json_to_sheet(rowData);
-
+    data.forEach(i => {
+        wb.Sheets[i.sheetName] = XLSX.utils.json_to_sheet(i.rowData);
+    });
     const wopts: XLSX.WritingOptions = {
         bookType: 'xlsx',
         bookSST: false,
         type: "binary"
     };
     const excelBuffer = XLSX.write(wb, wopts);
-    const data: Blob = new Blob([s2ab(excelBuffer) as any], {
+    const file: Blob = new Blob([s2ab(excelBuffer) as any], {
         type: 'application/octet-stream'
     });
-    FileSaver.saveAs(data, fileName);
+    const _fileName = fileName.includes('.xls') ? fileName : `${fileName}.xlsx`;
+    FileSaver.saveAs(file, _fileName);
 }
 
 function s2ab(s) {
