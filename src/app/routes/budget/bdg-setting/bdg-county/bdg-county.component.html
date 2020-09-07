@@ -1,11 +1,81 @@
-<nz-card nzTitle="一般公共预算收入" style="margin: 10px 0;">
-  <nz-collapse>
-    <nz-collapse-panel nzHeader="税收收入"></nz-collapse-panel>
-    <nz-collapse-panel nzHeader="非税收入"></nz-collapse-panel>
+<div nz-row nzGutter="8">
+  <div nz-col nzSpan="17">
 
-  </nz-collapse>
-</nz-card>
+    <nz-card nzTitle="一般公共预算收入" style="margin: 10px 0;">
 
-<nz-card nzTitle="政府性基金收入" style="margin: 10px 0;">
+      <nz-tabset nzTabPosition="left" nzType="card">
+        <nz-tab nzTitle="税收收入">
+          <sf #sf mode="edit" [schema]="taxSchema" [ui]="taxUiSchema" [formData]="" button="none">
+            <!-- <footer-toolbar>
+              <button nz-button type="submit" nzType="primary" (click)="save(sf.value)" [disabled]="!sf.valid" [nzLoading]="http.loading">保存</button>
+            </footer-toolbar> -->
+          </sf>
+        </nz-tab>
+        <nz-tab nzTitle="非税收入">
+          <nz-collapse>
+            <nz-collapse-panel nzHeader="专项收入">
+              <form nz-form se-container="2">
+                <se labelWidth="180" label="教育费附加收入" col="2" required>
+                  <input nz-input type="number">
+                </se>
+                <se labelWidth="180" label="地方教育附加收入" col="2">
+                  <input nz-input type="number">
+                </se>
+                <se labelWidth="180" label="残疾人就业保障金收入" col="2">
+                  <input nz-input type="number">
+                </se>
+                <se labelWidth="180" label="水利建设专项收入" col="2">
+                  <input nz-input type="number">
+                </se>
+                <se labelWidth="180" label="文化事业建设费收入" col="2">
+                  <input nz-input type="number">
+                </se>
+              </form>
+            </nz-collapse-panel>
+            <nz-collapse-panel nzHeader="国有资源（资产）有偿使用">
+              <form nz-form se-container="2">
+                <se labelWidth="180" label="海域使用金收入" col="2" required>
+                  <input nz-input type="number">
+                </se>
+                <se labelWidth="180" label="利息收入" col="2">
+                  <input nz-input type="number">
+                </se>
+                <se labelWidth="180" label="非经营性国有资产出租收入" col="2">
+                  <input nz-input type="number">
+                </se>
+                <se labelWidth="180" label="新增建设用地土地有偿使用费收入" col="2">
+                  <input nz-input type="number">
+                </se>
+                <se labelWidth="180" label="其他国有资源（资产）有偿使用收入" col="2">
+                  <input nz-input type="number">
+                </se>
+              </form>
+            </nz-collapse-panel>
+          </nz-collapse>
 
-</nz-card>
+
+          <form style="margin: 5px 0;" nz-form se-container="2">
+            <se labelWidth="180" label="行政事业性收费收入" col="2" required>
+              <input nz-input type="number">
+            </se>
+            <se labelWidth="180" label="罚没收入" col="2">
+              <input nz-input type="number">
+            </se>
+          </form>
+        </nz-tab>
+        <nz-tab nzTitle="政府性基金收入">
+          Content of Tab Pane 3
+        </nz-tab>
+      </nz-tabset>
+      <nz-collapse>
+
+
+
+      </nz-collapse>
+    </nz-card>
+
+    <nz-card nzTitle="政府性基金收入" style="margin: 10px 0;">
+
+    </nz-card>
+  </div>
+</div>

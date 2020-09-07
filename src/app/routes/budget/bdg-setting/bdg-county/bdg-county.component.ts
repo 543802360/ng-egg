@@ -1,38 +1,37 @@
+import { taxZsxm } from './field';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { _HttpClient, ModalHelper } from '@delon/theme';
 import { STColumn, STComponent } from '@delon/abc/st';
-import { SFSchema } from '@delon/form';
+import { SFSchema, SFUISchema } from '@delon/form';
 
 @Component({
   selector: 'app-budget-bdg-setting-bdg-county',
   templateUrl: './bdg-county.component.html',
+  styleUrls: ['./bdg-county.component.less']
 })
 export class BudgetBdgSettingBdgCountyComponent implements OnInit {
-  url = `/user`;
-  searchSchema: SFSchema = {
-    properties: {
-      no: {
-        type: 'string',
-        title: '编号'
-      }
+
+  taxSchema: SFSchema = {
+    properties: {}
+  };
+
+  taxUiSchema: SFUISchema = {
+    '*': {
+      spanLabelFixed: 150,
+      grid: { span: 12, gutter: 16 },
+      showRequired: true
+    },
+    $10100: {
+      widget: 'number',
+      showRequired: true
     }
   };
-  @ViewChild('st') st: STComponent;
-  columns: STColumn[] = [
-    { title: '编号', index: 'no' },
-    { title: '调用次数', type: 'number', index: 'callNo' },
-    { title: '头像', type: 'img', width: '50px', index: 'avatar' },
-    { title: '时间', type: 'date', index: 'updatedAt' },
-    {
-      title: '',
-      buttons: [
-        // { text: '查看', click: (item: any) => `/form/${item.id}` },
-        // { text: '编辑', type: 'static', component: FormEditComponent, click: 'reload' },
-      ]
-    }
-  ];
 
-  constructor(private http: _HttpClient, private modal: ModalHelper) { }
+  constructor(private http: _HttpClient, private modal: ModalHelper) {
+
+    Object.entries(taxZsxm).forEach(i => this.taxSchema.properties[i[0]] = { type: 'number', title: i[1] });
+    console.log(this.taxSchema);
+  }
 
   ngOnInit() { }
 
