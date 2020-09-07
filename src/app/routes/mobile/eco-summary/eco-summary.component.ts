@@ -39,8 +39,9 @@ import { _HttpClient } from '@delon/theme';
     <ng-template #icon5>
         <i nz-icon nzType="trademark" nzTheme="outline"></i>
     </ng-template>
-
-    <router-outlet></router-outlet>
+    <div class="route-content">
+        <router-outlet></router-outlet>
+    </div>
     `,
     styleUrls: ['./eco-summary.component.less']
 })
