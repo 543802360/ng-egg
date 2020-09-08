@@ -1,0 +1,5 @@
+<span class="header-label" style="font-weight: bolder;"> 所属行业:</span>
+<nz-tree-select #treeSelect class="hymc-tree-select" style="width: 233px;margin: 0 3px;" [(ngModel)]="selectedHymc"
+    (ngModelChange)="onChange($event)" [nzNodes]="nodes" nzAllowClear="true" nzMultiple="false"
+    [nzPlaceHolder]="'请选择行业名称'">
+</nz-tree-select>
