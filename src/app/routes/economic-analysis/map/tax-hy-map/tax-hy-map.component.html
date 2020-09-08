@@ -10,6 +10,8 @@
     <app-month-range #monthRange style="margin-right: 5px;"></app-month-range>
     <button nz-button (click)="getData()" [disabled]="http.loading" nzType="primary"
       style="margin-left: 6px;">查询</button>
+    <button nz-button (click)="export()" [disabled]="http.loading" nzType="primary"
+      style="margin-left: 6px;">导出</button>
     <!-- <button nz-button [disabled]="http.loading" nzType="primary" style="margin-left: 6px;">添加</button> -->
   </ng-template>
   <div nz-row nzGutter="8" style="height: 100%;">

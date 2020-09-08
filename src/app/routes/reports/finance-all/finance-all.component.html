@@ -1,1 +1,4 @@
-<page-header></page-header>
+<p style="color: black;">Progress: {{progress}}%</p>
+<p *ngIf="progress >= 100" style="color: black;">Done processing {{label}} of Angular zone!</p>
+<button style="color: black;" (click)="processWithinAngularZone()">Process within Angular zone</button>
+<button style="color: black;" (click)="processOutsideOfAngularZone()">Process outside of Angular zone</button>

@@ -6,7 +6,7 @@ import { SFSchema } from '@delon/form';
 import { NzMessageService } from 'ng-zorro-antd';
 import * as mapboxgl from "mapbox-gl";
 import { dark } from "@geo";
-import { BdgSelectComponent, MonthRangeComponent, getColorRange } from '@shared';
+import { BdgSelectComponent, MonthRangeComponent, getColorRange, ExcelData, export2excel } from '@shared';
 import { G2BarData } from '@delon/chart/bar';
 import { forkJoin } from 'rxjs';
 import { LoadingService } from '@delon/abc';
@@ -272,5 +272,28 @@ export class EconomicAnalysisMapTaxAggMapComponent implements OnInit, AfterViewI
       pitch: pitch ? pitch : 46.5,
       speed: 0.8
     });
+  }
+
+  export() {
+    const filename = `镇街税收-${new Date().toLocaleString()}.xlsx`;
+
+    const rowData = this.townData.map(i => {
+      return {
+        '镇街': i.jdxzmc,
+        '本年度收入(万元)': i.bndsr,
+        '上年同期收入(万元)': i.sntq,
+        '同比增减（万元）': i.tbzjz,
+        '同比增减幅': i.tbzjf
+      }
+    });
+
+    const data: ExcelData[] = [
+      {
+        sheetName: '镇街收入',
+        rowData
+      }
+    ];
+    export2excel(filename, data);
+
   }
 }
