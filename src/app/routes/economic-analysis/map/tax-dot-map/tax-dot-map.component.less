@@ -1,13 +1,24 @@
 :host{
   nz-card{
     width: 100%;
-    height: calc(100% - 60px);
+    height: calc(100%);
     margin:  10px 0;
   }
   ::ng-deep {
     .ant-card-body{
-      height: 100%;
+      height: calc(100%);
       padding: 0;
+    }
+    .ant-card-extra{
+      margin: inherit;
+    }
+    .infinite-container{
+      height: calc(100% - 45px);
+      border: 1px solid #e8e8e8;
+      border-radius: 2px;
+    }
+    nz-list-item{
+      padding: 12px 8px;
     }
   }
   sf{

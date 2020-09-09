@@ -1,12 +1,55 @@
-<nz-card style="margin-top: 10px;">
+<nz-card style="margin-top: 10px;" [nzExtra]="extraTemplate1">
+  <ng-template #extraTemplate1>
+    <app-bdg-select #bdgSelect></app-bdg-select>
+    <app-hy-select (changed)="hyChange($event)" #hySelect></app-hy-select>
+    <span class="header-label"> 纳税额:</span>
+    <nz-select style="margin: 0 5px;width: 100px;" [(ngModel)]="selectedValue" nzPlaceHolder="请选择排名" nzAllowClear>
+      <nz-option nzLabel="亿元以上" [nzValue]="10000">
+      </nz-option>
+      <nz-option nzLabel="千万以上" [nzValue]="1000">
+      </nz-option>
+      <nz-option nzLabel="五百万以上" [nzValue]="500">
+      </nz-option>
+      <nz-option nzLabel="二百万以上" [nzValue]="200">
+      </nz-option>
+      <nz-option nzLabel="百万以上" [nzValue]="100">
+      </nz-option>
+    </nz-select>
 
-  <div nz-row nzGutter="8" style="height: 100%;">
-    <div nz-col nzSpan="12" style="height: 100%;">
-      <sf mode="search" [schema]="searchSchema" (formSubmit)="st.reset($event)" (formReset)="st.reset($event)"></sf>
-      <st #st [data]="url" [columns]="columns"></st>
+    <app-month-range #monthRange style="margin-right: 5px;"></app-month-range>
+    <button nz-button (click)="getData()" nzType="primary" style="margin-left: 6px;">查询</button>
+    <button nz-button (click)="export()" nzType="primary" style="margin-left: 6px;">导出</button>
+
+  </ng-template>
+  <div nz-row nzGutter="8" style="height: calc(100%);">
+    <div nz-col nzSpan="6" style="height: 100%;overflow:scroll">
+      <cdk-virtual-scroll-viewport itemSize="73" class="infinite-container">
+        <nz-list>
+          <nz-list-item *cdkVirtualFor="let i of ds;let idx=index">
+            <nz-list-item-meta [nzTitle]="itemTitle" [nzAvatar]="itemAvatar" [nzDescription]="itemDesc">
+              <ng-template #itemTitle>
+                <a (click)="click(i)">{{i.NSRMC}}</a>
+              </ng-template>
+              <ng-template #itemAvatar>
+                <nz-badge [nzCount]="idx+1" nzOverflowCount="10000"></nz-badge>
+              </ng-template>
+              <ng-template #itemDesc>
+                <span>
+                  <p style="margin: 0;">本年度收入：{{i.BNDSR|number}}</p>
+                  <p *ngIf="i.SNTQ" style="margin: 0;">上年同期：{{i.SNTQ|number}}</p>
+                  <p *ngIf="i.TBZJZ>0&&i.SNTQ" style="margin: 0;color:green">同比增长：{{i.TBZJZ|number}}（{{i.TBZJF}}）</p>
+                  <p *ngIf="i.TBZJZ<0&&i.SNTQ" style="margin: 0;color:red">同比下降：{{i.TBZJZ|number}}（{{i.TBZJF}}）</p>
+
+                </span>
+              </ng-template>
+            </nz-list-item-meta>
+          </nz-list-item>
+        </nz-list>
+      </cdk-virtual-scroll-viewport>
+
     </div>
-    <div nz-col nzSpan="12" style="height: 100%;">
-      <div style="height: 100%;min-height: 660px; width: 100%;margin-top: 10px;">
+    <div nz-col nzSpan="18" style="height: 100%;">
+      <div style="height: 100%; width: 100%;margin-top: 10px;">
         <!-- <nz-spin *ngIf="!map" nzSize="large" style=""></nz-spin> -->
         <mgl-map [style]="style" [trackResize]="true" [zoom]="[8]" [center]="[120.3,36.45]" (load)="mapboxLoad($event)">
           <mgl-control mglNavigation></mgl-control>
