@@ -1,3 +1,4 @@
+import { HySelectComponent } from './components/hy-select/hy-select.component';
 import { SummaryCardComponent } from './components/summary-card/summary-card.component';
 import { NsrmcSuggestionComponent } from './components/nsrmc-suggestion/nsrmc-suggestion.component';
 import { MonthRangeComponent } from './components/month-range/month-range.component';
@@ -26,7 +27,9 @@ import { XlsxModule } from '@delon/abc';
 
 
 const THIRDMODULES = [
-  CountdownModule, UEditorModule, NgxTinymceModule,
+  CountdownModule,
+  UEditorModule,
+  NgxTinymceModule,
   IconPickerModule
 ];
 // #endregion
@@ -34,6 +37,7 @@ const THIRDMODULES = [
 // #region your componets & directives
 const COMPONENTS = [
   BdgSelectComponent,
+  HySelectComponent,
   MonthRangeComponent,
   NsrmcSuggestionComponent,
   TrendComponent,
