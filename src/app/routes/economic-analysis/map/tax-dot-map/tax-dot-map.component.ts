@@ -1,13 +1,13 @@
 import { debounceTime, debounce } from 'rxjs/operators';
-import { Component, OnInit, ViewChild, AfterViewInit, ChangeDetectionStrategy } from '@angular/core';
-import { _HttpClient, ModalHelper } from '@delon/theme';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { _HttpClient } from '@delon/theme';
 import { CollectionViewer, DataSource } from '@angular/cdk/collections';
 import { BehaviorSubject, Observable, Subscription, from, timer } from 'rxjs';
 import { NzMessageService, NzTreeSelectComponent } from 'ng-zorro-antd';
 import * as mapboxgl from "mapbox-gl";
 import { dark } from "@geo";
 import { BdgSelectComponent, MonthRangeComponent } from '@shared';
-import { LoadingService } from '@delon/abc';
+import { LoadingService, ReuseTabService, ReuseHookTypes, ReuseComponentInstance } from '@delon/abc';
 import { Router, ActivatedRoute } from '@angular/router';
 
 interface ItemData {
@@ -25,7 +25,7 @@ interface ItemData {
   templateUrl: './tax-dot-map.component.html',
   styleUrls: ['./tax-dot-map.component.less'],
 })
-export class EconomicAnalysisMapTaxDotMapComponent implements OnInit, AfterViewInit {
+export class EconomicAnalysisMapTaxDotMapComponent implements OnInit, AfterViewInit, ReuseComponentInstance {
 
   url = `analysis/taxdot`;
   @ViewChild('bdgSelect') bdgSelect: BdgSelectComponent;
@@ -43,8 +43,22 @@ export class EconomicAnalysisMapTaxDotMapComponent implements OnInit, AfterViewI
     private router: Router,
     private route: ActivatedRoute,
     private msgSrv: NzMessageService) { }
+  _onReuseDestroy: () => void;
+  destroy: () => void;
 
   ngOnInit() { }
+
+  /**
+   * 复用路由初始化，重复进入时
+   */
+  _onReuseInit() {
+    console.log('_onReuseInit');
+    if (this.map) {
+      setTimeout(() => {
+        this.map.resize();
+      });
+    }
+  }
 
   ngAfterViewInit() {
     this.loadSrv.open({ text: '正在处理……' });

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, Renderer2, ElementRef } from '@angular/core';
 import { _HttpClient, ModalHelper } from '@delon/theme';
 import { STColumn, STComponent } from '@delon/abc/st';
 import { SFSchema } from '@delon/form';
@@ -9,7 +9,7 @@ import { dark } from "@geo";
 import { BdgSelectComponent, MonthRangeComponent, getColorRange, ExcelData, export2excel } from '@shared';
 import { G2BarData } from '@delon/chart/bar';
 import { forkJoin } from 'rxjs';
-import { LoadingService } from '@delon/abc';
+import { LoadingService, ReuseComponentInstance } from '@delon/abc';
 
 @Component({
   selector: 'app-economic-analysis-map-tax-agg-map',
@@ -17,16 +17,24 @@ import { LoadingService } from '@delon/abc';
   styleUrls: ['./tax-agg-map.component.less']
 
 })
-export class EconomicAnalysisMapTaxAggMapComponent implements OnInit, AfterViewInit {
+export class EconomicAnalysisMapTaxAggMapComponent implements OnInit, AfterViewInit, ReuseComponentInstance {
+
+  constructor(public http: _HttpClient,
+    private loadSrv: LoadingService,
+    private msgSrv: NzMessageService) { }
+  ;
 
   url = `analysis/town`;
   style = dark;
   townData: any[];
   townG2BarData: G2BarData[];
+  barHeight;
   map: mapboxgl.Map;
   @ViewChild('st') st: STComponent;
+  @ViewChild('colHost') colHost: ElementRef;
   @ViewChild('bdgSelect') bdgSelect: BdgSelectComponent;
   @ViewChild('monthRange') monthRange: MonthRangeComponent;
+
   tooltipStyle = { 'max-width': '400px' };
   columns: STColumn[] = [
     {
@@ -82,16 +90,23 @@ export class EconomicAnalysisMapTaxAggMapComponent implements OnInit, AfterViewI
     features: []
   };
   colorActive = "gold";
+  _onReuseDestroy: () => void;
+  destroy: () => void;
 
-  constructor(public http: _HttpClient,
-    private loadSrv: LoadingService,
-    private modal: ModalHelper,
-    private msgSrv: NzMessageService) { }
 
   ngOnInit() { }
 
+  _onReuseInit() {
+    if (this.map) {
+      setTimeout(() => {
+        this.map.resize();
+      });
+    }
+  }
+
   ngAfterViewInit() {
     this.loadSrv.open({ text: '正在处理……' });
+
   }
 
   /**
@@ -222,6 +237,8 @@ export class EconomicAnalysisMapTaxAggMapComponent implements OnInit, AfterViewI
                 .setLngLat(coords as any)
                 .setHTML(html)
                 .addTo(this.map);
+
+              console.log((this.st as any).el.nativeElement.style);
             }
           } else {
             // selectNsr = "";
@@ -263,8 +280,15 @@ export class EconomicAnalysisMapTaxAggMapComponent implements OnInit, AfterViewI
     (window as any).map = e;
 
   }
-
-  fly2target(center?, pitch?, zoom?, bearing?) {
+  /**
+   * ST change event listener
+   * @param e 
+   */
+  stChange(e) {
+    setTimeout(() => {
+      this.barHeight = this.colHost.nativeElement.clientHeight - (this.st as any).el.nativeElement.clientHeight - 90;
+    }, 200);
+  } fly2target(center?, pitch?, zoom?, bearing?) {
     this.map.flyTo({
       center: center ? center : [120.33246, 36.276589],
       zoom: zoom ? zoom : 9.688,
@@ -274,6 +298,9 @@ export class EconomicAnalysisMapTaxAggMapComponent implements OnInit, AfterViewI
     });
   }
 
+  /**
+   * 导出
+   */
   export() {
     const filename = `镇街税收-${new Date().toLocaleString()}.xlsx`;
 
