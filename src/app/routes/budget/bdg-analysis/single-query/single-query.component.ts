@@ -13,6 +13,7 @@ import { LoadingService } from '@delon/abc';
 import { deepCopy } from '@delon/util';
 import { ActivatedRoute } from '@angular/router';
 import { NsrmcSuggestionComponent } from 'src/app/shared/components/nsrmc-suggestion/nsrmc-suggestion.component';
+import { CacheService } from '@delon/cache';
 
 @Component({
   selector: 'app-budget-bdg-analysis-single-query',
@@ -28,7 +29,6 @@ export class BudgetBdgAnalysisSingleQueryComponent implements OnInit, AfterViewI
   historyUrl = `bdg/enterprise/tax/history`;
   taxByYearData: G2BarData[];
 
-  nsrmc = '';
   @ViewChild('nsrSug') nsrSug: NsrmcSuggestionComponent;
   @ViewChild('bdgSelect') bdgSelect: BdgSelectComponent;
   @ViewChild('monthRange') monthRange: MonthRangeComponent;
@@ -37,6 +37,7 @@ export class BudgetBdgAnalysisSingleQueryComponent implements OnInit, AfterViewI
   columns: STColumn[];
 
   constructor(public http: _HttpClient,
+    private cacheSrv: CacheService,
     private loadSrv: LoadingService,
     private msgSrv: NzMessageService,
     private route: ActivatedRoute) { }
@@ -48,10 +49,17 @@ export class BudgetBdgAnalysisSingleQueryComponent implements OnInit, AfterViewI
     this.route.queryParams.subscribe(params => {
       const { nsrmc } = params;
       setTimeout(() => {
-        this.nsrmc = nsrmc ? nsrmc : '';
-        this.nsrSug.nsrmc = this.nsrmc;
-        this.bdgSelect.budgetValue = [4];
-        if (this.nsrmc && this.bdgSelect.budgetValue) {
+
+        if (nsrmc) {
+          this.cacheSrv.set('currentNsrmc', nsrmc);
+          this.nsrSug.nsrmc = nsrmc;
+        } else {
+
+          this.cacheSrv.get('currentNsrmc', { mode: 'none' }) ? this.nsrSug.nsrmc = this.cacheSrv.get('currentNsrmc', { mode: 'none' }) : '';
+
+        }
+
+        if (this.nsrSug.nsrmc && this.bdgSelect.budgetValue) {
           this.search();
         }
       });
@@ -69,7 +77,7 @@ export class BudgetBdgAnalysisSingleQueryComponent implements OnInit, AfterViewI
 
     // const adminCode = this.cacheSrv.get('userInfo', { mode: 'none' }).department_id;
 
-    return { nsrmc: this.nsrmc.trim(), year, startMonth, endMonth, budgetValue };
+    return { nsrmc: this.nsrSug.nsrmc.trim(), year, startMonth, endMonth, budgetValue };
   }
 
 
@@ -78,10 +86,8 @@ export class BudgetBdgAnalysisSingleQueryComponent implements OnInit, AfterViewI
    * @param e 
    */
   search() {
-    if (!this.nsrmc) {
-      this.nsrmc = this.nsrSug._nsrmc;
-    }
-    if (!this.nsrmc) {
+
+    if (!this.nsrSug.nsrmc) {
       this.msgSrv.warning('请输入纳税人名称!');
       return;
     }
@@ -89,11 +95,12 @@ export class BudgetBdgAnalysisSingleQueryComponent implements OnInit, AfterViewI
       this.msgSrv.warning('请选择预算级次');
       return;
     }
+    this.cacheSrv.set('currentNsrmc', this.nsrSug.nsrmc);
     this.loadSrv.open({ text: '正在查询……' });
 
     const $stream1 = this.http.get(this.zsxmUrl, this.getCondition());
     const $stream2 = this.http.get(this.historyUrl, {
-      nsrmc: this.nsrmc,
+      nsrmc: this.nsrSug.nsrmc,
       ...this.getCondition()
     });
 
