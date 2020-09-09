@@ -157,7 +157,6 @@ export class BigEnterpriseCreateComponent implements OnInit, AfterViewInit {
    * @param value
    */
   change(e: STChange) {
-    console.log(e);
     if (e.click && e.click.item) {
       const { NSRMC, lat, lng } = e.click.item;
     }
@@ -167,6 +166,9 @@ export class BigEnterpriseCreateComponent implements OnInit, AfterViewInit {
 
   }
 
+  /**
+   * 创建大企业名录
+   */
   create() {
     const nsrmcs = this.data.map(item => item.NSRMC);
     this.http.post(this.createUrl, {
