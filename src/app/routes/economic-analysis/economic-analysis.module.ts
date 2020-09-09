@@ -8,7 +8,8 @@ import { EconomicAnalysisMapTaxDotMapComponent } from './map/tax-dot-map/tax-dot
 import { EconomicAnalysisMapTaxAggMapComponent } from './map/tax-agg-map/tax-agg-map.component';
 import { EconomicAnalysisBillAnalysisComponent } from './bill-analysis/bill-analysis.component';
 import { NgxMapboxGLModule } from 'ngx-mapbox-gl';
-
+import { DragDropModule } from "@angular/cdk/drag-drop";
+import { ScrollingModule } from "@angular/cdk/scrolling";
 const COMPONENTS = [DashboardComponent,
   EconomicAnalysisHyAnalysisComponent,
   EconomicAnalysisMapTaxDotMapComponent,
@@ -19,6 +20,8 @@ const COMPONENTS_NOROUNT = [];
 
 @NgModule({
   imports: [
+    DragDropModule,
+    ScrollingModule,
     SharedModule,
     NgxMapboxGLModule,
     EconomicAnalysisRoutingModule
