@@ -16,59 +16,61 @@ const COLORS = {
         "#091A7A",
     ],
     'success': [
-        "#EBFBD5",
-        "#D3F8AB",
-        "#AFEC7E",
-        "#8BD95B",
-        "#5BC12C",
-        "#41A520",
-        "#2B8A16",
-        "#196F0E",
-        "#0C5C08",
+        "#F0FDD3",
+        "#DEFCA8",
+        "#C4F77C",
+        "#AAEF5A",
+        "#83E527",
+        "#65C41C",
+        "#4BA413",
+        "#34840C",
+        "#246D07",
     ],
     'info': [
-        "#D7FEF5",
-        "#AFFDF2",
-        "#86FBF4",
-        "#67F4F7",
-        "#37DFF2",
-        "#28B1D0",
-        "#1B87AE",
-        "#11628C",
-        "#0A4774",
+        "#CFFFFD",
+        "#9FFBFF",
+        "#70EFFF",
+        "#4CDEFF",
+        "#11C3FF",
+        "#0C98DB",
+        "#0872B7",
+        "#055193",
+        "#033A7A",
     ],
     'warn': [
-        "#FEF9CF",
-        "#FEF29F",
-        "#FEE96F",
-        "#FDE04C",
-        "#FCD111",
-        "#D8AF0C",
-        "#B58F08",
-        "#927005",
-        "#785A03",
+        "#FEF7DA",
+        "#FEEEB5",
+        "#FEE28F",
+        "#FDD574",
+        "#FCC246",
+        "#D89E33",
+        "#B57D23",
+        "#925E16",
+        "#78480D",
     ],
     'danger': [
-        "#FFE9D5",
-        "#FFCDAB",
-        "#FFAB81",
-        "#FF8A61",
-        "#FF542D",
-        "#DB3520",
-        "#B71C16",
-        "#930E13",
-        "#7A0815",
+        "#FFE6D3",
+        "#FFC6A9",
+        "#FFA07E",
+        "#FF7B5D",
+        "#FF3E28",
+        "#DB211D",
+        "#B7141D",
+        "#930C1F",
+        "#7A0720",
     ]
 }
 
 
-export function getColorRange(min: number, max: number, type: string = 'danger') {
+function getColorRange(min: number, max: number, type: string = 'danger') {
 
     const range = Math.abs(max - min);
     const arr = [];
-    const data = Math.floor(range / 5);
-    for (let i = 0; i < 6; i++) {
+    const data = Math.floor(range / 9);
+    for (let i = 0; i < 9; i++) {
         arr.push([Math.floor(min + data * i), COLORS[type][i]]);
     }
     return arr;
 }
+
+export { getColorRange, COLORS }
