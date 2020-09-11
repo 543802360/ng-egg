@@ -14,6 +14,8 @@
       </nz-option>
       <nz-option nzLabel="百万以上" [nzValue]="100">
       </nz-option>
+      <nz-option nzLabel="五十万以上" [nzValue]="50">
+      </nz-option>
     </nz-select>
 
     <app-month-range #monthRange style="margin-right: 5px;"></app-month-range>
@@ -23,7 +25,7 @@
   </ng-template>
   <div nz-row nzGutter="8" style="height: calc(100%);">
     <div nz-col nzSpan="6" style="height: 100%;overflow:scroll">
-      <cdk-virtual-scroll-viewport itemSize="73" class="infinite-container">
+      <cdk-virtual-scroll-viewport [itemSize]="100" class="infinite-container">
         <nz-list>
           <nz-list-item *cdkVirtualFor="let i of ds;let idx=index">
             <nz-list-item-meta [nzTitle]="itemTitle" [nzAvatar]="itemAvatar" [nzDescription]="itemDesc">
@@ -50,6 +52,12 @@
     </div>
     <div nz-col nzSpan="18" style="height: 100%;">
       <div style="height: 100%; width: 100%;margin-top: 10px;">
+        <nz-button-group nzSize="default" style="position: absolute; z-index: 99; top: 20px; left: 20px;">
+          <button nz-button (click)="switchLayer('heat')" nzDanger="true" nzGhost="true">热力图</button>
+          <button nz-button (click)="switchLayer('dot')" nzDanger="true" nzGhost="true">散点图</button>
+          <button nz-button (click)="switchLayer('cluster')" nzDanger="true" nzGhost="true">聚合图</button>
+
+        </nz-button-group>
         <!-- <nz-spin *ngIf="!map" nzSize="large" style=""></nz-spin> -->
         <mgl-map [style]="style" [trackResize]="true" [zoom]="[8]" [center]="[120.3,36.45]" (load)="mapboxLoad($event)">
           <mgl-control mglNavigation></mgl-control>

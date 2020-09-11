@@ -149,7 +149,7 @@ export class EconomicAnalysisMapTaxAggMapComponent implements OnInit, AfterViewI
         });
         const mintax = Math.min(...taxArray);
         const maxtax = Math.max(...taxArray);
-        const colorRange = getColorRange(mintax, maxtax);
+        const colorRange = getColorRange(mintax, maxtax, 'success');
         if (this.map.getSource('town-geo')) {
           (this.map.getSource('town-geo') as mapboxgl.GeoJSONSource).setData(fc);
         } else {
