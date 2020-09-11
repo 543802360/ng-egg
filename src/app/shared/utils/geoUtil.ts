@@ -1,14 +1,12 @@
-import * as wkt from "wicket";
 
-const WKT = new wkt.Wkt();
+import * as turf from "@turf/turf";
 
-function wkt2geojson(wkt) {
+function Point(lat, lng, properties) {
+  return turf.point([lng, lat], properties);
+}
+
+function points() {
 
 }
 
-function geojson2wkt(geojson) {
-  WKT.read(geojson);
-  return WKT.write();
-}
-
-export { wkt2geojson, geojson2wkt }
+export { Point };

@@ -1,7 +1,7 @@
 import { EBuildingOperation } from './../../dics/buildingOperation';
 import { GeoUtilService } from '../../../../core/geoutil/geo-util.service';
 import { CacheService } from '@delon/cache';
-import { IBuilding, geojson2wkt } from '@shared';
+import { IBuilding } from '@shared';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NzModalRef } from 'ng-zorro-antd/modal';
 import { NzMessageService } from 'ng-zorro-antd/message';

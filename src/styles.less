@@ -47,10 +47,24 @@
 }
 .mapboxgl-popup{
   max-width: 500px !important;
+  .mapboxgl-popup-tip{
+    opacity: 0.8;
+    filter: invert(100%);
+  }
+  .mapboxgl-popup-content{
+    padding: 15px;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    line-height: 18px;
+    max-width: 400px;
+    overflow:scroll;
+    padding: 8px;
+    h5{
+      color: aliceblue !important;
+    }
+  }
 }
-.mapboxgl-popup-content{
-  padding: 15px;
-}
+
 html,
 body {
   color: #fff;
