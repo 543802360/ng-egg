@@ -5,7 +5,7 @@ import { BehaviorSubject, Observable, Subscription, from, timer } from 'rxjs';
 import { NzMessageService, NzTreeSelectComponent } from 'ng-zorro-antd';
 import * as mapboxgl from "mapbox-gl";
 import { dark } from "@geo";
-import { BdgSelectComponent, MonthRangeComponent, Point, getColorRange, COLORS } from '@shared';
+import { BdgSelectComponent, MonthRangeComponent, Point, getColorRange, COLORS, EOrder, ZSXM, export2excel } from '@shared';
 import { LoadingService, ReuseTabService, ReuseHookTypes, ReuseComponentInstance } from '@delon/abc';
 import { Router, ActivatedRoute } from '@angular/router';
 
@@ -95,7 +95,7 @@ export class EconomicAnalysisMapTaxDotMapComponent implements OnInit, AfterViewI
     this.router.navigate(['../../budget/single-query'], {
       queryParams: { nsrmc: i.NSRMC },
       relativeTo: this.route
-    })
+    });
   }
   /**
    * 行业选择事件
@@ -351,19 +351,21 @@ export class EconomicAnalysisMapTaxDotMapComponent implements OnInit, AfterViewI
       'source': 'nsr',
       'filter': ['!=', 'cluster', true],
       'layout': {
-
         'text-field': '{value}',
         'text-font': ['微软雅黑'],
-        'text-size': 10,
+        'text-size': {
+          stops: [
+            [9, 12],
+            [14, 15],
+            [19, 20]
+          ]
+        },
         visibility: 'none'
       },
       'paint': {
-        'text-color': [
-          'case',
-          ['<', ['get', 'value'], 100],
-          'black',
-          'white'
-        ]
+        'text-halo-color': 'gray',
+        'text-halo-width': 1,
+        'text-color': '#ffc300'
       }
     });
 
@@ -517,7 +519,9 @@ export class EconomicAnalysisMapTaxDotMapComponent implements OnInit, AfterViewI
         this.map.setLayoutProperty('dot-layer', 'visibility', 'visible');
         this.map.setLayoutProperty('nsr_circle', 'visibility', 'none');
         this.map.setLayoutProperty('nsr_label', 'visibility', 'none');
-        this.map.fire('move');
+        setTimeout(() => {
+          this.map.resize();
+        });
         break;
       case 'dot':
         this.map.setLayoutProperty('heat-layer', 'visibility', 'none');
@@ -525,8 +529,9 @@ export class EconomicAnalysisMapTaxDotMapComponent implements OnInit, AfterViewI
         this.map.setLayoutProperty('dot-layer', 'visibility', 'visible');
         this.map.setLayoutProperty('nsr_circle', 'visibility', 'none');
         this.map.setLayoutProperty('nsr_label', 'visibility', 'none');
-        this.map.fire('move');
-
+        setTimeout(() => {
+          this.map.resize();
+        });
         break;
 
       case 'cluster':
@@ -535,8 +540,9 @@ export class EconomicAnalysisMapTaxDotMapComponent implements OnInit, AfterViewI
         this.map.setLayoutProperty('dot-layer', 'visibility', 'none');
         this.map.setLayoutProperty('nsr_circle', 'visibility', 'visible');
         this.map.setLayoutProperty('nsr_label', 'visibility', 'visible');
-        this.map.fire('move');
-
+        setTimeout(() => {
+          this.map.resize();
+        });
         break;
 
       default:
@@ -544,8 +550,37 @@ export class EconomicAnalysisMapTaxDotMapComponent implements OnInit, AfterViewI
     }
   }
 
+  /**
+   * 导出
+   */
   export() {
+    this.loadSrv.open({
+      text: '正在处理……'
+    });
+    const nsrmcs = this.resData.map(i => i.NSRMC);
+    this.http.post('bdg/tools/batchQuery', {
+      nsrmcs,
+      ...this.getCondition()
+    }).subscribe(resp => {
 
+      const rowData = resp.data.map(item => {
+        const el = {};
+        Object.keys(EOrder).forEach(key => {
+          el[EOrder[key]] = item[key];
+        });
+        Object.keys(ZSXM).forEach(key => {
+          el[ZSXM[key]] = item[key] ? item[key] : 0;
+        });
+        return el;
+
+      });
+      this.loadSrv.close();
+      export2excel(`税源专题-${this.selectedValue}万以上企业-${new Date().toLocaleString()}.xlsx`, [{
+        rowData,
+        sheetName: '税源专题'
+      }]);
+
+    });
   }
 
   mapboxLoad(e) {
@@ -581,7 +616,7 @@ export class EconomicAnalysisMapTaxDotMapComponent implements OnInit, AfterViewI
       let html = '';
       const { lng, lat } = e.lngLat;
       const queryPt = this.map.queryRenderedFeatures(e.point, {
-        layers: ['dot-layer']
+        layers: ['dot-layer', 'nsr_circle']
       });
       if (queryPt.length) {
         this.pointActive.features = [queryPt[0]];
@@ -600,7 +635,22 @@ export class EconomicAnalysisMapTaxDotMapComponent implements OnInit, AfterViewI
     });
     this.map.on('mouseleave', e => {
       this.popup.remove();
-    })
+    });
+    this.map.on('click', e => {
+      console.log(e);
+      const html = '';
+      const { lng, lat } = e.lngLat;
+      const queryPt = this.map.queryRenderedFeatures(e.point, {
+        layers: ['dot-layer', 'nsr_circle']
+      });
+      if (queryPt.length) {
+        const { nsrmc, value } = queryPt[0].properties;
+        this.router.navigate(['../../budget/single-query'], {
+          queryParams: { nsrmc },
+          relativeTo: this.route
+        });
+      }
+    });
   }
 
 }

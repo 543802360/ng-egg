@@ -289,7 +289,6 @@ export class BudgetBdgAnalysisCompanyOrderComponent implements OnInit, AfterView
 
       });
       this.loadSrv.close();
-      console.log('excel data:', rowData);
       export2excel(`税收排名-${new Date().toLocaleString()}.xlsx`, [{
         rowData,
         sheetName: '税收排名'
