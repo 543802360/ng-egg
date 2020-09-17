@@ -121,7 +121,12 @@ import { environment } from '../environments/environment';
       registrationStrategy: 'registerImmediately'
     }),
   ],
-  providers: [...LANG_PROVIDES, ...INTERCEPTOR_PROVIDES, ...I18NSERVICE_PROVIDES, ...APPINIT_PROVIDES, LoadingTypesService],
+  providers: [
+    ...LANG_PROVIDES,
+    ...INTERCEPTOR_PROVIDES,
+    ...I18NSERVICE_PROVIDES,
+    ...APPINIT_PROVIDES,
+    LoadingTypesService],
   bootstrap: [AppComponent],
 })
 export class AppModule { }
