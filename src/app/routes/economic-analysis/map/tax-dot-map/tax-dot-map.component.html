@@ -3,7 +3,7 @@
     <app-bdg-select #bdgSelect></app-bdg-select>
     <app-hy-select (changed)="hyChange($event)" #hySelect></app-hy-select>
     <span class="header-label"> 纳税额:</span>
-    <nz-select style="margin: 0 5px;width: 100px;" [(ngModel)]="selectedValue" nzPlaceHolder="请选择排名" nzAllowClear>
+    <nz-select style="margin: 0 5px;width: 130px;" [(ngModel)]="selectedValue" nzPlaceHolder="请选择排名" nzAllowClear>
       <nz-option nzLabel="亿元以上" [nzValue]="10000">
       </nz-option>
       <nz-option nzLabel="千万以上" [nzValue]="1000">
@@ -52,11 +52,10 @@
     </div>
     <div nz-col nzSpan="18" style="height: 100%;">
       <div style="height: 100%; width: 100%;margin-top: 10px;">
-        <nz-button-group nzSize="default" style="position: absolute; z-index: 99; top: 20px; left: 20px;">
+        <nz-button-group nzSize="default" style="position: absolute; z-index: 9; top: 20px; left: 20px;">
           <button nz-button (click)="switchLayer('heat')" nzDanger="true" nzGhost="true">热力图</button>
           <button nz-button (click)="switchLayer('dot')" nzDanger="true" nzGhost="true">散点图</button>
           <button nz-button (click)="switchLayer('cluster')" nzDanger="true" nzGhost="true">聚合图</button>
-
         </nz-button-group>
         <!-- <nz-spin *ngIf="!map" nzSize="large" style=""></nz-spin> -->
         <mgl-map [style]="style" [trackResize]="true" [zoom]="[8]" [center]="[120.3,36.45]" (load)="mapboxLoad($event)">

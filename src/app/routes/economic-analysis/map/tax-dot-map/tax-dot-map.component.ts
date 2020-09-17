@@ -112,14 +112,14 @@ export class EconomicAnalysisMapTaxDotMapComponent implements OnInit, AfterViewI
     this.loadSrv.open({ text: '正在处理……' });
     this.http.get(this.url, this.getCondition()).subscribe(resp => {
       this.resData = resp.data;
-      if (this.ds) {
-        this.ds.updateSource(resp.data);
-      } else {
-        this.ds = new MyDataSource(resp.data);
-      }
+      // if (this.ds) {
+      //   this.ds.updateSource(resp.data);
+      // } else {
+      //   this.ds = new MyDataSource(resp.data);
+      // }
+      this.ds = new MyDataSource(resp.data);
       this.loadSrv.close();
       this.initDotLayer(resp.data);
-      this.initHeatLayer(resp.data);
 
     });
   }
@@ -151,8 +151,6 @@ export class EconomicAnalysisMapTaxDotMapComponent implements OnInit, AfterViewI
     const values = data.map(i => i.BNDSR);
     const min = Math.min(...values);
     const max = Math.max(...values);
-    const colorStops = getColorRange(min, max, 'danger');
-    console.log(colorStops);
     // 构造点集合
     const features = data.map((i, index) => {
       return Point(i.lat, i.lng, {
@@ -164,9 +162,12 @@ export class EconomicAnalysisMapTaxDotMapComponent implements OnInit, AfterViewI
       type: 'FeatureCollection',
       features
     };
-    this.initClusterLayer(fc);
+
+
     if (this.map.getSource('dot-source')) {
       (this.map.getSource('dot-source') as mapboxgl.GeoJSONSource).setData(fc as any);
+      (this.map.getSource('nsr') as mapboxgl.GeoJSONSource).setData(fc as any);
+
       return;
     }
     else {
@@ -174,37 +175,40 @@ export class EconomicAnalysisMapTaxDotMapComponent implements OnInit, AfterViewI
         type: 'geojson',
         data: fc as any
       });
+
+      this.map.addLayer({
+        id: 'dot-layer',
+        type: 'circle',
+        minzoom: 12.61,
+        source: 'dot-source',
+        layout: {
+          visibility: 'visible'
+        },
+        paint: {
+          "circle-radius": {
+            stops: [[9, 3], [19, 15]]
+          },
+          "circle-color": {
+            property: 'value',
+            stops: [
+              [0, COLORS.danger[0]],
+              [10, COLORS.danger[1]],
+              [50, COLORS.danger[2]],
+              [100, COLORS.danger[3]],
+              [200, COLORS.danger[4]],
+              [500, COLORS.danger[5]],
+              [800, COLORS.danger[6]],
+              [1000, COLORS.danger[7]],
+              [5000, COLORS.danger[8]]
+            ]
+          },
+          "circle-opacity": 0.85
+        }
+      });
+      this.initClusterLayer(fc);
+      this.initHeatLayer();
     }
 
-    this.map.addLayer({
-      id: 'dot-layer',
-      type: 'circle',
-      minzoom: 12.61,
-      source: 'dot-source',
-      layout: {
-        visibility: 'visible'
-      },
-      paint: {
-        "circle-radius": {
-          stops: [[9, 3], [19, 15]]
-        },
-        "circle-color": {
-          property: 'value',
-          stops: [
-            [0, COLORS.danger[0]],
-            [10, COLORS.danger[1]],
-            [50, COLORS.danger[2]],
-            [100, COLORS.danger[3]],
-            [200, COLORS.danger[4]],
-            [500, COLORS.danger[5]],
-            [800, COLORS.danger[6]],
-            [1000, COLORS.danger[7]],
-            [5000, COLORS.danger[8]]
-          ]
-        },
-        "circle-opacity": 0.85
-      }
-    })
 
   }
 
@@ -212,7 +216,10 @@ export class EconomicAnalysisMapTaxDotMapComponent implements OnInit, AfterViewI
    * 初始化散点图
    * @param data 
    */
-  initHeatLayer(data: ItemData[]) {
+  initHeatLayer() {
+    if (this.map.getLayer('heat-layer')) {
+      return;
+    }
     this.map.addLayer(
       {
         'id': 'heat-layer',
@@ -309,7 +316,7 @@ export class EconomicAnalysisMapTaxDotMapComponent implements OnInit, AfterViewI
       'type': 'geojson',
       'data': data,
       'cluster': true,
-      'clusterRadius': 80,
+      'clusterRadius': 60,
       'clusterProperties': {
         // keep separate counts for each valuenitude category in a cluster
         'value1': ['+', ['case', value1, 1, 0]],
@@ -521,7 +528,7 @@ export class EconomicAnalysisMapTaxDotMapComponent implements OnInit, AfterViewI
         this.map.setLayoutProperty('nsr_label', 'visibility', 'none');
         setTimeout(() => {
           this.map.resize();
-        });
+        }, 100);
         break;
       case 'dot':
         this.map.setLayoutProperty('heat-layer', 'visibility', 'none');
@@ -531,7 +538,7 @@ export class EconomicAnalysisMapTaxDotMapComponent implements OnInit, AfterViewI
         this.map.setLayoutProperty('nsr_label', 'visibility', 'none');
         setTimeout(() => {
           this.map.resize();
-        });
+        }, 100);
         break;
 
       case 'cluster':
@@ -542,7 +549,7 @@ export class EconomicAnalysisMapTaxDotMapComponent implements OnInit, AfterViewI
         this.map.setLayoutProperty('nsr_label', 'visibility', 'visible');
         setTimeout(() => {
           this.map.resize();
-        });
+        }, 100);
         break;
 
       default:
@@ -692,9 +699,9 @@ class MyDataSource extends DataSource<ItemData>{
   updateSource(data?: ItemData[]) {
     this.cachedData = Array.from<ItemData>({ length: data.length });
     this.fetchedPages.clear();
-    setTimeout(() => {
-      this.fetchPage(0);
-    }, 100);
+    // setTimeout(() => {
+    //   this.fetchPage(0);
+    // }, 100);
   }
   private getPageForIndex(index: number): number {
     return Math.floor(index / this.pageSize);
