@@ -3,6 +3,21 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { APP_INITIALIZER, LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NzConfig, NZ_CONFIG } from "ng-zorro-antd/core/config";
+
+//#region ng-zorro全局配置
+
+const ngZorroConfig: NzConfig = {
+  notification: {
+    nzMaxStack: 1
+  }
+};
+
+const NGCONFIG_PROVIDER = [{
+  provide: NZ_CONFIG, useValue: ngZorroConfig
+}];
+
+//#endregion
 
 // #region default language
 // 参考：https://ng-alain.com/docs/i18n
@@ -126,6 +141,7 @@ import { environment } from '../environments/environment';
     ...INTERCEPTOR_PROVIDES,
     ...I18NSERVICE_PROVIDES,
     ...APPINIT_PROVIDES,
+    ...NGCONFIG_PROVIDER,
     LoadingTypesService],
   bootstrap: [AppComponent],
 })
