@@ -1,6 +1,7 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import { _HttpClient } from '@delon/theme';
 import { CollectionViewer, DataSource } from '@angular/cdk/collections';
+import { CdkVirtualScrollViewport } from "@angular/cdk/scrolling";
 import { BehaviorSubject, Observable, Subscription, from, timer } from 'rxjs';
 import { NzMessageService, NzTreeSelectComponent } from 'ng-zorro-antd';
 import * as mapboxgl from "mapbox-gl";
@@ -26,6 +27,7 @@ interface ItemData {
   selector: 'app-economic-analysis-map-tax-dot-map',
   templateUrl: './tax-dot-map.component.html',
   styleUrls: ['./tax-dot-map.component.less'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EconomicAnalysisMapTaxDotMapComponent implements OnInit, AfterViewInit, ReuseComponentInstance {
 
@@ -33,10 +35,17 @@ export class EconomicAnalysisMapTaxDotMapComponent implements OnInit, AfterViewI
   @ViewChild('bdgSelect') bdgSelect: BdgSelectComponent;
   @ViewChild('monthRange') monthRange: MonthRangeComponent;
   @ViewChild('hyTreeSelect') hyTreeSelect: NzTreeSelectComponent;
+  @ViewChild('scrollView') scrollView: CdkVirtualScrollViewport;
   ds: MyDataSource;// 查询结果数据源 
   selectedValue = 50; // 所选纳税金额
   selectedHy; // 所选行业
   resData: ItemData[];
+
+  count = 0;
+  totalValue = 0;
+  tbzjValue = 0;
+  tbzjf = '';
+
   //#region mapboxgl 相关
 
   style = dark;
@@ -63,7 +72,7 @@ export class EconomicAnalysisMapTaxDotMapComponent implements OnInit, AfterViewI
     private loadSrv: LoadingService,
     private router: Router,
     private route: ActivatedRoute,
-    private msgSrv: NzMessageService) { }
+    private cdr: ChangeDetectorRef) { }
   _onReuseDestroy: () => void;
   destroy: () => void;
 
@@ -77,7 +86,7 @@ export class EconomicAnalysisMapTaxDotMapComponent implements OnInit, AfterViewI
       setTimeout(() => {
         this.map.resize();
         if (this.ds) {
-          this.ds.updateSource(this.resData);
+          this.ds.updateSource(this.resData, this.scrollView);
         }
       });
     }
@@ -109,17 +118,33 @@ export class EconomicAnalysisMapTaxDotMapComponent implements OnInit, AfterViewI
    * 查询数据
    */
   getData() {
+    this.count = 0;
+    this.totalValue = 0;
+    this.tbzjValue = 0;
+    this.tbzjf = '';
+    let sntqValue = 0;
     this.loadSrv.open({ text: '正在处理……' });
     this.http.get(this.url, this.getCondition()).subscribe(resp => {
-      this.resData = resp.data;
-      // if (this.ds) {
-      //   this.ds.updateSource(resp.data);
-      // } else {
-      //   this.ds = new MyDataSource(resp.data);
-      // }
-      this.ds = new MyDataSource(resp.data);
+
       this.loadSrv.close();
+      this.count = resp.data.length;
+      resp.data.forEach(i => {
+        this.totalValue += i.BNDSR;
+        sntqValue += i.SNTQ;
+      });
+      this.tbzjValue = this.totalValue - sntqValue;
+      this.tbzjf = `${(Math.floor(this.tbzjValue / sntqValue * 10000) / 100).toFixed(2)}%`;
+
+
+      this.resData = [...resp.data];
+      if (this.ds) {
+        this.ds.updateSource(resp.data, this.scrollView);
+      } else {
+        this.ds = new MyDataSource(resp.data);
+      }
       this.initDotLayer(resp.data);
+
+      this.cdr.detectChanges();
 
     });
   }
@@ -592,9 +617,7 @@ export class EconomicAnalysisMapTaxDotMapComponent implements OnInit, AfterViewI
 
   mapboxLoad(e) {
     this.map = e;
-    setTimeout(() => {
-      this.getData();
-    });
+    this.getData();
     // 添加高亮数据源
     this.map.addSource('point-active', {
       type: 'geojson',
@@ -664,7 +687,7 @@ export class EconomicAnalysisMapTaxDotMapComponent implements OnInit, AfterViewI
 
 class MyDataSource extends DataSource<ItemData>{
 
-  private pageSize = 5;
+  private pageSize = 1;
   private cachedData: ItemData[];
   private fetchedPages = new Set<number>();
   private dataStream;
@@ -696,12 +719,14 @@ class MyDataSource extends DataSource<ItemData>{
     this.subscription.unsubscribe();
   }
 
-  updateSource(data?: ItemData[]) {
+  updateSource(data: ItemData[], cdkScrollView: CdkVirtualScrollViewport) {
     this.cachedData = Array.from<ItemData>({ length: data.length });
     this.fetchedPages.clear();
-    // setTimeout(() => {
-    //   this.fetchPage(0);
-    // }, 100);
+    this.fetchPage(0);
+    setTimeout(() => {
+      cdkScrollView.scrollTo({ top: 0 })
+
+    }, 100);
   }
   private getPageForIndex(index: number): number {
     return Math.floor(index / this.pageSize);
@@ -717,6 +742,7 @@ class MyDataSource extends DataSource<ItemData>{
 
     // });
     const appendData = this.data.slice(page * this.pageSize, (page + 1) * this.pageSize)
+    console.log('append data:', appendData);
     this.cachedData.splice(page * this.pageSize, this.pageSize, ...appendData);
     this.dataStream.next(this.cachedData);
   }

@@ -25,7 +25,29 @@
   </ng-template>
   <div nz-row nzGutter="8" style="height: calc(100%);">
     <div nz-col nzSpan="6" style="height: 100%;overflow:scroll">
-      <cdk-virtual-scroll-viewport [itemSize]="100" class="infinite-container">
+      <div nz-row nzGutter="8">
+        <div nz-col nzSpan="12">
+          <nz-statistic [nzValue]="count" [nzTitle]="'企业数'" [nzValueStyle]="{ color: '#3F8600' }">
+          </nz-statistic>
+        </div>
+        <div nz-col nzSpan="12">
+          <nz-statistic [nzValue]="(totalValue | number: '1.0-2')!" [nzTitle]="'本年度总收入'" nzSuffix="万元"
+            [nzValueStyle]="{ color: '#3F8600' }">
+          </nz-statistic>
+        </div>
+      </div>
+      <div nz-row nzGutter="8">
+        <div nz-col nzSpan="12">
+          <nz-statistic [nzValue]="(tbzjValue | number: '1.0-2')!" [nzTitle]="'同比增减'" nzSuffix="万元"
+            [nzValueStyle]="{ color: '#3F8600' }">
+          </nz-statistic>
+        </div>
+        <div nz-col nzSpan="12">
+          <nz-statistic [nzValue]="tbzjf" [nzTitle]="'同比增减幅'" [nzValueStyle]="{ color: '#3F8600' }">
+          </nz-statistic>
+        </div>
+      </div>
+      <cdk-virtual-scroll-viewport #scrollView [itemSize]="120" class="infinite-container">
         <nz-list>
           <nz-list-item *cdkVirtualFor="let i of ds;let idx=index">
             <nz-list-item-meta [nzTitle]="itemTitle" [nzAvatar]="itemAvatar" [nzDescription]="itemDesc">
@@ -48,7 +70,6 @@
           </nz-list-item>
         </nz-list>
       </cdk-virtual-scroll-viewport>
-
     </div>
     <div nz-col nzSpan="18" style="height: 100%;">
       <div style="height: 100%; width: 100%;margin-top: 10px;">
