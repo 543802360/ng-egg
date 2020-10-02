@@ -51,8 +51,8 @@ export class BudgetBdgSettingBdgTownComponent implements OnInit, AfterViewInit {
   }
 
   save(e) {
-    this.http.post('bdg/setting/town', this.bdgData).subscribe(resp => {
-      console.log(resp);
+    console.log('budget value:', this.bdgData);
+    this.http.post('bdg/setting/town', [...this.bdgData]).subscribe(resp => {
       this.msgSrv.success(resp.msg);
       this.st.reload(this.params);
     });

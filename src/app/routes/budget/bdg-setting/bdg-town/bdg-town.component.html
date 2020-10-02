@@ -18,7 +18,7 @@
     <nz-card nzTitle="预算目标编辑">
       <form nz-form #f="ngForm" se-container col="2" nzLayout="horizontal">
         <se *ngFor="let item of bdgData" label="{{item.JDXZMC}}" col="1" required>
-          <input nz-input [(ngModel)]="item.BDG_VALUE" type="number" name="item.JDXZMC" id="item.JDXZDM"
+          <input nz-input [(ngModel)]="item.BDG_VALUE" type="number" name="item.JDXZMC"
             [ngModelOptions]="{standalone: true}" required>
         </se>
         <se col="2">

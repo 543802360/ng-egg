@@ -83,21 +83,21 @@ const routes: Routes = [
   },
 
   // 全屏布局
-  // {
-  //   path: 'fullscreen',
-  //   component: LayoutFullScreenComponent,
-  //   children: [
-  //     {
-  //       path: 'permtax',
-  //       loadChildren: () => import('./permu-tax/permu-tax.module').then(m => m.PermuTaxModule)
-  //     },
-  //     {
-  //       path: '',
-  //       redirectTo: 'permtax',
-  //       pathMatch: 'full'
-  //     }
-  //   ]
-  // },
+  {
+    path: 'fullscreen',
+    component: LayoutFullScreenComponent,
+    children: [
+      {
+        path: 'economic',
+        loadChildren: () => import('./economic-analysis/economic-analysis.module').then(m => m.EconomicAnalysisModule)
+      },
+      {
+        path: '',
+        redirectTo: 'economic',
+        pathMatch: 'full'
+      }
+    ]
+  },
   // passport
   {
     path: 'passport',
