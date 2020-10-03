@@ -88,12 +88,12 @@ const routes: Routes = [
     component: LayoutFullScreenComponent,
     children: [
       {
-        path: 'economic',
-        loadChildren: () => import('./economic-analysis/economic-analysis.module').then(m => m.EconomicAnalysisModule)
+        path: 'tax-datav',
+        loadChildren: () => import('./tax-datav/tax-datav.module').then(m => m.TaxDatavModule)
       },
       {
         path: '',
-        redirectTo: 'economic',
+        redirectTo: 'tax-datav',
         pathMatch: 'full'
       }
     ]

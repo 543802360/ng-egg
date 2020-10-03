@@ -1,1 +1,33 @@
-<page-header></page-header>
+<div class="big-box">
+    <div class="child-big-box">
+        <div class="wrapper">
+
+            <!-- <button style="float:left;margin:10px;z-index:999" title="专题选择" nzGhost nz-button nzType="primary"
+          nzShape="circle" (click)="taxSubjectVisible=true"> <i nz-icon nzType="appstore" nzTheme="outline"></i>
+        </button> -->
+            <div class="big-box-top">
+                <div class="big_box_top_title">
+                    <!-- <nz-button-group class="top_nav_menu">
+              <button nz-button [nzGhost]="true" (click)="nav('1')" nzType="primary">财政运行</button>
+              <button nz-button [nzGhost]="true" (click)="nav('2')" nzType="primary">集团企业</button>
+              <button nz-button [nzGhost]="true" (click)="nav('3')" nzType="primary">园区经济</button>
+            </nz-button-group> -->
+                    <span class="top_title"></span>
+                    <span class="top_time currentTime"></span>
+                </div>
+            </div>
+
+            <div class="container">
+                <router-outlet #outlet="outlet"></router-outlet>
+            </div>
+        </div>
+    </div>
+</div>
+
+<nz-modal [nzWidth]="320" [(nzVisible)]="taxSubjectVisible" nzTitle="税收专题选择" (nzOnCancel)="dlgCancel()">
+    请选择税收专题：<nz-select style="width:160px" [(ngModel)]="selectSubject">
+        <nz-option nzValue="1" nzLabel="财政税收收入情况"></nz-option>
+        <nz-option nzValue="2" nzLabel="集团企业税收情况"></nz-option>
+        <nz-option nzValue="3" nzLabel="园区经济专题"></nz-option>
+    </nz-select>
+</nz-modal>
