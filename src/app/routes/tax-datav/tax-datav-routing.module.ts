@@ -7,7 +7,17 @@ const routes: Routes = [
 
   {
     path: 'nav',
-    component: TaxDatavNavComponent
+    component: TaxDatavNavComponent,
+    children: [
+      {
+        path: 'summary',
+        component: TaxDatavSummaryComponent
+      }, {
+        path: '',
+        redirectTo: 'summary',
+        pathMatch: 'full'
+      }
+    ]
   },
   {
     path: '',

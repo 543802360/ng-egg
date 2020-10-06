@@ -1,0 +1,140 @@
+:host::ng-deep {
+  .ant-col {
+    height: 100% !important;
+  }
+}
+.container {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  margin: 0;
+  padding: 0;
+  font-family: 'Microsoft Yahei', Arial, sans-serif;
+  background: transparent;
+}
+
+.container div[nz-row].fill-row {
+  height: 100%;
+}
+
+.container div[nz-row] div[nz-col] {
+  height: 100%;
+}
+
+.tax-1 {
+  height: calc(100% - 8px);
+  margin: 8px 0 0 8px;
+  width: 100%;
+  background: url('../../../../assets/image/panel-bg.png') 0 0/100% 100% no-repeat;
+}
+.tax-2 {
+  height: calc(50%);
+  width: 100%;
+  background: url('../../../../assets/image/panel-bg.png') 0 0/ 100% 100% no-repeat;
+}
+
+.panel-title {
+  color: rgb(168, 204, 230);
+  font-weight: bold;
+  padding: 16px 0 0px 15px;
+  font-size: 16px;
+  height: 48px;
+}
+
+.panel-content {
+  width: 100%;
+  height: calc(100% - 48px);
+}
+
+.panel-content-6 {
+  width: 100%;
+  height: calc(60%);
+}
+.panel-content-4 {
+  width: 100%;
+  height: calc(40%);
+}
+.panel-content-4 div[nz-row] div[nz-col] {
+  color: white;
+  text-align: center;
+}
+
+.main-map-container {
+  width: 100%;
+  height: calc(89%);
+  background: 0 0;
+}
+
+.risk-summary {
+  width: 100%;
+  height: calc(11%);
+  /* display: flex; */
+  justify-content: center;
+  align-items: center;
+}
+.risk-summary div[nz-row] {
+  width: 100%;
+  text-align: center;
+}
+.ant-statistic-title {
+  color: rgb(168, 204, 230) !important;
+  font-size: 18px;
+  /* font-weight:  */
+}
+.ant-statistic-content {
+  color: yellow !important;
+  font-weight: bolder;
+}
+.summary-title {
+  margin: 0;
+  padding: 8px 0 0 10px;
+  height: 55%;
+  color: white;
+  font-weight: bolder;
+  font-size: 20px;
+  font-family: sans-serif;
+}
+
+.summary-value {
+  margin: 0;
+  padding: 0;
+  /* padding: 0px 0 0 0px; */
+  color: yellow;
+  font-weight: bolder;
+  font-size: 20px;
+  font-family: sans-serif;
+}
+
+.sub-summary-value {
+  margin: 0;
+  padding: 0;
+  /* padding: 0px 0 0 0px; */
+  color: yellow;
+  font-weight: bolder;
+  font-family: sans-serif;
+}
+
+.summary-sub {
+  position: relative;
+  margin: 0;
+  height: 45%;
+  padding: 5px 0 0 10px;
+  font-weight: bolder;
+  font-size: 10px;
+  font-family: sans-serif;
+  color: white;
+  font-weight: bolder;
+}
+.zsxm-table-wrapper::-webkit-scrollbar {
+  display: none;
+}
+.zsxm-row {
+  background: rgba(224, 228, 232, 0.2);
+  color: white;
+  font-size: 12px;
+  font-weight: bolder;
+  text-align: center;
+  font-family: sans-serif;
+  padding: 3px 0;
+  margin: 6px 10px !important;
+}

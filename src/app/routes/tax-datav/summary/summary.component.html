@@ -1,1 +1,172 @@
-<page-header></page-header>
+<div class="container">
+    <div nz-row class="fill-row" nzGutter="8">
+        <!-- 左--税种统计 -->
+        <div nz-col nzSpan="6">
+            <div class="tax-2">
+                <div class="panel-title">
+                    各区市税收情况
+                </div>
+                <div class="panel-content">
+                    <div style="height:70%;width:100%;" echarts [options]="xzqhChartOpt"
+                        (chartInit)="onXzqhChartInit($event)" [theme]="'dark'">
+                    </div>
+
+                    <div style="height:30%;width:100%;overflow:scroll" class="zsxm-table-wrapper">
+                        <div nz-row class="zsxm-row" nzGutter="8">
+                            <div nz-col nzSpan="3">
+                                排名
+                            </div>
+                            <div nz-col nzSpan="4">
+                                区市
+                            </div>
+                            <div nz-col nzSpan="6">
+                                本年度(亿元)
+                            </div>
+                            <div nz-col nzSpan="7">
+                                同比增长(亿元)
+                            </div>
+                            <div nz-col nzSpan="4">
+                                增幅
+                            </div>
+                        </div>
+                        <a pageScroll href="#scrollContent"></a>
+                        <div nz-row id="scrollContent" class="zsxm-row" *ngFor="let item of xzqhData;let i=index;"
+                            nzGutter="8">
+                            <div nz-col nzSpan="3">
+                                {{i+1}}
+                            </div>
+                            <div nz-col nzSpan="4">
+                                {{item['xzqhmc']}}
+                            </div>
+                            <div nz-col nzSpan="6">
+                                {{ item['bnd']}}
+                            </div>
+                            <div nz-col nzSpan="7">
+                                {{ item['tbzjz']}}
+                            </div>
+                            <div nz-col nzSpan="4">
+                                {{item['tbzjf']}}
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tax-2">
+                <div class="panel-title">
+                    各税种征收情况
+                </div>
+                <div class="panel-content" echarts [options]="zsxmChartOpt" (chartInit)="onZsxmChartInit($event)"
+                    [theme]="'dark'">
+                </div>
+            </div>
+        </div>
+        <!-- 中--地图统计 -->
+        <div nz-col nzSpan="12">
+            <div class="risk-summary">
+                <nz-row style="width: 100%;height:100%;" [nzGutter]="8">
+                    <nz-col [nzSpan]="12" style="height:100%;">
+                        <h3 class="summary-title">全市累计税收收入 &nbsp;
+                            <span class="summary-value">{{bndzss|number}}&nbsp;</span>亿
+                        </h3>
+                        <div class="summary-sub">
+                            <span class="icon-red-dot" style="
+                                                    position: absolute;
+                                                    width: 10px;
+                                                    height: 10px;
+                                                    margin:8px 0;
+                                                    background: #af2a2a;
+                                                    border-radius: 50%;"></span>
+                            <span style="padding:0 15px;font-size:16px">同比增长：<span
+                                    class="sub-summary-value">{{tbzje|number}}</span>&nbsp;亿</span>
+                            <span class="icon-red-dot" style="
+                                                    position: absolute;
+                                                    width: 10px;
+                                                    height: 10px;
+                                                    margin:8px 0;
+                                                    background: #af2a2a;
+                                                    border-radius: 50%;"></span>
+                            <span style="padding:0 15px;font-size:16px">同比增速：<span
+                                    class="sub-summary-value">{{tbzjf}}</span></span>
+                            <!-- <i nz-icon nzType="clock-circle" nzTheme="twotone"></i> -->
+
+                        </div>
+                    </nz-col>
+                    <nz-col *ngIf="countyVisible" [nzSpan]="12" style="height:100%;">
+                        <h3 class="summary-title">{{selectedXzqh.name}}本年累计税收收入 &nbsp;
+                            <span class="summary-value">{{selectedXzqh.bnd|number}}&nbsp;亿</span>
+                        </h3>
+                        <div class="summary-sub">
+                            <span class="icon-red-dot" style="
+                                            position: absolute;
+                                            width: 10px;
+                                            height: 10px;
+                                            margin:8px 0;
+                                            background: #af2a2a;
+                                            border-radius: 50%;"></span>
+                            <span style="padding:0 15px;font-size:16px">同比增长：<span
+                                    class="sub-summary-value">{{selectedXzqh.tbzje|number}}</span>&nbsp;亿元</span>
+                            <span class="icon-red-dot" style="
+                                            position: absolute;
+                                            width: 10px;
+                                            height: 10px;
+                                            margin:8px 0;
+                                            background: #af2a2a;
+                                            border-radius: 50%;"></span>
+                            <span style="padding:0 15px;font-size:16px">同比增长：<span
+                                    class="sub-summary-value">{{selectedXzqh.tbzjf}}</span></span>
+
+                        </div>
+                    </nz-col>
+
+                </nz-row>
+
+            </div>
+
+            <mgl-map class="main-map-container" [style]="style" [trackResize]="true" [zoom]="[8]"
+                [center]="[120.3,36.45]" (load)="mapboxLoad($event)">
+                <mgl-control mglNavigation></mgl-control>
+                <mgl-control mglFullscreen></mgl-control>
+            </mgl-map>
+        </div>
+
+        <!-- 右--税种统计 -->
+        <div nz-col nzSpan="6">
+            <div class="tax-2">
+                <div class="panel-title">
+                    产业结构税收分析
+                </div>
+                <div class="panel-content">
+                    <div class="panel-content-6" echarts (chartInit)="onCyssChartInit($event)" [options]="cyssChartOpt"
+                        [theme]="'dark'">
+                    </div>
+                    <div class="panel-content-4">
+                        <div nz-row style="height: 30%;margin:0.5%" nzGutter="8" *ngFor="let item of cyssData">
+                            <div nz-col nzSpan="6">
+                                {{item['cymc']}}
+                            </div>
+
+                            <div nz-col nzSpan="6">
+                                {{item['bnd']|number}}&nbsp;亿
+                            </div>
+                            <div nz-col nzSpan="6">
+                                {{item['percent']}}
+                            </div>
+                            <div nz-col nzSpan="6">
+                                {{item['tbzjz']}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tax-2">
+                <div class="panel-title">
+                    按行业分析税收(行业税收Top10)
+                </div>
+                <div class="panel-content" echarts (chartInit)="onHyssChartInit($event)" [options]="hyssChartOpt"
+                    [theme]="'dark'">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

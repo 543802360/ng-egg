@@ -39,7 +39,7 @@ export const environment = {
     }
 
   },
-  production: false,
+  production: true,
   useHash: true,
   hmr: false,
 };

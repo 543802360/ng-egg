@@ -27,7 +27,7 @@ const routes: Routes = [
   {
     path: '',
     component: LayoutDefaultComponent,
-    canActivate: [JWTGuard],
+    // canActivate: [JWTGuard],
     children: [
       {
         path: '',
