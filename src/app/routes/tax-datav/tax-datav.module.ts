@@ -5,10 +5,12 @@ import { TaxDatavNavComponent } from './nav/nav.component';
 import { TaxDatavSummaryComponent } from './summary/summary.component';
 import { NgxMapboxGLModule } from 'ngx-mapbox-gl';
 import { NgxEchartsModule } from 'ngx-echarts';
+import { TaxDatavGsqyComponent } from './gsqy/gsqy.component';
 
 const COMPONENTS = [
   TaxDatavNavComponent,
-  TaxDatavSummaryComponent];
+  TaxDatavSummaryComponent,
+  TaxDatavGsqyComponent];
 const COMPONENTS_NOROUNT = [];
 
 @NgModule({
