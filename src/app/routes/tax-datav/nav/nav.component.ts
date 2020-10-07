@@ -9,8 +9,9 @@ import { _HttpClient } from '@delon/theme';
 })
 export class TaxDatavNavComponent implements OnInit {
   taxSubjectVisible;
-  selectSubject = "3";
-  dataDesc = '统计数据截止到2020年2月17日';
+  selectSubject = "1";
+  title = '';
+  dataDesc = '';
   constructor(
     private router: Router,
     private activeRoute: ActivatedRoute
@@ -24,16 +25,27 @@ export class TaxDatavNavComponent implements OnInit {
     // date.getMonth();
   }
 
-  /**
-   * 土地使用税风险
-   */
-  tdRisk() {
-    this.router.navigate(["./risk"], { relativeTo: this.activeRoute });
+  dlgOk() {
+    this.taxSubjectVisible = false;
+    switch (this.selectSubject) {
+      case "1": // 税收总体概况
+        this.router.navigate(["./ssfx"], { relativeTo: this.activeRoute });
+        this.title = "烟台市税收一张图";
+        break;
+      case "2":
+        this.router.navigate(["./qyjt"], { relativeTo: this.activeRoute });
+        setTimeout(() => {
+          this.title = "规上企业分布图";
+        });
+        break;
+      case "3":
+        this.router.navigate(["./yqjj"], { relativeTo: this.activeRoute });
+        this.title = "";
+        break;
+      default:
+        break;
+    }
   }
-  /**
-   * 税收总体概况
-   */
-  taxSummary() { }
   dlgCancel() {
     this.taxSubjectVisible = false;
   }
