@@ -377,57 +377,57 @@ const decimal_T = {
 
             }
         },
-        // 当前市界
-        {
-            id: "current_city_line",
-            source: "dtbj",
-            "source-layer": "dtbj_region_current_city",
-            type: "line",
-            minzoom: 7,
-            maxzoom: 13,
-            "layout": {
-                "line-join": "round",
-                "line-cap": "round",
-                "visibility": "visible"
-            },
-            "paint": {
-                "line-dasharray": {
-                    "base": 1,
-                    "stops": [
-                        [
-                            6,
-                            [
-                                2,
-                                0
-                            ]
-                        ],
-                        [
-                            8,
-                            [
-                                2,
-                                2,
-                                6,
-                                2
-                            ]
-                        ]
-                    ]
-                },
-                "line-width": {
-                    "base": 1,
-                    "stops": [
-                        [
-                            7,
-                            2
-                        ],
-                        [
-                            14,
-                            2.8
-                        ]
-                    ]
-                },
-                "line-color": 'rgb(193,148,94)'
-            }
-        },
+        // // 当前市界
+        // {
+        //     id: "current_city_line",
+        //     source: "dtbj",
+        //     "source-layer": "dtbj_region_current_city",
+        //     type: "line",
+        //     minzoom: 7,
+        //     maxzoom: 13,
+        //     "layout": {
+        //         "line-join": "round",
+        //         "line-cap": "round",
+        //         "visibility": "visible"
+        //     },
+        //     "paint": {
+        //         "line-dasharray": {
+        //             "base": 1,
+        //             "stops": [
+        //                 [
+        //                     6,
+        //                     [
+        //                         2,
+        //                         0
+        //                     ]
+        //                 ],
+        //                 [
+        //                     8,
+        //                     [
+        //                         2,
+        //                         2,
+        //                         6,
+        //                         2
+        //                     ]
+        //                 ]
+        //             ]
+        //         },
+        //         "line-width": {
+        //             "base": 1,
+        //             "stops": [
+        //                 [
+        //                     7,
+        //                     2
+        //                 ],
+        //                 [
+        //                     14,
+        //                     2.8
+        //                 ]
+        //             ]
+        //         },
+        //         "line-color": 'rgb(193,148,94)'
+        //     }
+        // },
 
         // 植被（森林）
         {

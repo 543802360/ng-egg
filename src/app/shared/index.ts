@@ -34,6 +34,7 @@ export * from "./components/bdg-select/bdg-select.component";
 export * from "./components/month-range/month-range.component";
 export * from "./components/nsrmc-suggestion/nsrmc-suggestion.component";
 export * from "./components/summary-card/summary-card.component";
+export * from "./components/mapbox-style-control/mapbox-style-control.component";
 
 // 模块
 export * from './shared.module';
