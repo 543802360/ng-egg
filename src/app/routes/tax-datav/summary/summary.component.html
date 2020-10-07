@@ -20,32 +20,32 @@
                                 区市
                             </div>
                             <div nz-col nzSpan="6">
-                                本年度(亿元)
+                                收入额(万元)
                             </div>
                             <div nz-col nzSpan="7">
-                                同比增长(亿元)
+                                同比增减(万元)
                             </div>
                             <div nz-col nzSpan="4">
-                                增幅
+                                增幅(%)
                             </div>
                         </div>
                         <a pageScroll href="#scrollContent"></a>
-                        <div nz-row id="scrollContent" class="zsxm-row" *ngFor="let item of xzqhData;let i=index;"
-                            nzGutter="8">
-                            <div nz-col nzSpan="3">
+                        <div nz-row id="scrollContent" class="zsxm-row" [class.down-row]="item.SE_HJ_BQ_ZJE<0"
+                            *ngFor="let item of ssfjcData;let i=index;" nzGutter="8">
+                            <div nz-col nzSpan="2">
                                 {{i+1}}
                             </div>
-                            <div nz-col nzSpan="4">
-                                {{item['xzqhmc']}}
+                            <div nz-col nzSpan="6">
+                                {{item['NAME']}}
                             </div>
                             <div nz-col nzSpan="6">
-                                {{ item['bnd']}}
+                                {{ item['SE_HJ_BQ']|number}}
                             </div>
-                            <div nz-col nzSpan="7">
-                                {{ item['tbzjz']}}
+                            <div nz-col nzSpan="6">
+                                {{ item['SE_HJ_BQ_ZJE']|number}}
                             </div>
                             <div nz-col nzSpan="4">
-                                {{item['tbzjf']}}
+                                {{item['SE_HJ_BQ_ZJBL']}}%
                             </div>
 
                         </div>
@@ -63,11 +63,11 @@
         </div>
         <!-- 中--地图统计 -->
         <div nz-col nzSpan="12">
-            <div class="risk-summary">
+            <div *ngIf="totalItem" class="risk-summary">
                 <nz-row style="width: 100%;height:100%;" [nzGutter]="8">
                     <nz-col [nzSpan]="12" style="height:100%;">
                         <h3 class="summary-title">全市累计税收收入 &nbsp;
-                            <span class="summary-value">{{bndzss|number}}&nbsp;</span>亿
+                            <span class="summary-value">{{totalItem.SE_HJ_BQ|number}}&nbsp;</span>万元
                         </h3>
                         <div class="summary-sub">
                             <span class="icon-red-dot" style="
@@ -78,7 +78,7 @@
                                                     background: #af2a2a;
                                                     border-radius: 50%;"></span>
                             <span style="padding:0 15px;font-size:16px">同比增长：<span
-                                    class="sub-summary-value">{{tbzje|number}}</span>&nbsp;亿</span>
+                                    class="sub-summary-value">{{totalItem.SE_HJ_BQ_ZJE|number}}</span>&nbsp;万元</span>
                             <span class="icon-red-dot" style="
                                                     position: absolute;
                                                     width: 10px;
@@ -87,7 +87,7 @@
                                                     background: #af2a2a;
                                                     border-radius: 50%;"></span>
                             <span style="padding:0 15px;font-size:16px">同比增速：<span
-                                    class="sub-summary-value">{{tbzjf}}</span></span>
+                                    class="sub-summary-value">{{totalItem.SE_HJ_BQ_ZJBL}}%</span></span>
                             <!-- <i nz-icon nzType="clock-circle" nzTheme="twotone"></i> -->
 
                         </div>
@@ -144,17 +144,17 @@
                     <div class="panel-content-4">
                         <div nz-row style="height: 30%;margin:0.5%" nzGutter="8" *ngFor="let item of cyssData">
                             <div nz-col nzSpan="6">
-                                {{item['cymc']}}
+                                {{item['HY_MC']}}
                             </div>
 
                             <div nz-col nzSpan="6">
-                                {{item['bnd']|number}}&nbsp;亿
+                                {{item.SE_HJ/100000000|number}}&nbsp;亿
                             </div>
                             <div nz-col nzSpan="6">
-                                {{item['percent']}}
+                                {{item.SE_HJ_ZJE/100000000|number}}&nbsp;亿
                             </div>
                             <div nz-col nzSpan="6">
-                                {{item['tbzjz']}}
+                                {{item.SE_HJ_ZJBL}}&nbsp;%
                             </div>
                         </div>
                     </div>

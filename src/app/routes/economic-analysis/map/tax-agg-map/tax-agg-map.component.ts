@@ -6,7 +6,7 @@ import { SFSchema } from '@delon/form';
 import { NzMessageService } from 'ng-zorro-antd';
 import * as mapboxgl from "mapbox-gl";
 import { dark } from "@geo";
-import { BdgSelectComponent, MonthRangeComponent, getColorRange, ExcelData, export2excel } from '@shared';
+import { BdgSelectComponent, MonthRangeComponent, getColorRange, ExcelData, export2excel, ColorTypes } from '@shared';
 import { G2BarData } from '@delon/chart/bar';
 import { forkJoin } from 'rxjs';
 import { LoadingService, ReuseComponentInstance } from '@delon/abc';
@@ -149,7 +149,7 @@ export class EconomicAnalysisMapTaxAggMapComponent implements OnInit, AfterViewI
         });
         const mintax = Math.min(...taxArray);
         const maxtax = Math.max(...taxArray);
-        const colorRange = getColorRange(mintax, maxtax, 'success');
+        const colorRange = getColorRange(mintax, maxtax, ColorTypes.success);
         if (this.map.getSource('town-geo')) {
           (this.map.getSource('town-geo') as mapboxgl.GeoJSONSource).setData(fc);
         } else {
