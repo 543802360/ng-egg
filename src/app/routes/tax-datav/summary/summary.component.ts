@@ -6,6 +6,7 @@ import { forkJoin } from 'rxjs';
 import * as mapboxgl from "mapbox-gl";
 import { MapboxStyleSwitcherControl } from "mapbox-gl-style-switcher";
 import { ColorTypes, getColorRange, order } from '@shared';
+import { CacheService } from '@delon/cache';
 
 // 税收分级次item接口
 interface ssfjcItem {
@@ -108,7 +109,8 @@ export class TaxDatavSummaryComponent implements OnInit, AfterViewInit {
     tbzje: '',
     tbzjf: ''
   }
-  constructor(public http: _HttpClient) {
+  constructor(public http: _HttpClient,
+    private cacheSrv: CacheService) {
 
   }
 
@@ -278,6 +280,7 @@ export class TaxDatavSummaryComponent implements OnInit, AfterViewInit {
         const ssfjcData: ssfjcItem[] = resp[0].rows;
         // 4、获取烟台市统计数据
         this.totalItem = ssfjcData.find(i => i.SWJG_MC === '烟台市');
+        this.cacheSrv.set('totalTax', this.totalItem);
         // 5、合并税款数据至properties
         skgkResp.features.forEach(el => {
           const target = ssfjcData.find(i => i.SWJG_MC.includes(el.properties.NAME));

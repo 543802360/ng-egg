@@ -29,11 +29,11 @@ export class TaxDatavNavComponent implements OnInit {
     this.taxSubjectVisible = false;
     switch (this.selectSubject) {
       case "1": // 税收总体概况
-        this.router.navigate(["./ssfx"], { relativeTo: this.activeRoute });
+        this.router.navigate(["./summary"], { relativeTo: this.activeRoute });
         this.title = "烟台市税收一张图";
         break;
       case "2":
-        this.router.navigate(["./qyjt"], { relativeTo: this.activeRoute });
+        this.router.navigate(["./gsqy"], { relativeTo: this.activeRoute });
         setTimeout(() => {
           this.title = "规上企业分布图";
         });

@@ -13,7 +13,9 @@ const routes: Routes = [
       {
         path: 'summary',
         component: TaxDatavSummaryComponent
-      }, {
+      },
+      { path: 'gsqy', component: TaxDatavGsqyComponent },
+      {
         path: '',
         redirectTo: 'summary',
         pathMatch: 'full'
@@ -25,8 +27,8 @@ const routes: Routes = [
     redirectTo: 'nav',
     pathMatch: 'full'
   },
-  { path: 'summary', component: TaxDatavSummaryComponent },
-  { path: 'gsqy', component: TaxDatavGsqyComponent }];
+
+];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

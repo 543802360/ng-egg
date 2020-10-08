@@ -61,7 +61,7 @@
 
 .main-map-container {
   width: 100%;
-  height: calc(89%);
+  height: calc(100%);
   background: 0 0;
 }
 
@@ -131,18 +131,18 @@
 .zsxm-row {
   background: rgba(224, 228, 232, 0.2);
   color: white;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: bolder;
   text-align: center;
   font-family: sans-serif;
   padding: 3px 0;
   margin: 6px 10px !important;
-  align-items: center;
   min-height: 42px;
-  .down-row {
-    color: rgb(34, 176, 116);
-  }
+  align-items: center;
 }
 .zsxm-row.zsxm-item-row {
   background: url('../../../../assets/image/bg_label_full.png') 0 0/100% 100% no-repeat;
+}
+.zsxm-row.down-row {
+  background: #0e908a;
 }

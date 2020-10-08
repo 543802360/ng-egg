@@ -30,10 +30,12 @@
                             </div>
                         </div>
                         <a pageScroll href="#scrollContent"></a>
-                        <div nz-row id="scrollContent" class="zsxm-row" [class.down-row]="item.SE_HJ_BQ_ZJE<0"
+                        <div nz-row id="scrollContent" class="zsxm-row zsxm-item-row"
                             *ngFor="let item of ssfjcData;let i=index;" nzGutter="8">
                             <div nz-col nzSpan="2">
-                                {{i+1}}
+                                <nz-badge nzStandalone [nzStyle]="{ backgroundColor: 'rgb(33,107,198)' }"
+                                    nzCount="{{i+1}}">
+                                </nz-badge>
                             </div>
                             <div nz-col nzSpan="6">
                                 {{item['NAME']}}
@@ -41,10 +43,10 @@
                             <div nz-col nzSpan="6">
                                 {{ item['SE_HJ_BQ']|number}}
                             </div>
-                            <div nz-col nzSpan="6">
+                            <div nz-col nzSpan="6" [class.down-row]="item.SE_HJ_BQ_ZJE<0">
                                 {{ item['SE_HJ_BQ_ZJE']|number}}
                             </div>
-                            <div nz-col nzSpan="4">
+                            <div nz-col nzSpan="4" [class.down-row]="item.SE_HJ_BQ_ZJE<0">
                                 {{item['SE_HJ_BQ_ZJBL']}}%
                             </div>
 
