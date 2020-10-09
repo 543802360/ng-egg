@@ -11,7 +11,7 @@
             </div>
             <div class="tax-2">
                 <div class="panel-title">
-                    规上企业Top10
+                    规上企业税收Top20
                 </div>
                 <div class="panel-content">
                     <div style="height:100%;width:100%;overflow:scroll" class="zsxm-table-wrapper">
@@ -129,18 +129,17 @@
         <div nz-col nzSpan="6">
             <div class="tax-2">
                 <div class="panel-title">
-                    规上企业按行业分析
+                    规上企业税收按行业分析
                 </div>
                 <div class="panel-content" echarts [options]="gsqyHyChartOpt" [theme]="'dark'">
                 </div>
             </div>
             <div class="tax-2">
                 <div class="panel-title">
-                    按行业分析税收(行业税收Top10)
+                    规上企业按税务机关分析
                 </div>
-                <!-- <div class="panel-content" echarts (chartInit)="onHyssChartInit($event)" [options]="hyssChartOpt"
-                    [theme]="'dark'">
-                </div> -->
+                <div class="panel-content" echarts [options]="gsqySwjgChartOpt" [theme]="'dark'">
+                </div>
             </div>
         </div>
     </div>

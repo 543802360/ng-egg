@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { _HttpClient } from '@delon/theme';
+import { TaxDataVService } from './../tax-data-v.service';
 
 @Component({
   selector: 'app-tax-datav-nav',
@@ -10,11 +11,13 @@ import { _HttpClient } from '@delon/theme';
 export class TaxDatavNavComponent implements OnInit {
   taxSubjectVisible;
   selectSubject = "1";
-  title = '';
+
   dataDesc = '';
   constructor(
     private router: Router,
-    private activeRoute: ActivatedRoute
+    private activeRoute: ActivatedRoute,
+    public taxDataVSrv: TaxDataVService
+
   ) {
 
   }
@@ -30,17 +33,17 @@ export class TaxDatavNavComponent implements OnInit {
     switch (this.selectSubject) {
       case "1": // 税收总体概况
         this.router.navigate(["./summary"], { relativeTo: this.activeRoute });
-        this.title = "烟台市税收一张图";
+        this.taxDataVSrv.title = "烟台市税收一张图";
         break;
       case "2":
         this.router.navigate(["./gsqy"], { relativeTo: this.activeRoute });
         setTimeout(() => {
-          this.title = "规上企业分布图";
+          this.taxDataVSrv.title = "规上企业分布图";
         });
         break;
       case "3":
         this.router.navigate(["./yqjj"], { relativeTo: this.activeRoute });
-        this.title = "";
+        this.taxDataVSrv.title = ''
         break;
       default:
         break;

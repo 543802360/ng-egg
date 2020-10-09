@@ -1,3 +1,4 @@
+import { TaxDataVService } from './../tax-data-v.service';
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { _HttpClient } from '@delon/theme';
 import { dark_T as dark, decimal_T as decimal } from '@geo';
@@ -5,7 +6,7 @@ import { dark_T as dark, decimal_T as decimal } from '@geo';
 import { forkJoin } from 'rxjs';
 import * as mapboxgl from "mapbox-gl";
 import { MapboxStyleSwitcherControl } from "mapbox-gl-style-switcher";
-import { ColorTypes, getColorRange, order } from '@shared';
+import { COLORS, ColorTypes, getColorRange, order } from '@shared';
 import { CacheService } from '@delon/cache';
 
 // 税收分级次item接口
@@ -104,13 +105,14 @@ export class TaxDatavSummaryComponent implements OnInit, AfterViewInit {
 
   countyVisible = false;
   selectedXzqh = {
-    name: '',
-    bnd: '',
-    tbzje: '',
-    tbzjf: ''
-  }
+    NAME: '',
+    SE_HJ_BQ: 0,
+    SE_HJ_BQ_ZJBL: 0,
+    SE_HJ_BQ_ZJE: 0,
+  };
   constructor(public http: _HttpClient,
-    private cacheSrv: CacheService) {
+    private cacheSrv: CacheService,
+    public taxDataVSrv: TaxDataVService) {
 
   }
 
@@ -118,6 +120,9 @@ export class TaxDatavSummaryComponent implements OnInit, AfterViewInit {
   }
   ngAfterViewInit() {
 
+    setTimeout(() => {
+      this.taxDataVSrv.title = '烟台市税收一张图';
+    });
 
   }
 
@@ -167,8 +172,16 @@ export class TaxDatavSummaryComponent implements OnInit, AfterViewInit {
         layers: ["ssfjc-extrusion-layer"]
       });
       if (queryPoint.length) {
+        this.countyVisible = true;
         const target = queryPoint[0];
         const { SE_HJ_BQ, SE_HJ_BQ_ZJE, SE_HJ_BQ_ZJBL, NAME } = target.properties;
+        setTimeout(() => {
+          this.selectedXzqh = {
+            SE_HJ_BQ, SE_HJ_BQ_ZJE, SE_HJ_BQ_ZJBL, NAME
+          };
+
+        });
+
         this.gridActive.features = [target];
         (this.map.getSource("grid-active") as any).setData(this.gridActive);
         this.map.getCanvas().style.cursor = "pointer";
@@ -181,10 +194,12 @@ export class TaxDatavSummaryComponent implements OnInit, AfterViewInit {
           .setLngLat(coords as any)
           .setHTML(html)
           .addTo(this.map);
+
       } else {
         (this.map.getSource("grid-active") as any).setData(this.empty);
         this.map.getCanvas().style.cursor = "";
         popup.remove();
+        this.countyVisible = false;
       }
     });
 
@@ -394,11 +409,12 @@ export class TaxDatavSummaryComponent implements OnInit, AfterViewInit {
                 normal: {
                   color(params) {
                     // 自定义颜色
-                    const colorList = [
-                      'rgb(33,107,198)', 'rgb(57,153,219)', 'rgb(82,182,96)'
-                      , 'rgb(92,206,115)', 'rgb(70,162,136)', 'rgb(86,201,171)', 'rgb(192,47,36)', 'rgb(228,75,57)'
-                      , 'rgb(240,157,40)', 'rgb(217,178,35)'
-                    ];
+                    const colorList = COLORS.primary;
+                    //  [
+                    //   'rgb(33,107,198)', 'rgb(57,153,219)', 'rgb(82,182,96)'
+                    //   , 'rgb(92,206,115)', 'rgb(70,162,136)', 'rgb(86,201,171)', 'rgb(192,47,36)', 'rgb(228,75,57)'
+                    //   , 'rgb(240,157,40)', 'rgb(217,178,35)'
+                    // ];
                     return colorList[params.dataIndex]
                   }
                 }
@@ -751,9 +767,9 @@ export class TaxDatavSummaryComponent implements OnInit, AfterViewInit {
   onXzqhChartInit(e) {
     e.on('click', e => {
       this.countyVisible = true;
-      this.selectedXzqh.name = e.name;
+      // this.selectedXzqh.name = e.name;
 
-      this.getCountyTax(e.name);
+      // this.getCountyTax(e.name);
     });
   }
 
