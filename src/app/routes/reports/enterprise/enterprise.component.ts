@@ -1,14 +1,29 @@
 import { Component, OnInit } from '@angular/core';
 import { _HttpClient } from '@delon/theme';
 
+import { DomSanitizer } from '@angular/platform-browser'
+import { environment } from '@env/environment';
+
 @Component({
-  selector: 'app-reports-enterprise',
-  templateUrl: './enterprise.component.html',
+  template: `
+  <iframe [src]="iframe"></iframe>  
+   `,
+  styles: [
+    `
+     iframe{
+       margin-top:10px;
+       height:100%;
+       width:100%;
+     }`
+  ]
 })
 export class ReportsEnterpriseComponent implements OnInit {
 
-  constructor(private http: _HttpClient) { }
-
+  iframe: string;
+  targetUrl = environment.reportsUrl.hyall;
+  constructor(private sanitizer: DomSanitizer) {
+    this.iframe = this.sanitizer.bypassSecurityTrustResourceUrl(this.targetUrl) as any;
+  }
   ngOnInit() { }
 
 }

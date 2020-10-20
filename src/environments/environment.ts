@@ -26,18 +26,25 @@ export const environment = {
       "https://www.qddsgis.com:2600/arcgis/rest/services/qdyxmap/MapServer/tile/{z}/{y}/{x}",
   },
   mapStyle: {
-    resourceUrl: 'http://10.211.55.7:10010',
+    resourceUrl: 'http://47.105.192.51:10010',
     mbtiles: {
-      world: ['http://10.211.55.7:10010/vtiles/world/{z}/{x}/{y}.pbf'],
-      province: ['http://10.211.55.7:10010/vtiles/province/{z}/{x}/{y}.pbf'],
-      dtbj: ['http://10.211.55.7:10010/vtiles/dtbj/{z}/{x}/{y}.pbf'],
-      xzbz: ['http://10.211.55.7:10010/vtiles/xzbz/{z}/{x}/{y}.pbf'],
-      jzw: ['http://10.211.55.7:10010/vtiles/jzw/{z}/{x}/{y}.pbf'],
-      road: ['http://10.211.55.7:10010/vtiles/road/{z}/{x}/{y}.pbf'],
-      road2: ['http://10.211.55.7:10010/vtiles/road2/{z}/{x}/{y}.pbf'],
-      poi: ['http://10.211.55.7:10010/vtiles/poi/{z}/{x}/{y}.pbf']
+      world: ['http://47.105.192.51:10010/vtiles/world/{z}/{x}/{y}.pbf'],
+      province: ['http://47.105.192.51:10010/vtiles/province/{z}/{x}/{y}.pbf'],
+      dtbj: ['http://47.105.192.51:10010/vtiles/dtbj/{z}/{x}/{y}.pbf'],
+      xzbz: ['http://47.105.192.51:10010/vtiles/xzbz/{z}/{x}/{y}.pbf'],
+      jzw: ['http://47.105.192.51:10010/vtiles/jzw/{z}/{x}/{y}.pbf'],
+      road: ['http://47.105.192.51:10010/vtiles/road/{z}/{x}/{y}.pbf'],
+      road2: ['http://47.105.192.51:10010/vtiles/road2/{z}/{x}/{y}.pbf'],
+      poi: ['http://47.105.192.51:10010/vtiles/poi/{z}/{x}/{y}.pbf']
     }
 
+  },
+  reportsUrl: {
+    czsr: 'http://35.1.149.22:8080/bb/bb/czsr',
+    hy: 'http://35.1.149.22:8080/bb/bb/hy',
+    hyall: 'http://35.1.149.22:8080/bb/bb/hyall',
+    zj: 'http://35.1.149.22:8080/bb/bb/zj',
+    nsr: 'http://35.1.149.22:8080/bb/bb/nsr',
   },
   production: false,
   useHash: true,

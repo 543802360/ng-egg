@@ -1,50 +1,44 @@
+
+import { environment } from "@env/environment";
 const dark = {
   "version": 8,
-  "sprite": "http://47.105.192.51:10010/mapbox/sprite",
-  "glyphs": "http://47.105.192.51:10010/mapbox/font/{fontstack}/{range}.pbf",
+  "sprite": `${environment.mapStyle.resourceUrl}/mapbox/sprite`,
+  "glyphs": `${environment.mapStyle.resourceUrl}/mapbox/font/{fontstack}/{range}.pbf`,
   "sources": {
     "world": {
       "type": "vector",
       "scheme": "tms",
-      "tiles": [
-        "http://47.105.192.51:10010/vtiles/world/{z}/{x}/{y}.pbf"
-      ]
+      "tiles": environment.mapStyle.mbtiles.world
     },
     "dtbj": {
       "type": "vector",
       "scheme": "tms",
-      "tiles": [
-        "http://47.105.192.51:10010/vtiles/dtbj/{z}/{x}/{y}.pbf"]
+      "tiles": environment.mapStyle.mbtiles.dtbj
     },
     "xzbz": {
       "type": "vector",
       "scheme": "tms",
-      "tiles": [
-        "http://47.105.192.51:10010/vtiles/xzbz/{z}/{x}/{y}.pbf"]
+      "tiles": environment.mapStyle.mbtiles.xzbz
     },
     "poi": {
       "type": "vector",
       "scheme": "tms",
-      "tiles": [
-        "http://47.105.192.51:10010/vtiles/poi/{z}/{x}/{y}.pbf"]
+      "tiles": environment.mapStyle.mbtiles.poi
     },
     "road": {
       "type": "vector",
       "scheme": "tms",
-      "tiles": [
-        "http://47.105.192.51:10010/vtiles/road/{z}/{x}/{y}.pbf"]
+      "tiles": environment.mapStyle.mbtiles.road
     },
     "road2": {
       "type": "vector",
       "scheme": "tms",
-      "tiles": [
-        "http://47.105.192.51:10010/vtiles/road2/{z}/{x}/{y}.pbf"]
+      "tiles": environment.mapStyle.mbtiles.road2
     },
     "jzw": {
       "type": "vector",
       "scheme": "tms",
-      "tiles": [
-        "http://47.105.192.51:10010/vtiles/road2/{z}/{x}/{y}.pbf"]
+      "tiles": environment.mapStyle.mbtiles.jzw
     }
   },
   "layers": [{

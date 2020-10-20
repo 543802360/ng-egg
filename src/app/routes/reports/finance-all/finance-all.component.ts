@@ -1,44 +1,30 @@
 import { Component, OnInit, NgZone } from '@angular/core';
 import { _HttpClient } from '@delon/theme';
+import { DomSanitizer } from '@angular/platform-browser'
+import { environment } from '@env/environment';
 
 @Component({
-  selector: 'finance-all',
-  templateUrl: './finance-all.component.html'
+  template: `
+  <iframe [src]="iframe"></iframe>  
+   `,
+  styles: [
+    `
+     iframe{
+       margin-top:10px;
+       height:100%;
+       width:100%;
+     }`
+  ]
 })
 export class ReportsFinanceAllComponent implements OnInit {
 
-  constructor(private _ngZone: NgZone) { }
-
-  progress = 0;
-  label: string;
+  iframe: string;
+  targetUrl = environment.reportsUrl.czsr;
+  constructor(private sanitizer: DomSanitizer) {
+    this.iframe = this.sanitizer.bypassSecurityTrustResourceUrl(this.targetUrl) as any;
+  }
 
   ngOnInit() { }
-  processWithinAngularZone() {
-    this.label = 'inside';
-    this.progress = 0;
-    this._increaseProgress(() => console.log('Inside Done!'));
-  }
-  processOutsideOfAngularZone() {
-    this.label = 'outside';
-    this.progress = 0;
-    this._ngZone.runOutsideAngular(() => {
-      this._increaseProgress(() => {
-        // reenter the Angular zone and display done
-        this._ngZone.run(() => { console.log('Outside Done!') });
-      })
-    });
 
-  }
-
-  _increaseProgress(doneCallback: () => void) {
-    this.progress += 1;
-    console.log(`Current progress: ${this.progress}%`);
-
-    if (this.progress < 100) {
-      window.setTimeout(() => this._increaseProgress(doneCallback), 50)
-    } else {
-      doneCallback();
-    }
-  }
 
 }

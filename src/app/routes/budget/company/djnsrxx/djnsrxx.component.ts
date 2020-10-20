@@ -75,6 +75,12 @@ export class CompanyDjnsrxxComponent implements OnInit {
       className: 'text-center'
     },
     {
+      title: '所属镇街',
+      index: 'JDXZMC',
+      width: 120,
+      className: 'text-center'
+    },
+    {
       title: '纳税人状态',
       index: 'NSRZTMC',
       width: 100,

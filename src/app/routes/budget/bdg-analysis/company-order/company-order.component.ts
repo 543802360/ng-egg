@@ -141,9 +141,9 @@ export class BudgetBdgAnalysisCompanyOrderComponent implements OnInit, AfterView
   }
 
   ngAfterViewInit() {
-    setTimeout(() => {
-      this.getData();
-    });
+    // setTimeout(() => {
+    //   this.getData();
+    // });
   }
 
   /**
@@ -217,7 +217,7 @@ export class BudgetBdgAnalysisCompanyOrderComponent implements OnInit, AfterView
     const budgetValue = this.bdgSelect.budgetValue.toLocaleString();
     const mlmc = this.hyTreeSelect.getSelectedNodeList();
     const count = this.selectedOrder;
-    const adminCode = '3302130000';
+    const adminCode = '3302060000';
 
     // const adminCode = this.cacheSrv.get('userInfo', { mode: 'none' }).department_id;
 

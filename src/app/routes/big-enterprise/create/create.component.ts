@@ -121,9 +121,9 @@ export class BigEnterpriseCreateComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    setTimeout(() => {
-      this.getData();
-    });
+    // setTimeout(() => {
+    //   this.getData();
+    // });
   }
   /**
    * 获取税收统计概况（电子税票）
@@ -148,7 +148,7 @@ export class BigEnterpriseCreateComponent implements OnInit, AfterViewInit {
     const endMonth = endDate.getMonth() + 1;
     const budgetValue = this.bdgSelect.budgetValue.toLocaleString();
     const value = this.selectedValue;
-    const adminCode = '3302130000';
+    const adminCode = '3302060000';
     return { adminCode, year, startMonth, endMonth, budgetValue, value };
 
   }

@@ -154,9 +154,9 @@ export class BigEnterpriseTaxAnalysisComponent implements OnInit, AfterViewInit 
 
 
   ngAfterViewInit(): void {
-    setTimeout(() => {
-      this.query();
-    });
+    // setTimeout(() => {
+    //   this.query();
+    // });
   }
 
   ngOnInit() { }
