@@ -52,7 +52,7 @@ const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'dashboard',
+    redirectTo: 'tax-dot-map',
     pathMatch: 'full'
   }];
 

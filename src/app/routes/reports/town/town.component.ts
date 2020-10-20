@@ -20,7 +20,7 @@ import { environment } from '@env/environment';
 export class ReportsTownComponent implements OnInit {
 
   iframe: string;
-  targetUrl = environment.reportsUrl.czsr;
+  targetUrl = environment.reportsUrl.zj;
   constructor(private sanitizer: DomSanitizer) {
     this.iframe = this.sanitizer.bypassSecurityTrustResourceUrl(this.targetUrl) as any;
   }
