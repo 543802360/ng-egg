@@ -27,6 +27,10 @@ const alainConfig: AlainConfig = {
     login_url: '/passport/login', // 登录页路由地址
     token_send_key: 'token', // 发送token参数名
   },
+  xlsx: {
+    url: 'assets/lib/xlsx.full.min.js'
+  }
+
   // acl: {
   //   ...{
   //     preCan: (roleOrAbility: ACLCanType) => {
