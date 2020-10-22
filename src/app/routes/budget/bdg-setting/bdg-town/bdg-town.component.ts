@@ -4,7 +4,7 @@ import { _HttpClient, ModalHelper } from '@delon/theme';
 import { STColumn, STComponent, STReq, STRes, STData, STChange } from '@delon/abc/st';
 import { SFSchema } from '@delon/form';
 import { IBDG_TOWN } from "@shared";
-import { NzMessageService } from 'ng-zorro-antd';
+import { NzMessageService } from 'ng-zorro-antd/message';
 @Component({
   selector: 'app-budget-bdg-setting-bdg-town',
   templateUrl: './bdg-town.component.html',

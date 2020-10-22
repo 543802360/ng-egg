@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef, AfterViewInit } from '@angular/core';
 import { _HttpClient } from '@delon/theme';
-import { NzMessageService } from 'ng-zorro-antd';
+import { NzMessageService } from 'ng-zorro-antd/message';
 import { getTimeDistance } from '@delon/util';
 import { CacheService } from '@delon/cache';
 import { yuan, order } from '@shared';

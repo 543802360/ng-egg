@@ -4,7 +4,7 @@ import { CompanyListViewComponent } from './../list/view/view.component';
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { _HttpClient, ModalHelper } from '@delon/theme';
 import { STColumn, STComponent, STPage, STReq, STRequestOptions, STRes, STData, STChange } from '@delon/abc/st';
-import { NzMessageService } from 'ng-zorro-antd';
+import { NzMessageService } from 'ng-zorro-antd/message';
 import { LoadingService } from '@delon/abc';
 
 // import * as L from "leaflet";

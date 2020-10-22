@@ -4,7 +4,7 @@ import { STColumn, STComponent, STPage } from '@delon/abc/st';
 import { XlsxService } from '@delon/abc/xlsx';
 import { LoadingService } from '@delon/abc';
 import { deepCopy } from '@delon/util';
-import { NzMessageService } from 'ng-zorro-antd';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
   selector: 'app-company-used-name',

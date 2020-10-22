@@ -7,7 +7,7 @@ import { XlsxService, LoadingService } from '@delon/abc';
 import { deepCopy } from '@delon/util';
 import { BdgSelectComponent } from 'src/app/shared/components/bdg-select/bdg-select.component';
 import { MonthRangeComponent } from 'src/app/shared/components/month-range/month-range.component';
-import { NzMessageService } from 'ng-zorro-antd';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
   selector: 'app-budget-bdg-analysis-batch-query',

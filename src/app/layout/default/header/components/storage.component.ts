@@ -7,7 +7,8 @@
  * @FilePath: /ng-egg/src/app/layout/default/header/components/storage.component.ts
  */
 import { Component, HostListener, ChangeDetectionStrategy } from '@angular/core';
-import { NzModalService, NzMessageService } from 'ng-zorro-antd';
+import { NzModalService } from 'ng-zorro-antd/modal';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
   selector: 'header-storage',

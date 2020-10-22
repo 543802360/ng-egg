@@ -9,7 +9,7 @@ import * as MapboxDraw from "@mapbox/mapbox-gl-draw";
 import * as syncMove from "@mapbox/mapbox-gl-sync-move";
 import { LoadingService } from '@delon/abc';
 import { forkJoin, BehaviorSubject } from 'rxjs';
-import { NzModalService } from 'ng-zorro-antd';
+import { NzModalService } from 'ng-zorro-antd/modal';
 import { EBuildingOperation } from '../dics/buildingOperation';
 import { dark } from '@geo';
 

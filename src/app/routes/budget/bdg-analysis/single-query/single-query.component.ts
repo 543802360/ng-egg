@@ -6,7 +6,7 @@ import { SFSchema } from '@delon/form';
 import { BdgSelectComponent } from 'src/app/shared/components/bdg-select/bdg-select.component';
 import { MonthRangeComponent } from 'src/app/shared/components/month-range/month-range.component';
 import { forkJoin } from 'rxjs';
-import { NzMessageService } from 'ng-zorro-antd';
+import { NzMessageService } from 'ng-zorro-antd/message';
 import { order } from '@shared';
 import { delay } from 'rxjs/operators';
 import { LoadingService } from '@delon/abc';

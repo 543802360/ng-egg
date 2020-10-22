@@ -9,7 +9,7 @@ import { Subject } from 'rxjs';
 import { XlsxService, XlsxExportOptions, LoadingService } from '@delon/abc';
 import { CompanyDjnsrxxViewComponent } from './view/view.component';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { NzModalService } from 'ng-zorro-antd';
+import { NzModalService } from 'ng-zorro-antd/modal';
 import { CompanyDjnsrxxAddComponent } from './add/add.component';
 
 @Component({

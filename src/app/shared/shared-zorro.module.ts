@@ -37,7 +37,11 @@ import { NzTagModule } from 'ng-zorro-antd/tag';
 import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 import { NzUploadModule } from 'ng-zorro-antd/upload';
-import { NzTreeModule, NzTreeSelectModule, NzCollapseModule, NzStatisticModule, NzSkeletonModule } from 'ng-zorro-antd';
+import { NzTreeModule } from "ng-zorro-antd/tree";
+import { NzCollapseModule } from "ng-zorro-antd/collapse";
+import { NzStatisticModule } from "ng-zorro-antd/statistic";
+import { NzSkeletonModule } from "ng-zorro-antd/skeleton";
+import { NzTreeSelectModule } from "ng-zorro-antd/tree-select";
 
 export const SHARED_ZORRO_MODULES = [
   NzButtonModule,

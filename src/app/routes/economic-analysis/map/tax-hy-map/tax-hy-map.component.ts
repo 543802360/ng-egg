@@ -2,7 +2,8 @@ import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { _HttpClient, ModalHelper } from '@delon/theme';
 import { STColumn, STComponent } from '@delon/abc/st';
 
-import { NzMessageService, NzTreeSelectComponent } from 'ng-zorro-antd';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { NzTreeSelectComponent } from 'ng-zorro-antd/tree-select';
 import * as mapboxgl from "mapbox-gl";
 import { dark } from "@geo";
 import { BdgSelectComponent, MonthRangeComponent, getColorRange, ExcelData, export2excel } from '@shared';

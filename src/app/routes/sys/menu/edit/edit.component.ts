@@ -6,7 +6,7 @@ import { SFSchema, SFUISchema, SFComponent } from '@delon/form';
 import { IMenu, array2tree, TableOperator, MenuType } from '@shared';
 import { delay, map } from 'rxjs/operators';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { NzTreeSelectComponent } from 'ng-zorro-antd';
+import { NzTreeSelectComponent } from 'ng-zorro-antd/tree-select';
 
 
 @Component({

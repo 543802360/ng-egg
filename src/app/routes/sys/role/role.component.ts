@@ -5,7 +5,7 @@ import { STColumn, STComponent, STData, STColumnButton } from '@delon/abc/st';
 import { SFSchema } from '@delon/form';
 import { SysRoleEditComponent } from './edit/edit.component';
 import { IRole } from '@shared';
-import { NzMessageService } from 'ng-zorro-antd';
+import { NzMessageService } from 'ng-zorro-antd/message';
 import { HttpParams } from '@angular/common/http';
 import { StartupService } from '@core';
 import { CacheService } from '@delon/cache';

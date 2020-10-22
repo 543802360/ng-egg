@@ -7,7 +7,7 @@ import { Subject } from 'rxjs';
 import { XlsxService, LoadingService } from '@delon/abc';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { IDjnsrxx, array2tree } from '@shared';
-import { NzModalService, UploadChangeParam } from 'ng-zorro-antd';
+import { NzModalService } from 'ng-zorro-antd/modal';
 import { CompanyListViewComponent } from './view/view.component';
 import { CompanyListEditComponent } from './edit/edit.component';
 import { CacheService } from '@delon/cache';
@@ -447,7 +447,7 @@ export class CompanyListComponent implements OnInit {
    * 上传excel事件
    * @param e
    */
-  uploadChange(e: UploadChangeParam) {
+  uploadChange(e) {
     // console.log(e);
     if (e.type === "success") {
 

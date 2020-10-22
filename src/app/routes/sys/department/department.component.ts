@@ -5,8 +5,12 @@ import { SFSchema } from '@delon/form';
 import { LoadingService } from '@delon/abc';
 
 import { IDepartment, IUser, array2tree, tree2array } from '@shared';
-import { NzMenuDirective, NzContextMenuService, NzFormatEmitEvent, NzModalService, NzTreeNode, NzMessageService, NzTreeComponent } from 'ng-zorro-antd';
+import { NzMenuDirective } from 'ng-zorro-antd/menu';
+import { NzContextMenuService } from 'ng-zorro-antd/dropdown';
+import { NzFormatEmitEvent, NzTreeNode, NzTreeComponent } from 'ng-zorro-antd/tree';
+import { NzMessageService } from 'ng-zorro-antd/message';
 // import { SysDepartmentComponent } from '../log/department/department.component';
+import { NzModalService } from "ng-zorro-antd/modal";
 import { map } from 'rxjs/operators';
 import { SysDepartmentEditComponent } from './edit/edit.component';
 

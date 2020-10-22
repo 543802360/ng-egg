@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewChild, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { _HttpClient, ModalHelper } from '@delon/theme';
 import { STColumn, STComponent, STRes, STData, STPage, STChange } from '@delon/abc/st';
-import { NzMessageService, NzTreeSelectComponent } from 'ng-zorro-antd';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { NzTreeSelectComponent } from 'ng-zorro-antd/tree-select';
 import { CacheService } from '@delon/cache';
 import { BdgSelectComponent, MonthRangeComponent, IEOrder, export2excel, EOrder, ZSXM } from '@shared';
 import { Router, ActivatedRoute } from '@angular/router';
