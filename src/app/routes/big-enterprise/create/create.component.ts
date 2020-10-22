@@ -176,7 +176,7 @@ export class BigEnterpriseCreateComponent implements OnInit, AfterViewInit {
       year: this.monthRange.startDate.getFullYear(),
       filter: this.selectedValue
     }).subscribe(resp => {
-      this.msg.success(resp.msg);
+      this.msg.success(resp.msg.length > 200 ? (resp.msg as string).substr(0, 200) : resp.msg);
     });
   }
 }
