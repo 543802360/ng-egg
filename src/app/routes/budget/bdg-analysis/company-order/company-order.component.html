@@ -47,16 +47,14 @@
     <div nz-col nzSpan="14" style="height: 100%;">
       <st #st style="width: 100%; margin-top: 10px;" header="税收排名（单位：万元）" [data]="data" [columns]="columns"
         [page]="page" [total]="total" [loading]="http.loading" [ps]="10" [pi]="1" bordered="true" size="middle"
-        [scroll]="{x:'1000px',y:'576px'}" (change)="change($event)">
+        [scroll]="{x:'1200px',y:'576px'}" (change)="change($event)">
         <ng-template st-row="tbzjz-tpl" let-item let-index="index">
-
           <nz-tag *ngIf="item.TBZJZ<0" nzColor="red">
             <span nz-tooltip [nzTooltipTitle]="'同比增减：' + item.TBZJZ"> {{item.TBZJZ|number}}</span>
           </nz-tag>
           <span *ngIf="item.TBZJZ>=0" nz-tooltip [nzTooltipTitle]="'同比增减：' + item.TBZJZ"> {{item.TBZJZ|number}}</span>
         </ng-template>
         <ng-template st-row="tbzjf-tpl" let-item let-index="index">
-
           <nz-tag *ngIf="item.TBZJZ<0" nzColor="red">
             <span nz-tooltip [nzTooltipTitle]="'同比增减：' + item.TBZJF"> {{item.TBZJF}}</span>
           </nz-tag>
@@ -64,8 +62,9 @@
         </ng-template>
 
         <ng-template st-row='order-tpl' let-item let-index="index">
-          <nz-badge nzCount="{{(this.st.pi - 1) * this.st.ps + index + 1}}"></nz-badge>
+          <nz-badge [nzCount]="(this.st.pi - 1) * this.st.ps + index + 1"></nz-badge>
         </ng-template>
+
       </st>
     </div>
     <!-- 地图 -->

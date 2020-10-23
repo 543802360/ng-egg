@@ -40,12 +40,15 @@ const HEADERCOMPONENTS = [
 
 // passport
 import { LayoutPassportComponent } from './passport/passport.component';
+import { NzGridModule } from 'ng-zorro-antd/grid';
 const PASSPORT = [
   LayoutPassportComponent
 ];
 
 @NgModule({
-  imports: [SharedModule],
+  imports: [
+    SharedModule,
+    NzGridModule],
   entryComponents: SETTINGDRAWER,
   declarations: [
     ...COMPONENTS,

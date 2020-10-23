@@ -39,6 +39,7 @@ export class BigEnterpriseCreateComponent implements OnInit, AfterViewInit {
       width: 60,
       className: 'text-center',
       fixed: 'left',
+      render: 'order-tpl',
       format: (item: STData, col: STColumn, index: number) => {
         // console.log('index', index, item, col);
         // console.log(this.st);

@@ -22,7 +22,6 @@ import { Component, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/
           <ng-template #extra><i nz-icon nzType="plus"></i></ng-template>
           <div
             nz-row
-            [nzType]="'flex'"
             [nzJustify]="'center'"
             [nzAlign]="'middle'"
             class="py-sm bg-grey-lighter-h point"
@@ -37,7 +36,6 @@ import { Component, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/
           </div>
           <div
             nz-row
-            [nzType]="'flex'"
             [nzJustify]="'center'"
             [nzAlign]="'middle'"
             class="py-sm bg-grey-lighter-h point"
@@ -52,7 +50,6 @@ import { Component, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/
           </div>
           <div
             nz-row
-            [nzType]="'flex'"
             [nzJustify]="'center'"
             [nzAlign]="'middle'"
             class="py-sm bg-grey-lighter-h point"
@@ -67,7 +64,6 @@ import { Component, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/
           </div>
           <div
             nz-row
-            [nzType]="'flex'"
             [nzJustify]="'center'"
             [nzAlign]="'middle'"
             class="py-sm bg-grey-lighter-h point"
@@ -82,7 +78,6 @@ import { Component, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/
           </div>
           <div
             nz-row
-            [nzType]="'flex'"
             [nzJustify]="'center'"
             [nzAlign]="'middle'"
             class="py-sm bg-grey-lighter-h point"
@@ -109,7 +104,7 @@ import { Component, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/
 export class HeaderTaskComponent {
   loading = true;
 
-  constructor(private cdr: ChangeDetectorRef) {}
+  constructor(private cdr: ChangeDetectorRef) { }
 
   change() {
     setTimeout(() => {

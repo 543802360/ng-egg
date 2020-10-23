@@ -11,9 +11,7 @@ export const environment = {
       "http://35.1.149.176:8080/arcgis/rest/services/qdslmap/MapServer/tile/{z}/{y}/{x}",
     // 影像地图
     IMAGE_MAP:
-      "http://35.1.149.160:6080/QDKCY/arcgis/rest/services/qdyx2017/MapServer",
-    IMAGE_MAP_TILE:
-      "http://35.1.149.176:8080/arcgis/rest/services/qdyxmap/MapServer/tile/{z}/{y}/{x}",
+      "http://35.1.149.160:6080/arcgis/rest/services/qdyx2017/MapServer"
   },
   mapStyle: {
     resourceUrl: 'http://35.1.196.63:10010',

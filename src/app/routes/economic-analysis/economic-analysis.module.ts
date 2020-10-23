@@ -10,6 +10,8 @@ import { EconomicAnalysisBillAnalysisComponent } from './bill-analysis/bill-anal
 import { NgxMapboxGLModule } from 'ngx-mapbox-gl';
 import { DragDropModule } from "@angular/cdk/drag-drop";
 import { ScrollingModule } from "@angular/cdk/scrolling";
+import { NzBadgeModule } from 'ng-zorro-antd/badge';
+import { NzCardModule } from 'ng-zorro-antd/card';
 const COMPONENTS = [DashboardComponent,
   EconomicAnalysisHyAnalysisComponent,
   EconomicAnalysisMapTaxDotMapComponent,
@@ -24,7 +26,9 @@ const COMPONENTS_NOROUNT = [];
     ScrollingModule,
     SharedModule,
     NgxMapboxGLModule,
-    EconomicAnalysisRoutingModule
+    EconomicAnalysisRoutingModule,
+    NzCardModule,
+    NzBadgeModule
   ],
   declarations: [
     ...COMPONENTS,

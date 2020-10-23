@@ -1,15 +1,16 @@
-import { Component, OnInit, ViewChild, AfterViewInit, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, ChangeDetectorRef, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { _HttpClient } from '@delon/theme';
 import { CollectionViewer, DataSource } from '@angular/cdk/collections';
 import { CdkVirtualScrollViewport } from "@angular/cdk/scrolling";
-import { BehaviorSubject, Observable, Subscription, from, timer } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription, from, timer, Subject } from 'rxjs';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzTreeSelectComponent } from 'ng-zorro-antd/tree-select';
 import * as mapboxgl from "mapbox-gl";
 import { dark } from "@geo";
 import { BdgSelectComponent, MonthRangeComponent, Point, getColorRange, COLORS, EOrder, ZSXM, export2excel } from '@shared';
-import { LoadingService, ReuseTabService, ReuseHookTypes, ReuseComponentInstance } from '@delon/abc';
+import { LoadingService, ReuseTabService, ReuseHookTypes, ReuseComponentInstance, STColumn, STComponent, STPage, STData } from '@delon/abc';
 import { Router, ActivatedRoute } from '@angular/router';
+import { takeUntil } from 'rxjs/operators';
 
 /**
  * 结果数据接口
@@ -28,17 +29,16 @@ interface ItemData {
   selector: 'app-economic-analysis-map-tax-dot-map',
   templateUrl: './tax-dot-map.component.html',
   styleUrls: ['./tax-dot-map.component.less'],
-  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class EconomicAnalysisMapTaxDotMapComponent implements OnInit, AfterViewInit, ReuseComponentInstance {
+export class EconomicAnalysisMapTaxDotMapComponent implements OnInit, AfterViewInit, OnDestroy, ReuseComponentInstance {
 
   url = `analysis/taxdot`;
   @ViewChild('bdgSelect') bdgSelect: BdgSelectComponent;
   @ViewChild('monthRange') monthRange: MonthRangeComponent;
   @ViewChild('hyTreeSelect') hyTreeSelect: NzTreeSelectComponent;
   @ViewChild('scrollView') scrollView: CdkVirtualScrollViewport;
-  ds: MyDataSource;// 查询结果数据源 
-  selectedValue = 50; // 所选纳税金额
+
+  selectedValue = 100; // 所选纳税金额
   selectedHy; // 所选行业
   resData: ItemData[];
 
@@ -68,6 +68,80 @@ export class EconomicAnalysisMapTaxDotMapComponent implements OnInit, AfterViewI
   //#endregion
 
 
+  //#region ng-alain st
+
+  private destroy$ = new Subject();
+  @ViewChild('st', { static: false }) st: STComponent;
+
+  page: STPage = {
+    front: false,
+    show: false,
+  };
+  columns: STColumn[] = [
+    {
+      title: '排名',
+      className: 'text-center',
+      render: 'order-tpl',
+      fixed: 'left',
+      width: 76,
+      // format: (item: STData, col: STColumn, index: number) => {
+      //   // console.log('index', index, item, col);
+      //   // console.log(this.st);
+      //   console.log(index);
+      //   return `${index + 1}`;
+
+      // }
+    },
+    {
+      title: '纳税人名称',
+      className: 'text-center',
+      index: 'NSRMC',
+      fixed: 'left',
+      width: 260
+    },
+    {
+      title: '本年度收入',
+      index: 'BNDSR',
+      className: 'text-center',
+
+    },
+    {
+      title: '同比增减',
+      index: 'TBZJZ',
+      className: 'text-center',
+      render: 'tbzjz-tpl'
+    },
+    {
+      title: '同比增减幅',
+      index: 'TBZJF',
+      className: 'text-center',
+      render: 'tbzjf-tpl'
+    },
+    {
+      title: '操作',
+      className: 'text-center',
+      width: 60,
+      fixed: 'right',
+      buttons: [
+        {
+          // tooltip: '详情',
+          icon: 'eye',
+          // 点击查询详细税收
+          click: (record: STData, modal: true) => {
+            this.router.navigate(['../../budget/single-query'], {
+              queryParams: { nsrmc: record.NSRMC },
+              relativeTo: this.route
+            });
+          }
+        }
+      ]
+    }
+
+  ]
+
+  //#endregion
+
+
   constructor(
     public http: _HttpClient,
     private loadSrv: LoadingService,
@@ -86,17 +160,21 @@ export class EconomicAnalysisMapTaxDotMapComponent implements OnInit, AfterViewI
     if (this.map) {
       setTimeout(() => {
         this.map.resize();
-        if (this.ds) {
-          this.ds.updateSource(this.resData, this.scrollView);
-        }
       });
     }
   }
 
   ngAfterViewInit() {
     this.loadSrv.open({ text: '正在处理……' });
-  }
+    this.st.cdkVirtualScrollViewport.scrolledIndexChange.pipe(takeUntil(this.destroy$)).subscribe(data => {
 
+    });
+
+  }
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
   /**
    * 单击查看明细
    * @param i 
@@ -138,14 +216,7 @@ export class EconomicAnalysisMapTaxDotMapComponent implements OnInit, AfterViewI
 
 
       this.resData = [...resp.data];
-      if (this.ds) {
-        this.ds.updateSource(resp.data, this.scrollView);
-      } else {
-        this.ds = new MyDataSource(resp.data);
-      }
       this.initDotLayer(resp.data);
-
-      this.cdr.detectChanges();
 
     });
   }

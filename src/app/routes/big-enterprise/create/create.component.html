@@ -50,5 +50,8 @@
         <span nz-tooltip [nzTooltipTitle]="'同比增长：' + item.TBZJF"> {{item.TBZJF}}</span>
       </nz-tag>
     </ng-template>
+    <ng-template st-row='order-tpl' let-item let-index="index">
+      <nz-badge [nzCount]="(this.st.pi - 1) * this.st.ps + index + 1"></nz-badge>
+    </ng-template>
   </st>
 </nz-card>

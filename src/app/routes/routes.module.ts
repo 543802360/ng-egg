@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 
 import { SharedModule } from '@shared';
-
+import { NzInputModule } from "ng-zorro-antd/input";
 import { RouteRoutingModule } from './routes-routing.module';
 // dashboard pages
 // passport pages
@@ -24,7 +24,11 @@ const COMPONENTS = [
 const COMPONENTS_NOROUNT = [];
 
 @NgModule({
-  imports: [SharedModule, RouteRoutingModule],
+  imports: [SharedModule,
+
+
+
+    RouteRoutingModule],
   declarations: [
     ...COMPONENTS,
     ...COMPONENTS_NOROUNT
