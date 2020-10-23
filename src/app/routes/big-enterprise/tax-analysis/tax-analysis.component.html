@@ -53,7 +53,7 @@
   <div nz-row nzGutter="8" style="height: 100%;">
     <div nz-col nzSpan="10" style="height: 100%;">
       <st #st [data]="data" [columns]="columns" [page]="page" [loading]="http.loading" pi="1" ps="10" bordered="true"
-        size="middle" [scroll]="{x:'1400px',y:'586px'}">
+        size="middle" [scroll]="{x:'1400px',y:'586px'}" (change)="stChange($event)">
         <ng-template st-row="tbzjz-tpl" let-item let-index="index">
           <nz-tag *ngIf="item.TBZJZ<0" nzColor="red">
             <span nz-tooltip [nzTooltipTitle]="'同比下降：' + item.TBZJZ"> {{item.TBZJZ|number}}</span>

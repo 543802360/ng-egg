@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { _HttpClient, ModalHelper } from '@delon/theme';
-import { STColumn, STComponent, STData, STPage } from '@delon/abc/st';
+import { STChange, STColumn, STComponent, STData, STPage } from '@delon/abc/st';
 import { BdgSelectComponent, MonthRangeComponent, Point, getColorRange, COLORS, EOrder, ZSXM, export2excel, fly2target } from '@shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import { XlsxService, LoadingService, ReuseComponentInstance } from '@delon/abc';
@@ -233,6 +233,21 @@ export class BigEnterpriseTaxAnalysisComponent implements OnInit, AfterViewInit,
 
   }
 
+  /**
+  * st change event
+  * @param e 
+  */
+  stChange(e: STChange) {
+    if (e.type === 'click') {
+      console.log(e.click.item);
+      const { lat, lng } = e.click.item
+      fly2target(this.map, [lng, lat], 17, 60)
+    }
+  }
+
+  /**
+   * 获取数据
+   */
   getData() {
 
     this.bndTotal = 0;
