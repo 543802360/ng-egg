@@ -26,6 +26,12 @@ export class BigEnterpriseTaxAnalysisComponent implements OnInit, AfterViewInit 
   // 表头设置
   columns: STColumn[] = [
     {
+      title: '排行',
+      type: 'no',
+      render: 'order-tpl',
+      className: 'text-center'
+    },
+    {
       index: 'NSRMC',
       title: '纳税人名称',
       className: 'text-center',

@@ -10,5 +10,9 @@
 
   </ng-template>
   <st #st [data]="data" [columns]="columns" [loading]="http.loading" [ps]="10" [pi]="1" [page]="page" bordered="true"
-    size="middle" (change)="change($event)"></st>
+    size="middle" (change)="change($event)">
+    <ng-template st-row='order-tpl' let-item let-index="index">
+      <nz-badge [nzCount]="(this.st.pi - 1) * this.st.ps + index + 1" nzOverflowCount="6666"></nz-badge>
+    </ng-template>
+  </st>
 </nz-card>

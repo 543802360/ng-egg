@@ -60,7 +60,7 @@
         [loading]="http.loading" [ps]="10" bordered="true" size="middle" [scroll]="{ x: '600px', y: '440px' }">
 
         <ng-template st-row='order-tpl' let-item let-index="index">
-          <nz-badge nzStandalone [nzCount]="index + 1"></nz-badge>
+          <nz-badge nzStandalone [nzCount]="index + 1" nzOverflowCount="6666"></nz-badge>
         </ng-template>
         <ng-template st-row="tbzjz-tpl" let-item let-index="index">
           <nz-tag *ngIf="item.TBZJZ<0" nzColor="red">

@@ -77,6 +77,9 @@
         <i nz-icon style="color: red;" nzType="arrow-down"></i>
       </span>
     </ng-template>
+    <ng-template st-row='order-tpl' let-item let-index="index">
+      <nz-badge [nzCount]="(this.st.pi - 1) * this.st.ps + index + 1" nzOverflowCount="6666"></nz-badge>
+    </ng-template>
   </st>
 </nz-card>
 
