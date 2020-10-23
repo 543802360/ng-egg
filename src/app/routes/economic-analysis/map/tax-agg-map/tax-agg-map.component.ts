@@ -288,7 +288,8 @@ export class EconomicAnalysisMapTaxAggMapComponent implements OnInit, AfterViewI
     setTimeout(() => {
       this.barHeight = this.colHost.nativeElement.clientHeight - (this.st as any).el.nativeElement.clientHeight - 90;
     }, 200);
-  } fly2target(center?, pitch?, zoom?, bearing?) {
+  };
+  fly2target(center?, pitch?, zoom?, bearing?) {
     this.map.flyTo({
       center: center ? center : [120.33246, 36.276589],
       zoom: zoom ? zoom : 9.688,

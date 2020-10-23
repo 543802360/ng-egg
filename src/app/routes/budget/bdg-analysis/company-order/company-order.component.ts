@@ -66,7 +66,7 @@ export class BudgetBdgAnalysisCompanyOrderComponent implements OnInit, AfterView
       title: '纳税人名称',
       className: 'text-center',
       fixed: 'left',
-      // width: 400
+      width: 300
     },
     {
       index: 'BNDSR',

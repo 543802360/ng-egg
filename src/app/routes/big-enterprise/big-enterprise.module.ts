@@ -7,6 +7,7 @@ import { BigEnterpriseListViewComponent } from './list/view/view.component';
 import { BigEnterpriseTaxAnalysisComponent } from './tax-analysis/tax-analysis.component';
 import { BigEnterpriseHyAnalysisComponent } from './hy-analysis/hy-analysis.component';
 import { BigEnterpriseCreateComponent } from './create/create.component';
+import { NgxMapboxGLModule } from 'ngx-mapbox-gl';
 
 const COMPONENTS = [
   BigEnterpriseListComponent,
@@ -20,6 +21,7 @@ const COMPONENTS_NOROUNT = [
 @NgModule({
   imports: [
     SharedModule,
+    NgxMapboxGLModule,
     BigEnterpriseRoutingModule
   ],
   declarations: [

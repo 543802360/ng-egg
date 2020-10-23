@@ -13,6 +13,12 @@ export const environment = {
     IMAGE_MAP:
       "http://35.1.149.160:6080/arcgis/rest/services/qdyx2017/MapServer"
   },
+  mapbox_pos: {
+    center: [120.33115, 36.251774],
+    zoom: 10.1839,
+    pitch: 55
+
+  },
   mapStyle: {
     resourceUrl: 'http://35.1.196.63:10010',
     mbtiles: {

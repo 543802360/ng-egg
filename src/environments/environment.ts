@@ -39,6 +39,11 @@ export const environment = {
     }
 
   },
+  mapbox_pos: {
+    center: [120.33115, 36.251774],
+    zoom: 10.1839,
+    pitch: 55,
+  },
   reportsUrl: {
     czsr: 'http://35.1.149.22:8080/bb/bb/czsr',
     hy: 'http://35.1.149.22:8080/bb/bb/hy',
