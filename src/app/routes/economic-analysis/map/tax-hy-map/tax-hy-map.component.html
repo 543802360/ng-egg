@@ -30,7 +30,7 @@
           </nz-tag>
         </ng-template>
         <ng-template st-row='order-tpl' let-item let-index="index">
-          <nz-badge nzCount="{{index + 1}}"></nz-badge>
+          <nz-badge nzStandalone [nzCount]="index + 1" nzOverflowCount="6666"></nz-badge>
         </ng-template>
       </st>
       <g2-bar style="padding: 10px;" *ngIf="townG2BarData&&townG2BarData.length" height="300" [data]="townG2BarData">

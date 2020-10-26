@@ -58,7 +58,7 @@
 
       <st #st [data]="resData" header="明细列表（单位：万元）" [columns]="columns" [page]="page" (change)="stChange($event)"
         virtualScroll [loading]="http.loading" [ps]="10" bordered="true" size="middle"
-        [scroll]="{ x: '600px', y: '440px' }">
+        [scroll]="{ x: '780px', y: '440px' }">
 
         <ng-template st-row='order-tpl' let-item let-index="index">
           <nz-badge nzStandalone [nzCount]="index + 1" nzOverflowCount="6666"></nz-badge>
