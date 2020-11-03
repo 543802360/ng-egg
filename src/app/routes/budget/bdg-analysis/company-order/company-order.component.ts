@@ -6,7 +6,7 @@ import { NzTreeSelectComponent } from 'ng-zorro-antd/tree-select';
 import { CacheService } from '@delon/cache';
 import { BdgSelectComponent, MonthRangeComponent, IEOrder, export2excel, EOrder, ZSXM } from '@shared';
 import { Router, ActivatedRoute } from '@angular/router';
-import { LoadingService, XlsxService } from '@delon/abc';
+import { LoadingService, XlsxService, ReuseComponentInstance } from '@delon/abc';
 
 
 @Component({
@@ -14,7 +14,7 @@ import { LoadingService, XlsxService } from '@delon/abc';
   templateUrl: './company-order.component.html',
   styleUrls: ['./company-order.component.less']
 })
-export class BudgetBdgAnalysisCompanyOrderComponent implements OnInit, AfterViewInit {
+export class BudgetBdgAnalysisCompanyOrderComponent implements OnInit, AfterViewInit, ReuseComponentInstance {
 
   //#region 地图相关
 
@@ -137,8 +137,16 @@ export class BudgetBdgAnalysisCompanyOrderComponent implements OnInit, AfterView
     this.nsrFeatureGroup = L.markerClusterGroup();
   }
 
-  ngOnInit() {
+  _onReuseDestroy: () => void;
+  destroy: () => void;
 
+  ngOnInit() { }
+  _onReuseInit() {
+    if (this.map) {
+      setTimeout(() => {
+        this.map.invalidateSize(true);
+      });
+    }
   }
 
   ngAfterViewInit() {

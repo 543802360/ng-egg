@@ -13,6 +13,26 @@ import { LoadingService } from '@delon/abc';
 import { CacheService } from '@delon/cache';
 import { deepCopy } from '@delon/util';
 
+interface itemInfo {
+  jdxzmc?: string;
+  bndsr?: number;
+  sntq?: number;
+  tbzjz?: number;
+  tbzjf?: string
+}
+
+const jdxzmcs = [
+  '城阳街道办事处',
+  '棘洪滩街道办事处',
+  '流亭街道办事处',
+  '夏庄街道办事处',
+  '惜福镇街道办事处',
+  '上马街道办事处',
+  '红岛街道办事处',
+  '河套街道办事处',
+  '青岛高新技术产业开发区'
+]
+
 @Component({
   templateUrl: './tax-hy-map.component.html',
   styleUrls: ['./tax-hy-map.component.less']
@@ -22,8 +42,8 @@ export class EconomicAnalysisMapTaxHyMapComponent implements OnInit, AfterViewIn
 
   url = `analysis/town`;
   style = dark;
-  townData: any[];
-  townG2BarData: G2BarData[];
+  townData: itemInfo[];
+  noTownTaxData: itemInfo[];
   map: mapboxgl.Map;
 
   // 行业名称tree-select
@@ -51,12 +71,18 @@ export class EconomicAnalysisMapTaxHyMapComponent implements OnInit, AfterViewIn
     {
       title: '本年度收入',
       index: 'bndsr',
-      className: 'text-center'
+      className: 'text-center',
+      type: 'number',
+      statistical: 'sum',
+      key: 'bndsr'
     },
     {
       title: '上年同期',
       index: 'sntq',
-      className: 'text-center'
+      className: 'text-center',
+      type: 'number',
+      statistical: 'sum',
+      key: 'sntq'
     },
     {
       title: '同比增减',
@@ -99,16 +125,39 @@ export class EconomicAnalysisMapTaxHyMapComponent implements OnInit, AfterViewIn
    * 获取区域聚合数据
    */
   getData() {
+    this.loadSrv.open({
+      text: '正在处理……'
+    });
     const $townJson = this.http.get('assets/data/CY_TOWN.json');
     const $townTaxData = this.http.get(this.url, this.getCondition());
     forkJoin([$townJson, $townTaxData])
       .subscribe(resp => {
-        // 1、获取镇街税收数据
-        this.townData = resp[1].data;
+        this.loadSrv.close();
+        // 1、获取镇街税收数据,处理成包含8个街道的
+        const townTaxData: itemInfo[] = resp[1].data;
+
+        this.townData = townTaxData.filter(i => jdxzmcs.includes(i.jdxzmc));
+        this.noTownTaxData = townTaxData.filter(i => !jdxzmcs.includes(i.jdxzmc));
+        let noTownBndsr = 0;
+        let noTownSntq = 0;
+        this.noTownTaxData.forEach(i => {
+          noTownBndsr += i.bndsr;
+          noTownSntq += i.sntq;
+        });
+        const tbzjz = Math.floor((noTownBndsr - noTownSntq) * 100) / 100;
+        const tbzjf = `${Math.floor(tbzjz / noTownSntq * 10000) / 100}%`;
+
+        this.townData.push({
+          jdxzmc: '其他',
+          bndsr: noTownBndsr,
+          sntq: noTownSntq,
+          tbzjz,
+          tbzjf
+        });
+
         // 若当前数据为空，则清空上次查询结果
         if (!this.townData.length) {
           this.msgSrv.warning('当前条件下无收入数据！');
-          this.townG2BarData = [];
 
           // 判断是否存在高亮区域块数据源及图层
           if (this.map.getLayer('grid-active')) {
@@ -128,12 +177,6 @@ export class EconomicAnalysisMapTaxHyMapComponent implements OnInit, AfterViewIn
 
           return;
         }
-        this.townG2BarData = this.townData.map(item => {
-          return {
-            x: item.jdxzmc,
-            y: item.bndsr
-          }
-        });
         // 2、获取Geometry
         const fc = resp[0];
         const taxArray = [];

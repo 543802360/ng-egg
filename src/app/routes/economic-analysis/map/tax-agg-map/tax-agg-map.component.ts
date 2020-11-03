@@ -11,6 +11,26 @@ import { G2BarData } from '@delon/chart/bar';
 import { forkJoin } from 'rxjs';
 import { LoadingService, ReuseComponentInstance } from '@delon/abc';
 
+interface itemInfo {
+  jdxzmc?: string;
+  bndsr?: number;
+  sntq?: number;
+  tbzjz?: number;
+  tbzjf?: string
+}
+
+const jdxzmcs = [
+  '城阳街道办事处',
+  '棘洪滩街道办事处',
+  '流亭街道办事处',
+  '夏庄街道办事处',
+  '惜福镇街道办事处',
+  '上马街道办事处',
+  '红岛街道办事处',
+  '河套街道办事处',
+  '青岛高新技术产业开发区'
+]
+
 @Component({
   selector: 'app-economic-analysis-map-tax-agg-map',
   templateUrl: './tax-agg-map.component.html',
@@ -23,12 +43,15 @@ export class EconomicAnalysisMapTaxAggMapComponent implements OnInit, AfterViewI
     private loadSrv: LoadingService,
     private msgSrv: NzMessageService) { }
   ;
+  ;
+
+
 
   url = `analysis/town`;
   style = dark;
-  townData: any[];
-  townG2BarData: G2BarData[];
-  barHeight;
+  townData: itemInfo[];
+  noTownTaxData: itemInfo[];
+
   map: mapboxgl.Map;
   @ViewChild('st') st: STComponent;
   @ViewChild('colHost') colHost: ElementRef;
@@ -52,12 +75,18 @@ export class EconomicAnalysisMapTaxAggMapComponent implements OnInit, AfterViewI
     {
       title: '本年度收入',
       index: 'bndsr',
-      className: 'text-center'
+      className: 'text-center',
+      type: 'number',
+      statistical: 'sum',
+      key: 'bndsr'
     },
     {
       title: '上年同期',
       index: 'sntq',
-      className: 'text-center'
+      className: 'text-center',
+      type: 'number',
+      statistical: 'sum',
+      key: 'sntq'
     },
     {
       title: '同比增减',
@@ -93,9 +122,7 @@ export class EconomicAnalysisMapTaxAggMapComponent implements OnInit, AfterViewI
   _onReuseDestroy: () => void;
   destroy: () => void;
 
-
   ngOnInit() { }
-
   _onReuseInit() {
     if (this.map) {
       setTimeout(() => {
@@ -113,18 +140,36 @@ export class EconomicAnalysisMapTaxAggMapComponent implements OnInit, AfterViewI
    * 获取区域聚合数据
    */
   getData() {
+    this.loadSrv.open({
+      text: '正在处理……'
+    })
     const $townJson = this.http.get('assets/data/CY_TOWN.json');
     const $townTaxData = this.http.get(this.url, this.getCondition());
     forkJoin([$townJson, $townTaxData])
       .subscribe(resp => {
-        // 1、获取镇街税收数据
-        this.townData = resp[1].data;
-        this.townG2BarData = this.townData.map(item => {
-          return {
-            x: item.jdxzmc,
-            y: item.bndsr
-          }
+        this.loadSrv.close();
+        // 1、获取镇街税收数据,处理成包含8个街道的
+        const townTaxData: itemInfo[] = resp[1].data;
+
+        this.townData = townTaxData.filter(i => jdxzmcs.includes(i.jdxzmc));
+        this.noTownTaxData = townTaxData.filter(i => !jdxzmcs.includes(i.jdxzmc));
+        let noTownBndsr = 0;
+        let noTownSntq = 0;
+        this.noTownTaxData.forEach(i => {
+          noTownBndsr += i.bndsr;
+          noTownSntq += i.sntq;
         });
+        const tbzjz = Math.floor((noTownBndsr - noTownSntq) * 100) / 100;
+        const tbzjf = `${Math.floor(tbzjz / noTownSntq * 10000) / 100}%`;
+
+        this.townData.push({
+          jdxzmc: '其他',
+          bndsr: noTownBndsr,
+          sntq: noTownSntq,
+          tbzjz,
+          tbzjf
+        });
+
         // 2、获取Geometry
         const fc = resp[0];
         const taxArray = [];
@@ -285,11 +330,8 @@ export class EconomicAnalysisMapTaxAggMapComponent implements OnInit, AfterViewI
    * @param e 
    */
   stChange(e) {
-    setTimeout(() => {
-      this.barHeight = this.colHost.nativeElement.clientHeight - (this.st as any).el.nativeElement.clientHeight - 90;
-    }, 200);
-  };
-  fly2target(center?, pitch?, zoom?, bearing?) {
+
+  } fly2target(center?, pitch?, zoom?, bearing?) {
     this.map.flyTo({
       center: center ? center : [120.33246, 36.276589],
       zoom: zoom ? zoom : 9.688,

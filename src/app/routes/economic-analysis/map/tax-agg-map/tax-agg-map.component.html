@@ -11,7 +11,27 @@
   <div nz-row nzGutter="8" style="height: 100%;">
     <div nz-col nzSpan="10" style="height: 100%;" #colHost>
       <st #st [data]="townData" header="镇街收入（单位：万元）" [columns]="columns" size="small" bordered="true"
-        [page]="{show:false}" [loading]="http.loading" (change)="stChange($event)">
+        [page]="{show:false}" [body]="bodyTpl" (change)="stChange($event)">
+
+        <!-- 汇总数据 -->
+        <ng-template #bodyTpl let-s>
+          <ng-container *ngIf="st.count > 0">
+            <tr class="bg-grey-lighter text-magenta-dark">
+              <td colspan="2">合计</td>
+              <td class="text-center">{{ s.bndsr.value |number}}</td>
+              <td class="text-center">{{ s.sntq.value |number}}</td>
+              <td class="text-center">
+                {{ (s.bndsr.value-s.sntq.value) |number}}({{ ((s.bndsr.value-s.sntq.value)/s.sntq.value*100).toFixed(2)+"%"}})
+              </td>
+              <!-- <td class="text-center">
+                
+              </td> -->
+            </tr>
+            <!-- 通过json管道打印 s ，s是表格统计结果 -->
+            <!-- <tr>{{s|json}}</tr> -->
+          </ng-container>
+        </ng-template>
+
         <ng-template st-row="tbzjz-tpl" let-item let-index="index">
           <nz-tag nzColor="{{item.tbzjz>0?'green':'red'}}">
             <!-- <span> {{item.tbzjz|number}}（{{item.tbzjf}}）</span> -->
@@ -30,7 +50,7 @@
         </ng-template>
       </st>
 
-      <g2-bar style="padding: 6px;" *ngIf="barHeight" [height]="barHeight" [data]="townG2BarData"></g2-bar>
+      <!-- <g2-bar style="padding: 6px;" *ngIf="barHeight" [height]="barHeight" [data]="townG2BarData"></g2-bar> -->
     </div>
     <div nz-col nzSpan="14" style="height: 100%;">
       <div style="height: 100%;min-height: 660px; width: 100%;margin-top: 10px;">

@@ -20,51 +20,51 @@ export const environment = {
 
   },
   mapStyle: {
-    resourceUrl: 'http://35.1.196.63:10010',
+    resourceUrl: 'http://35.1.149.88:10010',
     mbtiles: {
       world: [
-        'http://35.1.196.63:10010/vtiles/world/{z}/{x}/{y}.pbf',
-        'http://35.1.196.64:10010/vtiles/world/{z}/{x}/{y}.pbf'
+        'http://35.1.149.88:10010/vtiles/world/{z}/{x}/{y}.pbf',
+        'http://35.1.149.188:10010/vtiles/world/{z}/{x}/{y}.pbf'
       ],
       province:
         [
-          'http://35.1.196.63:10010/vtiles/province/{z}/{x}/{y}.pbf',
-          'http://35.1.196.64:10010/vtiles/province/{z}/{x}/{y}.pbf'
+          'http://35.1.149.88:10010/vtiles/province/{z}/{x}/{y}.pbf',
+          'http://35.1.149.188:10010/vtiles/province/{z}/{x}/{y}.pbf'
         ],
       dtbj:
         [
-          'http://35.1.196.63:10010/vtiles/dtbj/{z}/{x}/{y}.pbf',
-          'http://35.1.196.64:10010/vtiles/dtbj/{z}/{x}/{y}.pbf'
+          'http://35.1.149.88:10010/vtiles/dtbj/{z}/{x}/{y}.pbf',
+          'http://35.1.149.188:10010/vtiles/dtbj/{z}/{x}/{y}.pbf'
 
         ],
       xzbz:
         [
-          'http://35.1.196.63:10010/vtiles/xzbz/{z}/{x}/{y}.pbf',
-          'http://35.1.196.64:10010/vtiles/xzbz/{z}/{x}/{y}.pbf'
+          'http://35.1.149.88:10010/vtiles/xzbz/{z}/{x}/{y}.pbf',
+          'http://35.1.149.188:10010/vtiles/xzbz/{z}/{x}/{y}.pbf'
 
         ],
       jzw:
         [
-          'http://35.1.196.63:10010/vtiles/jzw/{z}/{x}/{y}.pbf',
-          'http://35.1.196.64:10010/vtiles/jzw/{z}/{x}/{y}.pbf'
+          'http://35.1.149.88:10010/vtiles/jzw/{z}/{x}/{y}.pbf',
+          'http://35.1.149.188:10010/vtiles/jzw/{z}/{x}/{y}.pbf'
 
         ],
       road:
         [
-          'http://35.1.196.63:10010/vtiles/road/{z}/{x}/{y}.pbf',
-          'http://35.1.196.64:10010/vtiles/road/{z}/{x}/{y}.pbf'
+          'http://35.1.149.88:10010/vtiles/road/{z}/{x}/{y}.pbf',
+          'http://35.1.149.188:10010/vtiles/road/{z}/{x}/{y}.pbf'
 
         ],
       road2:
         [
-          'http://35.1.196.63:10010/vtiles/road2/{z}/{x}/{y}.pbf',
-          'http://35.1.196.64:10010/vtiles/road2/{z}/{x}/{y}.pbf'
+          'http://35.1.149.88:10010/vtiles/road2/{z}/{x}/{y}.pbf',
+          'http://35.1.149.188:10010/vtiles/road2/{z}/{x}/{y}.pbf'
 
         ],
       poi:
         [
-          'http://35.1.196.63:10010/vtiles/poi/{z}/{x}/{y}.pbf',
-          'http://35.1.196.64:10010/vtiles/poi/{z}/{x}/{y}.pbf'
+          'http://35.1.149.88:10010/vtiles/poi/{z}/{x}/{y}.pbf',
+          'http://35.1.149.188:10010/vtiles/poi/{z}/{x}/{y}.pbf'
         ]
     }
 

@@ -26,21 +26,21 @@ const routes: Routes = [
     path: 'tax-dot-map',
     component: EconomicAnalysisMapTaxDotMapComponent,
     data: {
-      title: '税源地图'
+      title: '税源区域分布情况'
     }
   },
   {
     path: 'tax-agg-map',
     component: EconomicAnalysisMapTaxAggMapComponent,
     data: {
-      title: '镇街收入地图'
+      title: '税收收入区域分布'
     }
   },
   {
     path: 'tax-hy-map',
     component: EconomicAnalysisMapTaxHyMapComponent,
     data: {
-      title: '行业收入地图'
+      title: '税收收入行业分布'
     }
   },
   {

@@ -5,7 +5,7 @@ import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { _HttpClient, ModalHelper } from '@delon/theme';
 import { STColumn, STComponent, STPage, STReq, STRequestOptions, STRes, STData, STChange } from '@delon/abc/st';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { LoadingService } from '@delon/abc';
+import { LoadingService, ReuseComponentInstance } from '@delon/abc';
 
 // import * as L from "leaflet";
 
@@ -15,7 +15,7 @@ import { LoadingService } from '@delon/abc';
   templateUrl: './position.component.html',
   styleUrls: ['./position.component.less']
 })
-export class CompanyPositionComponent implements OnInit, AfterViewInit {
+export class CompanyPositionComponent implements OnInit, AfterViewInit, ReuseComponentInstance {
 
   //#region 地图相关参数
   center;
@@ -345,6 +345,17 @@ export class CompanyPositionComponent implements OnInit, AfterViewInit {
     private loadingTypeSrv: LoadingTypesService,
     private msgSrv: NzMessageService,
   ) { }
+
+  _onReuseDestroy: () => void;
+  destroy: () => void;
+
+  _onReuseInit() {
+    if (this.leafletMap) {
+      setTimeout(() => {
+        this.leafletMap.invalidateSize(true);
+      });
+    }
+  }
 
   ngOnInit() {
     this.loadingSrv.open({
