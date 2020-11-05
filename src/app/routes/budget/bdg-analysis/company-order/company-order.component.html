@@ -8,15 +8,16 @@
         <a (click)="setDate('year')">本年</a>
       </div> -->
 
-      <app-bdg-select #bdgSelect></app-bdg-select>
+      <app-bdg-select class="board-1" #bdgSelect></app-bdg-select>
 
       <span class="header-label"> 所属行业:</span>
-      <nz-tree-select #hyTreeSelect class="hymc-tree-select" [(ngModel)]="selectedHymc" [nzNodes]="hymcNodes"
+      <nz-tree-select #hyTreeSelect class="board-2 hymc-tree-select" [(ngModel)]="selectedHymc" [nzNodes]="hymcNodes"
         nzAllowClear="true" nzMultiple="false" [nzPlaceHolder]="'请选择行业名称'">
       </nz-tree-select>
-      <hy-base-select #hyBase></hy-base-select>
+      <hy-base-select class="board-3" #hyBase></hy-base-select>
       <span class="header-label"> 税收名次:</span>
-      <nz-select style="margin: 0 5px;width: 100px;" [(ngModel)]="selectedOrder" nzPlaceHolder="请选择排名" nzAllowClear>
+      <nz-select class="board-4" style="margin: 0 5px;width: 100px;" [(ngModel)]="selectedOrder" nzPlaceHolder="请选择排名"
+        nzAllowClear>
         <nz-option nzLabel="10" [nzValue]="10">
         </nz-option>
         <nz-option nzLabel="100" [nzValue]="100">
@@ -33,11 +34,12 @@
         </nz-option>
       </nz-select>
 
-      <app-month-range #monthRange style="margin-right: 5px;"></app-month-range>
-      <button nz-button (click)="getData()" [disabled]="http.loading" nzType="primary"
+      <app-month-range class="board-5" #monthRange style="margin-right: 5px;"></app-month-range>
+      <button nz-button class="board-6" (click)="getData()" [disabled]="http.loading" nzType="primary"
         style="margin-left: 6px;">查询</button>
       <button nz-button (click)="download()" [disabled]="http.loading" nzType="primary"
         style="margin-left: 6px;">导出</button>
+      <button nz-button (click)="startBoard()" nzType="primary" style="margin-left: 6px;">帮助</button>
 
     </div>
   </ng-template>

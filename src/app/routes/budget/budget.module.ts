@@ -9,6 +9,7 @@ import { BudgetCompanyOrderViewComponent } from './bdg-analysis/company-order/vi
 import { BudgetBdgAnalysisBatchQueryComponent } from './bdg-analysis/batch-query/batch-query.component';
 import { BudgetBdgAnalysisSingleQueryComponent } from './bdg-analysis/single-query/single-query.component';
 import { NgLeafletModule } from '../../ng-leaflet/ng-leaflet.module';
+import { OnboardingModule } from '@delon/abc';
 
 const COMPONENTS = [
   BudgetBdgSettingBdgCountyComponent,
@@ -24,7 +25,8 @@ const COMPONENTS_NOROUNT = [
   imports: [
     NgLeafletModule,
     SharedModule,
-    BudgetRoutingModule
+    BudgetRoutingModule,
+    OnboardingModule,
   ],
   declarations: [
     ...COMPONENTS,

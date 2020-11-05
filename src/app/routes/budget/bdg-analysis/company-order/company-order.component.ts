@@ -6,7 +6,7 @@ import { NzTreeSelectComponent } from 'ng-zorro-antd/tree-select';
 import { CacheService } from '@delon/cache';
 import { BdgSelectComponent, MonthRangeComponent, IEOrder, export2excel, EOrder, ZSXM } from '@shared';
 import { Router, ActivatedRoute } from '@angular/router';
-import { LoadingService, XlsxService, ReuseComponentInstance } from '@delon/abc';
+import { LoadingService, XlsxService, ReuseComponentInstance, OnboardingService } from '@delon/abc';
 import { HyBaseSelectComponent } from 'src/app/shared/components/hy-base-select/hy-base-select.component';
 
 
@@ -128,6 +128,7 @@ export class BudgetBdgAnalysisCompanyOrderComponent implements OnInit, AfterView
   }
 
   constructor(public http: _HttpClient,
+    private boardingSrv: OnboardingService,
     public msg: NzMessageService,
     private cdr: ChangeDetectorRef,
     private cacheSrv: CacheService,
@@ -155,6 +156,48 @@ export class BudgetBdgAnalysisCompanyOrderComponent implements OnInit, AfterView
     // setTimeout(() => {
     //   this.getData();
     // });
+  }
+
+  startBoard() {
+    this.boardingSrv.start({
+      showTotal: true,
+      mask: true,
+      items: [
+        {
+          selectors: '.board-1',
+          title: '预算级次选择',
+          content: '中央级、省级、市级、区县级等，可组合进行选择'
+        },
+        {
+          selectors: '.board-2',
+          title: '行业选择',
+          content: '选择门类或行业大类'
+        },
+        {
+          selectors: '.board-3',
+          title: '行业分类依据',
+          content: '税务登记所属行业、电子税票开票所属行业'
+        }
+        ,
+        {
+          selectors: '.board-4',
+          title: '排名',
+          content: '选择税收名次'
+        }
+        ,
+        {
+          selectors: '.board-5',
+          title: '入库时间',
+          content: '选择税收入库时间范围'
+        }
+        ,
+        {
+          selectors: '.board-6',
+          title: '查询',
+          content: '点击查询结果'
+        }
+      ]
+    });
   }
 
   /**
