@@ -240,8 +240,6 @@ export class BudgetBdgAnalysisCompanyOrderComponent implements OnInit, AfterView
       const selectedNode = this.hyTreeSelect.getSelectedNodeList()[0];
       return selectedNode.parentNode ? { adminCode, year, startMonth, endMonth, budgetValue, count, hyBase, hymc: selectedNode.title } :
         { adminCode, year, startMonth, endMonth, budgetValue, count, hyBase, mlmc: selectedNode.title };
-
-
     }
 
   }

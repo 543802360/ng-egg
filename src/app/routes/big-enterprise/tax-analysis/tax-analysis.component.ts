@@ -271,11 +271,14 @@ export class BigEnterpriseTaxAnalysisComponent implements OnInit, AfterViewInit,
     });
   }
 
+  /**
+   * 
+   */
   download() {
     this.loadSrv.open({
       text: '正在处理……'
     });
-    const columns = this.columns.filter(col => col.title !== '操作');
+    const columns = this.columns.filter(col => col.title !== '操作' && col.title !== '排行');
     const data = [columns.map(i => i.title)];
 
     this.data.forEach(i => {

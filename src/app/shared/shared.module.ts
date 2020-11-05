@@ -24,6 +24,7 @@ import { SHARED_ZORRO_MODULES } from './shared-zorro.module';
 import { SHARED_DELON_MODULES } from './shared-delon.module';
 import { XlsxModule } from '@delon/abc';
 import { MapboxStyleControlComponent } from "./components/mapbox-style-control/mapbox-style-control.component";
+import { HyBaseSelectComponent } from './components/hy-base-select/hy-base-select.component';
 
 
 
@@ -39,6 +40,7 @@ const THIRDMODULES = [
 const COMPONENTS = [
   BdgSelectComponent,
   HySelectComponent,
+  HyBaseSelectComponent,
   MonthRangeComponent,
   NsrmcSuggestionComponent,
   TrendComponent,
