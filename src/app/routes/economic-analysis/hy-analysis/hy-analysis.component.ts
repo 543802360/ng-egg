@@ -14,7 +14,7 @@ import { forkJoin } from 'rxjs';
 export class EconomicAnalysisHyAnalysisComponent implements OnInit, AfterViewInit {
   hyUrl = `analysis/tax/hy`;
   cyUrl = `analysis/tax/cy`;
-  selectedMlmcFlag = 'MLMC';
+  selectedMlmcFlag = 'DJ_MLMC';
   // 行业数据
   hyG2Data: G2PieData[];
   hyStData: any[];
