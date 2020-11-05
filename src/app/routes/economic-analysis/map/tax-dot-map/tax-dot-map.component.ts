@@ -320,8 +320,7 @@ export class EconomicAnalysisMapTaxDotMapComponent implements OnInit, AfterViewI
       type: 'FeatureCollection',
       features
     };
-
-
+    console.log(fc);
     if (this.map.getSource('dot-source')) {
       (this.map.getSource('dot-source') as mapboxgl.GeoJSONSource).setData(fc as any);
       (this.map.getSource('nsr') as mapboxgl.GeoJSONSource).setData(fc as any);

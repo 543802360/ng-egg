@@ -16,13 +16,14 @@ import { Component } from '@angular/core';
 export class LayoutPassportComponent {
   links = [
     {
-      title: '帮助',
-      href: '',
+      title: '谷歌浏览器下载',
+      href: 'http://35.1.149.22:8080/soft/86_chrome.exe',
+      blankTarget: true
     },
-    {
-      title: '说明',
-      href: '',
-    },
+    // {
+    //   title: '说明',
+    //   href: '',
+    // },
     // {
     //   title: '条款',
     //   href: '',
