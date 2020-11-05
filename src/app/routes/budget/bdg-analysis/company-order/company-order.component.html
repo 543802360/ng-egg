@@ -14,7 +14,7 @@
       <nz-tree-select #hyTreeSelect class="hymc-tree-select" [(ngModel)]="selectedHymc" [nzNodes]="hymcNodes"
         nzAllowClear="true" nzMultiple="false" [nzPlaceHolder]="'请选择行业名称'">
       </nz-tree-select>
-
+      <hy-base-select #hyBase></hy-base-select>
       <span class="header-label"> 税收名次:</span>
       <nz-select style="margin: 0 5px;width: 100px;" [(ngModel)]="selectedOrder" nzPlaceHolder="请选择排名" nzAllowClear>
         <nz-option nzLabel="10" [nzValue]="10">

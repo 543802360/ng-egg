@@ -7,6 +7,7 @@ import { CacheService } from '@delon/cache';
 import { BdgSelectComponent, MonthRangeComponent, IEOrder, export2excel, EOrder, ZSXM } from '@shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import { LoadingService, XlsxService, ReuseComponentInstance } from '@delon/abc';
+import { HyBaseSelectComponent } from 'src/app/shared/components/hy-base-select/hy-base-select.component';
 
 
 @Component({
@@ -28,6 +29,7 @@ export class BudgetBdgAnalysisCompanyOrderComponent implements OnInit, AfterView
 
   // 行业名称tree-select
   @ViewChild('hyTreeSelect') hyTreeSelect: NzTreeSelectComponent;
+  @ViewChild('hyBase') hyBaseSelect: HyBaseSelectComponent;
   hymcNodes;
   selectedHymc: string;
   selectedOrder = 100;
@@ -219,12 +221,12 @@ export class BudgetBdgAnalysisCompanyOrderComponent implements OnInit, AfterView
    * 获取查询条件参数
    */
   getCondition() {
+    // 获取查询参数
     const { startDate, endDate } = this.monthRange;
     const year = startDate.getFullYear();
     const startMonth = startDate.getMonth() + 1;
     const endMonth = endDate.getMonth() + 1;
     const budgetValue = this.bdgSelect.budgetValue.toLocaleString();
-    const mlmc = this.hyTreeSelect.getSelectedNodeList();
     const count = this.selectedOrder;
     const adminCode = '3302060000';
 
@@ -234,9 +236,12 @@ export class BudgetBdgAnalysisCompanyOrderComponent implements OnInit, AfterView
       return { adminCode, year, startMonth, endMonth, budgetValue, count };
     }
     if (this.hyTreeSelect.getSelectedNodeList().length !== 0) {
+      const hyBase = this.hyBaseSelect.hyBase;
       const selectedNode = this.hyTreeSelect.getSelectedNodeList()[0];
-      return selectedNode.parentNode ? { adminCode, year, startMonth, endMonth, budgetValue, count, hymc: selectedNode.title } :
-        { adminCode, year, startMonth, endMonth, budgetValue, count, mlmc: selectedNode.title };
+      return selectedNode.parentNode ? { adminCode, year, startMonth, endMonth, budgetValue, count, hyBase, hymc: selectedNode.title } :
+        { adminCode, year, startMonth, endMonth, budgetValue, count, hyBase, mlmc: selectedNode.title };
+
+
     }
 
   }
