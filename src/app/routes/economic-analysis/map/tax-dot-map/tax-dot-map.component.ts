@@ -10,6 +10,7 @@ import { LoadingService, ReuseTabService, ReuseHookTypes, ReuseComponentInstance
 import { Router, ActivatedRoute } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
 import { environment } from "@env/environment";
+import { HyBaseSelectComponent } from 'src/app/shared/components/hy-base-select/hy-base-select.component';
 
 /**
  * 结果数据接口
@@ -35,7 +36,8 @@ export class EconomicAnalysisMapTaxDotMapComponent implements OnInit, AfterViewI
   @ViewChild('bdgSelect') bdgSelect: BdgSelectComponent;
   @ViewChild('monthRange') monthRange: MonthRangeComponent;
   @ViewChild('hyTreeSelect') hyTreeSelect: NzTreeSelectComponent;
-  @ViewChild('scrollView') scrollView: CdkVirtualScrollViewport;
+  @ViewChild('hyBase') hyBaseSelect: HyBaseSelectComponent;
+
 
   selectedValue = 100; // 所选纳税金额
   selectedHy; // 所选行业
@@ -290,10 +292,10 @@ export class EconomicAnalysisMapTaxDotMapComponent implements OnInit, AfterViewI
     const endMonth = endDate.getMonth() + 1;
     const budgetValue = this.bdgSelect.budgetValue.toLocaleString();
     const value = this.selectedValue;
-
+    const hyBase = this.hyBaseSelect.hyBase;
     // const adminCode = '3302130000';
-    return this.selectedHy === null ? { year, startMonth, endMonth, budgetValue, value }
-      : { year, startMonth, endMonth, budgetValue, value, ...this.selectedHy };
+    return this.selectedHy === null ? { year, startMonth, endMonth, budgetValue, value, hyBase }
+      : { year, startMonth, endMonth, budgetValue, value, hyBase, ...this.selectedHy };
 
   }
 
