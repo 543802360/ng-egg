@@ -1,9 +1,34 @@
-<page-header [action]="phActionTpl">
-  <ng-template #phActionTpl>
-    <button (click)="add()" nz-button nzType="primary">新建</button>
+<nz-card class="single-card" [nzExtra]="extraTpl">
+  <ng-template #extraTpl>
+    <span style="font-weight: bolder;">纳税人名称：</span>
+    <!-- <app-nsrmc-suggestion #nsrSug></app-nsrmc-suggestion> -->
+    <input nz-input [(ngModel)]="nsrmc" name="NSRMC" placeholder="请输入纳税人名称" id="NSRMC"
+      style="display: inline-block;width: 284px;" />
+    <app-bdg-select #bdgSelect></app-bdg-select>
+    <app-month-range #monthRange style="margin-right: 5px;"></app-month-range>
+    <button (click)="getData()" [disabled]="http.loading" nz-button nzType="primary">查询</button>
+    <button (click)="export()" [disabled]="http.loading" nz-button nzType="primary">导出</button>
+
   </ng-template>
-</page-header>
-<nz-card>
-  <sf mode="search" [schema]="searchSchema" (formSubmit)="st.reset($event)" (formReset)="st.reset($event)"></sf>
-  <st #st [data]="url" [columns]="columns"></st>
+  <!-- 分税种税收明细表 -->
+  <div nz-row nzGutter="8">
+    <div nz-col nzSpan="24">
+      <st #st [data]="taxData" [columns]="columns" size="middle" bordered="true" [header]="headerTpl" [page]="page"
+        [footer]="footerTpl" [loading]="http.loading">
+        <ng-template #headerTpl>
+          <ng-container>
+            <div>税收明细（单位：万元）</div>
+          </ng-container>
+        </ng-template>
+        <ng-template #footerTpl let-s>
+          <ng-container>
+            <div>
+              <!-- 合计： {{ total | _currency }} -->
+            </div>
+          </ng-container>
+        </ng-template>
+
+      </st>
+    </div>
+  </div>
 </nz-card>
