@@ -8,21 +8,22 @@ import { _HttpClient } from '@delon/theme';
 export class BdgSelectComponent implements OnInit {
   // 预算级次value
   _budgetValue: number[] = [1, 3, 4]
-  budgetNodes = [{
-    title: '中央级',
-    value: 1,
-    key: 1
-  },
-  {
-    title: '市级',
-    value: 3,
-    key: 3
-  },
-  {
-    title: '区县级',
-    value: 4,
-    key: 4
-  }];
+  budgetNodes = [
+    {
+      title: '中央级',
+      value: 1,
+      key: 1
+    },
+    {
+      title: '市级',
+      value: 3,
+      key: 3
+    },
+    {
+      title: '区县级',
+      value: 4,
+      key: 4
+    }];
 
 
   public get budgetValue(): any[] {
@@ -33,14 +34,12 @@ export class BdgSelectComponent implements OnInit {
     this._budgetValue = v;
   }
 
+  constructor(private http: _HttpClient) {
 
-
-  constructor(private http: _HttpClient) { }
+  }
 
   ngOnInit() {
 
   }
-
-
 
 }

@@ -100,7 +100,7 @@ export class BudgetBdgAnalysisSingleQueryComponent implements OnInit, AfterViewI
 
     const $stream1 = this.http.get(this.zsxmUrl, this.getCondition());
     const $stream2 = this.http.get(this.historyUrl, {
-      nsrmc: this.nsrSug.nsrmc,
+      nsrmc: this.nsrSug.nsrmc.trim(),
       ...this.getCondition()
     });
 

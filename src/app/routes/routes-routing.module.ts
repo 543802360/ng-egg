@@ -54,11 +54,16 @@ const routes: Routes = [
         path: 'reports',
         loadChildren: () => import('./reports/reports.module').then(m => m.ReportsModule)
       },
+      {
+        path: 'tools',
+        loadChildren: () => import('./analysis-tools/analysis-tools.module').then(m => m.AnalysisToolsModule)
+      },
       // 异常处理模块
       {
         path: 'exception',
         loadChildren: () => import('./exception/exception.module').then(m => m.ExceptionModule)
       },
+
       // 楼宇经济子模块
       {
         path: 'building',
