@@ -223,6 +223,11 @@ export class EconomicAnalysisMapTaxDotMapComponent implements OnInit, AfterViewI
           selectors: '.board-6',
           title: '查询',
           content: '点击查询结果'
+        },
+        {
+          selectors: '.board-7',
+          title: '导出',
+          content: '导出查询结果'
         }
       ]
     });

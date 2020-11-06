@@ -7,8 +7,9 @@
       style="margin-left: 6px;">查询</button>
     <button nz-button class="board-4" (click)="export()" [disabled]="http.loading" nzType="primary"
       style="margin-left: 6px;">导出</button>
-    <button nz-button (click)="startBoard()" nzType="primary" style="margin-left: 6px;">帮助</button>
-    <!-- startBoard -->
+    <button nz-button nz-tooltip nzTooltipTitle="帮助" (click)="startBoard()" nzType="default" style="margin-left: 6px;"
+      nzShape="circle">
+      <i nz-icon nzType="question" nzTheme="outline"></i></button> <!-- startBoard -->
   </ng-template>
   <div nz-row nzGutter="8" style="height: 100%;">
     <div nz-col nzSpan="10" style="height: 100%;" #colHost>

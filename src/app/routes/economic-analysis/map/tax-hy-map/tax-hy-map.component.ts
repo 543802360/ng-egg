@@ -9,7 +9,7 @@ import { dark } from "@geo";
 import { BdgSelectComponent, MonthRangeComponent, getColorRange, ExcelData, export2excel } from '@shared';
 import { G2BarData } from '@delon/chart/bar';
 import { forkJoin } from 'rxjs';
-import { LoadingService } from '@delon/abc';
+import { LoadingService, OnboardingService } from '@delon/abc';
 import { CacheService } from '@delon/cache';
 import { deepCopy } from '@delon/util';
 
@@ -110,7 +110,7 @@ export class EconomicAnalysisMapTaxHyMapComponent implements OnInit, AfterViewIn
   constructor(public http: _HttpClient,
     private loadSrv: LoadingService,
     private cacheSrv: CacheService,
-    private modal: ModalHelper,
+    private boardingSrv: OnboardingService,
     private msgSrv: NzMessageService) { }
 
   ngOnInit() {
@@ -120,7 +120,42 @@ export class EconomicAnalysisMapTaxHyMapComponent implements OnInit, AfterViewIn
   ngAfterViewInit() {
     this.loadSrv.open({ text: '正在处理……' });
   }
-
+  /**
+ * 开启引导模式
+ */
+  startBoard() {
+    this.boardingSrv.start({
+      showTotal: true,
+      mask: true,
+      items: [
+        {
+          selectors: '.board-1',
+          title: '预算级次选择',
+          content: '中央级、省级、市级、区县级等，可组合进行选择'
+        },
+        {
+          selectors: '.board-2',
+          title: '行业选择',
+          content: '选择门类或行业大类'
+        },
+        {
+          selectors: '.board-3',
+          title: '入库时间',
+          content: '选择税收入库时间范围，同年内的'
+        },
+        {
+          selectors: '.board-4',
+          title: '查询',
+          content: '点击查询结果'
+        },
+        {
+          selectors: '.board-5',
+          title: '导出',
+          content: '导出查询结果'
+        }
+      ]
+    });
+  }
   /**
    * 获取区域聚合数据
    */

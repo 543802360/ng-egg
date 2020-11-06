@@ -150,7 +150,7 @@ export class EconomicAnalysisMapTaxAggMapComponent implements OnInit, AfterViewI
         {
           selectors: '.board-2',
           title: '入库时间',
-          content: '选择税收入库时间范围'
+          content: '选择税收入库时间范围，同年内的'
         }
         ,
         {

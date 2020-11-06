@@ -1,21 +1,23 @@
 <!--产业税收 -->
 <nz-card [nzTitle]="'产业税收'" [nzExtra]="extraTemplate1" [nzBordered]="false" class="ant-card__body-nopadding sales-card">
   <ng-template #extraTemplate1>
-    <app-bdg-select #bdgSelect></app-bdg-select>
+    <app-bdg-select class="board-1" #bdgSelect></app-bdg-select>
     <span style="margin: 0 3px; font-weight: bolder;">行业分类依据：</span>
-    <nz-select [(ngModel)]="selectedMlmcFlag" nzAllowClear>
-      <nz-option nzLabel="电子税票" nzValue="MLMC">
+    <nz-select class="board-2" [(ngModel)]="selectedMlmcFlag" nzAllowClear>
+      <nz-option nzLabel="税务登记" nzValue="SWDJ">
       </nz-option>
-      <nz-option nzLabel="税务登记" nzValue="DJ_MLMC">
+      <nz-option nzLabel="电子税票" nzValue="DZSP">
       </nz-option>
     </nz-select>
 
-    <app-month-range #monthRange style="margin:0 5px;"></app-month-range>
+    <app-month-range class="board-3" #monthRange style="margin:0 5px;"></app-month-range>
 
-    <button nz-button (click)="getData()" nzType="primary" style="margin-left: 6px;">查询</button>
-    <button nz-button (click)="export()" nzType="primary" [disabled]="http.loading"
+    <button nz-button class="board-4" (click)="getData()" nzType="primary" style="margin-left: 6px;">查询</button>
+    <button nz-button class="board-5" (click)="export()" nzType="primary" [disabled]="http.loading"
       style="margin-left: 6px;">导出</button>
-
+    <button nz-button nz-tooltip nzTooltipTitle="帮助" (click)="startBoard()" nzType="default" style="margin-left: 6px;"
+      nzShape="circle">
+      <i nz-icon nzType="question" nzTheme="outline"></i></button>
   </ng-template>
   <div nz-row nzGutter="8">
     <div nz-col [nzXs]="24" [nzSm]="24" nzMd="13" nzLg="13">

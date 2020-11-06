@@ -5,6 +5,7 @@ import { STColumn, STComponent } from '@delon/abc/st';
 import { G2PieData } from '@delon/chart/pie';
 import { yuan, BdgSelectComponent, MonthRangeComponent, order, ExcelData, export2excel } from '@shared';
 import { forkJoin } from 'rxjs';
+import { OnboardingService } from '@delon/abc';
 
 @Component({
   selector: 'app-economic-analysis-hy-analysis',
@@ -14,7 +15,7 @@ import { forkJoin } from 'rxjs';
 export class EconomicAnalysisHyAnalysisComponent implements OnInit, AfterViewInit {
   hyUrl = `analysis/tax/hy`;
   cyUrl = `analysis/tax/cy`;
-  selectedMlmcFlag = 'DJ_MLMC';
+  selectedMlmcFlag = 'SWDJ';
   // 行业数据
   hyG2Data: G2PieData[];
   hyStData: any[];
@@ -120,7 +121,9 @@ export class EconomicAnalysisHyAnalysisComponent implements OnInit, AfterViewIni
   ]
 
 
-  constructor(public http: _HttpClient, private modal: ModalHelper) { }
+  constructor(public http: _HttpClient,
+    private boardingSrv: OnboardingService,
+    private modal: ModalHelper) { }
 
   ngOnInit() { }
 
@@ -130,13 +133,53 @@ export class EconomicAnalysisHyAnalysisComponent implements OnInit, AfterViewIni
     });
   }
 
+  /**
+   * 开启引导模式
+   */
+  startBoard() {
+    this.boardingSrv.start({
+      showTotal: true,
+      mask: true,
+      items: [
+        {
+          selectors: '.board-1',
+          title: '预算级次选择',
+          content: '中央级、省级、市级、区县级等，可组合进行选择'
+        },
+        {
+          selectors: '.board-2',
+          title: '行业分类依据',
+          content: '税务登记所属行业、电子税票开票所属行业'
+        },
+        {
+          selectors: '.board-3',
+          title: '入库时间',
+          content: '选择税收入库时间范围，同年内的'
+        },
+        {
+          selectors: '.board-4',
+          title: '查询',
+          content: '点击查询结果'
+        },
+        {
+          selectors: '.board-5',
+          title: '导出',
+          content: '导出查询结果'
+        }
+      ]
+    });
+  }
+
+  /**
+   * 获取行业数据
+   */
   getData() {
     this.bdgSelect.budgetValue.length === 0 ? this.bdgSelect.budgetValue = [4] : null;
 
     const $hyStream = this.http.get(this.hyUrl, this.getCondition());
     const $cyStream = this.http.get(this.cyUrl, this.getCondition());
 
-    forkJoin($hyStream, $cyStream).subscribe(response => {
+    forkJoin([$hyStream, $cyStream]).subscribe(response => {
       const [hyResp, cyResp] = response;
       // 行业
       this.hyStData = hyResp.data;
@@ -168,9 +211,6 @@ export class EconomicAnalysisHyAnalysisComponent implements OnInit, AfterViewIni
     const startMonth = startDate.getMonth() + 1;
     const endMonth = endDate.getMonth() + 1;
     const budgetValue = this.bdgSelect.budgetValue.toLocaleString();
-    const adminCode = '3302130000';
-
-    // const adminCode = this.cacheSrv.get('userInfo', { mode: 'none' }).department_id;
 
     return { year, startMonth, endMonth, budgetValue, flag: this.selectedMlmcFlag };
 
