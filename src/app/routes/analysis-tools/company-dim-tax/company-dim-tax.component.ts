@@ -4,7 +4,11 @@ import { _HttpClient, ModalHelper } from '@delon/theme';
 import { STColumn, STComponent, STData, STRes, STPage, STChange } from '@delon/abc/st';
 import { SFSchema } from '@delon/form';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MonthRangeComponent, BdgSelectComponent } from '@shared';
+import { MonthRangeComponent, BdgSelectComponent, export2excel } from '@shared';
+import { LoadingService } from '@delon/abc';
+/**
+ * 征收项目key
+ */
 const ZSXM = {
   10101: '增值税',
   10102: '消费税',
@@ -26,6 +30,14 @@ const ZSXM = {
   10199: '其他税收收入',
   10302: '专项收入'
 
+}
+const itemInfo =
+{
+  NSRMC: "纳税人名称",
+  BNDSR: '本年度收入(万元)',
+  SNTQ: '上年同期(万元)',
+  TBZJF: "同比增减幅",
+  TBZJZ: '同比增减值(万元)'
 }
 @Component({
   selector: 'app-analysis-tools-company-dim-tax',
@@ -112,7 +124,7 @@ export class AnalysisToolsCompanyDimTaxComponent implements OnInit {
           icon: 'info',
           // 点击查询详细税收
           click: (record: STData, modal: true) => {
-            this.router.navigate(['../single-query'], {
+            this.router.navigate(['../../budget/single-query'], {
               queryParams: { nsrmc: record.NSRMC },
               relativeTo: this.route
             });
@@ -132,7 +144,7 @@ export class AnalysisToolsCompanyDimTaxComponent implements OnInit {
     private msgSrv: NzMessageService,
     private router: Router,
     private route: ActivatedRoute,
-    private modal: ModalHelper) { }
+    private loadingSrv: LoadingService) { }
 
   ngOnInit() { }
 
@@ -141,6 +153,10 @@ export class AnalysisToolsCompanyDimTaxComponent implements OnInit {
 
     if (!this.nsrmc) {
       this.msgSrv.warning('纳税人名称不能为空，请输入要搜索的纳税人名称！');
+      return;
+    }
+    if (this.nsrmc.trim().length < 2) {
+      this.msgSrv.warning('请最少输入两个字符！');
       return;
     }
 
@@ -180,7 +196,30 @@ export class AnalysisToolsCompanyDimTaxComponent implements OnInit {
   }
 
   export() {
+    // 批量查询税收
+    const nsrmcs = this.taxData.map(item => item.NSRMC);
+    this.http.post('bdg/tools/batchQuery', {
+      nsrmcs,
+      ...this.getCondition()
+    }).subscribe(resp => {
+      // 查询结果按指定字典排序映射
+      const rowData = resp.data.map(item => {
+        const el = {};
+        Object.keys(itemInfo).forEach(key => {
+          el[itemInfo[key]] = item[key];
+        });
+        Object.keys(ZSXM).forEach(key => {
+          el[ZSXM[key]] = item[key] ? item[key] : 0;
+        });
+        return el;
+      });
+      this.loadingSrv.close();
+      export2excel(`${this.nsrmc}-税收导出-${new Date().toLocaleString()}.xlsx`, [{
+        sheetName: '税收导出',
+        rowData
+      }]);
 
+    });
   }
 
 

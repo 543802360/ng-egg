@@ -1,12 +1,14 @@
 <nz-card style="margin-top: 10px;" [nzExtra]="extraTpl">
   <ng-template #extraTpl>
-    <app-bdg-select #bdgSelect></app-bdg-select>
+    <app-bdg-select class="board-1" #bdgSelect></app-bdg-select>
     <span class="header-label">入库日期：</span>
-    <app-month-range #monthRange style="margin-right: 5px;"></app-month-range>
-    <button nz-button (click)="getData()" [disabled]="http.loading" nzType="primary"
+    <app-month-range class="board-2" #monthRange style="margin-right: 5px;"></app-month-range>
+    <button nz-button class="board-3" (click)="getData()" [disabled]="http.loading" nzType="primary"
       style="margin-left: 6px;">查询</button>
-    <button nz-button (click)="export()" [disabled]="http.loading" nzType="primary"
+    <button nz-button class="board-4" (click)="export()" [disabled]="http.loading" nzType="primary"
       style="margin-left: 6px;">导出</button>
+    <button nz-button (click)="startBoard()" nzType="primary" style="margin-left: 6px;">帮助</button>
+    <!-- startBoard -->
   </ng-template>
   <div nz-row nzGutter="8" style="height: 100%;">
     <div nz-col nzSpan="10" style="height: 100%;" #colHost>

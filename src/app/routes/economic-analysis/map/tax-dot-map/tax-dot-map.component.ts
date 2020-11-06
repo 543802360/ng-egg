@@ -6,7 +6,7 @@ import { NzTreeSelectComponent } from 'ng-zorro-antd/tree-select';
 import * as mapboxgl from "mapbox-gl";
 import { dark } from "@geo";
 import { BdgSelectComponent, MonthRangeComponent, Point, getColorRange, COLORS, EOrder, ZSXM, export2excel, fly2target } from '@shared';
-import { LoadingService, ReuseTabService, ReuseHookTypes, ReuseComponentInstance, STColumn, STComponent, STPage, STData, STChangeType, STChange } from '@delon/abc';
+import { LoadingService, ReuseTabService, ReuseHookTypes, ReuseComponentInstance, STColumn, STComponent, STPage, STData, STChangeType, STChange, OnboardingService } from '@delon/abc';
 import { Router, ActivatedRoute } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
 import { environment } from "@env/environment";
@@ -149,6 +149,7 @@ export class EconomicAnalysisMapTaxDotMapComponent implements OnInit, AfterViewI
 
 
   constructor(
+    private boardingSrv: OnboardingService,
     public http: _HttpClient,
     private loadSrv: LoadingService,
     private router: Router,
@@ -182,6 +183,50 @@ export class EconomicAnalysisMapTaxDotMapComponent implements OnInit, AfterViewI
     this.destroy$.complete();
   }
 
+  /**
+ * 开启引导模式
+ */
+  startBoard() {
+    this.boardingSrv.start({
+      showTotal: true,
+      mask: true,
+      items: [
+        {
+          selectors: '.board-1',
+          title: '预算级次选择',
+          content: '中央级、省级、市级、区县级等，可组合进行选择'
+        },
+        {
+          selectors: '.board-2',
+          title: '行业选择',
+          content: '选择门类或行业大类'
+        },
+        {
+          selectors: '.board-3',
+          title: '行业分类依据',
+          content: '税务登记所属行业、电子税票开票所属行业'
+        }
+        ,
+        {
+          selectors: '.board-4',
+          title: '排名',
+          content: '选择税收名次'
+        }
+        ,
+        {
+          selectors: '.board-5',
+          title: '入库时间',
+          content: '选择税收入库时间范围，同年内的'
+        }
+        ,
+        {
+          selectors: '.board-6',
+          title: '查询',
+          content: '点击查询结果'
+        }
+      ]
+    });
+  }
   addTownBoundary() {
     /**
      * 添加当前市边界

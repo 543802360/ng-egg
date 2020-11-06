@@ -158,6 +158,9 @@ export class BudgetBdgAnalysisCompanyOrderComponent implements OnInit, AfterView
     // });
   }
 
+  /**
+   * 开启引导模式
+   */
   startBoard() {
     this.boardingSrv.start({
       showTotal: true,
@@ -188,7 +191,7 @@ export class BudgetBdgAnalysisCompanyOrderComponent implements OnInit, AfterView
         {
           selectors: '.board-5',
           title: '入库时间',
-          content: '选择税收入库时间范围'
+          content: '选择税收入库时间范围，同年内的'
         }
         ,
         {
