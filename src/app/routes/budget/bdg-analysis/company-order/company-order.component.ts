@@ -198,6 +198,11 @@ export class BudgetBdgAnalysisCompanyOrderComponent implements OnInit, AfterView
           selectors: '.board-6',
           title: '查询',
           content: '点击查询结果'
+        },
+        {
+          selectors: '.board-7',
+          title: '导出',
+          content: '点击当前查询结果'
         }
       ]
     });

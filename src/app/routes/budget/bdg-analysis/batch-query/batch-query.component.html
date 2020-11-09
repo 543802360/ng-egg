@@ -1,16 +1,19 @@
 <nz-card class="batch-card" [nzExtra]="extraTpl">
   <ng-template #extraTpl>
-    <input class="file-input ml-sm" type="file" (change)="change($event)" multiple="false" />
+    <input class="file-input ml-sm board-1" type="file" (change)="change($event)" multiple="false" />
     <span style="font-weight: bolder;">查询字段：</span>
-    <nz-select [(ngModel)]="selectedMatchedField" style="width: 200px;" nzPlaceHolder="请选择匹配字段" nzAllowClear>
+    <nz-select class="board-2" [(ngModel)]="selectedMatchedField" style="width: 200px;" nzPlaceHolder="请选择匹配字段"
+      nzAllowClear>
       <nz-option *ngFor="let item of matchNodes" [nzLabel]="item.label" [nzValue]="item.value"></nz-option>
 
     </nz-select>
-    <app-bdg-select style="margin-left: 5px;" #bdgSelect></app-bdg-select>
-    <app-month-range #monthRange style="margin-right: 5px;"></app-month-range>
-    <button (click)="export()" [disabled]="http.loading" nz-button nzType="primary">查询</button>
-    <button (click)="export()" [disabled]="http.loading" nz-button nzType="primary">导出</button>
-
+    <app-bdg-select class="board-3" style="margin-left: 5px;" #bdgSelect></app-bdg-select>
+    <app-month-range class="board-4" #monthRange style="margin-right: 5px;"></app-month-range>
+    <button class="board-5" (click)="export()" [disabled]="http.loading" nz-button nzType="primary">查询</button>
+    <button class="board-6" (click)="export()" [disabled]="http.loading" nz-button nzType="primary">导出</button>
+    <button nz-button nz-tooltip nzTooltipTitle="帮助" (click)="startBoard()" nzType="default" style="margin-left: 6px;"
+      nzShape="circle">
+      <i nz-icon nzType="question" nzTheme="outline"></i></button>
   </ng-template>
   <st *ngIf="xlsxColumns.length" #st [bordered]="true" size="small" [data]="xlsxData" [columns]="xlsxColumns"
     [page]="page" pi="1" ps="10"></st>

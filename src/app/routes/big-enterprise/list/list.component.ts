@@ -1,15 +1,11 @@
 import { Component, OnInit, ViewChild, ChangeDetectorRef, AfterViewInit } from '@angular/core';
 import { _HttpClient, ModalHelper } from '@delon/theme';
 import { STColumn, STComponent, STPage, STData, STChange, STRes } from '@delon/abc/st';
-import { SFSchema } from '@delon/form';
-import { BdgSelectComponent } from 'src/app/shared/components/bdg-select/bdg-select.component';
-import { MonthRangeComponent } from 'src/app/shared/components/month-range/month-range.component';
-import { NzTreeSelectComponent } from 'ng-zorro-antd/tree-select';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { IEOrder } from '@shared';
 import { CacheService } from '@delon/cache';
 import { Router, ActivatedRoute } from '@angular/router';
-import { LoadingService } from '@delon/abc';
+import { LoadingService, OnboardingService, XlsxService } from '@delon/abc';
 
 @Component({
   selector: 'app-big-enterprise-list',
@@ -170,7 +166,9 @@ export class BigEnterpriseListComponent implements OnInit, AfterViewInit {
 
   constructor(public http: _HttpClient,
     public msg: NzMessageService,
-    private cdr: ChangeDetectorRef,
+    private boardingSrv: OnboardingService,
+    private xlsx: XlsxService,
+    private loadingSrv: LoadingService,
     private router: Router,
     private route: ActivatedRoute,
   ) {
@@ -189,7 +187,36 @@ export class BigEnterpriseListComponent implements OnInit, AfterViewInit {
       this.search();
     });
   }
+  /**
+   * 开启引导模式
+   */
+  startBoard() {
+    this.boardingSrv.start({
+      showTotal: true,
+      mask: true,
+      items: [
+        {
+          selectors: '.board-1',
+          title: '年份选择',
+          content: '选择指定年份的大企业'
+        },
+        {
+          selectors: '.board-2',
+          title: '查询',
+          content: '查询当前年度大企业数据列表'
+        },
+        {
+          selectors: '.board-3',
+          title: '导出',
+          content: '导出当前大企业名录'
+        }
+      ]
+    });
+  }
 
+  /**
+   * 大企业名录查询
+   */
   search() {
     this.http.get('big-enterprises/list', {
       year: this.selectedYear.getFullYear()
@@ -198,6 +225,10 @@ export class BigEnterpriseListComponent implements OnInit, AfterViewInit {
     });
   }
 
+  /**
+   * change
+   * @param e 
+   */
   change(e: STChange) {
     // console.log(e);
     if (e.click && e.click.item) {
@@ -205,8 +236,33 @@ export class BigEnterpriseListComponent implements OnInit, AfterViewInit {
     }
   }
 
-  download() {
+  /**
+   * 导出当前名录
+   */
+  export() {
+    this.loadingSrv.open({
+      text: '正在处理……'
+    });
+    const columns = this.columns.filter(col => col.title !== '操作' && col.title !== '排行');
+    const data = [columns.map(i => i.title)];
 
+    this.data.forEach(i => {
+      data.push(
+        columns.map(c => i[c.index as string])
+      )
+    });
+
+    this.xlsx.export({
+      sheets: [
+        {
+          data,
+          name: '大企业名录'
+        }
+      ],
+      filename: `大企业名录-${new Date().toLocaleString()}.xlsx`
+    }).then(e => {
+      this.loadingSrv.close();
+    });
   }
 
 

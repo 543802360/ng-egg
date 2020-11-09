@@ -2,13 +2,15 @@
   <ng-template #extraTpl>
     <span style="font-weight: bolder;">纳税人名称：</span>
     <!-- <app-nsrmc-suggestion #nsrSug></app-nsrmc-suggestion> -->
-    <input nz-input [(ngModel)]="nsrmc" name="NSRMC" placeholder="请输入纳税人名称" id="NSRMC"
+    <input class="board-1" nz-input [(ngModel)]="nsrmc" name="NSRMC" placeholder="请输入纳税人名称" id="NSRMC"
       style="display: inline-block;width: 284px;" />
-    <app-bdg-select #bdgSelect></app-bdg-select>
-    <app-month-range #monthRange style="margin-right: 5px;"></app-month-range>
-    <button (click)="getData()" [disabled]="http.loading" nz-button nzType="primary">查询</button>
-    <button (click)="export()" [disabled]="http.loading" nz-button nzType="primary">导出</button>
-
+    <app-bdg-select class="board-2" #bdgSelect></app-bdg-select>
+    <app-month-range class="board-3" #monthRange style="margin-right: 5px;"></app-month-range>
+    <button class="board-4" (click)="getData()" [disabled]="http.loading" nz-button nzType="primary">查询</button>
+    <button class="board-5" (click)="export()" [disabled]="http.loading" nz-button nzType="primary">导出</button>
+    <button nz-button nz-tooltip nzTooltipTitle="帮助" (click)="startBoard()" nzType="default" style="margin-left: 6px;"
+      nzShape="circle">
+      <i nz-icon nzType="question" nzTheme="outline"></i></button>
   </ng-template>
   <!-- 分税种税收明细表 -->
   <div nz-row nzGutter="8">

@@ -1,3 +1,4 @@
+import { OnboardingModule } from '@delon/abc';
 import { NgModule, Type } from '@angular/core';
 import { SharedModule } from '@shared';
 import { AnalysisToolsRoutingModule } from './analysis-tools-routing.module';
@@ -10,6 +11,7 @@ const COMPONENTS_NOROUNT: Type<void>[] = [];
 @NgModule({
   imports: [
     SharedModule,
+    OnboardingModule,
     AnalysisToolsRoutingModule
   ],
   declarations: [

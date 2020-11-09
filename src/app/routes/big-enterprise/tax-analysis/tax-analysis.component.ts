@@ -3,7 +3,7 @@ import { _HttpClient, ModalHelper } from '@delon/theme';
 import { STChange, STColumn, STComponent, STData, STPage } from '@delon/abc/st';
 import { BdgSelectComponent, MonthRangeComponent, Point, getColorRange, COLORS, EOrder, ZSXM, export2excel, fly2target } from '@shared';
 import { Router, ActivatedRoute } from '@angular/router';
-import { XlsxService, LoadingService, ReuseComponentInstance } from '@delon/abc';
+import { XlsxService, LoadingService, ReuseComponentInstance, OnboardingService } from '@delon/abc';
 import * as mapboxgl from "mapbox-gl";
 import { dark } from "@geo";
 import { environment } from '@env/environment';
@@ -196,7 +196,7 @@ export class BigEnterpriseTaxAnalysisComponent implements OnInit, AfterViewInit,
     private route: ActivatedRoute,
     private xlsx: XlsxService,
     private loadSrv: LoadingService,
-    private modal: ModalHelper) { }
+    private boardingSrv: OnboardingService) { }
   _onReuseDestroy: () => void;
   destroy: () => void;
 
@@ -220,7 +220,37 @@ export class BigEnterpriseTaxAnalysisComponent implements OnInit, AfterViewInit,
       });
     }
   }
-
+  /**
+   * 开启引导模式
+   */
+  startBoard() {
+    this.boardingSrv.start({
+      showTotal: true,
+      mask: true,
+      items: [
+        {
+          selectors: '.board-1',
+          title: '预算级次选择',
+          content: '中央级、省级、市级、区县级等，可组合进行选择'
+        },
+        {
+          selectors: '.board-2',
+          title: '入库时间',
+          content: '选择税收入库时间范围，同年内的'
+        },
+        {
+          selectors: '.board-3',
+          title: '查询',
+          content: '点击查询当前大企业税收情况'
+        },
+        {
+          selectors: '.board-4',
+          title: '导出',
+          content: '导出查询结果'
+        }
+      ]
+    });
+  }
   getCondition() {
     this.bdgSelect.budgetValue.length === 0 ? this.bdgSelect.budgetValue = [4] : null;
     const { startDate, endDate } = this.monthRange;

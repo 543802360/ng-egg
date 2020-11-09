@@ -1,6 +1,6 @@
 <nz-card class='enterprise-card' [nzExtra]="extraTemplate1">
   <ng-template #extraTemplate1>
-    <app-bdg-select #bdgSelect></app-bdg-select>
+    <app-bdg-select class="board-1" #bdgSelect></app-bdg-select>
     <!-- 
     <span class="header-label"> 所属行业:</span>
     <nz-tree-select #hyTreeSelect class="hymc-tree-select" [(ngModel)]="selectedHymc" [nzNodes]="hymcNodes"
@@ -8,20 +8,24 @@
     </nz-tree-select> -->
 
     <span class="header-label"> 纳税额:</span>
-    <nz-select style="margin: 0 5px;width: 100px;" [(ngModel)]="selectedValue" nzPlaceHolder="请选择排名" nzAllowClear>
+    <nz-select class="board-2" style="margin: 0 5px;width: 120px;" [(ngModel)]="selectedValue" nzPlaceHolder="请选择税收金额">
       <nz-option nzLabel="亿元以上" [nzValue]="10000">
       </nz-option>
-      <nz-option nzLabel="千万以上" [nzValue]="1000">
+      <nz-option nzLabel="5000万以上" [nzValue]="5000">
+      </nz-option>
+      <nz-option nzLabel="1000万以上" [nzValue]="1000">
       </nz-option>
 
     </nz-select>
 
-    <app-month-range #monthRange style="margin-right: 5px;"></app-month-range>
-    <button nz-button (click)="getData()" [disabled]="http.loading" nzType="primary"
+    <app-month-range class="board-3" #monthRange style="margin-right: 5px;"></app-month-range>
+    <button nz-button class="board-4" (click)="getData()" [disabled]="http.loading" nzType="primary"
       style="margin-left: 6px;">查询</button>
-    <button nz-button (click)="create()" [disabled]="http.loading" nzType="primary"
+    <button nz-button class="board-5" (click)="create()" [disabled]="http.loading" nzType="primary"
       style="margin-left: 6px;">添加</button>
-
+    <button nz-button nz-tooltip nzTooltipTitle="帮助" (click)="startBoard()" nzType="default" style="margin-left: 6px;"
+      nzShape="circle">
+      <i nz-icon nzType="question" nzTheme="outline"></i></button>
   </ng-template>
   <st #st [data]="data" [columns]="columns" [loading]="http.loading" [ps]="10" [pi]="1" [page]="page" bordered="true"
     size="middle" [scroll]="{'y':'576px'}" (change)="change($event)">

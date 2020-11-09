@@ -37,7 +37,7 @@
       <app-month-range class="board-5" #monthRange style="margin-right: 5px;"></app-month-range>
       <button nz-button class="board-6" (click)="getData()" [disabled]="http.loading" nzType="primary"
         style="margin-left: 6px;">查询</button>
-      <button nz-button (click)="download()" [disabled]="http.loading" nzType="primary"
+      <button nz-button class="board-7" (click)="download()" [disabled]="http.loading" nzType="primary"
         style="margin-left: 6px;">导出</button>
       <button nz-button nz-tooltip nzTooltipTitle="帮助" (click)="startBoard()" nzType="default" style="margin-left: 6px;"
         nzShape="circle">

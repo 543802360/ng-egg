@@ -3,7 +3,7 @@ import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { _HttpClient, ModalHelper } from '@delon/theme';
 import { STColumn, STComponent, STPage } from '@delon/abc/st';
 import { SFSchema } from '@delon/form';
-import { XlsxService, LoadingService } from '@delon/abc';
+import { XlsxService, LoadingService, OnboardingService } from '@delon/abc';
 import { deepCopy } from '@delon/util';
 import { BdgSelectComponent } from 'src/app/shared/components/bdg-select/bdg-select.component';
 import { MonthRangeComponent } from 'src/app/shared/components/month-range/month-range.component';
@@ -32,7 +32,7 @@ export class BudgetBdgAnalysisBatchQueryComponent implements OnInit {
 
 
   constructor(
-    private cdr: ChangeDetectorRef,
+    private boardingSrv: OnboardingService,
     public http: _HttpClient,
     private loadSrv: LoadingService,
     private xlsx: XlsxService,
@@ -40,7 +40,48 @@ export class BudgetBdgAnalysisBatchQueryComponent implements OnInit {
 
   ngOnInit() { }
 
-
+  /**
+   * 开启引导模式
+   */
+  startBoard() {
+    this.boardingSrv.start({
+      showTotal: true,
+      mask: true,
+      items: [
+        {
+          selectors: '.board-1',
+          title: '上传文件',
+          content: '上传待查询税收的纳税人名单表格文件'
+        },
+        {
+          selectors: '.board-2',
+          title: '选择查询字段',
+          content: '选择【纳税人名称】所在字段'
+        },
+        {
+          selectors: '.board-3',
+          title: '预算级次选择',
+          content: '中央级、省级、市级、区县级等，可组合进行选择'
+        },
+        {
+          selectors: '.board-4',
+          title: '入库时间',
+          content: '选择税收入库时间范围，同年内的'
+        }
+        ,
+        {
+          selectors: '.board-5',
+          title: '查询',
+          content: '点击进行查询'
+        },
+        {
+          selectors: '.board-6',
+          title: '导出',
+          content: '导出当前查询结果'
+        }
+      ]
+    });
+  }
   getCondition() {
     const { startDate, endDate } = this.monthRange;
     const year = startDate.getFullYear();

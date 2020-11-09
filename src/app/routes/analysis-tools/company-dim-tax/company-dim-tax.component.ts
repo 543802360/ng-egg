@@ -5,7 +5,7 @@ import { STColumn, STComponent, STData, STRes, STPage, STChange } from '@delon/a
 import { SFSchema } from '@delon/form';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MonthRangeComponent, BdgSelectComponent, export2excel } from '@shared';
-import { LoadingService } from '@delon/abc';
+import { LoadingService, OnboardingService } from '@delon/abc';
 /**
  * 征收项目key
  */
@@ -141,6 +141,7 @@ export class AnalysisToolsCompanyDimTaxComponent implements OnInit {
   }
 
   constructor(public http: _HttpClient,
+    private boardingSrv: OnboardingService,
     private msgSrv: NzMessageService,
     private router: Router,
     private route: ActivatedRoute,
@@ -148,7 +149,46 @@ export class AnalysisToolsCompanyDimTaxComponent implements OnInit {
 
   ngOnInit() { }
 
-
+  /**
+   * 开启引导模式
+   */
+  startBoard() {
+    this.boardingSrv.start({
+      showTotal: true,
+      mask: true,
+      items: [
+        {
+          selectors: '.board-1',
+          title: '纳税人名称',
+          content: '请输入纳税人名称，长度不小于2'
+        },
+        {
+          selectors: '.board-2',
+          title: '预算级次选择',
+          content: '中央级、省级、市级、区县级等，可组合进行选择'
+        },
+        {
+          selectors: '.board-3',
+          title: '入库时间',
+          content: '选择税收入库时间范围，同年内的'
+        }
+        ,
+        {
+          selectors: '.board-4',
+          title: '查询',
+          content: '点击查询结果'
+        },
+        {
+          selectors: '.board-5',
+          title: '导出',
+          content: '点击当前查询结果'
+        }
+      ]
+    });
+  }
+  /**
+   * 模糊查询企业税收
+   */
   getData() {
 
     if (!this.nsrmc) {

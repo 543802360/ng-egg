@@ -1,10 +1,14 @@
 <nz-card class='enterprise-card' [nzExtra]="extraTemplate1">
   <ng-template #extraTemplate1>
-
     <span style="font-weight: bolder;margin-right: 5px;"> 请选择年份：</span>
-    <nz-year-picker [(ngModel)]="selectedYear" nzPlaceHolder="年份"></nz-year-picker>
-    <button nz-button (click)="search()" [disabled]="http.loading" nzType="primary"
+    <nz-year-picker class="board-1" [(ngModel)]="selectedYear" nzPlaceHolder="年份"></nz-year-picker>
+    <button nz-button class="board-2" (click)="search()" [disabled]="http.loading" nzType="primary"
       style="margin-left: 6px;">查询</button>
+    <button nz-button class="board-3" (click)="export()" [disabled]="http.loading" nzType="primary"
+      style="margin-left: 6px;">导出</button>
+    <button nz-button nz-tooltip nzTooltipTitle="帮助" (click)="startBoard()" nzType="default" style="margin-left: 6px;"
+      nzShape="circle">
+      <i nz-icon nzType="question" nzTheme="outline"></i></button>
     <!--
     <button nz-button [disabled]="http.loading" nzType="primary" style="margin-left: 6px;">添加</button> -->
 

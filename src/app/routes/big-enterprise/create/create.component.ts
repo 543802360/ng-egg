@@ -10,7 +10,7 @@ import { MonthRangeComponent } from 'src/app/shared/components/month-range/month
 import { IEOrder } from '@shared';
 import { CacheService } from '@delon/cache';
 import { Router, ActivatedRoute } from '@angular/router';
-import { LoadingService } from '@delon/abc';
+import { LoadingService, OnboardingService } from '@delon/abc';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzTreeSelectComponent } from 'ng-zorro-antd/tree-select';
 
@@ -110,7 +110,7 @@ export class BigEnterpriseCreateComponent implements OnInit, AfterViewInit {
 
   constructor(public http: _HttpClient,
     public msg: NzMessageService,
-    private cdr: ChangeDetectorRef,
+    private boardingSrv: OnboardingService,
     private cacheSrv: CacheService,
     private router: Router,
     private route: ActivatedRoute,
@@ -129,6 +129,44 @@ export class BigEnterpriseCreateComponent implements OnInit, AfterViewInit {
     //   this.getData();
     // });
   }
+
+  /**
+   * 开启引导模式
+   */
+  startBoard() {
+    this.boardingSrv.start({
+      showTotal: true,
+      mask: true,
+      items: [
+        {
+          selectors: '.board-1',
+          title: '预算级次选择',
+          content: '中央级、省级、市级、区县级等，可组合进行选择'
+        },
+        {
+          selectors: '.board-2',
+          title: '纳税额',
+          content: '本年度纳税金额'
+        },
+        {
+          selectors: '.board-3',
+          title: '入库时间',
+          content: '选择税收入库时间范围，同年内的'
+        },
+        {
+          selectors: '.board-4',
+          title: '查询',
+          content: '点击查询结果'
+        },
+        {
+          selectors: '.board-5',
+          title: '导出',
+          content: '将当前查询结果，添加至本年度大企业库'
+        }
+      ]
+    });
+  }
+
   /**
    * 获取税收统计概况（电子税票）
    */
@@ -139,7 +177,6 @@ export class BigEnterpriseCreateComponent implements OnInit, AfterViewInit {
       this.total = resp.data.length;
 
     });
-
 
   }
   /**
