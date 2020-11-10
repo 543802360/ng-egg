@@ -1,6 +1,7 @@
+import { deepCopy } from '@delon/util';
 import { Component, OnInit, ViewChild, AfterViewInit, Renderer2, ElementRef } from '@angular/core';
 import { _HttpClient, ModalHelper } from '@delon/theme';
-import { STColumn, STComponent } from '@delon/abc/st';
+import { STColumn, STComponent, STData, STPage, STReq, STRequestOptions, STRes } from '@delon/abc/st';
 import { SFSchema } from '@delon/form';
 
 import { NzMessageService } from 'ng-zorro-antd/message';
@@ -9,10 +10,12 @@ import { dark } from "@geo";
 import { BdgSelectComponent, MonthRangeComponent, getColorRange, ExcelData, export2excel, ColorTypes } from '@shared';
 import { G2BarData } from '@delon/chart/bar';
 import { forkJoin } from 'rxjs';
-import { LoadingService, OnboardingService, ReuseComponentInstance } from '@delon/abc';
+import { LoadingService, OnboardingService, ReuseComponentInstance, STChange } from '@delon/abc';
+import { ActivatedRoute, Router } from '@angular/router';
 
 interface itemInfo {
   jdxzmc?: string;
+  nsrmc?: string;
   bndsr?: number;
   sntq?: number;
   tbzjz?: number;
@@ -39,19 +42,58 @@ const jdxzmcs = [
 })
 export class EconomicAnalysisMapTaxAggMapComponent implements OnInit, AfterViewInit, ReuseComponentInstance {
 
-  constructor(
-    private boardingSrv: OnboardingService,
-    public http: _HttpClient,
-    private loadSrv: LoadingService,
-    private msgSrv: NzMessageService) { }
 
-  url = `analysis/town`;
+  townTaxUrl = `analysis/town`;
+  townListUrl = 'analysis/townTaxList';
   style = dark;
+  // 有镇街所属的数据
   townData: itemInfo[];
+  // 其他镇街数据
   noTownTaxData: itemInfo[];
+  // 街道纳税人税收明细列表
+  townStVisible = false;
+  // 总量
+  total = 0;
+  // 当前所选街道
+  selectedJdxz: string;
+
+
+  //#region 展开表
+  page: STPage = {
+    total: true,
+    showSize: true,
+    pageSizes: [10, 20, 30, 40, 50, 100]
+  };
+  // 请求配置
+  companyReq: STReq = {
+    type: 'page',
+    method: 'GET',
+    reName: {
+      pi: 'pageNum',
+      ps: 'pageSize'
+    },
+    process: (requestOpt: STRequestOptions) => {
+      const { jdxzmc } = requestOpt.params as any;
+      const params = this.getCondition();
+      requestOpt.params = { ...deepCopy(requestOpt.params), ...params, jdxzmc: this.selectedJdxz } as any;
+      return requestOpt;
+    }
+  };
+  // response 配置
+  companyRes: STRes = {
+    process: (data: STData[], rawData?: any) => {
+      console.log('rawData:', rawData);
+      this.total = rawData.count;
+      return rawData.data;
+    }
+  };
+  //#endregion
 
   map: mapboxgl.Map;
   @ViewChild('st') st: STComponent;
+  // expandSt
+  @ViewChild('jdxzSt') jdxzSt: STComponent;
+
   @ViewChild('colHost') colHost: ElementRef;
   @ViewChild('bdgSelect') bdgSelect: BdgSelectComponent;
   @ViewChild('monthRange') monthRange: MonthRangeComponent;
@@ -68,7 +110,8 @@ export class EconomicAnalysisMapTaxAggMapComponent implements OnInit, AfterViewI
     {
       title: '镇街',
       index: 'jdxzmc',
-      className: 'text-center'
+      className: 'text-center',
+
     },
     {
       title: '本年度收入',
@@ -76,7 +119,8 @@ export class EconomicAnalysisMapTaxAggMapComponent implements OnInit, AfterViewI
       className: 'text-center',
       type: 'number',
       statistical: 'sum',
-      key: 'bndsr'
+      key: 'bndsr',
+      width: 100
     },
     {
       title: '上年同期',
@@ -84,12 +128,70 @@ export class EconomicAnalysisMapTaxAggMapComponent implements OnInit, AfterViewI
       className: 'text-center',
       type: 'number',
       statistical: 'sum',
-      key: 'sntq'
+      key: 'sntq',
+      width: 100
     },
     {
       title: '同比增减',
       className: 'text-center',
-      render: 'tbzjz-tpl'
+      render: 'tbzjz-tpl',
+      width: 190
+    },
+    {
+      title: '操作',
+      className: 'text-center',
+      width: 55,
+      fixed: 'right',
+      buttons: [
+        {
+          tooltip: '查看本街道企业信息',
+          icon: 'info',
+          // 点击查询
+          click: (record: STData, modal: true) => {
+            // console.log('record:', record);
+          }
+        }
+      ]
+    }
+  ];
+  expandColumns: STColumn[] = [
+    {
+      title: '排名',
+      type: 'no',
+      width: 60,
+      className: 'text-center',
+      render: 'order-tpl'
+    },
+    {
+      title: '纳税人名称',
+      index: 'nsrmc',
+      className: 'text-center',
+      width: 246,
+    },
+    {
+      title: '本年度收入',
+      index: 'bndsr',
+      className: 'text-center',
+      type: 'number',
+
+    },
+    {
+      title: '上年同期',
+      index: 'sntq',
+      className: 'text-center',
+      type: 'number',
+    },
+    {
+      title: '同比增减',
+      className: 'text-center',
+      index: 'tbzjz',
+      type: 'number'
+    }
+    ,
+    {
+      title: '同比增减幅',
+      className: 'text-center',
+      index: 'tbzjf'
     }
     // {
     //   title: '',
@@ -97,7 +199,6 @@ export class EconomicAnalysisMapTaxAggMapComponent implements OnInit, AfterViewI
     //   ]
     // }
   ];
-
   colorStops =
     [
       "rgb(1, 152, 189)",
@@ -117,6 +218,17 @@ export class EconomicAnalysisMapTaxAggMapComponent implements OnInit, AfterViewI
     features: []
   };
   colorActive = "gold";
+
+
+  constructor(
+    private boardingSrv: OnboardingService,
+    public http: _HttpClient,
+    private router: Router,
+    private route: ActivatedRoute,
+    private loadSrv: LoadingService,
+    private msgSrv: NzMessageService) { }
+
+
   _onReuseDestroy: () => void;
   destroy: () => void;
 
@@ -174,7 +286,7 @@ export class EconomicAnalysisMapTaxAggMapComponent implements OnInit, AfterViewI
       text: '正在处理……'
     })
     const $townJson = this.http.get('assets/data/CY_TOWN.json');
-    const $townTaxData = this.http.get(this.url, this.getCondition());
+    const $townTaxData = this.http.get(this.townTaxUrl, this.getCondition());
     forkJoin([$townJson, $townTaxData])
       .subscribe(resp => {
         this.loadSrv.close();
@@ -359,9 +471,22 @@ export class EconomicAnalysisMapTaxAggMapComponent implements OnInit, AfterViewI
    * ST change event listener
    * @param e 
    */
-  stChange(e) {
+  stChange(e: STChange) {
 
-  } fly2target(center?, pitch?, zoom?, bearing?) {
+    if (e.type === 'click') {
+      const { jdxzmc } = e.click.item;
+      this.selectedJdxz = jdxzmc;
+      setTimeout(() => {
+        this.townStVisible = true;
+      }, 123);
+      if (this.townStVisible) {
+        this.jdxzSt.load(1);
+      }
+    }
+
+  }
+
+  fly2target(center?, pitch?, zoom?, bearing?) {
     this.map.flyTo({
       center: center ? center : [120.33246, 36.276589],
       zoom: zoom ? zoom : 9.688,

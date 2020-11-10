@@ -13,12 +13,14 @@ import { ScrollingModule } from "@angular/cdk/scrolling";
 import { NzBadgeModule } from 'ng-zorro-antd/badge';
 import { NzCardModule } from 'ng-zorro-antd/card';
 import { OnboardingModule } from '@delon/abc';
-const COMPONENTS = [DashboardComponent,
+const COMPONENTS = [
+  DashboardComponent,
   EconomicAnalysisHyAnalysisComponent,
   EconomicAnalysisMapTaxDotMapComponent,
   EconomicAnalysisMapTaxAggMapComponent,
   EconomicAnalysisMapTaxHyMapComponent,
-  EconomicAnalysisBillAnalysisComponent];
+  EconomicAnalysisBillAnalysisComponent
+];
 const COMPONENTS_NOROUNT = [];
 
 @NgModule({

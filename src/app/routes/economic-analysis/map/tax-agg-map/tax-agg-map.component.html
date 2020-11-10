@@ -14,7 +14,7 @@
   <div nz-row nzGutter="8" style="height: 100%;">
     <div nz-col nzSpan="10" style="height: 100%;" #colHost>
       <st #st [data]="townData" header="镇街收入（单位：万元）" [columns]="columns" size="small" bordered="true"
-        [page]="{show:false}" [body]="bodyTpl" (change)="stChange($event)">
+        [page]="{show:false}" [scroll]="{y:'320px'}" [body]="bodyTpl" (change)="stChange($event)">
 
         <!-- 汇总数据 -->
         <ng-template #bodyTpl let-s>
@@ -52,8 +52,22 @@
           <nz-badge nzStandalone [nzCount]="index + 1" nzOverflowCount="6666"></nz-badge>
         </ng-template>
       </st>
+      <st #jdxzSt *ngIf="townStVisible" [data]="townListUrl" [res]="companyRes" [req]="companyReq"
+        [scroll]="{x:'820px',y:'228px'}" [header]="jdxzStHeader" [columns]="expandColumns" size="small" bordered="true"
+        [page]="page" [pi]="1" [ps]="10" (change)="stChange($event)" [total]="total" [loading]="http.loading">
 
-      <!-- <g2-bar style="padding: 6px;" *ngIf="barHeight" [height]="barHeight" [data]="townG2BarData"></g2-bar> -->
+        <ng-template #jdxzStHeader>
+          <div nz-row nzGutter="8">
+            <div nz-col nzSpan="16">
+              <h5><span style="font-weight:bolder;color:red">{{selectedJdxz}}</span>纳税人税收列表(单位：万元)</h5>
+            </div>
+            <div nz-col nzSpan="8">
+              <button nz-button class="board-4" (click)="export()" [disabled]="http.loading" nzType="primary"
+                style="margin-left: 6px;">导出街道明细</button>
+            </div>
+          </div>
+        </ng-template>
+      </st>
     </div>
     <div nz-col nzSpan="14" style="height: 100%;">
       <div style="height: 100%;min-height: 660px; width: 100%;margin-top: 10px;">
