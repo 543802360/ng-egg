@@ -12,7 +12,7 @@ import { DragDropModule } from "@angular/cdk/drag-drop";
 import { ScrollingModule } from "@angular/cdk/scrolling";
 import { NzBadgeModule } from 'ng-zorro-antd/badge';
 import { NzCardModule } from 'ng-zorro-antd/card';
-import { OnboardingModule } from '@delon/abc';
+import { DownFileModule, OnboardingModule } from '@delon/abc';
 const COMPONENTS = [
   DashboardComponent,
   EconomicAnalysisHyAnalysisComponent,
@@ -32,7 +32,8 @@ const COMPONENTS_NOROUNT = [];
     NgxMapboxGLModule,
     EconomicAnalysisRoutingModule,
     NzCardModule,
-    NzBadgeModule
+    NzBadgeModule,
+    DownFileModule
   ],
   declarations: [
     ...COMPONENTS,

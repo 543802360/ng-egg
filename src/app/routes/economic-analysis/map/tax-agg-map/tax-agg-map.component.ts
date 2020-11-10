@@ -57,6 +57,8 @@ export class EconomicAnalysisMapTaxAggMapComponent implements OnInit, AfterViewI
   // 当前所选街道
   selectedJdxz: string;
 
+  downfileName = '';
+  downfileParams;
 
   //#region 展开表
   page: STPage = {
@@ -476,6 +478,13 @@ export class EconomicAnalysisMapTaxAggMapComponent implements OnInit, AfterViewI
     if (e.type === 'click') {
       const { jdxzmc } = e.click.item;
       this.selectedJdxz = jdxzmc;
+
+      this.downfileParams = { ...this.getCondition(), jdxzmc: this.selectedJdxz };
+      const { startDate, endDate } = this.monthRange;
+      const year = startDate.getFullYear();
+      const startMonth = startDate.getMonth() + 1;
+      const endMonth = endDate.getMonth() + 1;
+      this.downfileName = `${jdxzmc}-${year}年${startMonth}-${endMonth}月税收统计.xlsx`;
       setTimeout(() => {
         this.townStVisible = true;
       }, 123);
@@ -497,11 +506,10 @@ export class EconomicAnalysisMapTaxAggMapComponent implements OnInit, AfterViewI
   }
 
   /**
-   * 导出
+   * 导出镇街收入列表
    */
   export() {
     const filename = `镇街税收-${new Date().toLocaleString()}.xlsx`;
-
     const rowData = this.townData.map(i => {
       return {
         '镇街': i.jdxzmc,
@@ -520,5 +528,13 @@ export class EconomicAnalysisMapTaxAggMapComponent implements OnInit, AfterViewI
     ];
     export2excel(filename, data);
 
+  }
+
+  downPre(e) {
+    console.log(e);
+  }
+
+  exportTownNsrTaxList() {
+    this.http.get('analysis/exportTownTaxList', { ...this.getCondition(), jdxzmc: this.selectedJdxz }).subscribe(resp => { });
   }
 }
