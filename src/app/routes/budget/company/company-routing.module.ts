@@ -19,7 +19,7 @@ const routes: Routes = [
           data: {
             title: '分街道企业库',
             guard: {
-              ability: ['/company/list'],
+              ability: ['/budget/company/list'],
             },
             guard_url: 'exception/403'
           }
@@ -30,7 +30,7 @@ const routes: Routes = [
           data: {
             title: '新设立企业',
             guard: {
-              ability: ['company/new']
+              ability: ['/budget/company/new']
             },
             guard_url: 'exception/403'
           }
@@ -41,7 +41,7 @@ const routes: Routes = [
           data: {
             title: '税源位置管理',
             guard: {
-              ability: ['/company/position'],
+              ability: ['/budget/company/position'],
             },
             guard_url: 'exception/403'
           }
@@ -52,7 +52,7 @@ const routes: Routes = [
           data: {
             title: '企业曾用名分析',
             guard: {
-              ability: ['/company/used-name'],
+              ability: ['/budget/company/used-name'],
             },
             guard_url: 'exception/403'
           }
@@ -63,7 +63,7 @@ const routes: Routes = [
           data: {
             title: '税务登记信息',
             guard: {
-              ability: ['/company/djnsrxx'],
+              ability: ['/budget/company/djnsrxx'],
             },
             guard_url: 'exception/403'
           }

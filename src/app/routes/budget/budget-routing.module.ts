@@ -15,35 +15,55 @@ const routes: Routes = [
     path: 'bdg-county',
     component: BudgetBdgSettingBdgCountyComponent,
     data: {
-      title: '区年度预算目标'
+      title: '区年度预算目标',
+      guard: {
+        ability: ['/budget/bdg-county'],
+      },
+      guard_url: 'exception/403'
     }
   },
   {
     path: 'bdg-town',
     component: BudgetBdgSettingBdgTownComponent,
     data: {
-      title: '街道年度预算目标'
+      title: '街道年度预算目标',
+      guard: {
+        ability: ['/budget/bdg-town'],
+      },
+      guard_url: 'exception/403'
     }
   },
   {
     path: 'company-order',
     component: BudgetBdgAnalysisCompanyOrderComponent,
     data: {
-      title: '企业税收排名'
+      title: '企业税收排名',
+      guard: {
+        ability: ['/budget/company-order'],
+      },
+      guard_url: 'exception/403'
     }
   },
   {
     path: 'batch-query',
     component: BudgetBdgAnalysisBatchQueryComponent,
     data: {
-      title: '批量税收查询'
+      title: '批量税收查询',
+      guard: {
+        ability: ['/budget/batch-query'],
+      },
+      guard_url: 'exception/403'
     }
   },
   {
     path: 'single-query',
     component: BudgetBdgAnalysisSingleQueryComponent,
     data: {
-      title: '企业税收明细查询'
+      title: '企业税收明细查询',
+      guard: {
+        ability: ['/budget/single-query'],
+      },
+      guard_url: 'exception/403'
     }
   }];
 
