@@ -5,7 +5,7 @@ import { STColumn, STComponent } from '@delon/abc/st';
 import { SFSchema } from '@delon/form';
 import { BdgSelectComponent } from 'src/app/shared/components/bdg-select/bdg-select.component';
 import { MonthRangeComponent } from 'src/app/shared/components/month-range/month-range.component';
-import { forkJoin } from 'rxjs';
+import { forkJoin, Observable, Subject } from 'rxjs';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { order } from '@shared';
 import { delay } from 'rxjs/operators';
@@ -29,6 +29,8 @@ export class BudgetBdgAnalysisSingleQueryComponent implements OnInit, AfterViewI
   historyUrl = `bdg/enterprise/tax/history`;
   taxByYearData: G2BarData[];
 
+  djnsrxxUrl = 'nsr/info/show';
+
   @ViewChild('nsrSug') nsrSug: NsrmcSuggestionComponent;
   @ViewChild('bdgSelect') bdgSelect: BdgSelectComponent;
   @ViewChild('monthRange') monthRange: MonthRangeComponent;
@@ -36,6 +38,9 @@ export class BudgetBdgAnalysisSingleQueryComponent implements OnInit, AfterViewI
   @ViewChild('st') st: STComponent;
   columns: STColumn[];
 
+  mapSubject = new Subject();
+  map;
+  layerGroup = new L.layerGroup();
   constructor(public http: _HttpClient,
     private cacheSrv: CacheService,
     private loadSrv: LoadingService,
@@ -104,7 +109,11 @@ export class BudgetBdgAnalysisSingleQueryComponent implements OnInit, AfterViewI
       ...this.getCondition()
     });
 
-    forkJoin([$stream1, $stream2]).pipe(delay(1000)).subscribe(resp => {
+    const $stream3 = this.http.get(this.djnsrxxUrl, {
+      nsrmc: this.nsrSug.nsrmc.trim()
+    });
+
+    forkJoin([$stream1, $stream2, $stream3]).pipe(delay(50)).subscribe(resp => {
       this.loadSrv.close();
       // 分税种明细
       const zsxmMap = new Map(Object.entries(resp[0].data).filter(item => item[1] !== 0));
@@ -138,11 +147,55 @@ export class BudgetBdgAnalysisSingleQueryComponent implements OnInit, AfterViewI
           x: item.YEAR,
           y: item.VALUE
         }
-      })
+      });
+      // 获取登记信息并添加至地图
+      const djnsrxxRes = resp[2].data;
+
+      if (this.map) {
+        const { NSRMC, NSRSBH, ZCDZ, DJZCLXMC, HYMC, LAT, LNG } = djnsrxxRes;
+        const marker = L.marker([LAT, LNG]).bindPopup(`
+          <h5>纳税人名称：${NSRMC}</h5>
+          <h5>纳税人识别号：${NSRSBH}</h5>
+          <h5>注册地址：${ZCDZ}</h5>
+          <h5>登记注册类型：${DJZCLXMC}</h5>
+          <h5>所属行业：${HYMC}</h5>
+        `);
+        this.layerGroup.clearLayers();
+
+        setTimeout(() => {
+          this.layerGroup.addLayer(marker);
+          (this.map as any).flyTo([LAT, LNG], 7)
+        });
+      }
+      (this.mapSubject.asObservable()).subscribe(map => {
+
+        const { NSRMC, NSRSBH, ZCDZ, DJZCLXMC, HYMC, LAT, LNG } = djnsrxxRes;
+        const marker = L.marker([LAT, LNG]).bindPopup(`
+          <h5>纳税人名称：${NSRMC}</h5>
+          <h5>纳税人识别号：${NSRSBH}</h5>
+          <h5>注册地址：${ZCDZ}</h5>
+          <h5>登记注册类型：${DJZCLXMC}</h5>
+          <h5>所属行业：${HYMC}</h5>
+        `);
+        this.layerGroup.clearLayers();
+
+        setTimeout(() => {
+          this.layerGroup.addLayer(marker);
+          (map as any).flyTo([LAT, LNG], 7)
+        }, 1000);
+
+      });
 
     });
   }
+  mapload(e) {
+    const { map, layerControl } = e;
+    this.map = map;
+    this.map.addLayer(this.layerGroup);
 
+    console.log('leaflet map loaded!!');
+    this.mapSubject.next(map);
+  }
   /**
    * 查询结果导出
    * @param e 
