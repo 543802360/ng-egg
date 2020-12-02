@@ -54,7 +54,7 @@
       </st>
       <st #jdxzSt *ngIf="townStVisible" [data]="townListUrl" [res]="companyRes" [req]="companyReq"
         [scroll]="{x:'820px',y:'228px'}" [header]="jdxzStHeader" [columns]="expandColumns" size="small" bordered="true"
-        [page]="page" [pi]="1" [ps]="10" [total]="total" [loading]="http.loading">
+        [page]="page" [pi]="1" [ps]="10" [total]="total" [loading]="http.loading" (change)="jdxzStChange($event)">
 
         <ng-template #jdxzStHeader>
           <div nz-row nzGutter="8">

@@ -160,9 +160,14 @@ export class EconomicAnalysisMapTaxAggMapComponent implements OnInit, AfterViewI
     {
       title: '排名',
       type: 'no',
-      width: 60,
+      width: 80,
       className: 'text-center',
-      render: 'order-tpl'
+      format: (item: STData, col: STColumn, index: number) => {
+        // console.log('index', index, item, col);
+        // console.log(this.st);
+        return `${(this.jdxzSt.pi - 1) * this.jdxzSt.ps + index + 1}`;
+
+      }
     },
     {
       title: '纳税人名称',
@@ -495,6 +500,29 @@ export class EconomicAnalysisMapTaxAggMapComponent implements OnInit, AfterViewI
 
   }
 
+  /**
+   * ST change event listener
+   * @param e 
+   */
+  jdxzStChange(e: STChange) {
+
+    if (e.type === 'click') {
+      console.log('qy item', e.click.item);
+      this.router.navigate(['../../budget/single-query'], {
+        queryParams: {
+          nsrmc: e.click.item.nsrmc
+        }
+      })
+    }
+
+  }
+  /**
+   * 飞行至指定点
+   * @param center 
+   * @param pitch 
+   * @param zoom 
+   * @param bearing 
+   */
   fly2target(center?, pitch?, zoom?, bearing?) {
     this.map.flyTo({
       center: center ? center : [120.33246, 36.276589],
