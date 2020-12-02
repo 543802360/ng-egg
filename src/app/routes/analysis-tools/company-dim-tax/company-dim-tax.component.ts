@@ -84,21 +84,19 @@ export class AnalysisToolsCompanyDimTaxComponent implements OnInit {
       title: '纳税人名称',
       className: 'text-center',
       fixed: 'left',
-      width: 300
+      width: 320
     },
     {
       index: 'BNDSR',
       title: '本年度',
       className: 'text-center',
       type: 'number',
-      width: 120
     },
     {
       index: 'SNTQ',
       title: '上年同期',
       className: 'text-center',
       type: 'number',
-      width: 120
     },
     {
       index: 'TBZJZ',
@@ -106,21 +104,18 @@ export class AnalysisToolsCompanyDimTaxComponent implements OnInit {
       className: 'text-center',
       // type: 'number'
       render: 'tbzjz-tpl',
-      width: 120
     },
     {
       index: 'TBZJF',
       title: '同比增减幅',
       className: 'text-center',
       render: 'tbzjf-tpl',
-      width: 120
 
     },
     {
       title: '操作',
       className: 'text-center',
       width: 60,
-      fixed: 'right',
       buttons: [
         {
           // tooltip: '详情',
@@ -222,9 +217,7 @@ export class AnalysisToolsCompanyDimTaxComponent implements OnInit {
     const endMonth = endDate.getMonth() + 1;
     const budgetValue = this.bdgSelect.budgetValue.toLocaleString();
 
-
-    return { year, startMonth, endMonth, budgetValue, nsrmc: this.nsrmc };
-
+    return { year, startMonth, endMonth, budgetValue, nsrmc: this.nsrmc.trim() };
 
   }
   /**
@@ -263,6 +256,10 @@ export class AnalysisToolsCompanyDimTaxComponent implements OnInit {
       }]);
 
     });
+  }
+
+  mapload(e) {
+    const { map, layerControl } = e;
   }
 
 
