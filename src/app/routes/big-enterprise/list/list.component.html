@@ -2,6 +2,16 @@
   <ng-template #extraTemplate1>
     <span style="font-weight: bolder;margin-right: 5px;"> 请选择年份：</span>
     <nz-year-picker class="board-1" [(ngModel)]="selectedYear" nzPlaceHolder="年份"></nz-year-picker>
+    <nz-select [(ngModel)]="selectedFilter" style="margin: 0 4px;width: 108px;" nzPlaceHolder="请选择税收金额">
+      <nz-option nzLabel="1000万" nzValue="1000">
+      </nz-option>
+      <nz-option nzLabel="5000万" nzValue="5000">
+      </nz-option>
+      <nz-option nzLabel="1亿" nzValue="10000">
+      </nz-option>
+    </nz-select>
+
+
     <button nz-button class="board-2" (click)="search()" [disabled]="http.loading" nzType="primary"
       style="margin-left: 6px;">查询</button>
     <button nz-button class="board-3" (click)="export()" [disabled]="http.loading" nzType="primary"

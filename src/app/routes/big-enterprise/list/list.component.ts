@@ -163,6 +163,7 @@ export class BigEnterpriseListComponent implements OnInit, AfterViewInit {
   }
 
   selectedYear: Date;
+  selectedFilter = '1000';
 
   constructor(public http: _HttpClient,
     public msg: NzMessageService,
@@ -219,7 +220,8 @@ export class BigEnterpriseListComponent implements OnInit, AfterViewInit {
    */
   search() {
     this.http.get('big-enterprises/list', {
-      year: this.selectedYear.getFullYear()
+      year: this.selectedYear.getFullYear(),
+      filter: this.selectedFilter
     }).subscribe(res => {
       this.data = res.data;
     });
