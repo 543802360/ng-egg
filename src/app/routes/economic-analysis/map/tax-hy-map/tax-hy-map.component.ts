@@ -66,7 +66,9 @@ export class EconomicAnalysisMapTaxHyMapComponent implements OnInit, AfterViewIn
     {
       title: '镇街',
       index: 'jdxzmc',
-      className: 'text-center'
+      className: 'text-center',
+      width: 240
+
     },
     {
       title: '本年度收入',

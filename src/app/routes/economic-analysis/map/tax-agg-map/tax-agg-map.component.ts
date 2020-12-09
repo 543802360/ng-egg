@@ -113,6 +113,7 @@ export class EconomicAnalysisMapTaxAggMapComponent implements OnInit, AfterViewI
       title: '镇街',
       index: 'jdxzmc',
       className: 'text-center',
+      width: 240
 
     },
     {
