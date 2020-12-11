@@ -97,7 +97,7 @@
     "@types/jszip": "^3.1.7",
     "@types/mapbox-gl": "^1.8.1",
     "@types/node": "^12.11.1",
-    "antd-theme-generator": "^1.2.2",
+    "antd-theme-generator": "^1.2.8",
     "codelyzer": "^5.1.2",
     "husky": "^4.2.3",
     "jasmine-core": "~3.4.0",
