@@ -25,12 +25,13 @@
               "src/manifest.webmanifest"
             ],
             "styles": [
-              "src/styles.less",
+              "node_modules/ng-zorro-antd-mobile/src/ng-zorro-antd-mobile.min.css",
               "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
               "src/assets/lib/leaflet.beautifyMarker/leaflet-beautify-marker-icon.css",
               "node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css",
               "node_modules/leaflet.markercluster/dist/MarkerCluster.css",
-              "src/assets/lib/leaflet-draw/leaflet.draw.css"
+              "src/assets/lib/leaflet-draw/leaflet.draw.css",
+              "src/styles.less"
             ],
             "scripts": [
               "node_modules/leaflet/dist/leaflet-src.js",

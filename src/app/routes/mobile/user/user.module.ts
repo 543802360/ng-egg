@@ -2,7 +2,7 @@ import { LoginComponent } from './login/login.component';
 import { NgModule } from '@angular/core';
 import { UserRoutingModule } from './user-routing.module';
 import { SharedModule } from '@shared';
-import { NavBarModule, InputItemModule } from 'ng-zorro-antd-mobile';
+import { NavBarModule, InputItemModule, NgZorroAntdMobileModule } from 'ng-zorro-antd-mobile';
 
 const COMPONENTS = [LoginComponent];
 const COMPONENTS_NOROUNT = [LoginComponent];
@@ -11,8 +11,7 @@ const COMPONENTS_NOROUNT = [LoginComponent];
   imports: [
     SharedModule,
     UserRoutingModule,
-    NavBarModule,
-    InputItemModule
+    NgZorroAntdMobileModule
   ],
   declarations: [
     ...COMPONENTS,

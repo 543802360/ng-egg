@@ -13,10 +13,6 @@ const routes: Routes = [
           loadChildren: () => import('./eco-summary/eco-summary.module').then(m => m.EcoSummaryModule),
         },
         {
-          path: 'eco-map',
-          loadChildren: () => import('./eco-map/eco-map.module').then(m => m.EcoMapModule),
-        },
-        {
           path: 'eco-thematic',
           loadChildren: () => import('./eco-thematic/eco-thematic.module').then(m => m.EcoThematicModule),
         },
@@ -27,7 +23,10 @@ const routes: Routes = [
         }
       ]
   },
-
+  {
+    path: 'passport',
+    loadChildren: () => import('./user/user.module').then(m => m.UserModule)
+  },
   {
     path: '',
     redirectTo: 'home',

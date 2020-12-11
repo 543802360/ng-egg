@@ -7,7 +7,7 @@ import { EcoSummaryZsxmSummaryComponent } from './zsxm-summary/zsxm-summary.comp
 import { EcoSummaryInvoiceSummaryComponent } from './invoice-summary/invoice-summary.component';
 import { EcoSummaryAllSummaryComponent } from './all-summary/all-summary.component';
 import { EcoSummaryComponent } from './eco-summary.component';
-import { NgAntvF2Module } from 'ng-antv-f2';
+import { NgZorroAntdMobileModule } from 'ng-zorro-antd-mobile';
 
 const COMPONENTS = [
   EcoSummaryCySummaryComponent,
@@ -21,7 +21,7 @@ const COMPONENTS_NOROUNT = [];
 @NgModule({
   imports: [
     SharedModule,
-    NgAntvF2Module,
+    NgZorroAntdMobileModule,
     EcoSummaryRoutingModule
   ],
   declarations: [

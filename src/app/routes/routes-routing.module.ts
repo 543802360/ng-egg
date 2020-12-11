@@ -110,8 +110,10 @@ const routes: Routes = [
     children: [
       {
         path: 'login',
-        component:
-          UserLoginComponent,
+        // component:
+        //   UserLoginComponent,
+        [platforms.os.family === "Android" || platforms.os.family === "iOS" ? 'loadChildren' : 'component']:
+          platforms.os.family === "Android" || platforms.os.family === "iOS" ? () => import('./mobile/mobile.module').then(m => m.MobileModule) : UserLoginComponent,
         data: { title: '登录' }
       },
       { path: 'register', component: UserRegisterComponent, data: { title: '注册' } },
