@@ -33,6 +33,7 @@
     "@angular/platform-browser-dynamic": "~10.2.0",
     "@angular/router": "~10.2.0",
     "@angular/service-worker": "~10.2.0",
+    "@ant-design/icons-angular": "^10.2.0",
     "@antv/data-set": "^0.10.2",
     "@antv/g2": "^3.5.11",
     "@antv/g2-plugin-slider": "^2.1.1",
