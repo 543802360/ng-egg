@@ -22,9 +22,7 @@ import { UserRegisterResultComponent } from './passport/register-result/register
 import { CallbackComponent } from './callback/callback.component';
 import { UserLockComponent } from './passport/lock/lock.component';
 import { ACLGuard } from '@delon/acl';
-import * as platforms from "platform";
-import { platform } from 'os';
-import { LoginComponent } from './mobile/user/login/login.component';
+
 const routes: Routes = [
   {
     path: '',
@@ -128,8 +126,6 @@ const routes: Routes = [
   { path: '**', redirectTo: 'exception/404' },
 ];
 
-console.log('platforms:', platforms)
-alert(JSON.stringify(platforms.os))
 @NgModule({
   imports: [
     RouterModule.forRoot(
