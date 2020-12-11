@@ -114,8 +114,8 @@ const routes: Routes = [
         path: 'login',
         component:
           // platforms.os.family === "Android" || platforms.os.family === "iOS" ?
-          LoginComponent,
-        //  :UserLoginComponent,
+          // LoginComponent,
+          UserLoginComponent,
         data: { title: '登录' }
       },
       { path: 'register', component: UserRegisterComponent, data: { title: '注册' } },
