@@ -114,6 +114,7 @@ import { STWidgetModule } from './shared/st-widget/st-widget.module';
 import { LoadingTypesService } from '@core';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { NgZorroAntdMobileModule } from 'ng-zorro-antd-mobile';
 
 
 @NgModule({
@@ -128,6 +129,7 @@ import { environment } from '../environments/environment';
     SharedModule,
     RoutesModule,
     STWidgetModule,
+    NgZorroAntdMobileModule,
     ...I18NSERVICE_MODULES,
     ...GLOBAL_THIRD_MODULES,
     ...FORM_MODULES,

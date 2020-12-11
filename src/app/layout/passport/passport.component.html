@@ -14,7 +14,7 @@
       </div>
     </div> -->
   <router-outlet></router-outlet>
-  <global-footer [links]="links">
+  <global-footer *ngIf="linksVisible" [links]="links">
 
   </global-footer>
 </div>

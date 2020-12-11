@@ -7,13 +7,14 @@
  * @FilePath: /ng-egg/src/app/layout/passport/passport.component.ts
  */
 import { Component } from '@angular/core';
-
+import * as platforms from "platform";
 @Component({
   selector: 'layout-passport',
   templateUrl: './passport.component.html',
   styleUrls: ['./passport.component.less'],
 })
 export class LayoutPassportComponent {
+  linksVisible = platforms.os.family === "Android" || platforms.os.family === "iOS" ? false : true;
   links = [
     {
       title: '谷歌浏览器下载',

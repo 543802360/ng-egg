@@ -22,7 +22,9 @@ import { UserRegisterResultComponent } from './passport/register-result/register
 import { CallbackComponent } from './callback/callback.component';
 import { UserLockComponent } from './passport/lock/lock.component';
 import { ACLGuard } from '@delon/acl';
-
+import * as platforms from "platform";
+import { platform } from 'os';
+import { LoginComponent } from './mobile/user/login/login.component';
 const routes: Routes = [
   {
     path: '',
@@ -108,7 +110,14 @@ const routes: Routes = [
     path: 'passport',
     component: LayoutPassportComponent,
     children: [
-      { path: 'login', component: UserLoginComponent, data: { title: '登录' } },
+      {
+        path: 'login',
+        component:
+          // platforms.os.family === "Android" || platforms.os.family === "iOS" ?
+          LoginComponent,
+        //  :UserLoginComponent,
+        data: { title: '登录' }
+      },
       { path: 'register', component: UserRegisterComponent, data: { title: '注册' } },
       { path: 'register-result', component: UserRegisterResultComponent, data: { title: '注册结果' } },
       { path: 'lock', component: UserLockComponent, data: { title: '锁屏' } },
@@ -119,6 +128,8 @@ const routes: Routes = [
   { path: '**', redirectTo: 'exception/404' },
 ];
 
+console.log('platforms:', platforms)
+alert(JSON.stringify(platforms.os))
 @NgModule({
   imports: [
     RouterModule.forRoot(
