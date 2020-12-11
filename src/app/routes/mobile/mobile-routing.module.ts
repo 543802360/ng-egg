@@ -24,10 +24,6 @@ const routes: Routes = [
       ]
   },
   {
-    path: 'passport',
-    loadChildren: () => import('./user/user.module').then(m => m.UserModule)
-  },
-  {
     path: '',
     redirectTo: 'home',
     pathMatch: 'full'
