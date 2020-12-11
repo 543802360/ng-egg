@@ -23,8 +23,6 @@ import { CallbackComponent } from './callback/callback.component';
 import { UserLockComponent } from './passport/lock/lock.component';
 import { ACLGuard } from '@delon/acl';
 import * as platforms from "platform";
-import { platform } from 'os';
-import { LoginComponent } from './mobile/user/login/login.component';
 const routes: Routes = [
   {
     path: '',
@@ -113,8 +111,6 @@ const routes: Routes = [
       {
         path: 'login',
         component:
-          // platforms.os.family === "Android" || platforms.os.family === "iOS" ?
-          // LoginComponent,
           UserLoginComponent,
         data: { title: '登录' }
       },
@@ -128,8 +124,8 @@ const routes: Routes = [
   { path: '**', redirectTo: 'exception/404' },
 ];
 
-console.log('platforms:', platforms)
-alert(JSON.stringify(platforms.os))
+// console.log('platforms:', platforms)
+// alert(JSON.stringify(platforms.os))
 @NgModule({
   imports: [
     RouterModule.forRoot(
