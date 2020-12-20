@@ -2,7 +2,7 @@ const MAPBOX_POS = {
 
 };
 
-export function fly2target(map: mapboxgl.Map, center?, zoom?, pitch?, bearing?) {
+export function fly2target(map, center?, zoom?, pitch?, bearing?) {
     map.flyTo({
         center: center ? center : [120.33246, 36.276589],
         zoom: zoom ? zoom : 9.688,
