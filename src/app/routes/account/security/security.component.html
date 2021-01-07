@@ -1,6 +1,6 @@
 <div class="main">
   <div class="left">
-    <form nz-form nzLayout="vertical" #f="ngForm" se-container>
+    <form nz-form nzLayout="vertical" #f="ngForm" se-container (ngSubmit)="ngSubmit()">
       <se label="新密码" required error="请填写密码">
         <input type="password" nz-input [(ngModel)]="i.pwd" name="pwd" required>
       </se>
