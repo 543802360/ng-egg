@@ -23,48 +23,35 @@ export const environment = {
     resourceUrl: 'http://15.72.178.178:10010',
     mbtiles: {
       world: [
-        'http://15.72.178.178:10010/vtiles/world/{z}/{x}/{y}.pbf',
-        'http://35.1.149.188:10010/vtiles/world/{z}/{x}/{y}.pbf'
+        'http://15.72.178.178:10010/vtiles/world/{z}/{x}/{y}.pbf'
       ],
       province:
         [
-          'http://15.72.178.178:10010/vtiles/province/{z}/{x}/{y}.pbf',
-          'http://35.1.149.188:10010/vtiles/province/{z}/{x}/{y}.pbf'
+          'http://15.72.178.178:10010/vtiles/province/{z}/{x}/{y}.pbf'
         ],
       dtbj:
         [
-          'http://15.72.178.178:10010/vtiles/dtbj/{z}/{x}/{y}.pbf',
-          'http://35.1.149.188:10010/vtiles/dtbj/{z}/{x}/{y}.pbf'
-
+          'http://15.72.178.178:10010/vtiles/dtbj/{z}/{x}/{y}.pbf'
         ],
       xzbz:
         [
-          'http://15.72.178.178:10010/vtiles/xzbz/{z}/{x}/{y}.pbf',
-          'http://35.1.149.188:10010/vtiles/xzbz/{z}/{x}/{y}.pbf'
-
+          'http://15.72.178.178:10010/vtiles/xzbz/{z}/{x}/{y}.pbf'
         ],
       jzw:
         [
-          'http://15.72.178.178:10010/vtiles/jzw/{z}/{x}/{y}.pbf',
-          'http://35.1.149.188:10010/vtiles/jzw/{z}/{x}/{y}.pbf'
-
+          'http://15.72.178.178:10010/vtiles/jzw/{z}/{x}/{y}.pbf'
         ],
       road:
         [
-          'http://15.72.178.178:10010/vtiles/road/{z}/{x}/{y}.pbf',
-          'http://35.1.149.188:10010/vtiles/road/{z}/{x}/{y}.pbf'
-
+          'http://15.72.178.178:10010/vtiles/road/{z}/{x}/{y}.pbf'
         ],
       road2:
         [
-          'http://15.72.178.178:10010/vtiles/road2/{z}/{x}/{y}.pbf',
-          'http://35.1.149.188:10010/vtiles/road2/{z}/{x}/{y}.pbf'
-
+          'http://15.72.178.178:10010/vtiles/road2/{z}/{x}/{y}.pbf'
         ],
       poi:
         [
-          'http://15.72.178.178:10010/vtiles/poi/{z}/{x}/{y}.pbf',
-          'http://35.1.149.188:10010/vtiles/poi/{z}/{x}/{y}.pbf'
+          'http://15.72.178.178:10010/vtiles/poi/{z}/{x}/{y}.pbf'
         ]
     }
 
