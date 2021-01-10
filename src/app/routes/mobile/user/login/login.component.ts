@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./login.component.less']
 })
 export class LoginComponent {
+  title = '城阳智慧财源';
   username: string;
   password: string;
 

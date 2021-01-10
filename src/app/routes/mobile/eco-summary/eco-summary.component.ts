@@ -1,54 +1,104 @@
-import { Component, OnInit } from '@angular/core';
+import { ToastService } from 'ng-zorro-antd-mobile';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { _HttpClient } from '@delon/theme';
+import { Router, ActivatedRoute } from "@angular/router"
 
+import { BudgetLevel } from "@shared"
 @Component({
-    template: `
-    <Navbar [rightContent]="popover">
-        经济运行分析
-    </Navbar>
-
-    <ng-template #popover>
-    <Icon Popover [ngStyle]="{ height: '100%', display: 'flex', 'align-items': 'center' }" [mask]="false"
-        [showArrow]="true" [overlay]="overlay" [type]="'ellipsis'" [placement]="'bottomRight'" ></Icon>
-    </ng-template>
-
-    <ng-template #overlay>
-        <PopoverItem [icon]="icon1">财政总收入分析</PopoverItem>
-        <PopoverItem [icon]="icon2">分税种分析</PopoverItem>
-        <PopoverItem [icon]="icon3">分行业分析</PopoverItem>
-        <PopoverItem [icon]="icon4">分产业分析</PopoverItem>
-        <PopoverItem [icon]="icon5">开票分析</PopoverItem>
-    </ng-template>
-
-    <ng-template #icon1>
-        <i nz-icon nzType="database" nzTheme="outline"></i>
-    </ng-template>
-
-    <ng-template #icon2>
-        <i nz-icon nzType="money-collect" nzTheme="outline"></i>
-    </ng-template>
-
-    <ng-template #icon3>
-        <i nz-icon nzType="line-chart" nzTheme="outline"></i>
-    </ng-template>
-
-    <ng-template  #icon4>
-        <i nz-icon nzType="pie-chart" nzTheme="outline"></i>
-    </ng-template>
-
-    <ng-template #icon5>
-        <i nz-icon nzType="trademark" nzTheme="outline"></i>
-    </ng-template>
-    <div class="route-content">
-        <router-outlet></router-outlet>
-    </div>
-    `,
+    templateUrl: './eco-summary.component.html',
     styleUrls: ['./eco-summary.component.less']
 })
-export class EcoSummaryComponent implements OnInit {
+export class EcoSummaryComponent implements OnInit, AfterViewInit {
+    // 是否打开drawer
+    state = {
+        open: false
+    };
+    // 时间及预算级次选择
+    startTime: Date;
+    endTime: Date;
+    countySelected = true;
+    citySelected = false;
+    centerSelected = false;
 
-    constructor(private http: _HttpClient) { }
+    budgetValue = [];
+
+    height: number = document.documentElement.clientHeight - 145;
+
+    constructor(private http: _HttpClient,
+        private router: Router,
+        private route: ActivatedRoute,
+        private toastSrv: ToastService) {
+
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = now.getMonth();
+
+        this.startTime = new Date(year, 0);
+        this.endTime = new Date(year, month);
+
+    }
 
     ngOnInit() { }
+
+    ngAfterViewInit() {
+
+    }
+
+    clearBdgValue() {
+        this.budgetValue = [];
+    }
+
+    currentDateFormat(date, format: string = 'yyyy-mm-dd HH:MM'): any {
+        const pad = (n: number): string => (n < 10 ? `0${n}` : n.toString());
+        return format
+            .replace('yyyy', date.getFullYear())
+            .replace('mm', pad(date.getMonth() + 1))
+            .replace('dd', pad(date.getDate()))
+            .replace('HH', pad(date.getHours()))
+            .replace('MM', pad(date.getMinutes()))
+            .replace('ss', pad(date.getSeconds()));
+    }
+
+    onOk(result: Date) {
+        if (this.countySelected || this.citySelected || this.centerSelected) {
+            if (this.centerSelected) {
+                this.budgetValue.push(BudgetLevel.CENTER);
+            }
+            if (this.citySelected) {
+                this.budgetValue.push(BudgetLevel.CITY);
+            }
+            if (this.countySelected) {
+                this.budgetValue.push(BudgetLevel.COUNTY);
+            }
+
+            this.toastSrv.info(this.budgetValue.toLocaleString());
+
+
+        } else {
+            this.toastSrv.info('请选择预算级次！！');
+        }
+    }
+    //专题切换
+    nav(e) {
+        switch (e.innerText) {
+            // case '分税种分析':
+
+            //     break;
+            case '分行业分析':
+                this.router.navigate(['./hy-summary'], { relativeTo: this.route })
+                break;
+            case '分产业分析':
+                this.router.navigate(['./cy-summary'], { relativeTo: this.route })
+
+                break;
+            case '财政总收入分析':
+                this.router.navigate(['./all-summary'], { relativeTo: this.route })
+
+                break;
+
+            default:
+                break;
+        }
+    }
 
 }
