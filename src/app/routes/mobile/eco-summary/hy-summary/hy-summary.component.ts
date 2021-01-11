@@ -31,7 +31,7 @@ export class EcoSummaryHySummaryComponent implements OnInit, AfterViewInit {
   }
 
   getCondition(e) {
-    // console.log('condition:', e);
+    this.total = 0;
     this.http.get(this.hyUrl, e).subscribe(resp => {
       console.log('行业税收：', resp);
       let itemData = resp.data.map(item => Object.assign({ const: 100 }, item))
@@ -59,7 +59,7 @@ export class EcoSummaryHySummaryComponent implements OnInit, AfterViewInit {
       chart.tooltip(false);
 
       chart.interval().position('mlmc*const').color('#d9e4eb').size(10).animate(true);
-      chart.interval().position('mlmc*bndsr').size(10);
+      chart.interval().position('mlmc*bndsr').size(8);
 
       // chart.interval().position('const*tax').adjust('stack').color('zsxm_dm', ['#1890FF', '#13C2C2', '#2FC25B', '#FACC14', '#F04864', '#8543E0', '#3436C7', '#223273']);
       // 线注记
@@ -72,8 +72,8 @@ export class EcoSummaryHySummaryComponent implements OnInit, AfterViewInit {
           style: {
             textAlign: 'start',
             textBaseline: 'bottom',
-            fontWeight: 'bold',
-            fontSize: 14
+            fontWeight: 'normal',
+            fontSize: 12
           },
           offsetY: -8
         });
@@ -83,7 +83,7 @@ export class EcoSummaryHySummaryComponent implements OnInit, AfterViewInit {
           style: {
             textAlign: 'end',
             textBaseline: 'bottom',
-            fontSize: 14
+            fontSize: 12
           },
           offsetY: -8
         });

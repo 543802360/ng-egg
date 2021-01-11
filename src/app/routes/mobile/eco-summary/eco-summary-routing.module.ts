@@ -42,7 +42,7 @@ const routes: Routes = [
         }
       },
       {
-        path: 'all-summary',
+        path: 'hy-summary',
         component: EcoSummaryAllSummaryComponent,
         data: {
           title: '财政总收入分析'
