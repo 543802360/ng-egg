@@ -5,7 +5,8 @@ import { NgModule } from '@angular/core';
 import { MobileRoutingModule } from './mobile-routing.module';
 import { NgZorroAntdMobileModule } from 'ng-zorro-antd-mobile';
 // import {} from "@ant-de"
-const COMPONENTS = [HomeComponent];
+const COMPONENTS = [HomeComponent,
+];
 const COMPONENTS_NOROUNT = [];
 
 
