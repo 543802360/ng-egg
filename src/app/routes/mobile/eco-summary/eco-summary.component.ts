@@ -13,6 +13,7 @@ export class EcoSummaryComponent implements OnInit, AfterViewInit {
     state = {
         open: false
     };
+    title;
     // 时间及预算级次选择
     startTime: Date;
     endTime: Date;
@@ -86,14 +87,15 @@ export class EcoSummaryComponent implements OnInit, AfterViewInit {
             //     break;
             case '分行业分析':
                 this.router.navigate(['./hy-summary'], { relativeTo: this.route })
+                this.title = '分行业分析';
                 break;
             case '分产业分析':
                 this.router.navigate(['./cy-summary'], { relativeTo: this.route })
-
+                this.title = '分产业分析';
                 break;
             case '财政总收入分析':
                 this.router.navigate(['./all-summary'], { relativeTo: this.route })
-
+                this.title = '财政总收入分析';
                 break;
 
             default:

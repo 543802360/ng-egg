@@ -10,6 +10,7 @@ export * from "./utils/order";
 export * from "./utils/export2excel";
 export * from './utils/getColorRange';
 export * from "./utils/fly2target";
+export * from './utils/num2money';
 // 接口类
 export * from './interfaces/IMenu';
 export * from './interfaces/IDepartment';

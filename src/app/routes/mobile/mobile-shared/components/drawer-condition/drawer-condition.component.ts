@@ -66,17 +66,13 @@ export class MobileDrawerConditionComponent implements OnInit {
       if (this.countySelected) {
         this.budgetValue.push(BudgetLevel.COUNTY);
       }
-
-      this.toastSrv.info(this.budgetValue.toLocaleString());
-
       //获取参数
       const year = this.startTime.getFullYear();
       const startMonth = this.startTime.getMonth() + 1;
       const endMonth = this.endTime.getMonth() + 1;
       const budgetValue = this.budgetValue.toLocaleString();
-
       const flag = 'DZSP';
-
+      // 传递参数
       this.onConditionConfirm.emit({
         year: year - 1,
         startMonth, endMonth, flag, budgetValue

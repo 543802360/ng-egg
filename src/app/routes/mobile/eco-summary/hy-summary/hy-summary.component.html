@@ -1,3 +1,25 @@
 <mobile-drawer-condition #drawer (onConditionConfirm)="getCondition($event)">
-    <canvas class='chart' #chart style="width: 100%;height: 600px;"></canvas>
+    <div class="result-container">
+        <div class="chart-wrapper">
+            <canvas class='chart' #chart style="width: 100%;height: 600px;"></canvas>
+        </div>
+        <!-- 列表数据 -->
+        <div class="list-wrapper">
+            <List>
+                <ListItem [extra]="'金额（万元）'">行业名称</ListItem>
+                <ListItem *ngFor="let item of listData;let i =index" [extra]="item.bndsr | number">
+                    <Badge [text]="i+1" [hot]="true" [size]="'large'" style="margin-left:6px;"></Badge>
+                    {{item.mlmc}} <span style="margin-left:6px">
+                        <i *ngIf="!item.tbzjf.includes('-')" style="margin-left:6px;color:green;" nz-icon
+                            nzType="arrow-up" nzTheme="outline"></i>
+                        <i *ngIf="item.tbzjf.includes('-')" style="margin-left:6px;color: red;" nz-icon
+                            nzType="arrow-down" nzTheme="outline"></i>
+                    </span>
+                    <Brief>占比:&nbsp;{{(item.bndsr/total*100).toFixed(2)}}% <span
+                            style="margin-left:12px">同比:&nbsp;{{item.tbzjz|number}}</span></Brief>
+                </ListItem>
+            </List>
+        </div>
+    </div>
+
 </mobile-drawer-condition>

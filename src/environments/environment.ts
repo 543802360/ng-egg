@@ -12,7 +12,7 @@
 
 export const environment = {
   // SERVER_URL: `http://192.168.3.50:10920/api/`,
-  SERVER_URL: `http://127.0.0.1:10920/api/`,
+  SERVER_URL: `http://192.168.43.85:10920/api/`,
   map: {
     // 矢量地图
     VECTOR_MAP:

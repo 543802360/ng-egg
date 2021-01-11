@@ -3,7 +3,7 @@
 </Navbar> -->
 <Navbar (onLeftClick)="this.state.open=!this.state.open" (onRightClick)="this.state.open=false"
     [rightContent]="popover">
-    经济运行分析
+    {{title?title:'经济运行分析'}}
 </Navbar>
 
 
