@@ -14,8 +14,8 @@
       </nz-option>
       <nz-option nzLabel="百万以上" [nzValue]="100">
       </nz-option>
-      <nz-option nzLabel="五十万以上" [nzValue]="50">
-      </nz-option>
+      <!-- <nz-option nzLabel="五十万以上" [nzValue]="50">
+      </nz-option> -->
     </nz-select>
 
     <app-month-range #monthRange style="margin-right: 5px;"></app-month-range>
@@ -79,7 +79,8 @@
           <button nz-button (click)="switchLayer('cluster')" nzDanger="true" nzGhost="true">聚合图</button>
         </nz-button-group>
         <!-- <nz-spin *ngIf="!map" nzSize="large" style=""></nz-spin> -->
-        <mgl-map [style]="style" [trackResize]="true" [zoom]="[8]" [center]="[120.3,36.45]" (load)="mapboxLoad($event)">
+        <mgl-map [style]="style" [trackResize]="true" [zoom]="[8]" [center]="[120.65733652344079, 37.000723396581805]"
+          (load)="mapboxLoad($event)">
           <mgl-control mglNavigation></mgl-control>
           <mgl-control mglFullscreen></mgl-control>
         </mgl-map>

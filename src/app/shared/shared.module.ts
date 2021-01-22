@@ -28,9 +28,9 @@ import { MapboxStyleControlComponent } from "./components/mapbox-style-control/m
 
 
 const THIRDMODULES = [
-  CountdownModule,
-  UEditorModule,
-  NgxTinymceModule,
+  // CountdownModule,
+  // UEditorModule,
+  // NgxTinymceModule,
   IconPickerModule
 ];
 // #endregion

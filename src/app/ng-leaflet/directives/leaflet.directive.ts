@@ -56,6 +56,15 @@ export class LeafletDirective implements OnInit {
       {
         origin: [-180.0, 90],
         resolutions: [
+          1.4078288313701555,
+          0.7031250000000002,
+          0.3515625000000001,
+          0.17578125000000006,
+          0.08789062500000003,
+          0.043945312500000014,
+          0.021972656250000007,
+          0.010986328125000003,
+          0.005493164062500002,
           0.002746582031854997,
           0.0013732910159274985,
           6.866454960783415e-4,
@@ -76,14 +85,14 @@ export class LeafletDirective implements OnInit {
     const maxBounds = L.latLngBounds(bottomleft, topright);
     const qdDefaultOptions = {
       crs,
-      center: L.latLng([36.50349, 120.16856]),
-      zoom: 0,
-      minZoom: 0,
+      center: L.latLng([37.39471, 120.9709]),
+      zoom: 9,
+      minZoom: 8,
       zoomControl: true,
       attributionControl: false,
       preferCanvas: false,
       inertia: false,
-      maxBounds,
+      // maxBounds,
       bounceAtZoomLimits: false,
       touchZoom: true // 禁用双个手指缩放（有bug）
     };
@@ -96,18 +105,18 @@ export class LeafletDirective implements OnInit {
 
     const _vecBaseLayer = new L.esri.TiledMapLayer({
       url: environment.map.VECTOR_MAP,
-      maxZoom: 10,
+      maxZoom: 19,
       minZoom: 0
     });
     const _imgBaseLayer = new L.esri.TiledMapLayer({
       url: environment.map.IMAGE_MAP,
-      maxZoom: 10,
+      maxZoom: 19,
       minZoom: 0
     });
 
     const baseLayers = {
-      矢量地图: _vecBaseLayer.addTo(this._map),
-      影像地图: _imgBaseLayer
+      矢量地图: _vecBaseLayer,
+      影像地图: _imgBaseLayer.addTo(this._map)
     };
 
     // (L.control as any).defaultExtent().addTo(this._map);
@@ -117,7 +126,7 @@ export class LeafletDirective implements OnInit {
         baseLayers,
         {},
         {
-          collapsed: true,
+          collapsed: false,
           // position: "topleft"
         }
       )

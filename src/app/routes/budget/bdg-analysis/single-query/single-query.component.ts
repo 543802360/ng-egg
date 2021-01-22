@@ -108,10 +108,12 @@ export class BudgetBdgAnalysisSingleQueryComponent implements OnInit, AfterViewI
       this.loadSrv.close();
       // 分税种明细
       const zsxmMap = new Map(Object.entries(resp[0].data).filter(item => item[1] !== 0));
-      const zsxmData = (Object as any).fromEntries(zsxmMap);
+      // const zsxmData = (Object as any).fromEntries(zsxmMap);
+      const zsxmKeys = Object.keys(resp[0].data);
+      const zsxmValues = Object.values(resp[0].data);
 
       // 设置征收项目表头
-      this.columns = Object.keys(zsxmData).map(item => {
+      this.columns = zsxmKeys.map(item => {
         return {
           title: item,
           index: item,
@@ -120,15 +122,15 @@ export class BudgetBdgAnalysisSingleQueryComponent implements OnInit, AfterViewI
         }
       });
       // 计算合计数
-      this.total = Object.values(zsxmData).reduce((prev: number, cur: number) => {
+      this.total = zsxmValues.reduce((prev: number, cur: number) => {
         return prev + cur;
       }) as number;
-      this.taxByZsxmData = [zsxmData];
+      this.taxByZsxmData = [resp[0].data];
       // 设置G2 Bar、Pie 数据
-      const data = Object.entries(zsxmData).map(item => {
+      const data = zsxmKeys.map((key, index) => {
         return {
-          x: item[0],
-          y: item[1]
+          x: key,
+          y: zsxmValues[index]
         }
       }).filter(item => item.y !== 0).sort(order('y'));
       this.zsxmBarData = deepCopy(data);

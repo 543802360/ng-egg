@@ -12,30 +12,55 @@
 
 export const environment = {
   // SERVER_URL: `http://192.168.3.50:10920/api/`,
-  SERVER_URL: `http://127.0.0.1:10920/api/`,
+  SERVER_URL: `http://140.68.16.96:10920/api/`,
+  // SERVER_URL: `http://127.0.0.1:7001/api/`,
   map: {
     // 矢量地图
     VECTOR_MAP:
-      "https://www.qddsgis.com:2600/arcgis/rest/services/qdslmap/MapServer",
+      "http://140.68.16.96:10050/arcgis/rest/services/slmap/MapServer",
     VECTOR_MAP_TILE:
       "https://www.qddsgis.com:2600/arcgis/rest/services/qdslmap/MapServer/tile/{z}/{y}/{x}",
     // 影像地图
     IMAGE_MAP:
-      "https://www.qddsgis.com:2600/arcgis/rest/services/qdyxmap/MapServer",
+      "http://140.68.16.96:10050/arcgis/rest/services/yxmap/MapServer",
     IMAGE_MAP_TILE:
       "https://www.qddsgis.com:2600/arcgis/rest/services/qdyxmap/MapServer/tile/{z}/{y}/{x}",
   },
   mapStyle: {
-    resourceUrl: 'http://10.211.55.7:10010',
+    resourceUrl: 'http://140.68.16.98:10010',
     mbtiles: {
-      world: ['http://10.211.55.7:10010/vtiles/world/{z}/{x}/{y}.pbf'],
-      province: ['http://10.211.55.7:10010/vtiles/province/{z}/{x}/{y}.pbf'],
-      dtbj: ['http://10.211.55.7:10010/vtiles/dtbj/{z}/{x}/{y}.pbf'],
-      xzbz: ['http://10.211.55.7:10010/vtiles/xzbz/{z}/{x}/{y}.pbf'],
-      jzw: ['http://10.211.55.7:10010/vtiles/jzw/{z}/{x}/{y}.pbf'],
-      road: ['http://10.211.55.7:10010/vtiles/road/{z}/{x}/{y}.pbf'],
-      road2: ['http://10.211.55.7:10010/vtiles/road2/{z}/{x}/{y}.pbf'],
-      poi: ['http://10.211.55.7:10010/vtiles/poi/{z}/{x}/{y}.pbf']
+      world: [
+        'http://140.68.16.98:10010/vtiles/world/{z}/{x}/{y}.pbf',
+        'http://140.68.16.97:10010/vtiles/world/{z}/{x}/{y}.pbf'
+      ],
+      province: [
+        'http://140.68.16.98:10010/vtiles/province/{z}/{x}/{y}.pbf',
+        'http://140.68.16.97:10010/vtiles/province/{z}/{x}/{y}.pbf'
+      ],
+      dtbj: [
+        'http://140.68.16.98:10010/vtiles/dtbj/{z}/{x}/{y}.pbf',
+        'http://140.68.16.97:10010/vtiles/dtbj/{z}/{x}/{y}.pbf'
+      ],
+      xzbz: [
+        'http://140.68.16.98:10010/vtiles/xzbz/{z}/{x}/{y}.pbf',
+        'http://140.68.16.97:10010/vtiles/xzbz/{z}/{x}/{y}.pbf'
+      ],
+      jzw: [
+        'http://140.68.16.98:10010/vtiles/jzw/{z}/{x}/{y}.pbf',
+        'http://140.68.16.97:10010/vtiles/jzw/{z}/{x}/{y}.pbf'
+      ],
+      road: [
+        'http://140.68.16.98:10010/vtiles/road/{z}/{x}/{y}.pbf',
+        'http://140.68.16.97:10010/vtiles/road/{z}/{x}/{y}.pbf'
+      ],
+      road2: [
+        'http://140.68.16.98:10010/vtiles/road2/{z}/{x}/{y}.pbf',
+        'http://140.68.16.97:10010/vtiles/road2/{z}/{x}/{y}.pbf'
+      ],
+      poi: [
+        'http://140.68.16.98:10010/vtiles/poi/{z}/{x}/{y}.pbf',
+        'http://140.68.16.97:10010/vtiles/poi/{z}/{x}/{y}.pbf'
+      ]
     }
 
   },

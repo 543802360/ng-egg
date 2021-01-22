@@ -26,7 +26,7 @@ interface ItemData {
 interface gsqyItem {
   DJZCLX_DM: string,
   DJZCLX_MC: string,
-  HY_MC: string,
+  MLMC: string,
   HZRQ: string,
   NSRMC: string,
   NSRSBH: string,
@@ -49,12 +49,14 @@ interface gsqyItem {
   SE_ZYS: number,
   SE_ZZS: number,
   SWJG_MC: string,
+  lat: number,
+  lng: number,
 }
 
 // mapbox pos参数
 const MAPBOX_POS = {
   center: [120.657985, 37.24082995331422],
-  pitch: 60,
+  pitch: 0,
   bearing: -10.441292648171384,
   zoom: 7.899747984494937
 }
@@ -81,6 +83,8 @@ export class TaxDatavGsqyComponent implements OnInit, AfterViewInit {
 
   gsqyUrl = "/gsqy";
   gsqyData: gsqyItem[] = [];
+  gsqyTop20Data: gsqyItem[] = [];
+
   totalItem = {};
   gsqyCount;
   gsqyCount_BL;
@@ -106,7 +110,7 @@ export class TaxDatavGsqyComponent implements OnInit, AfterViewInit {
 
   //#endregion
 
-  style = dark;
+  style = decimal;
   map: mapboxgl.Map;// map 
   heightStop = 20000;
   pointActive = {
@@ -170,10 +174,9 @@ export class TaxDatavGsqyComponent implements OnInit, AfterViewInit {
     // 地图样式切换事件监听,切换后续重新加载原专题数据
     this.map.on('styledata', styleData => {
 
-      this.addCityBoundary();
+      // this.addCityBoundary();
       if (!this.map.getLayer('heat-layer')) {
         setTimeout(() => {
-          this.getData();
         });
       }
 
@@ -203,7 +206,6 @@ export class TaxDatavGsqyComponent implements OnInit, AfterViewInit {
         });
       }
     });
-    this.getData();
     // 添加高亮数据源
     this.map.addSource('point-active', {
       type: 'geojson',
@@ -259,13 +261,13 @@ export class TaxDatavGsqyComponent implements OnInit, AfterViewInit {
       const queryPt = this.map.queryRenderedFeatures(e.point, {
         layers: ['dot-layer', 'nsr_circle']
       });
-      if (queryPt.length) {
-        const { nsrmc, value } = queryPt[0].properties;
-        this.router.navigate(['../../budget/single-query'], {
-          queryParams: { nsrmc },
-          relativeTo: this.route
-        });
-      }
+      // if (queryPt.length) {
+      //   const { nsrmc, value } = queryPt[0].properties;
+      //   this.router.navigate(['../../budget/single-query'], {
+      //     queryParams: { nsrmc },
+      //     relativeTo: this.route
+      //   });
+      // }
     });
 
   }
@@ -273,65 +275,75 @@ export class TaxDatavGsqyComponent implements OnInit, AfterViewInit {
   /**
    * 添加当前市边界
    */
-  addCityBoundary() {
-    const $stream1 = this.http.get('assets/data/yt/SJ_Polygon.json');
-    $stream1.subscribe(resp => {
-      if (!this.map.getSource('current_city_line')) {
-        this.map.addSource('current_city_line', {
-          type: 'geojson',
-          data: resp as any
-        });
-      }
-      if (!this.map.getLayer('current_city_line')) {
-        (this.map as any).addLayer({
-          "id": "current_city_line",
-          "type": "line",
-          "source": "current_city_line",
-          "minzoom": 3,
-          "maxzoom": 13,
-          "layout": {
-            "line-join": "round",
-            "line-cap": "round",
-            "visibility": "visible"
-          },
-          "paint": {
-            "line-dasharray": {
-              "base": 1,
-              "stops": [
-                [6, [2, 0]],
-                [8, [2, 2, 6, 2]]
-              ]
-            },
-            "line-width": {
-              "base": 1,
-              "stops": [
-                [7, 2],
-                [14, 2.8]
-              ]
-            },
-            "line-color": "rgb(193,148,94)"
-          }
-        });
-      }
+  // addCityBoundary() {
+  //   const $stream1 = this.http.get('assets/data/yt/SJ_Polygon.json');
+  //   $stream1.subscribe(resp => {
+  //     if (!this.map.getSource('current_city_line')) {
+  //       this.map.addSource('current_city_line', {
+  //         type: 'geojson',
+  //         data: resp as any
+  //       });
+  //     }
+  //     if (!this.map.getLayer('current_city_line')) {
+  //       (this.map as any).addLayer({
+  //         "id": "current_city_line",
+  //         "type": "line",
+  //         "source": "current_city_line",
+  //         "minzoom": 3,
+  //         "maxzoom": 13,
+  //         "layout": {
+  //           "line-join": "round",
+  //           "line-cap": "round",
+  //           "visibility": "visible"
+  //         },
+  //         "paint": {
+  //           "line-dasharray": {
+  //             "base": 1,
+  //             "stops": [
+  //               [6, [2, 0]],
+  //               [8, [2, 2, 6, 2]]
+  //             ]
+  //           },
+  //           "line-width": {
+  //             "base": 1,
+  //             "stops": [
+  //               [7, 2],
+  //               [14, 2.8]
+  //             ]
+  //           },
+  //           "line-color": "rgb(193,148,94)"
+  //         }
+  //       });
+  //     }
 
-    });
-  }
+  //   });
+  // }
 
   /**
    * 初始化规模以上企业数据
    */
   initGsqy() {
+    // my test
+    /*let year = 2020;
+    let startMonth = 1;
+    let endMonth = 11;
+    let budgetValue = [4];
+    let value = 500;
+    let budgetValue0 = budgetValue.toLocaleString();
+    this.gsqyUrl = `http://140.68.16.96:10920/api/analysis/taxdot`;year, startMonth, endMonth, budgetValue0, value*/
 
     this.http.post(this.gsqyUrl, {}).subscribe(resp => {
-      // console.table(resp.rows.splice(0, 10));
+      console.log("resp.http", resp.http);
+      //console.table(resp.rows.splice(0, 10));
       const gsqyData: gsqyItem[] = resp.rows;
-      this.gsqyData = gsqyData.sort(order('SE_HJ')).splice(0, 20);
+      this.gsqyData = gsqyData.sort(order('SE_HJ'));
+      this.gsqyTop20Data = [...this.gsqyData].splice(0, 20);
       // 计算总数及比例
       this.gsqyCount = gsqyData.length;
-      this.gsqyCount_BL = 2.3;
+      this.gsqyCount_BL = 1.54;
       this.gsqyTaxValue = gsqyData.map(i => i.SE_HJ).reduce((x, y) => x + y);
       const totalTaxValue = this.cacheSrv.get('totalTax', { mode: 'none' });
-      this.gsqyTaxValue_BL = Math.floor(this.gsqyTaxValue / totalTaxValue.SE_HJ_BQ * 10000) / 100
+      this.gsqyTaxValue_BL = Math.floor(this.gsqyTaxValue / totalTaxValue.SE_HJ_LJ_BQ * 10000) / 100
 
 
       //#region 计算规上企业纳税规模
@@ -382,14 +394,14 @@ export class TaxDatavGsqyComponent implements OnInit, AfterViewInit {
       //#region 计算规上企业行业分类
 
       gsqyData.forEach(i => {
-        const HY_MC = i.HY_MC.trim();
-        const hyExisted = Object.keys(this.gsqyHyObj).includes(HY_MC);
+        const MLMC = i.MLMC ? i.MLMC.trim() : '税务管理特定行业';
+        const hyExisted = Object.keys(this.gsqyHyObj).includes(MLMC);
         if (hyExisted) {
-          this.gsqyHyObj[HY_MC].items.push(i.SE_HJ);
-          this.gsqyHyObj[HY_MC].total = this.gsqyHyObj[HY_MC].total + i.SE_HJ;
+          this.gsqyHyObj[MLMC].items.push(i.SE_HJ);
+          this.gsqyHyObj[MLMC].total = this.gsqyHyObj[MLMC].total + i.SE_HJ;
 
         } else {
-          this.gsqyHyObj[HY_MC] = {
+          this.gsqyHyObj[MLMC] = {
             total: i.SE_HJ,
             items: [i.SE_HJ]
           };
@@ -407,11 +419,59 @@ export class TaxDatavGsqyComponent implements OnInit, AfterViewInit {
 
       }
 
-      const gsqyHySeriesData = Object.values(newHyObj).splice(0, 10).map(i => {
-        return Math.floor((i as any).total * 100) / 100
-      });
-      const gsqyHyAxisData = Object.keys(newHyObj).splice(0, 10);
-      this.initGsqyHyChart(gsqyHySeriesData, gsqyHyAxisData);
+      const gsqyHyss = [
+        {
+          "SE_HJ": 1346280.70,
+          "mlmc": "制造业"
+        },
+        {
+          "SE_HJ": 130580.58,
+          "mlmc": "采矿业"
+        },
+        {
+          "SE_HJ": 70639.57,
+          "mlmc": "电力、热力、燃气及水生产和供应业"
+        },
+        {
+          "SE_HJ": 6464.05,
+          "mlmc": "租赁和商务服务业"
+        },
+        {
+          "SE_HJ": 2424.87,
+          "mlmc": "批发和零售业"
+        },
+        {
+          "SE_HJ": 2354.89,
+          "mlmc": "建筑业"
+        },
+        {
+          "SE_HJ": 1497.05,
+          "mlmc": "农、林、牧、渔业"
+        },
+        {
+          "SE_HJ": 922.91,
+          "mlmc": "水利、环境和公共设施管理业"
+        },
+        {
+          "SE_HJ": 338.53,
+          "mlmc": "科学研究和技术服务业"
+        },
+        {
+          "SE_HJ": 188.43,
+          "mlmc": "居民服务、修理和其他服务业"
+        },
+        {
+          "SE_HJ": 48.72,
+          "mlmc": "交通运输、仓储和邮政业"
+        }
+      ];
+      const gsqyHySeriesData = gsqyHyss.map(i => i.SE_HJ);
+      const gsqyHyAxisData = gsqyHyss.map(i => i.mlmc);
+      // const gsqyHySeriesData = Object.values(newHyObj).splice(0, 10).map(i => {
+      //   return Math.floor((i as any).total * 100) / 100
+      // });
+      // const gsqyHyAxisData = Object.keys(newHyObj).splice(0, 10);
+      this.initGsqyHyChart(gsqyHySeriesData.splice(0, 10), gsqyHyAxisData.splice(0, 10));
 
       //#endregion
 
@@ -434,6 +494,8 @@ export class TaxDatavGsqyComponent implements OnInit, AfterViewInit {
         }
       });
       // 按总额排序
+      console.log("gsqySwjgObj");
+      console.log(this.gsqySwjgObj);
       const swjg_values = Object.values(this.gsqySwjgObj).sort(order('total'));
       const newSwjgObj = {};
       for (let i = 0; i < swjg_values.length; i++) {
@@ -459,11 +521,19 @@ export class TaxDatavGsqyComponent implements OnInit, AfterViewInit {
         }
       });
 
-      // console.log(gsqySwjgSeriesData);
+      console.log("gsqySwjgSeriesData");
+      console.log(gsqySwjgSeriesData);
       this.initGsqySwjgChart(gsqySwjgSeriesData);
 
       //#endregion
 
+
+      //#region 规上企业散点图、热力图、聚合图等
+
+      const dotData = gsqyData.filter(i => i.lat !== null);
+      this.initDotLayer(dotData);
+
+      //#endregion
 
     });
   }
@@ -499,14 +569,15 @@ export class TaxDatavGsqyComponent implements OnInit, AfterViewInit {
             formatter: '{b}\n{c}户 ({d}%)',
             color: (params) => {
               // 自定义颜色
-              const colorList = COLORS.primary;
-              //  [
-              //   'rgb(33,107,198)',
-              //   'rgb(82,182,96)',
-              //   'rgb(70,162,136)',
-              //   'rgb(192,47,36)',
-              //   'rgb(240,157,40)'
-              // ];
+              const colorList =
+                // COLORS.primary;
+                [
+                  'rgb(33,107,198)',
+                  'rgb(82,182,96)',
+                  'rgb(70,162,136)',
+                  'rgb(192,47,36)',
+                  'rgb(240,157,40)'
+                ];
               // console.log(params, colorList[params.dataIndex]);
               return colorList[params.dataIndex]
             }
@@ -515,14 +586,15 @@ export class TaxDatavGsqyComponent implements OnInit, AfterViewInit {
             normal: {
               color: (params) => {
                 // 自定义颜色
-                const colorList = COLORS.primary;
-                // [
-                //   'rgb(33,107,198)',
-                //   'rgb(82,182,96)',
-                //   'rgb(70,162,136)',
-                //   'rgb(192,47,36)',
-                //   'rgb(240,157,40)'
-                // ];
+                const colorList =
+                  //  COLORS.primary;
+                  [
+                    'rgb(33,107,198)',
+                    'rgb(82,182,96)',
+                    'rgb(70,162,136)',
+                    'rgb(192,47,36)',
+                    'rgb(240,157,40)'
+                  ];
                 // console.log(params, colorList[params.dataIndex]);
                 return colorList[params.dataIndex]
               }
@@ -609,12 +681,13 @@ export class TaxDatavGsqyComponent implements OnInit, AfterViewInit {
             normal: {
               color(params) {
                 // 自定义颜色
-                const colorList = COLORS.primary;
-                //  [
+                const colorList =
+                  COLORS.primary;
+                // [
                 //   'rgb(33,107,198)', 'rgb(57,153,219)', 'rgb(82,182,96)'
                 //   , 'rgb(92,206,115)', 'rgb(70,162,136)', 'rgb(86,201,171)', 'rgb(192,47,36)', 'rgb(228,75,57)'
                 //   , 'rgb(240,157,40)', 'rgb(217,178,35)'
-                // ].reverse();
+                // ];
                 return colorList[params.dataIndex]
               }
             }
@@ -653,7 +726,7 @@ export class TaxDatavGsqyComponent implements OnInit, AfterViewInit {
             normal: {
               color(params) {
                 // 自定义颜色
-                const colorList = COLORS.info;
+                const colorList = COLORS.baronRedBlue;
                 // [
                 //   'rgb(33,107,198)', 'rgb(57,153,219)', 'rgb(82,182,96)'
                 //   , 'rgb(92,206,115)', 'rgb(70,162,136)', 'rgb(86,201,171)', 'rgb(192,47,36)', 'rgb(228,75,57)'
@@ -691,28 +764,28 @@ export class TaxDatavGsqyComponent implements OnInit, AfterViewInit {
    * 查询数据
    */
   getData() {
-    this.count = 0;
-    this.totalValue = 0;
-    this.tbzjValue = 0;
-    this.tbzjf = '';
-    let sntqValue = 0;
-    this.loadSrv.open({ text: '正在处理……' });
-    this.http.get(this.url, this.getCondition()).subscribe(resp => {
+    // this.count = 0;
+    // this.totalValue = 0;
+    // this.tbzjValue = 0;
+    // this.tbzjf = '';
+    // let sntqValue = 0;
+    // this.loadSrv.open({ text: '正在处理……' });
+    // this.http.get(this.url, this.getCondition()).subscribe(resp => {
 
-      this.loadSrv.close();
-      this.count = resp.data.length;
-      resp.data.forEach(i => {
-        this.totalValue += i.BNDSR;
-        sntqValue += i.SNTQ;
-      });
-      this.tbzjValue = this.totalValue - sntqValue;
-      this.tbzjf = `${(Math.floor(this.tbzjValue / sntqValue * 10000) / 100).toFixed(2)}%`;
-      this.resData = [...resp.data];
+    //   this.loadSrv.close();
+    // this.count = resp.data.length;
+    // resp.data.forEach(i => {
+    //   this.totalValue += i.BNDSR;
+    //   sntqValue += i.SNTQ;
+    // });
+    // this.tbzjValue = this.totalValue - sntqValue;
+    // this.tbzjf = `${(Math.floor(this.tbzjValue / sntqValue * 10000) / 100).toFixed(2)}%`;
+    // this.resData = [...resp.data];
 
-      this.initDotLayer(resp.data);
-      this.cdr.detectChanges();
+    // this.initDotLayer(resp.data);
+    // this.cdr.detectChanges();
 
-    });
+    // });
   }
 
   /**
@@ -747,14 +820,14 @@ export class TaxDatavGsqyComponent implements OnInit, AfterViewInit {
    */
   initDotLayer(data) {
 
-    const values = data.map(i => i.BNDSR);
+    const values = data.map(i => i.SE_HJ);
     const min = Math.min(...values);
     const max = Math.max(...values);
     // 构造点集合
     const features = data.map((i, index) => {
       return Point(i.lat, i.lng, {
         nsrmc: i.NSRMC,
-        value: i.BNDSR
+        value: i.SE_HJ
       })
     });
     const fc = {
@@ -873,7 +946,7 @@ export class TaxDatavGsqyComponent implements OnInit, AfterViewInit {
             ['linear'],
             ['zoom'],
             7,
-            6,
+            12,
             14,
             30
           ],
@@ -1117,6 +1190,10 @@ export class TaxDatavGsqyComponent implements OnInit, AfterViewInit {
       '" fill="' + color + '" />'
     ].join(' ');
   }
+  /**
+   * 切换专题图层
+   * @param e 
+   */
   switchLayer(e) {
     switch (e) {
       case 'heat':
@@ -1154,6 +1231,19 @@ export class TaxDatavGsqyComponent implements OnInit, AfterViewInit {
       default:
         break;
     }
+  }
+
+  itemClick(e: gsqyItem) {
+    const targt: gsqyItem = this.gsqyData.find(i => i.NSRMC.trim() === e.NSRMC.trim());
+    setTimeout(() => {
+      this.map.flyTo({
+        center: [targt.lng, targt.lat],
+        zoom: 16,
+        bearing: MAPBOX_POS.bearing,
+        pitch: 60,
+        speed: 0.8
+      });
+    });
   }
 }
 

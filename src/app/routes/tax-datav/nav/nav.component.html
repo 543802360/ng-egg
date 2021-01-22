@@ -2,17 +2,51 @@
     <div class="child-big-box">
         <div class="wrapper">
 
-            <button style="float:left;margin:10px;z-index:999" title="专题选择" nzGhost nz-button nzType="primary"
-                nzShape="circle" (click)="taxSubjectVisible=true"> <i nz-icon nzType="appstore" nzTheme="outline"></i>
-            </button>
             <div class="big-box-top">
                 <div class="big_box_top_title">
+                    <div class="top_left_menu">
+                        <div nz-row style="width: 100%;height:100%">
+                            <div nz-col nzSpan="6" style="height:100%">
+                                <a class="nav-menu-item" id="1" (click)="nav('1')">首页</a>
+                            </div>
+                            <div nz-col nzSpan="6" style="height:100%">
+                                <a class="nav-menu-item" id="9" (click)="nav('9')">税源<br>结构</a>
+                            </div>
+
+                            <div nz-col nzSpan="6" style="height:100%">
+                                <a class="nav-menu-item" id="6" (click)="nav('6')">集团<br>企业</a>
+                            </div>
+                            <div nz-col nzSpan="6" style="height:100%">
+                                <a class="nav-menu-item" id="5" (click)="nav('5')">亩均<br>税收</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="top_right_menu">
+                        <div nz-row style="width: 100%;height:100%">
+
+                            <div nz-col nzSpan="6" style="height:100%">
+                                <a class="nav-menu-item" id="7" (click)="nav('7')">独瞪<br>企业</a>
+                            </div>
+                            <div nz-col nzSpan="6" style="height:100%">
+
+                                <a class="nav-menu-item" id="8" (click)="nav('8')">高新<br>技术</a>
+                            </div>
+                            <div nz-col nzSpan="6" style="height:100%">
+                                <a class="nav-menu-item" id="11" (click)="nav('11')">规上<br>工业</a>
+                            </div>
+                            <div nz-col nzSpan="6" style="height:100%">
+                                <!--<a class="nav-menu-item" id="10" (click)="nav('10')">房<br>地产</a>-->
+                                <a class="nav-menu-item" id="10" href="http://140.68.16.18/noPasswordLogin">房<br>地产</a>
+                            </div>
+                        </div>
+                    </div>
                     <!-- <nz-button-group class="top_nav_menu">
-              <button nz-button [nzGhost]="true" (click)="nav('1')" nzType="primary">财政运行</button>
-              <button nz-button [nzGhost]="true" (click)="nav('2')" nzType="primary">集团企业</button>
-              <button nz-button [nzGhost]="true" (click)="nav('3')" nzType="primary">园区经济</button>
-            </nz-button-group> -->
-                    <span class="top_title">{{taxDataVSrv.title}}</span>
+                        <button nz-button [nzGhost]="true" (click)="nav('1')" nzType="primary">税收区域分布图</button>
+                        <button nz-button [nzGhost]="true" (click)="nav('2')" nzType="primary">规上企业分布图</button>
+                        <button nz-button [nzGhost]="true" (click)="nav('3')" nzType="primary">百万企业分布图</button>
+                    </nz-button-group> -->
+                    <span class="top_title"><a
+                            href="http://76.68.16.5:7038/abi522/ebibase/showcoolrpt.do?calcnow=true&resid=EANA$2$4$1$b151647e771949d4a7dfcc9e7cd03fd7$d3794b858c4e4b59a935e0192bd09c2f&id=admin&pw=admin">{{taxDataVSrv.title}}</a></span>
                     <span class="top_time currentTime"></span>
                 </div>
             </div>
@@ -24,11 +58,13 @@
     </div>
 </div>
 
-<nz-modal [nzWidth]="468" [(nzVisible)]="taxSubjectVisible" nzTitle="税收专题选择" (nzOnCancel)="dlgCancel()"
+<!-- <nz-modal [nzWidth]="468" [(nzVisible)]="taxSubjectVisible" nzTitle="税收专题选择" (nzOnCancel)="dlgCancel()"
     (nzOnOk)="dlgOk()">
     请选择税收专题：<nz-select style="width:288px" [(ngModel)]="selectSubject">
-        <nz-option nzValue="1" nzLabel="烟台市税收一张图"></nz-option>
-        <nz-option nzValue="2" nzLabel="规上企业分布"></nz-option>
-        <nz-option nzValue="3" nzLabel="税收排名"></nz-option>
+        <nz-option nzValue="1" nzLabel="税收区域分布图"></nz-option>
+        <nz-option nzValue="2" nzLabel="规上企业分布图"></nz-option>
+        <nz-option nzValue="3" nzLabel="百万企业分布图"></nz-option>
+        <nz-option nzValue="5" nzLabel="亩均税收"></nz-option>
+        <nz-option nzValue="6" nzLabel="集团企业"></nz-option>
     </nz-select>
-</nz-modal>
+</nz-modal> -->

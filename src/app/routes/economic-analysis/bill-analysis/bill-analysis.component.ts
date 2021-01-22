@@ -108,9 +108,9 @@ export class EconomicAnalysisBillAnalysisComponent implements OnInit, AfterViewI
   ngOnInit() { }
 
   ngAfterViewInit() {
-    setTimeout(() => {
-      this.getData();
-    });
+    // setTimeout(() => {
+    //   this.getData();
+    // });
   }
 
 

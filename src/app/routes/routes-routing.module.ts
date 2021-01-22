@@ -16,18 +16,17 @@ import { LayoutFullScreenComponent } from '../layout/fullscreen/fullscreen.compo
 import { LayoutPassportComponent } from '../layout/passport/passport.component';
 // passport pages
 import { UserLoginComponent } from './passport/login/login.component';
-import { UserRegisterComponent } from './passport/register/register.component';
-import { UserRegisterResultComponent } from './passport/register-result/register-result.component';
 // single pages
 import { CallbackComponent } from './callback/callback.component';
 import { UserLockComponent } from './passport/lock/lock.component';
 import { ACLGuard } from '@delon/acl';
+import { DpLoginComponent } from './passport/dp_login/login.component';
 
 const routes: Routes = [
   {
     path: '',
     component: LayoutDefaultComponent,
-    // canActivate: [JWTGuard],
+    canActivate: [JWTGuard],
     children: [
       {
         path: '',
@@ -49,25 +48,27 @@ const routes: Routes = [
         path: 'big-enterprise',
         loadChildren: () => import('./big-enterprise/big-enterprise.module').then(m => m.BigEnterpriseModule)
       },
-      // 自动化分析报表模块
+      // 集团企业模块
       {
-        path: 'reports',
-        loadChildren: () => import('./reports/reports.module').then(m => m.ReportsModule)
+        path: 'enterprise-group',
+        loadChildren: () => import('./enterprise-group/enterprise-group.module').then(m => m.EnterpriseGroupModule)
+      },
+      // 亩均税收
+      {
+        path: 'avg-tax',
+        loadChildren: () => import('./avg-tax/avg-tax.module').then(m => m.AvgTaxModule)
+      },
+      // 专题分析
+      {
+        path: 'thematic-ana',
+        loadChildren: () => import('./thematic-analysis/thematic-analysis.module').then(m => m.ThematicAnalysisModule)
+
       },
       // 异常处理模块
       {
         path: 'exception',
         loadChildren: () => import('./exception/exception.module').then(m => m.ExceptionModule)
       },
-      // 楼宇经济子模块
-      {
-        path: 'building',
-        loadChildren: () => import('./building/building.module').then(m => m.BuildingModule)
-      },
-      // {
-      //   path: 'permtax',
-      //   loadChildren: () => import('./permu-tax/permu-tax.module').then(m => m.PermuTaxModule)
-      // },
       // 系统设置子模块
       {
         path: 'sys',
@@ -104,8 +105,7 @@ const routes: Routes = [
     component: LayoutPassportComponent,
     children: [
       { path: 'login', component: UserLoginComponent, data: { title: '登录' } },
-      { path: 'register', component: UserRegisterComponent, data: { title: '注册' } },
-      { path: 'register-result', component: UserRegisterResultComponent, data: { title: '注册结果' } },
+      { path: 'dplogin', component: DpLoginComponent, data: { title: '大屏登录' } },
       { path: 'lock', component: UserLockComponent, data: { title: '锁屏' } },
     ]
   },

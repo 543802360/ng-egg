@@ -1,0 +1,54 @@
+<nz-card style="margin-top: 10px;" [nzExtra]="extraTpl">
+    <ng-template #extraTpl>
+        <app-bdg-select #bdgSelect></app-bdg-select>
+        <span class="header-label"> 所属行业:</span>
+        <nz-tree-select #hyTreeSelect class="hymc-tree-select" style="width: 233px;margin: 0 3px;"
+            [(ngModel)]="selectedHymc" [nzNodes]="hymcNodes" nzAllowClear="true" nzMultiple="false"
+            [nzPlaceHolder]="'请选择行业名称'">
+        </nz-tree-select>
+        <span class="header-label">入库日期：</span>
+        <app-month-range #monthRange style="margin-right: 5px;"></app-month-range>
+        <button nz-button (click)="getData()" [disabled]="http.loading" nzType="primary"
+            style="margin-left: 6px;">查询</button>
+        <!-- <button nz-button (click)="export()" [disabled]="http.loading" nzType="primary"
+            style="margin-left: 6px;">导出</button> -->
+        <!-- <button nz-button [disabled]="http.loading" nzType="primary" style="margin-left: 6px;">添加</button> -->
+    </ng-template>
+    <div nz-row nzGutter="8" style="height: 100%;">
+        <div nz-col nzSpan="11" style="height: 100%;">
+            <st #st [data]="ssfjcData" header="区域亩均税收分布（数据为2020年1-9月份）" [columns]="columns" size="small" bordered="true"
+                [page]="{show:false}" [loading]="http.loading" (change)="stChange($event)" [scroll]="{y:'800px'}"
+                [expand]="expand" expandRowByClick expandAccordion>
+                <ng-template #expand let-item let-index='index' let-column="column">
+                    <st #expandSt [data]="expandStData" [columns]="expandColumns" [page]="page" pi="1" ps="10"
+                        bordered="true" size="middle" (change)="stChange($event)" [scroll]="{x:'1000px',y:'260px'}">
+                    </st>
+                </ng-template>
+
+                <ng-template st-row='order-tpl' let-item let-index="index">
+                    <nz-badge nzCount="{{index + 1}}"></nz-badge>
+                </ng-template>
+                <!-- <ng-template #footerTpl let-s>
+                    <ng-container>
+                        <div>
+                            
+                        </div>
+                    </ng-container>
+                </ng-template> -->
+            </st>
+        </div>
+        <div nz-col nzSpan="13" style="height: 100%;">
+            <div style="height: 100%;min-height: 660px; width: 100%;margin-top: 10px;">
+                <mgl-map [style]="style" [trackResize]="true" [zoom]="[8]"
+                    [center]="[120.65733652344079, 37.000723396581805]" (load)="mapboxLoad($event)">
+                    <mgl-control mglNavigation></mgl-control>
+                    <mgl-control mglFullscreen></mgl-control>
+                </mgl-map>
+            </div>
+        </div>
+    </div>
+    <div nz-row nzGutter="8" style="height: 600px;">
+        <div leaflet class="map-container" [leafletOptions]="mapOptions" (loaded)="leafletMapload($event)">
+        </div>
+    </div>
+</nz-card>

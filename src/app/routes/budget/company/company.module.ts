@@ -20,7 +20,7 @@ import { CompanyNewEditComponent } from './new/edit/edit.component';
 import { CompanyNewViewComponent } from './new/view/view.component';
 import { CompanyDjnsrxxAddComponent } from './djnsrxx/add/add.component';
 
-
+import { NzTreeSelectModule } from "ng-zorro-antd/tree-select"
 const COMPONENTS = [
   CompanyListComponent,
   CompanyPositionComponent,
@@ -43,6 +43,7 @@ const COMPONENTS_NOROUNT = [
 @NgModule({
   imports: [
     SharedModule,
+    NzTreeSelectModule,
     CompanyRoutingModule,
     NgxMapboxGLModule,
     NgLeafletModule,

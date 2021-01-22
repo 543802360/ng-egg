@@ -16,29 +16,39 @@
   </ng-template>
   <div nz-row nzGutter="8" style="height: 100%;">
     <div nz-col nzSpan="10" style="height: 100%;">
-      <st #st [data]="townData" header="镇街收入（单位：万元）" [columns]="columns" size="small" bordered="true"
-        [page]="{show:false}" [loading]="http.loading">
+      <st #st [data]="ssfjcData" header="区市收入（单位：万元）" [columns]="columns" size="small" bordered="true"
+        [page]="{show:false}" [loading]="http.loading" [footer]="footerTpl">
         <ng-template st-row="tbzjz-tpl" let-item let-index="index">
-          <nz-tag nzColor="{{item.tbzjz>0?'green':'red'}}">
+          <nz-tag nzColor="{{item.SE_HJ_LJ_BQ_ZJE>0?'green':'red'}}">
             <!-- <span> {{item.tbzjz|number}}（{{item.tbzjf}}）</span> -->
-            <span *ngIf="item.tbzjz>0" nz-tooltip [nzTooltipOverlayStyle]="tooltipStyle"
-              [nzTooltipTitle]="'同比增长：' + item.tbzjz+' 万元;&nbsp;' +'增幅：'+item.tbzjf">
-              {{item.tbzjz|number}}（{{item.tbzjf}}） </span>
-            <span *ngIf="item.tbzjz<0" nz-tooltip [nzTooltipOverlayStyle]="tooltipStyle" [nzTooltipTitle]="'同比下降：' +
-              item.tbzjz+' 万元;&nbsp;' +'降幅：'+item.tbzjf">
-              {{item.tbzjz|number}}（{{item.tbzjf}}）</span>
+            <span *ngIf="item.SE_HJ_LJ_BQ_ZJE>0" nz-tooltip [nzTooltipOverlayStyle]="tooltipStyle"
+              [nzTooltipTitle]="'同比增长：' + item.SE_HJ_LJ_BQ_ZJE+' 万元;&nbsp;' +'增幅：'+item.SE_HJ_LJ_BQ_ZJBL">
+              {{item.tbzjz|number}}（{{item.SE_HJ_LJ_BQ_ZJBL}}） </span>
+            <span *ngIf="item.SE_HJ_LJ_BQ_ZJE<0" nz-tooltip [nzTooltipOverlayStyle]="tooltipStyle" [nzTooltipTitle]="'同比下降：' +
+              item.SE_HJ_LJ_BQ_ZJE+' 万元;&nbsp;' +'降幅：'+item.SE_HJ_LJ_BQ_ZJBL">
+              {{item.SE_HJ_LJ_BQ_ZJE|number}}（{{item.SE_HJ_LJ_BQ_ZJBL}}）</span>
+
           </nz-tag>
         </ng-template>
+
         <ng-template st-row='order-tpl' let-item let-index="index">
           <nz-badge nzCount="{{index + 1}}"></nz-badge>
         </ng-template>
+        <ng-template #footerTpl let-s>
+          <ng-container>
+            <div>
+              合计： {{ total | _currency }}
+            </div>
+          </ng-container>
+        </ng-template>
       </st>
-      <g2-bar style="padding: 10px;" *ngIf="townG2BarData&&townG2BarData.length" height="300" [data]="townG2BarData">
-      </g2-bar>
+      <!-- <g2-bar style="padding: 10px;" *ngIf="townG2BarData&&townG2BarData.length" height="300" [data]="townG2BarData">
+      </g2-bar> -->
     </div>
     <div nz-col nzSpan="14" style="height: 100%;">
       <div style="height: 100%;min-height: 660px; width: 100%;margin-top: 10px;">
-        <mgl-map [style]="style" [trackResize]="true" [zoom]="[8]" [center]="[120.3,36.45]" (load)="mapboxLoad($event)">
+        <mgl-map [style]="style" [trackResize]="true" [zoom]="[8]" [center]="[120.65733652344079, 37.000723396581805]"
+          (load)="mapboxLoad($event)">
           <mgl-control mglNavigation></mgl-control>
           <mgl-control mglFullscreen></mgl-control>
         </mgl-map>

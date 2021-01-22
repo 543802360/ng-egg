@@ -44,7 +44,7 @@
   <div nz-row nzGutter="4" style="height: 100%;">
     <!-- 表格数据 -->
 
-    <div nz-col nzSpan="14" style="height: 100%;">
+    <div nz-col nzSpan="12" style="height: 100%;">
       <st #st style="width: 100%; margin-top: 10px;" header="税收排名（单位：万元）" [data]="data" [columns]="columns"
         [page]="page" [total]="total" [loading]="http.loading" [ps]="10" [pi]="1" bordered="true" size="middle"
         [scroll]="{x:'1000px',y:'576px'}" (change)="change($event)">
@@ -64,13 +64,13 @@
         </ng-template>
 
         <ng-template st-row='order-tpl' let-item let-index="index">
-          <nz-badge nzCount="{{(this.st.pi - 1) * this.st.ps + index + 1}}"></nz-badge>
+          <nz-badge nzOverflowCount='2000' nzCount="{{(this.st.pi - 1) * this.st.ps + index + 1}}"></nz-badge>
         </ng-template>
       </st>
     </div>
     <!-- 地图 -->
-    <div nz-col nzSpan="10" style="height: 100%">
-      <div leaflet class="map-container" (loaded)="mapload($event)"></div>
+    <div nz-col nzSpan="12" style="height: 100%">
+      <div leaflet class="map-container" [leafletOptions]="mapOptions" (loaded)="mapload($event)"></div>
     </div>
 
   </div>

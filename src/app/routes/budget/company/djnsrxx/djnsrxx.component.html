@@ -1,64 +1,89 @@
 <nz-card style="margin-top: 10px;">
+  <!-- 条件选择区 -->
   <form style="padding-bottom: 10px;" nz-form [nzLayout]="'inline'" class="search__form">
     <div nz-row style="width: 100%;" [nzGutter]="{ xs: 8, sm: 8, md: 8, lg: 24, xl: 48, xxl: 48 }">
-      <div nz-col nzMd="8" nzSm="24">
-        <nz-form-item>
-          <nz-form-label nzFor="NSRMC">纳税人名称</nz-form-label>
-          <nz-form-control>
-            <!-- <app-nsrmc-suggestion></app-nsrmc-suggestion> -->
-            <input nz-input [(ngModel)]="params.NSRMC" (ngModelChange)="searchAutoChangeS.next({'NSRMC':$event})"
-              [nzAutocomplete]="nsrmcAuto" name="NSRMC" placeholder="请输入" id="NSRMC" />
-          </nz-form-control>
-        </nz-form-item>
-      </div>
-      <div nz-col nzMd="8" nzSm="24">
-        <nz-form-item>
-          <nz-form-label nzFor="NSRSBH">纳税人识别号</nz-form-label>
-          <nz-form-control>
-            <input nz-input [(ngModel)]="params.NSRSBH" (ngModelChange)="searchAutoChangeS.next({'NSRSBH':$event})"
-              [nzAutocomplete]="nsrsbhAuto" name="NSRSBH" placeholder="请输入" id="NSRSBH" />
-          </nz-form-control>
-        </nz-form-item>
-      </div>
-      <!-- <div nz-col nzMd="8" nzSm="24" *ngIf="expandForm">
-        <nz-form-item>
-          <nz-form-label nzFor="SHXYDM">社会信用代码</nz-form-label>
-          <nz-form-control>
-            <input nz-input [(ngModel)]="q.SHXYDM" (ngModelChange)="searchAutoChangeS.next({'SHXYDM':$event})"
-              [nzAutocomplete]="nsrsbhAuto" name="SHXYDM" placeholder="请输入" id="SHXYDM" />
-          </nz-form-control>
-        </nz-form-item>
-      </div> -->
-      <div nz-col [nzSpan]="expandForm ? 24 : 8" [class.text-right]="expandForm">
-        <button nz-button type="submit" (click)="st.load(1,params)" [nzType]="'primary'">查询</button>
-        <button nz-button type="reset" (click)="reset()" class="mx-sm">重置</button>
-        <button nz-button acl [acl-ability]="'company:djnsrxx:export'" type="button"
-          (click)="st.export(true, { filename: '登记纳税人信息.xlsx', sheetname: 'sheet1' })" nzType="primary"
-          class="mx-sm">导出</button>
-        <!-- nsr/export/all -->
-        <!-- <a (click)="expandForm = !expandForm">
-          {{ expandForm ? '收起' : '展开' }}
-          <i nz-icon [nzType]="expandForm ? 'up' : 'down'"></i>
-        </a> -->
+      <div nz-col nzMd="24" nzSm="24">
+        <span style="margin: 0 5px;font-weight: bolder;">税务机关:</span>
+
+        <nz-tree-select #treeSelect class="hymc-tree-select" style="width: 278px;margin: 0 3px;"
+          [(ngModel)]="selectedSwjg" (ngModelChange)="onSwjgChange($event)" [nzNodes]="swjgNodes" nzAllowClear="true"
+          nzMultiple="false" [nzPlaceHolder]="'请选择税务机关'" [ngModelOptions]="{standalone: true}">
+        </nz-tree-select>
+        <span style="margin: 0 5px;font-weight: bolder;">登记注册类型:</span>
+        <nz-select style="width: 189px;" [(ngModel)]="selectDjzclx" (ngModelChange)="onDjzclxChange($event)"
+          [ngModelOptions]="{standalone: true}" nzAllowClear="true">
+          <nz-option *ngFor="let item of djzclxNodes" [nzValue]="item.value" [nzLabel]="item.label"></nz-option>
+        </nz-select>
+        <span style="margin: 0 5px;font-weight: bolder;">登记日期:</span>
+
+        <nz-range-picker style="margin: 0 3px;" [(ngModel)]="selectRangeDate"
+          (ngModelChange)="onDateRangeChange($event)" [ngModelOptions]="{standalone: true}">
+        </nz-range-picker>
+
+        <button nz-button type="submit" (click)="st.load(1,params);scztSt.load(1, this.params)"
+          [nzType]="'primary'">查询</button>
+        <button acl [acl-ability]="'company:djnsrxx:exportAll'" nzType="primary" down-file file-name="新办登记纳税人信息.xlsx"
+          http-url="nsr/export/all" [http-data]="params" nz-button>导出</button>
       </div>
     </div>
-    <nz-autocomplete [nzDataSource]="nsrmcAutoDataSource" nzBackfill #nsrmcAuto>
-
-    </nz-autocomplete>
-    <nz-autocomplete [nzDataSource]="nsrsbhAutoDataSource" nzBackfill #nsrsbhAuto>
-
-    </nz-autocomplete>
-
   </form>
-  <div class="mb-md">
-    <button acl [acl-ability]="'company:djnsrxx:clear'" nzType="default" (click)="clear()" nz-button>清除选择</button>
-    <button acl [acl-ability]="'company:djnsrxx:batchadd'" nzType="primary" [disabled]="batchDisabled"
-      (click)="batchadd()" nz-button>批量确认</button>
-    <button acl [acl-ability]="'company:djnsrxx:exportAll'" nzType="primary" down-file file-name="登记纳税人信息.xlsx"
-      http-url="nsr/export/all" nz-button>全部导出</button>
+  <!-- 统计表格区 -->
+  <div nz-row [nzGutter]="{ xs: 8, sm: 8, md: 8, lg: 24, xl: 48, xxl: 48 }">
+    <div nz-col nzMd="6" nzSm="6">
+      <st #scztSt header='按市场主体类型统计(单位：户)' [footer]="footerTpl" [data]="scztUrl" [req]="companyReq" [res]="scztRes"
+        size="small" [bordered]="true" [scroll]="{y:'226px'}" [columns]="scztColumns" [pi]="1" [ps]="40" [page]="page"
+        (change)="stChange($event)" [loading]='http.loading'>
+
+        <ng-template #footerTpl let-s>
+          <ng-container>
+            <div>
+              合计： {{ total | number }} 户
+            </div>
+          </ng-container>
+        </ng-template>
+      </st>
+    </div>
+    <div nz-col nzMd="18" nzSm="18">
+      <st #st [data]="url" header='新增市场主体名录' [req]="companyReq" [res]="companyRes" size="small" [bordered]="true"
+        [scroll]="{x:'2400px',y:'226px'}" [columns]="columns" [pi]="1" [ps]="10" [total]="total" [page]="page"
+        (change)="stChange($event)" [loading]='http.loading'>
+      </st>
+    </div>
   </div>
-  <st #st [data]="url" [req]="companyReq" [res]="companyRes" size="small" [bordered]="true"
-    [scroll]="{x:'2000px',y:'576px'}" [columns]="columns" [pi]="1" [ps]="10" [total]="total" [page]="page"
-    (change)="stChange($event)">
-  </st>
+  <!--地图区域  -->
+
+  <nz-card class="enterprise-card" [nzExtra]="extraTemplate1">
+    <ng-template #extraTemplate1>
+      <span style="margin: 0 5px;font-weight: bolder;">登记注册类型:</span>
+      <nz-select style="width: 189px;" [(ngModel)]="selectDjzclx_map" (ngModelChange)="filterLayer($event)"
+        [ngModelOptions]="{standalone: true}" nzAllowClear="true">
+        <nz-option *ngFor="let item of djzclxNodes" [nzValue]="item.value" [nzLabel]="item.label"></nz-option>
+      </nz-select>
+      <!-- <span style="margin: 0 5px;font-weight: bolder;">登记日期:</span>
+
+      <nz-range-picker style="margin: 0 3px;" [(ngModel)]="selectRangeDate" (ngModelChange)="onDateRangeChange($event)"
+        [ngModelOptions]="{standalone: true}">
+      </nz-range-picker> -->
+
+      <!-- <button nz-button (click)="filterLayer()" [nzType]="'primary'">查询</button> -->
+    </ng-template>
+
+    <div nz-row style="height: 664px;" [nzGutter]="{ xs: 8, sm: 8, md: 8, lg: 24, xl: 48, xxl: 48 }">
+      <div nz-col nzMd="24" nzSm="24" style="height: 100%;">
+        <div style="height: 100%; width: 100%;margin-top: 10px;">
+          <nz-button-group nzSize="default" style="position: absolute; z-index: 9; top: 20px; left: 40px;">
+            <button nz-button (click)="switchLayer('heat')" nzDanger="true" nzGhost="true">热力图</button>
+            <button nz-button (click)="switchLayer('dot')" nzDanger="true" nzGhost="true">散点图</button>
+            <button nz-button (click)="switchLayer('cluster')" nzDanger="true" nzGhost="true">聚合图</button>
+          </nz-button-group>
+          <mgl-map [style]="style" [trackResize]="true" [zoom]="[8]" [center]="[120.65733652344079, 37.200723396581805]"
+            (load)="mapboxLoad($event)">
+            <mgl-control mglNavigation></mgl-control>
+            <mgl-control mglFullscreen></mgl-control>
+          </mgl-map>
+        </div>
+      </div>
+    </div>
+  </nz-card>
+
 </nz-card>

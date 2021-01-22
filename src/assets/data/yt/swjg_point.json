@@ -1,0 +1,17 @@
+{"type":"FeatureCollection", "features": [
+{"type":"Feature","geometry":{"type":"Point","coordinates":[120.7398058705445,36.89515721113645]},"properties":{"OBJECTID":1,"NAME":"莱阳市","SWJGJC":"莱阳市税务局","SWJGMC":"国家税务总局莱阳市税务局"}},
+{"type":"Feature","geometry":{"type":"Point","coordinates":[121.09985319646796,36.848767829172004]},"properties":{"OBJECTID":2,"NAME":"海阳市","SWJGJC":"海阳市税务局","SWJGMC":"国家税务总局海阳市税务局"}},
+{"type":"Feature","geometry":{"type":"Point","coordinates":[120.88878667936183,37.304549200085546]},"properties":{"OBJECTID":3,"NAME":"栖霞市","SWJGJC":"栖霞市税务局","SWJGMC":"国家税务总局栖霞市税务局"}},
+{"type":"Feature","geometry":{"type":"Point","coordinates":[119.97745646984026,37.18425077954987]},"properties":{"OBJECTID":4,"NAME":"莱州市","SWJGJC":"莱州市税务局","SWJGMC":"国家税务总局莱州市税务局"}},
+{"type":"Feature","geometry":{"type":"Point","coordinates":[120.3874227235799,37.337119986198445]},"properties":{"OBJECTID":5,"NAME":"招远市","SWJGJC":"招远市税务局","SWJGMC":"国家税务总局招远市税务局"}},
+{"type":"Feature","geometry":{"type":"Point","coordinates":[120.50353656356162,37.60642835538437]},"properties":{"OBJECTID":6,"NAME":"龙口市","SWJGJC":"龙口市税务局","SWJGMC":"国家税务总局龙口市税务局"}},
+{"type":"Feature","geometry":{"type":"Point","coordinates":[121.35241741673042,37.51491586387607]},"properties":{"OBJECTID":7,"NAME":"芝罘区","SWJGJC":"烟台市芝罘区税务局","SWJGMC":"国家税务总局烟台市芝罘区税务局"}},
+{"type":"Feature","geometry":{"type":"Point","coordinates":[121.21051279662834,37.4236513037647]},"properties":{"OBJECTID":8,"NAME":"福山区","SWJGJC":"烟台福山税务局","SWJGMC":"国家税务总局烟台市福山区税务局"}},
+{"type":"Feature","geometry":{"type":"Point","coordinates":[120.82563894278303,37.65387970178688]},"properties":{"OBJECTID":9,"NAME":"蓬莱市","SWJGJC":"蓬莱市税务局","SWJGMC":"国家税务总局蓬莱市税务局"}},
+{"type":"Feature","geometry":{"type":"Point","coordinates":[120.74287017731695,38.06835249876883]},"properties":{"OBJECTID":10,"NAME":"长岛县","SWJGJC":"长岛县税务局","SWJGMC":"国家税务总局长岛县税务局"}},
+{"type":"Feature","geometry":{"type":"Point","coordinates":[121.5579333100743,37.267146260391655]},"properties":{"OBJECTID":11,"NAME":"牟平区","SWJGJC":"烟台牟平税务局","SWJGMC":"国家税务总局烟台市牟平区税务局"}},
+{"type":"Feature","geometry":{"type":"Point","coordinates":[121.520842275051,37.42291648031136]},"properties":{"OBJECTID":12,"NAME":"高新区","SWJGJC":"烟台高新区税务局","SWJGMC":"国家税务总局烟台高新技术产业开发区税务局"}},
+{"type":"Feature","geometry":{"type":"Point","coordinates":[121.38923606572426,37.57416246787441]},"properties":{"OBJECTID":13,"NAME":"保税港区","SWJGJC":"烟台保税港区税务局","SWJGMC":"国家税务总局烟台保税港区税务局"}},
+{"type":"Feature","geometry":{"type":"Point","coordinates":[121.10451515784837,37.627304159759206]},"properties":{"OBJECTID":14,"NAME":"经济开发区","SWJGJC":"烟台经济开发区税务局","SWJGMC":"国家税务总局烟台经济技术开发区税务局"}},
+{"type":"Feature","geometry":{"type":"Point","coordinates":[121.42438435675274,37.39660635160192]},"properties":{"OBJECTID":15,"NAME":"莱山区","SWJGJC":"烟台市莱山区税务局","SWJGMC":"国家税务总局烟台市莱山区税务局"}}
+]}

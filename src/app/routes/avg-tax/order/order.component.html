@@ -1,0 +1,53 @@
+<nz-card style="margin-top: 10px;" [nzExtra]="extraTemplate1">
+    <ng-template #extraTemplate1>
+        <!-- <app-bdg-select #bdgSelect></app-bdg-select>
+        <app-hy-select (changed)="hyChange($event)" #hySelect></app-hy-select>
+        <span class="header-label"> 纳税额:</span>
+        <nz-select style="margin: 0 5px;width: 130px;" [(ngModel)]="selectedValue" nzPlaceHolder="请选择排名" nzAllowClear>
+            <nz-option nzLabel="亿元以上" [nzValue]="10000">
+            </nz-option>
+            <nz-option nzLabel="千万以上" [nzValue]="1000">
+            </nz-option>
+            <nz-option nzLabel="五百万以上" [nzValue]="500">
+            </nz-option>
+            <nz-option nzLabel="二百万以上" [nzValue]="200">
+            </nz-option>
+            <nz-option nzLabel="百万以上" [nzValue]="100">
+            </nz-option>
+            
+        </nz-select>
+
+        <app-month-range #monthRange style="margin-right: 5px;"></app-month-range>
+        <button nz-button (click)="getData()" nzType="primary" style="margin-left: 6px;">查询</button>
+        <button nz-button (click)="export()" nzType="primary" style="margin-left: 6px;">导出</button> -->
+
+    </ng-template>
+    <div nz-row nzGutter="8" style="height: calc(100%);">
+        <div nz-col nzSpan="6" style="height: 100%;">
+            <!-- <st #st [data]="ssfjcData" header="区域亩均税收分布（数据为2020年1-9月份）" [columns]="columns" size="small" bordered="true"
+                [page]="{show:false}" [loading]="http.loading">
+                <ng-template st-row='order-tpl' let-item let-index="index">
+                    <nz-badge nzCount="{{index + 1}}"></nz-badge>
+                </ng-template>
+                <ng-template #footerTpl let-s>
+                  
+                </ng-template>
+            </st> -->
+        </div>
+        <div nz-col nzSpan="18" style="height: 100%;">
+            <div style="height: 100%; width: 100%;margin-top: 10px;">
+                <nz-button-group nzSize="default" style="position: absolute; z-index: 9; top: 20px; left: 20px;">
+                    <button nz-button (click)="switchLayer('heat')" nzDanger="true" nzGhost="true">热力图</button>
+                    <button nz-button (click)="switchLayer('dot')" nzDanger="true" nzGhost="true">散点图</button>
+                    <button nz-button (click)="switchLayer('cluster')" nzDanger="true" nzGhost="true">聚合图</button>
+                </nz-button-group>
+                <!-- <nz-spin *ngIf="!map" nzSize="large" style=""></nz-spin> -->
+                <mgl-map [style]="style" [trackResize]="true" [zoom]="[8]"
+                    [center]="[120.65733652344079, 37.000723396581805]" (load)="mapboxLoad($event)">
+                    <mgl-control mglNavigation></mgl-control>
+                    <mgl-control mglFullscreen></mgl-control>
+                </mgl-map>
+            </div>
+        </div>
+    </div>
+</nz-card>

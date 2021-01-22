@@ -3,7 +3,8 @@
     .big-box {
         width: 100%;
         height: 100%;
-        background: url("../../../../assets/image/bg_moon_blue.jpg") no-repeat center;
+        // background: url("../../../../assets/image/bg_moon_blue.jpg") no-repeat center;
+        background-color: #111b30;
         /* background: #0a1631 url("../../../../../assets/imgs/tpl01/bg.png") 0 0 / 100% 100% no-repeat; */
         background-size: 100% 100%;
         min-width: 978px;
@@ -34,8 +35,9 @@
       }
       .big_box_top_title {
         margin: 0 auto;
-        width: 89.7%;
+        width: 55.6%;
         height: 100%;
+        // background-image: url("../../../../assets/image/bg_header_full.png") no-repeat center;
         background: url("../../../../assets/image/bg_header_full.png") no-repeat center;
         background-size: 100% 100%;
       }
@@ -71,7 +73,59 @@
         left: 7%;
         top: 39%;
       }
-     
+      .top_left_menu,.top_right_menu{
+        [nz-row] [nz-col]:hover{
+          background: url("../../../../assets/image/nav-bg-selected.png") no-repeat center;
+          background-position: center;
+          background-size: contain;
+        }
+      }
+      .top_left_menu{
+        [nz-row] [nz-col]{
+          a{
+            color: rgba(40,208,233, 0.9);
+            font-weight: bolder;
+          }
+          display: flex;
+          height: 100%;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          background: url("../../../../assets/image/nav-bg.png") no-repeat center;
+          background-position: center;
+          background-size: contain;
+        }
+        position: absolute;
+        left: 2%;
+        width: 30%;
+        top: -15%;
+        height: 120%;
+      }
+      .top_right_menu{
+        [nz-row] [nz-col]{
+          a{
+            color: rgba(40,208,233, 0.9);
+            font-weight: bolder;
+          }
+          display: flex;
+          height: 100%;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          background: url("../../../../assets/image/nav-bg.png") no-repeat center;
+          background-position: center;
+          background-size: contain;
+        }
+        position: absolute;
+        right: 2%;
+        width: 30%;
+        top: -15%;
+        height: 120%;
+      }
+      .nav-menu-item{
+        text-align: center;
+// rgb(40,208,233)
+      }
       .container {
         position: absolute;
           width: 100%;
@@ -79,50 +133,3 @@
           top: 6.9%;
       }
 }
-
-  /* layout */
-  /* .header {
-    position: relative;
-    height: 72px;
-    background: url("../../../../../assets/imgs/tpl01/header.png") 0 0 / 100% 100% no-repeat;
-    overflow: hidden;
-  }
-  
-  .header-title button.btn-pre-route {
-    position: absolute;
-    right: 48px;
-    top: 16px;
-  }
-  
-  .header-title button.btn-next-route {
-    position: absolute;
-    right: 8px;
-    top: 16px;
-  }
-  
-  .header-title button.btn-tax-summary {
-    position: absolute;
-    left: 8px;
-    top: 17px;
-  }
-  
-  .header-title button.btn-tax-td {
-    position: absolute;
-    left: 100px;
-    top: 17px;
-  }
-  
-  
-  
-  .header-title {
-    line-height: 64px;
-    text-align: center;
-    font-size: 32px;
-    font-weight: 400;
-    color: #fff;
-  } */
-  
-  
-  
-  
-  

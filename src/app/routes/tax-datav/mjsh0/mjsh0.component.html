@@ -1,0 +1,121 @@
+<div class="container">
+    <div nz-row class="fill-row" nzGutter="8">
+        <!-- 左--税种统计 -->
+        <div nz-col nzSpan="6">
+            <div class="tax-2">
+                <div class="panel-title">
+                    税务机关排名
+                </div>
+                <div class="panel-content">
+                    <div style="height:100%;width:100%;overflow:scroll" class="zsxm-table-wrapper">
+                        <div nz-row class="zsxm-row" nzGutter="8">
+                            <div nz-col nzSpan="3">
+                                排名
+                            </div>
+                            <div nz-col nzSpan="12">
+                                税务机关名称
+                            </div>
+                            <div nz-col nzSpan="9">
+                                亩均税收(万元/亩)
+                            </div>
+
+                        </div>
+                        <a pageScroll href="#scrollContent"></a>
+                        <div nz-row id="scrollContent" class="zsxm-row zsxm-item-row"
+                            *ngFor="let item of mjsh0Data;let i=index;" nzGutter="8">
+                            <div nz-col nzSpan="3">
+                                <nz-badge nzStandalone [nzStyle]="{ backgroundColor: 'rgb(33,107,198)' }"
+                                    nzCount="{{i+1}}">
+                                </nz-badge>
+                            </div>
+                            <div nz-col nzSpan="12" nz-button (click)="displayQYofSWJG(item['SWJGJC'])">
+                                {{item['SWJGJC']}}
+                            </div>
+                            <div nz-col nzSpan="9">
+                                {{item['MJSS'].toFixed(2)}}
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tax-2">
+                <div class="panel-title">
+                    高新区企业亩均税收
+                </div>
+                <div class="panel-content">
+                    <div style="height:100%;width:100%;overflow:scroll" class="zsxm-table-wrapper">
+                        <div nz-row class="zsxm-row" nzGutter="8">
+                            <div nz-col nzSpan="3">
+                                排名
+                            </div>
+                            <div nz-col nzSpan="12">
+                                企业名称
+                            </div>
+                            <div nz-col nzSpan="9">
+                                亩均税收(万元/亩)
+                            </div>
+
+                        </div>
+                        <a pageScroll href="#scrollContent" *ngIf="qyMjshData&&qyMjshData.length"></a>
+                        <div nz-row id="scrollContent" class="zsxm-row zsxm-item-row"
+                            *ngFor="let item of qyMjshData;let i=index;" nzGutter="8">
+                            <div nz-col nzSpan="3">
+                                <nz-badge nzStandalone [nzStyle]="{ backgroundColor: 'rgb(33,107,198)' }"
+                                    nzCount="{{i+1}}">
+                                </nz-badge>
+                            </div>
+                            <div nz-col nzSpan="12" nz-button (click)="displayQy(item)">
+                                {{item['NSRMC']}}
+                            </div>
+                            <div nz-col nzSpan="9">
+                                {{item['MJSS'].toFixed(2)}}
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 中--地图统计 -->
+        <div nz-col nzSpan="12">
+            <div style="height: 100%; width: 100%;margin-top: 10px;">
+                <div leaflet class="main-map-container" [leafletOptions]="mapOptions" (loaded)="leafletMapload($event)">
+                </div>
+            </div>
+
+        </div>
+
+        <!-- 右--税种统计 -->
+        <div nz-col nzSpan="6">
+            <div class="tax-3">
+                <div class="panel-title">
+                    税务机关亩产税收
+                </div>
+                <div class="panel-content" echarts [options]="echartMjsh" [theme]="'dark'">
+                </div>
+            </div>
+            <div class="tax-3">
+                <div class="panel-title">
+                    占地企业税收
+                </div>
+                <div class="panel-content" echarts [options]="echartTax" [theme]="'dark'">
+                </div>
+            </div>
+            <div class="tax-3">
+                <div class="panel-title">
+                    金三登记土地面积(亩)
+                </div>
+                <div class="panel-content" echarts [options]="echartArea" [theme]="'dark'">
+                </div>
+            </div>
+            <!-- <div class="tax-4">
+                <div class="panel-title">
+                    {{this.qyInfro.nsrmcInfro}}
+                </div>
+                <div class="panel-content-4" echarts [options]="rightBottomChartOpt1" [theme]="'dark'"></div>
+                <div class="panel-content-4" echarts [options]="rightBottomChartOpt2" [theme]="'dark'"></div>
+            </div> -->
+        </div>
+    </div>
+</div>

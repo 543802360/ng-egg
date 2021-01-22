@@ -29,7 +29,7 @@
                         </div>
                         <a pageScroll href="#scrollContent"></a>
                         <div nz-row id="scrollContent" class="zsxm-row zsxm-item-row"
-                            *ngFor="let item of gsqyData;let i=index;" nzGutter="8">
+                            *ngFor="let item of gsqyTop20Data;let i=index;" nzGutter="8" (click)="itemClick(item)">
                             <div nz-col nzSpan="3">
                                 <nz-badge nzStandalone [nzStyle]="{ backgroundColor: 'rgb(33,107,198)' }"
                                     nzCount="{{i+1}}">
@@ -93,7 +93,7 @@
                                     background: #af2a2a;
                                     border-radius: 50%;"></span>
                             <span style="padding:0 15px;font-size:16px">税收：<span
-                                    class="summary-value">{{gsqyTaxValue|number}}</span>&nbsp;万元</span>
+                                    class="summary-value">{{gsqyTaxValue/10000|number}}</span>&nbsp;亿</span>
                             <span class="icon-red-dot" style="
                                     position: absolute;
                                     width: 10px;
@@ -101,7 +101,7 @@
                                     margin:8px 0;
                                     background: #af2a2a;
                                     border-radius: 50%;"></span>
-                            <span style="padding:0 15px;font-size:16px">收入占比：<span
+                            <span style="padding:0 15px;font-size:16px">收入占全市比重：<span
                                     class="summary-value">{{gsqyTaxValue_BL}}%</span></span>
 
                         </div>

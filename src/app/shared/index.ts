@@ -9,6 +9,7 @@ export * from "./utils/geoUtil";
 export * from "./utils/order";
 export * from "./utils/export2excel";
 export * from './utils/getColorRange';
+export * from "./utils/dateFormatter";
 // 接口类
 export * from './interfaces/IMenu';
 export * from './interfaces/IDepartment';

@@ -7,6 +7,15 @@ import { BdgSelectComponent, MonthRangeComponent, IEOrder, export2excel, EOrder,
 import { Router, ActivatedRoute } from '@angular/router';
 import { LoadingService, XlsxService } from '@delon/abc';
 
+interface itemInfo {
+  BNDSR: number,
+  NSRMC: string,
+  SNTQ: number,
+  TBZJF,
+  TBZJZ: number,
+  lat: number,
+  lng: number,
+}
 
 @Component({
   selector: 'app-budget-bdg-analysis-company-order',
@@ -19,7 +28,10 @@ export class BudgetBdgAnalysisCompanyOrderComponent implements OnInit, AfterView
 
   map;
   nsrFeatureGroup;
-
+  mapOptions: {
+    center: [37.39471, 120.9709],
+    zoom: 9
+  }
   //#endregion
 
   @ViewChild('bdgSelect') bdgSelect: BdgSelectComponent;
@@ -34,7 +46,7 @@ export class BudgetBdgAnalysisCompanyOrderComponent implements OnInit, AfterView
   //#endregion
   @ViewChild('st') st: STComponent;
   url = "bdg/enterprise/order";
-  data: IEOrder[];
+  data: itemInfo[];
 
   total = 0;
   // response预处理
@@ -141,9 +153,9 @@ export class BudgetBdgAnalysisCompanyOrderComponent implements OnInit, AfterView
   }
 
   ngAfterViewInit() {
-    setTimeout(() => {
-      this.getData();
-    });
+    // setTimeout(() => {
+    //   this.getData();
+    // });
   }
 
   /**
@@ -166,40 +178,43 @@ export class BudgetBdgAnalysisCompanyOrderComponent implements OnInit, AfterView
     this.nsrFeatureGroup.clearLayers();
     this.bdgSelect.budgetValue.length === 0 ? this.bdgSelect.budgetValue = [4] : null;
     this.http.get(this.url, this.getCondition()).subscribe(resp => {
-      this.data = resp.data;
+      this.data = (resp.data as itemInfo[]).filter(i => !i.NSRMC.includes('HGDZ01') && i.NSRMC !== '龙口市城乡建设投资发展有限公司'
+        && i.NSRMC !== '龙口市兴达投资管理有限公司');
       this.total = resp.data.length;
 
       // 添加至地图
-      this.data.forEach((item, index) => {
-        const marker = L.marker([item.lat, item.lng], {
-          icon: L.BeautifyIcon.icon({
-            icon: 'leaf',
-            // iconSize: [28, 28],
-            isAlphaNumericIcon: true,
-            text: index + 1,
-            iconShape: 'marker',
-            borderColor: '#00ABCD',
-            textColor: 'red'
-          })
-        });
+      this.data
+        .filter(i => i.lat != null)
+        .forEach((item, index) => {
+          const marker = L.marker([item.lat, item.lng], {
+            icon: L.BeautifyIcon.icon({
+              icon: 'leaf',
+              // iconSize: [28, 28],
+              isAlphaNumericIcon: true,
+              text: index + 1,
+              iconShape: 'marker',
+              borderColor: '#00ABCD',
+              textColor: 'red'
+            })
+          });
 
 
-        Object.defineProperty(marker, 'NSRMC', {
-          enumerable: true,
-          value: item.NSRMC
-        });
+          Object.defineProperty(marker, 'NSRMC', {
+            enumerable: true,
+            value: item.NSRMC
+          });
 
-        const popupContent = `
+          const popupContent = `
         <h5>纳税人名称：${item.NSRMC}</h5>
         <h5>本年度收入：${item.BNDSR}</h5>
         <h5>上年同期：${item.SNTQ}</h5>
         <h5>同比增减值：${item.TBZJZ}</h5>
         <h5>同比增减幅：${item.TBZJF}</h5>
         `;
-        marker.bindPopup(popupContent);
-        this.nsrFeatureGroup.addLayer(marker);
+          marker.bindPopup(popupContent);
+          this.nsrFeatureGroup.addLayer(marker);
 
-      });
+        });
       // 
       this.map.fitBounds(this.nsrFeatureGroup.getBounds());
     });
@@ -243,10 +258,10 @@ export class BudgetBdgAnalysisCompanyOrderComponent implements OnInit, AfterView
 
       this.nsrFeatureGroup.eachLayer(layer => {
         if (layer.NSRMC === NSRMC) {
-          this.map.setView([lat, lng], 8);
+          this.map.setView([lat, lng], 17);
           setTimeout(() => {
             layer.openPopup();
-          });
+          }, 300);
         }
       })
     }
@@ -259,6 +274,7 @@ export class BudgetBdgAnalysisCompanyOrderComponent implements OnInit, AfterView
   mapload(e) {
     const { map, layerControl } = e;
     this.map = map;
+    (window as any).map = map;
     this.map.addLayer(this.nsrFeatureGroup);
     layerControl.addOverlay(this.nsrFeatureGroup, '企业分布');
   }

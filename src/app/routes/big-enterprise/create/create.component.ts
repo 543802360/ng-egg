@@ -121,9 +121,6 @@ export class BigEnterpriseCreateComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    setTimeout(() => {
-      this.getData();
-    });
   }
   /**
    * 获取税收统计概况（电子税票）
@@ -131,9 +128,9 @@ export class BigEnterpriseCreateComponent implements OnInit, AfterViewInit {
   getData() {
     this.bdgSelect.budgetValue.length === 0 ? this.bdgSelect.budgetValue = [4] : null;
     this.http.get(this.url, this.getCondition()).subscribe(resp => {
-      this.data = resp.data;
-      this.total = resp.data.length;
-
+      this.data = resp.data.filter(i => !i.NSRMC.includes('HGDZ01') && i.NSRMC !== '龙口市城乡建设投资发展有限公司'
+        && i.NSRMC !== '龙口市兴达投资管理有限公司');;
+      this.total = this.data.length;
     });
 
 
@@ -176,7 +173,7 @@ export class BigEnterpriseCreateComponent implements OnInit, AfterViewInit {
       year: this.monthRange.startDate.getFullYear(),
       filter: this.selectedValue
     }).subscribe(resp => {
-      this.msg.success(resp.msg);
+      this.msg.success(resp.msg.length > 100 ? `${(resp.msg as string).substr(0, 100)}……` : resp.msg);
     });
   }
 }

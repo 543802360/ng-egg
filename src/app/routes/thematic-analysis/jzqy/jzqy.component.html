@@ -1,0 +1,195 @@
+<div nz-row nzGutter="8" style="margin-top: 10px;">
+    <div nz-col nzSpan="4">
+        <nz-card [nzLoading]="http.loading">
+            <nz-statistic nzTitle="本年度总收入" [nzValue]="bndTotal|number" nzSuffix="万元">
+            </nz-statistic>
+        </nz-card>
+    </div>
+    <div nz-col nzSpan="4">
+        <nz-card [nzLoading]="http.loading">
+            <nz-statistic nzTitle="上年同期总收入" [nzValue]="sntqTotal|number" nzSuffix="万元">
+            </nz-statistic>
+        </nz-card>
+    </div>
+    <div nz-col nzSpan="4">
+        <nz-card [nzLoading]="http.loading">
+            <nz-statistic nzTitle="同比增减" [nzValue]="bndTotal- sntqTotal|number" nzSuffix="万元">
+            </nz-statistic>
+        </nz-card>
+    </div>
+    <div nz-col nzSpan="4">
+        <nz-card [nzLoading]="http.loading">
+            <nz-statistic nzTitle="同比增减幅" [nzPrefix]="bndTotal>sntqTotal?up:down"
+                nzValue="{{((bndTotal- sntqTotal)/sntqTotal*100).toFixed(2)}}"
+                [nzValueStyle]="(bndTotal>sntqTotal)?{color:'green'}:{color:'red'}" nzSuffix="%">
+            </nz-statistic>
+        </nz-card>
+    </div>
+    <div nz-col nzSpan="4">
+        <nz-card [nzLoading]="http.loading">
+            <nz-statistic nzTitle="同比增长企业数" [nzPrefix]="up" [nzValue]="upCount" [nzValueStyle]="{color:'green'}"
+                nzSuffix="户">
+            </nz-statistic>
+        </nz-card>
+    </div>
+    <div nz-col nzSpan="4">
+        <nz-card [nzLoading]="http.loading">
+            <nz-statistic nzTitle="同比下降企业数" [nzPrefix]="down" [nzValue]="downCount" [nzValueStyle]="{color:'red'}"
+                nzSuffix="户">
+            </nz-statistic>
+        </nz-card>
+    </div>
+</div>
+
+<nz-card class="enterprise-card" [nzExtra]="extraTemplate1">
+    <ng-template #extraTemplate1>
+        <app-bdg-select #bdgSelect></app-bdg-select>
+        <app-month-range #monthRange style="margin-right: 5px;"></app-month-range>
+        <button nz-button (click)="getData()" [disabled]="http.loading" nzType="primary"
+            style="margin-left: 6px;">查询</button>
+        <!-- <button nz-button (click)="download()" [disabled]="http.loading" nzType="primary"
+            style="margin-left: 6px;">导出</button> -->
+    </ng-template>
+
+    <div nz-row nzGutter="8" style="height: 100%;">
+
+        <div nz-col nzSpan='10' style="height: 100%;">
+
+            <nz-tabset [nzTabPosition]="'top'" [nzType]="'card'">
+
+                <nz-tab nzTitle="按税务机关排序">
+                    <st #st [data]="jgtjData" [columns]="swjgColumns" [page]="page" [loading]="http.loading" pi="1"
+                        ps="15" bordered="true" size="middle" (change)="stChange($event)" [expand]="expand"
+                        expandRowByClick expandAccordion>
+
+                        <ng-template #expand let-item let-index='index' let-column="column">
+                            <st #expandSt [data]="expandStData" [columns]="expandColumns" [page]="page" pi="1" ps="10"
+                                bordered="true" size="middle" (change)="stChange($event)"></st>
+                        </ng-template>
+
+                        <ng-template #headerTpl_sum>
+                            <ng-container>
+                                <div></div>
+                            </ng-container>
+                        </ng-template>
+                        <ng-template #footerTpl let-s>
+                            <ng-container>
+                                <div>
+                                </div>
+                            </ng-container>
+                        </ng-template>
+                        <ng-template st-row='order-tpl' let-item let-index="index">
+                            <nz-badge nzCount="{{(this.st.pi - 1) * this.st.ps + index + 1}}"></nz-badge>
+                        </ng-template>
+                        <ng-template st-row="tbzjz-tpl" let-item let-index="index">
+                            <nz-tag *ngIf="item.TBZJZ<0" nzColor="red">
+                                <span nz-tooltip [nzTooltipTitle]="'同比下降：' + item.TBZJZ"> {{item.TBZJZ|number}}</span>
+                            </nz-tag>
+                            <nz-tag *ngIf="item.TBZJZ>=0" nzColor="green">
+                                <span nz-tooltip [nzTooltipTitle]="'同比增长：' + item.TBZJZ+' 万元'">
+                                    {{item.TBZJZ|number}}</span>
+                            </nz-tag>
+                        </ng-template>
+                        <ng-template st-row="tbzjf-tpl" let-item let-index="index">
+                            <nz-tag *ngIf="item.TBZJZ<0" nzColor="red">
+                                <span nz-tooltip [nzTooltipTitle]="'同比下降：' + item.TBZJF"> {{item.TBZJF}}</span>
+                            </nz-tag>
+                            <nz-tag *ngIf="item.TBZJZ>=0" nzColor="green">
+                                <span nz-tooltip [nzTooltipTitle]="'同比增长：' + item.TBZJF"> {{item.TBZJF}}</span>
+                            </nz-tag>
+                        </ng-template>
+                        <ng-template st-row='pmzj-tpl' let-item let-index="index">
+                            <span *ngIf="item.PMZJ>=0">
+                                <nz-tag nzColor="green">{{item.PMZJ}} </nz-tag>
+                                <i nz-icon style="color: green;" nzType="arrow-up"></i>
+                            </span>
+                            <span *ngIf="item.PMZJ<0">
+                                <nz-tag nzColor="red">{{item.PMZJ}} </nz-tag>
+                                <i nz-icon style="color: red;" nzType="arrow-down"></i>
+                            </span>
+                        </ng-template>
+                    </st>
+                </nz-tab>
+                <nz-tab nzTitle="按企业税收收入排序">
+                    <st #st [data]="jtpmData" [columns]="columns" [page]="page" [loading]="http.loading" pi="1" ps="10"
+                        bordered="true" size="middle" [header]="headerTpl" [footer]="footerTpl"
+                        (change)="stChange($event)">
+
+                        <!--<ng-template #expand let-item let-index='index' let-column="column">
+                    <st #expandSt [data]="expandStData" [columns]="expandColumns" [page]="page" pi="1" ps="10"
+                        bordered="true" size="middle" (change)="stChange($event)"></st>
+                </ng-template>-->
+
+                        <ng-template #headerTpl>
+                            <ng-container>
+                                <div>企业税收收入排行（单位：万元）</div>
+                            </ng-container>
+                        </ng-template>
+                        <ng-template #footerTpl let-s>
+                            <ng-container>
+                                <div>
+                                    <!-- 合计： {{ total | _currency }} -->
+                                </div>
+                            </ng-container>
+                        </ng-template>
+                        <ng-template st-row='order-tpl' let-item let-index="index">
+                            <nz-badge nzCount="{{(this.st.pi - 1) * this.st.ps + index + 1}}"></nz-badge>
+                        </ng-template>
+                        <ng-template st-row="tbzjz-tpl" let-item let-index="index">
+                            <nz-tag *ngIf="item.TBZJZ<0" nzColor="red">
+                                <span nz-tooltip [nzTooltipTitle]="'同比下降：' + item.TBZJZ"> {{item.TBZJZ|number}}</span>
+                            </nz-tag>
+                            <nz-tag *ngIf="item.TBZJZ>=0" nzColor="green">
+                                <span nz-tooltip [nzTooltipTitle]="'同比增长：' + item.TBZJZ+' 万元'">
+                                    {{item.TBZJZ|number}}</span>
+                            </nz-tag>
+                        </ng-template>
+                        <ng-template st-row="tbzjf-tpl" let-item let-index="index">
+                            <nz-tag *ngIf="item.TBZJZ<0" nzColor="red">
+                                <span nz-tooltip [nzTooltipTitle]="'同比下降：' + item.TBZJF"> {{item.TBZJF}}</span>
+                            </nz-tag>
+                            <nz-tag *ngIf="item.TBZJZ>=0" nzColor="green">
+                                <span nz-tooltip [nzTooltipTitle]="'同比增长：' + item.TBZJF"> {{item.TBZJF}}</span>
+                            </nz-tag>
+                        </ng-template>
+                        <ng-template st-row='pmzj-tpl' let-item let-index="index">
+                            <span *ngIf="item.PMZJ>=0">
+                                <nz-tag nzColor="green">{{item.PMZJ}} </nz-tag>
+                                <i nz-icon style="color: green;" nzType="arrow-up"></i>
+                            </span>
+                            <span *ngIf="item.PMZJ<0">
+                                <nz-tag nzColor="red">{{item.PMZJ}} </nz-tag>
+                                <i nz-icon style="color: red;" nzType="arrow-down"></i>
+                            </span>
+                        </ng-template>
+                    </st>
+                </nz-tab>
+            </nz-tabset>
+        </div>
+        <div nz-col nzSpan='14' style="height: 100%;">
+            <div style="height: 100%; width: 100%;margin-top: 10px;">
+                <nz-button-group nzSize="default" style="position: absolute; z-index: 9; top: 20px; left: 20px;">
+                    <button nz-button (click)="switchLayer('heat')" nzDanger="true" nzGhost="true">热力图</button>
+                    <button nz-button (click)="switchLayer('dot')" nzDanger="true" nzGhost="true">散点图</button>
+                    <button nz-button (click)="switchLayer('cluster')" nzDanger="true" nzGhost="true">聚合图</button>
+                </nz-button-group>
+                <!-- <nz-spin *ngIf="!map" nzSize="large" style=""></nz-spin> -->
+                <mgl-map [style]="style" [trackResize]="true" [zoom]="[8]"
+                    [center]="[120.65733652344079, 37.000723396581805]" (load)="mapboxLoad($event)">
+                    <mgl-control mglNavigation></mgl-control>
+                    <mgl-control mglFullscreen></mgl-control>
+                </mgl-map>
+            </div>
+        </div>
+
+    </div>
+
+
+</nz-card>
+
+<ng-template #up>
+    <i nz-icon nzType="arrow-up"></i>
+</ng-template>
+<ng-template #down>
+    <i nz-icon nzType="arrow-down"></i>
+</ng-template>

@@ -1,0 +1,171 @@
+<div class="container">
+    <div nz-row class="fill-row" nzGutter="8">
+        <!-- 左--税种统计 -->
+        <div nz-col nzSpan="7">
+            <div class="tax-2">
+                <div class="panel-title">
+                    一般纳税人/小规模
+                </div>
+                <div class="panel-content-6" echarts [options]="ybnsrXgmCountChartOpt" [theme]="'dark'"></div>
+                <div class="panel-content-6" echarts [options]="ybnsrXgmTaxChartOpt" [theme]="'dark'"></div>
+
+                <div class="panel-content-4">
+                    <nz-row style="width: 100%;" [nzGutter]="16">
+                        <nz-col class="title-col" [nzSpan]="10">纳税人类别</nz-col>
+                        <nz-col class="title-col" [nzSpan]="6">户数（户）</nz-col>
+                        <nz-col class="title-col" [nzSpan]="8">税收（万元）</nz-col>
+                    </nz-row>
+                    <nz-row style="width: 100%;" [nzGutter]="16">
+                        <nz-col class="title-value" [nzSpan]="10">一般纳税人</nz-col>
+                        <nz-col class="title-value" [nzSpan]="6">{{ybnsrNum|number}}</nz-col>
+                        <nz-col class="title-value" [nzSpan]="8">{{ybnsrTax/10000|number}}</nz-col>
+                    </nz-row>
+                    <nz-row style="width: 100%;" [nzGutter]="16">
+                        <nz-col class="title-value" [nzSpan]="10">小规模</nz-col>
+                        <nz-col class="title-value" [nzSpan]="6">{{xgmnsrNum|number}}</nz-col>
+                        <nz-col class="title-value" [nzSpan]="8">{{xgmnsrTax/10000|number}}</nz-col>
+                    </nz-row>
+                </div>
+
+                <!-- <div class="panel-content-4" echarts [options]="leftTopChartOpt1" [theme]="'dark'"></div>
+                <div class="panel-content-4" echarts [options]="leftTopChartOpt2" [theme]="'dark'"></div>
+                <div class="panel-content-4" echarts [options]="leftTopChartOpt3" [theme]="'dark'"></div>
+                <div class="panel-content-4" echarts [options]="leftTopChartOpt4" [theme]="'dark'"></div> -->
+            </div>
+            <div class="tax-2">
+                <div class="panel-title">
+                    单位/个体纳税人
+                </div>
+                <div class="panel-content-6" echarts [options]="dwGtCountChartOpt" [theme]="'dark'"></div>
+                <div class="panel-content-6" echarts [options]="dwGtTaxChartOpt" [theme]="'dark'"></div>
+
+                <div class="panel-content-4">
+                    <nz-row style="width: 100%;" [nzGutter]="16">
+                        <nz-col class="title-col" [nzSpan]="10">纳税人类别</nz-col>
+                        <nz-col class="title-col" [nzSpan]="6">户数（户）</nz-col>
+                        <nz-col class="title-col" [nzSpan]="8">税收（万元）</nz-col>
+                    </nz-row>
+                    <nz-row style="width: 100%;" [nzGutter]="16">
+                        <nz-col class="title-value" [nzSpan]="10">单位纳税人</nz-col>
+                        <nz-col class="title-value" [nzSpan]="6">{{dwnsrNum|number}}</nz-col>
+                        <nz-col class="title-value" [nzSpan]="8">{{dwnsrTax/10000|number}}</nz-col>
+                    </nz-row>
+                    <nz-row style="width: 100%;" [nzGutter]="16">
+                        <nz-col class="title-value" [nzSpan]="10">个体</nz-col>
+                        <nz-col class="title-value" [nzSpan]="6">{{gtnsrNum|number}}</nz-col>
+                        <nz-col class="title-value" [nzSpan]="8">{{gtnsrTax/10000|number}}</nz-col>
+                    </nz-row>
+                </div>
+                <!-- <div class="panel-content-4" echarts [options]="leftTopChartOpt5" [theme]="'dark'"></div>
+                <div class="panel-content-4" echarts [options]="leftTopChartOpt6" [theme]="'dark'"></div>
+                <div class="panel-content-4" echarts [options]="leftTopChartOpt7" [theme]="'dark'"></div>
+                <div class="panel-content-4" echarts [options]="leftTopChartOpt8" [theme]="'dark'"></div> -->
+            </div>
+        </div>
+        <!-- 中--地图统计 -->
+        <div nz-col nzSpan="11">
+            <div class="risk-summary wt-box">
+                <nz-row style="width: 100%;height:100%;" [nzGutter]="8">
+                    <nz-col [nzSpan]="10" class="t-box" style="height:100%;">
+                        <div class="s-box-wgit">
+                            <span class="sbw-left-top"></span>
+                            <span class="sbw-right-top"></span>
+                            <span class="sbw-left-bottom"></span>
+                            <span class="sbw-right-bottom"></span>
+                        </div>
+                        <h3 class="summary-title" style="color: aqua;">全市管理户数量
+                            <span class="summary-value" style="color: #9d7a00;"> {{cityCurrentGlhsl|number}}</span>户
+                        </h3>
+                    </nz-col>
+                    <nz-col *ngIf="countyVisible" [nzSpan]="10" [nzOffset]="1" class="t-box" style="height:100%;">
+                        <div class="s-box-wgit">
+                            <span class="sbw-left-top"></span>
+                            <span class="sbw-right-top"></span>
+                            <span class="sbw-left-bottom"></span>
+                            <span class="sbw-right-bottom"></span>
+                        </div>
+                        <h3 class="summary-title" style="color: aqua;">{{selectedSwjgJC}}管理户数量
+                            <span class="summary-value" style="color: #9d7a00;"> {{countyCurrentGlhsl|number}}</span>户
+                        </h3>
+                    </nz-col>
+                </nz-row>
+            </div>
+            <div nzSize="default" style="position: absolute;width: 100%; left: 0; z-index: 9; bottom: 2%;
+                    background-color: rgba(0,0,0,0.6);">
+                <nz-row class="syjgzt-nav" style="margin: 10px;" [nzGutter]="24">
+                    <nz-col class="flex-col" [nzSpan]="6">
+                        <button #ybnsr nz-button (click)="switchLayer('ybnsr',ybnsr)" [nzType]="'primary'"
+                            nzGhost="true">一般纳税人</button>
+                    </nz-col>
+                    <nz-col class="flex-col" [nzSpan]="6">
+                        <button #zch nz-button (click)="switchLayer('zch',zch)" [nzType]="'primary'"
+                            nzGhost="true">正常户</button>
+                    </nz-col>
+                    <nz-col class="flex-col" [nzSpan]="6">
+                        <button #dwnsr nz-button (click)="switchLayer('dwnsr',dwnsr)" [nzType]="'primary'"
+                            nzGhost="true">单位纳税人</button>
+                    </nz-col>
+                    <nz-col class="flex-col" [nzSpan]="6">
+                        <button #xxwlqy nz-button (click)="switchLayer('xxwlqy',xxwlqy)" [nzType]="'primary'"
+                            nzGhost="true">小型微利企业</button>
+                    </nz-col>
+
+                </nz-row>
+                <nz-row style="margin: 10px;" [nzGutter]="24">
+
+                    <nz-col class="flex-col" [nzSpan]="6">
+                        <button #xgm nz-button (click)="switchLayer('xgm',xgm)" [nzType]="'primary'"
+                            nzGhost="true">小规模</button>
+
+                    </nz-col>
+                    <nz-col class="flex-col" [nzSpan]="6">
+                        <button #fzch nz-button (click)="switchLayer('fzch',fzch)" [nzType]="'primary'"
+                            nzGhost="true">非正常户</button>
+                    </nz-col>
+
+                    <nz-col class="flex-col" [nzSpan]="6">
+                        <button #gtnsr nz-button (click)="switchLayer('gtnsr',gtnsr)" [nzType]="'primary'"
+                            nzGhost="true">个体纳税人</button>
+                    </nz-col>
+
+                    <nz-col class="flex-col" [nzSpan]="6">
+                        <button #nsh nz-button (click)="switchLayer('nsh',nsh)" [nzType]="'primary'"
+                            nzGhost="true">纳税户</button>
+
+                    </nz-col>
+
+                </nz-row>
+
+
+            </div>
+            <button nz-button
+                style="display: flex;align-items: center;justify-content: center;position: absolute;z-index: 999;right: 5px;bottom: 13%;width: 36px;height: 36px;"
+                nzType="danger" nzShape="circle" nzGhost="true" (click)="returnHome()">
+                <i nz-icon nzType="home" nzTheme="fill"></i>
+            </button>
+            <mgl-map class="main-map-container" [style]="style" [trackResize]="true" [zoom]="[8]"
+                [center]="[121.4099, 37.47522]" (load)="mapboxLoad($event)">
+                <mgl-control mglNavigation></mgl-control>
+                <mgl-control mglFullscreen></mgl-control>
+            </mgl-map>
+        </div>
+        <!-- 右--税种统计 -->
+        <div nz-col nzSpan="6">
+            <div class="tax-2">
+                <div class="panel-title">
+                    分行业结构分析
+                </div>
+                <div class="panel-content" echarts [options]='hyssChartOpt' [theme]="'dark'">
+                </div>
+
+            </div>
+            <div class="tax-2">
+                <div class="panel-title">
+                    <!--{{curBwqyName}}-->
+                    分企业类型分析
+                </div>
+                <div class="panel-content" echarts [options]='qylxChartOpt' [theme]="'dark'">
+                </div>
+            </div>
+        </div>
+    </div>

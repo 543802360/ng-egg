@@ -2,74 +2,66 @@
     <div nz-row class="fill-row" nzGutter="8">
         <!-- 左--税种统计 -->
         <div nz-col nzSpan="6">
-            <div class="tax-2">
-                <div class="panel-title">
-                    各区市税收情况
+            <div class="tax-3 x-box">
+                <div class="s-box-wgit">
+                    <span class="sbw-left-top"></span>
+                    <span class="sbw-right-top"></span>
+                    <span class="sbw-left-bottom"></span>
+                    <span class="sbw-right-bottom"></span>
                 </div>
-                <div class="panel-content">
-                    <div style="height:70%;width:100%;" echarts [options]="xzqhChartOpt"
-                        (chartInit)="onXzqhChartInit($event)" [theme]="'dark'">
-                    </div>
-
-                    <div style="height:30%;width:100%;overflow:scroll" class="zsxm-table-wrapper">
-                        <div nz-row class="zsxm-row" nzGutter="8">
-                            <div nz-col nzSpan="2">
-                                排名
-                            </div>
-                            <div nz-col nzSpan="6">
-                                区市
-                            </div>
-                            <div nz-col nzSpan="6">
-                                收入额(万元)
-                            </div>
-                            <div nz-col nzSpan="6">
-                                同比(万元)
-                            </div>
-                            <div nz-col nzSpan="4">
-                                增幅(%)
-                            </div>
-                        </div>
-                        <a pageScroll href="#scrollContent"></a>
-                        <div nz-row id="scrollContent" class="zsxm-row zsxm-item-row"
-                            *ngFor="let item of ssfjcData;let i=index;" nzGutter="8">
-                            <div nz-col nzSpan="2">
-                                <nz-badge nzStandalone [nzStyle]="{ backgroundColor: 'rgb(33,107,198)' }"
-                                    nzCount="{{i+1}}">
-                                </nz-badge>
-                            </div>
-                            <div nz-col nzSpan="6">
-                                {{item['NAME']}}
-                            </div>
-                            <div nz-col nzSpan="6">
-                                {{ item['SE_HJ_BQ']|number}}
-                            </div>
-                            <div nz-col nzSpan="6" [class.down-row]="item.SE_HJ_BQ_ZJE<0">
-                                {{ item['SE_HJ_BQ_ZJE']|number}}
-                            </div>
-                            <div nz-col nzSpan="4" [class.down-row]="item.SE_HJ_BQ_ZJE<0">
-                                {{item['SE_HJ_BQ_ZJBL']}}%
-                            </div>
-
-                        </div>
-                    </div>
+                <div class="panel-title">
+                    {{distinctName}}全市税收分月情况
+                </div>
+                <!--<div class="panel-content">-->
+                <div class="panel-content" echarts [options]="xzqhChartOpt" (chartInit)="onXzqhChartInit($event)"
+                    [theme]="'dark'">
                 </div>
             </div>
-            <div class="tax-2">
+
+            <div class="tax-3 x-box">
+                <div class="s-box-wgit">
+                    <span class="sbw-left-top"></span>
+                    <span class="sbw-right-top"></span>
+                    <span class="sbw-left-bottom"></span>
+                    <span class="sbw-right-bottom"></span>
+                </div>
                 <div class="panel-title">
-                    各税种征收情况
+                    {{distinctName}}分税种税收情况
                 </div>
                 <div class="panel-content" echarts [options]="zsxmChartOpt" (chartInit)="onZsxmChartInit($event)"
+                    [theme]="'dark'">
+                </div>
+            </div>
+            <div class="tax-3 x-box">
+                <div class="s-box-wgit">
+                    <span class="sbw-left-top"></span>
+                    <span class="sbw-right-top"></span>
+                    <span class="sbw-left-bottom"></span>
+                    <span class="sbw-right-bottom"></span>
+                </div>
+                <div class="panel-title">
+                    {{hyssChartTitle}}
+                </div>
+                <div class="panel-content" echarts (chartInit)="onHyssChartInit($event)" [options]="hyssChartOpt"
                     [theme]="'dark'">
                 </div>
             </div>
         </div>
         <!-- 中--地图统计 -->
         <div nz-col nzSpan="12">
-            <div *ngIf="totalItem" class="risk-summary">
+            <div *ngIf="totalItem" class="risk-summary wt-box">
                 <nz-row style="width: 100%;height:100%;" [nzGutter]="8">
-                    <nz-col [nzSpan]="10" style="height:100%;">
-                        <h3 class="summary-title">全市累计税收收入 &nbsp;
-                            <span class="summary-value">{{totalItem.SE_HJ_BQ|number}}&nbsp;</span>万
+                    <nz-col [nzSpan]="10" class="t-box" style="height:100%;">
+                        <div class="s-box-wgit">
+                            <span class="sbw-left-top"></span>
+                            <span class="sbw-right-top"></span>
+                            <span class="sbw-left-bottom"></span>
+                            <span class="sbw-right-bottom"></span>
+                        </div>
+                        <h3 class="summary-title" style="color: aqua;">全市累计税收收入 &nbsp;
+                            <span class="summary-value" style="color: #9d7a00;">
+                                {{totalItem.SE_HJ_LJ_BQ/10000|number}}
+                                <!--724.768-->&nbsp;</span>亿
                         </h3>
                         <div class="summary-sub">
                             <span class="icon-red-dot" style="
@@ -77,26 +69,37 @@
                                                     width: 10px;
                                                     height: 10px;
                                                     margin:8px 0;
-                                                    background: #af2a2a;
+                                                    background: #9d7a00;
                                                     border-radius: 50%;"></span>
-                            <span style="padding:0 15px;font-size:16px">同比增长：<span
-                                    class="sub-summary-value">{{totalItem.SE_HJ_BQ_ZJE|number}}</span>&nbsp;万</span>
+                            <span style="padding:0 15px;font-size:16px;color: aqua;">同比增长：<span
+                                    class="sub-summary-value" style="color: #9d7a00;">
+                                    {{totalItem.SE_HJ_LJ_BQ_ZJE/10000|number}}
+                                    <!---23.997--></span>&nbsp;亿</span>
                             <span class="icon-red-dot" style="
                                                     position: absolute;
                                                     width: 10px;
                                                     height: 10px;
                                                     margin:8px 0;
-                                                    background: #af2a2a;
+                                                    background: #9d7a00;
                                                     border-radius: 50%;"></span>
-                            <span style="padding:0 15px;font-size:16px">同比增速：<span
-                                    class="sub-summary-value">{{totalItem.SE_HJ_BQ_ZJBL}}%</span></span>
+                            <span style="padding:0 15px;font-size:16px;color: aqua;">同比增速：<span
+                                    class="sub-summary-value" style="color: #9d7a00;">
+                                    {{totalItem.SE_HJ_LJ_BQ_ZJBL}}
+                                    <!---3.20%--></span></span>
                             <!-- <i nz-icon nzType="clock-circle" nzTheme="twotone"></i> -->
 
                         </div>
                     </nz-col>
-                    <nz-col *ngIf="countyVisible" [nzSpan]="14" style="height:100%;">
-                        <h3 class="summary-title">{{selectedXzqh.NAME}}-本年累计税收收入 &nbsp;
-                            <span class="summary-value">{{selectedXzqh.SE_HJ_BQ|number}}&nbsp;万</span>
+                    <nz-col *ngIf="countyVisible" [nzSpan]="11" class="t-box" style="height:100%;">
+                        <div class="s-box-wgit">
+                            <span class="sbw-left-top"></span>
+                            <span class="sbw-right-top"></span>
+                            <span class="sbw-left-bottom"></span>
+                            <span class="sbw-right-bottom"></span>
+                        </div>
+                        <h3 class="summary-title" style="color: aqua;">{{selectedXzqh.NAME}}-本年累计税收收入 &nbsp;
+                            <span class="summary-value"
+                                style="color: #9d7a00;">{{selectedXzqh.SE_HJ_LJ_BQ/10000|number}}&nbsp;亿</span>
                         </h3>
                         <div class="summary-sub">
                             <span class="icon-red-dot" style="
@@ -104,19 +107,19 @@
                                             width: 10px;
                                             height: 10px;
                                             margin:8px 0;
-                                            background: #af2a2a;
+                                            background: #9d7a00;
                                             border-radius: 50%;"></span>
-                            <span style="padding:0 15px;font-size:16px">同比增长：<span
-                                    class="sub-summary-value">{{selectedXzqh.SE_HJ_BQ_ZJE|number}}</span>&nbsp;万</span>
+                            <span style="padding:0 15px;font-size:16px;color: aqua">同比增长：<span class="sub-summary-value"
+                                    style="color: #9d7a00;">{{selectedXzqh.SE_HJ_LJ_BQ_ZJE/10000|number}}</span>&nbsp;亿</span>
                             <span class="icon-red-dot" style="
                                             position: absolute;
                                             width: 10px;
                                             height: 10px;
                                             margin:8px 0;
-                                            background: #af2a2a;
+                                            background: #9d7a00;
                                             border-radius: 50%;"></span>
-                            <span style="padding:0 15px;font-size:16px">同比增速：<span
-                                    class="sub-summary-value">{{selectedXzqh.SE_HJ_BQ_ZJBL}}%</span></span>
+                            <span style="padding:0 15px;font-size:16px;color: aqua">同比增速：<span class="sub-summary-value"
+                                    style="color: #9d7a00;">{{selectedXzqh.SE_HJ_LJ_BQ_ZJBL}}%</span></span>
 
                         </div>
                     </nz-col>
@@ -124,51 +127,87 @@
                 </nz-row>
 
             </div>
+            <div class="cover-box">
+                <button nz-button
+                    style="display: flex;align-items: center;justify-content: center;position: absolute;z-index: 999;right: 15px;bottom: 15px;width: 36px;height: 36px;"
+                    nzType="danger" nzShape="circle" nzGhost="true" (click)="returnHome()">
+                    <i nz-icon nzType="home" nzTheme="fill"></i>
+                </button>
+                <mgl-map class="main-map-container" [style]="style" [trackResize]="true" [zoom]="[8]"
+                    [center]="[121.4099, 37.47522]" (load)="mapboxLoad($event)">
 
-            <mgl-map class="main-map-container" [style]="style" [trackResize]="true" [zoom]="[8]"
-                [center]="[121.4099, 37.47522]" (load)="mapboxLoad($event)">
-                <mgl-control mglNavigation></mgl-control>
-                <mgl-control mglFullscreen></mgl-control>
-                <!-- <app-mapbox-style-control></app-mapbox-style-control> -->
-            </mgl-map>
+                </mgl-map>
+            </div>
         </div>
-
         <!-- 右--税种统计 -->
         <div nz-col nzSpan="6">
-            <div class="tax-2">
+            <div class="tax-3 x-box">
+                <div class="s-box-wgit">
+                    <span class="sbw-left-top"></span>
+                    <span class="sbw-right-top"></span>
+                    <span class="sbw-left-bottom"></span>
+                    <span class="sbw-right-bottom"></span>
+                </div>
                 <div class="panel-title">
-                    产业结构税收分析
+                    {{distinctName}}分产业分析
+                </div>
+                <div class="panel-content" echarts [options]="nsgmChartOpt" [theme]="'dark'">
+                </div>
+            </div>
+            <div class="tax-3 x-box">
+                <div class="s-box-wgit">
+                    <span class="sbw-left-top"></span>
+                    <span class="sbw-right-top"></span>
+                    <span class="sbw-left-bottom"></span>
+                    <span class="sbw-right-bottom"></span>
+                </div>
+                <div class="panel-title">
+                    {{distinctName}}亩产税收排名
                 </div>
                 <div class="panel-content">
-                    <div class="panel-content-6" echarts (chartInit)="onCyssChartInit($event)" [options]="cyssChartOpt"
-                        [theme]="'dark'">
-                    </div>
-                    <div class="panel-content-4">
-                        <div nz-row style="height: 30%;margin:0.5%" nzGutter="8" *ngFor="let item of cyssData">
-                            <div nz-col nzSpan="6">
-                                {{item['HY_MC']}}
+                    <div style="height:100%;width:100%;overflow:scroll" class="zsxm-table-wrapper">
+                        <div nz-row class="zsxm-row" nzGutter="8">
+                            <div nz-col nzSpan="3">
+                                排名
+                            </div>
+                            <div nz-col nzSpan="12">
+                                税务机关名称
+                            </div>
+                            <div nz-col nzSpan="9">
+                                亩均税收(万元/亩)
                             </div>
 
-                            <div nz-col nzSpan="6">
-                                {{item.SE_HJ/100000000|number}}&nbsp;亿
+                        </div>
+                        <a pageScroll href="#scrollContent"></a>
+                        <div nz-row id="scrollContent" class="zsxm-row zsxm-item-row"
+                            *ngFor="let item of mjsh0Data;let i=index;" nzGutter="8">
+                            <div nz-col nzSpan="3">
+                                <nz-badge nzStandalone [nzStyle]="{ backgroundColor: 'rgb(33,107,198)' }"
+                                    nzCount="{{i+1}}">
+                                </nz-badge>
                             </div>
-                            <div nz-col nzSpan="6">
-                                {{item.SE_HJ_ZJE/100000000|number}}&nbsp;亿
+                            <div nz-col nzSpan="12" nz-button (click)="displayQYofSWJG(item['SWJGJC'])">
+                                {{item['SWJGJC']}}
                             </div>
-                            <div nz-col nzSpan="6">
-                                {{item.SE_HJ_ZJBL}}&nbsp;%
+                            <div nz-col nzSpan="9">
+                                {{item['MJSS'].toFixed(2)}}
                             </div>
+
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="tax-2">
+            <div class="tax-3 x-box">
+                <div class="s-box-wgit">
+                    <span class="sbw-left-top"></span>
+                    <span class="sbw-right-top"></span>
+                    <span class="sbw-left-bottom"></span>
+                    <span class="sbw-right-bottom"></span>
+                </div>
                 <div class="panel-title">
-                    按行业分析税收(行业税收Top10)
+                    {{distinctName}}税源结构分析
                 </div>
-                <div class="panel-content" echarts (chartInit)="onHyssChartInit($event)" [options]="hyssChartOpt"
-                    [theme]="'dark'">
-                </div>
+                <div class="panel-content" echarts [options]="syjgfxChartOpt" [theme]="'dark'"></div>
             </div>
         </div>
     </div>

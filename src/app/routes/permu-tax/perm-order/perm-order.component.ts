@@ -15,7 +15,7 @@ import { dark } from "@geo";
 export class PermuTaxPermOrderComponent implements OnInit {
 
   url = `/user`;
-  style = dark;
+  style = decimal;
   map: mapboxgl.Map;
   searchSchema: SFSchema = {
     properties: {

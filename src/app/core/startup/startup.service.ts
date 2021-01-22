@@ -55,11 +55,13 @@ export class StartupService {
       const departmentArray = (deparmentsRes as any).data.map(item => {
         return {
           title: item.department_name,
-          key: item.department_id,
+          key: item.department_id ? item.department_id : '',
           parent_id: item.parent_id,
           parent_name: item.parent_name
         };
       });
+      // console.log('departmentArray');
+      // console.table(departmentArray.splice(0, 50));
       const depTreeNodes = array2tree(departmentArray, 'key', 'parent_id', 'children');
       this.cacheSrv.set('departments', depTreeNodes);
       //#endregion
@@ -107,14 +109,17 @@ export class StartupService {
             text: item.menuname, // 菜单名称
             key: item.menu_id,  // 菜单id
             parent_id: item.parent_id, // 父菜单id
-            link: item.route_path, // 路由
+            [item.menuname.includes('大屏') ? 'externalLink' : 'link']: `${window.location.origin}/#${item.route_path}`,
+            // link: item.route_path, // 路由
             icon: item.icon,
+            target: '_blank',
             group: false
           };
 
         return menu;
 
       });
+
       const menusTree = array2tree(menusArray, 'key', 'parent_id', 'children');
       this.menuService.add([
         {
@@ -135,6 +140,7 @@ export class StartupService {
         resolve(null);
       },
     );
+    // resolve(null);
   }
 
   load(): Promise<any> {

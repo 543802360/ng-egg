@@ -4,14 +4,29 @@ import { STColumn, STComponent } from '@delon/abc/st';
 
 import { NzMessageService, NzTreeSelectComponent } from 'ng-zorro-antd';
 import * as mapboxgl from "mapbox-gl";
-import { dark } from "@geo";
-import { BdgSelectComponent, MonthRangeComponent, getColorRange, ExcelData, export2excel } from '@shared';
+import { dark_T as dark, decimal_T as decimal } from "@geo";
+import { BdgSelectComponent, MonthRangeComponent, getColorRange, ExcelData, export2excel, ColorTypes, order } from '@shared';
 import { G2BarData } from '@delon/chart/bar';
 import { forkJoin } from 'rxjs';
 import { LoadingService } from '@delon/abc';
 import { CacheService } from '@delon/cache';
 import { deepCopy } from '@delon/util';
+// mapbox pos参数
+const MAPBOX_POS = {
+  center: [120.8303991378192, 37.10038795930873],
+  pitch: 40,
+  bearing: -10.441292648171384,
+  zoom: 8.056808924835703
+}
 
+// 税收分级次item接口
+interface ssfjcItem {
+  SE_HJ_LJ_BQ?: number,
+  SE_HJ_LJ_SNTQ?: number,
+  SE_HJ_LJ_BQ_ZJBL?: number,
+  SE_HJ_LJ_BQ_ZJE?: number,
+  SWJGJC?: string
+}
 @Component({
   templateUrl: './tax-hy-map.component.html',
   styleUrls: ['./tax-hy-map.component.less']
@@ -19,8 +34,8 @@ import { deepCopy } from '@delon/util';
 })
 export class EconomicAnalysisMapTaxHyMapComponent implements OnInit, AfterViewInit {
 
-  url = `analysis/town`;
-  style = dark;
+  url = `analysis/county`;
+  style = decimal;
   townData: any[];
   townG2BarData: G2BarData[];
   map: mapboxgl.Map;
@@ -33,6 +48,8 @@ export class EconomicAnalysisMapTaxHyMapComponent implements OnInit, AfterViewIn
   @ViewChild('st') st: STComponent;
   @ViewChild('bdgSelect') bdgSelect: BdgSelectComponent;
   @ViewChild('monthRange') monthRange: MonthRangeComponent;
+  total = 0;
+  ssfjcData: ssfjcItem[] = [];
   tooltipStyle = { 'max-width': '400px' };
   columns: STColumn[] = [
     {
@@ -43,18 +60,19 @@ export class EconomicAnalysisMapTaxHyMapComponent implements OnInit, AfterViewIn
       render: 'order-tpl'
     },
     {
-      title: '镇街',
-      index: 'jdxzmc',
+      title: '区市',
+      index: 'SWJGJC',
       className: 'text-center'
     },
     {
       title: '本年度收入',
-      index: 'bndsr',
+      index: 'SE_HJ_LJ_BQ',
+      type: 'number',
       className: 'text-center'
     },
     {
       title: '上年同期',
-      index: 'sntq',
+      index: 'SE_HJ_LJ_SNTQ',
       className: 'text-center'
     },
     {
@@ -69,7 +87,7 @@ export class EconomicAnalysisMapTaxHyMapComponent implements OnInit, AfterViewIn
     // }
   ];
 
-  heightStop = 4000;
+  heightStop = 20000;
   gridActive = {
     type: "FeatureCollection",
     features: []
@@ -91,176 +109,111 @@ export class EconomicAnalysisMapTaxHyMapComponent implements OnInit, AfterViewIn
   }
 
   ngAfterViewInit() {
-    this.loadSrv.open({ text: '正在处理……' });
+    // this.loadSrv.open({ text: '正在处理……' });
   }
 
   /**
    * 获取区域聚合数据
    */
   getData() {
-    const $townJson = this.http.get('assets/data/CY_TOWN.json');
-    const $townTaxData = this.http.get(this.url, this.getCondition());
-    forkJoin([$townJson, $townTaxData])
+    const $stream2 = this.http.get('assets/data/yt/SWJG.json');
+    const $stream1 = this.http.get(this.url, this.getCondition());
+    // 3、构造专题数据
+    forkJoin([$stream1, $stream2])
       .subscribe(resp => {
-        // 1、获取镇街税收数据
-        this.townData = resp[1].data;
-        // 若当前数据为空，则清空上次查询结果
-        if (!this.townData.length) {
-          this.msgSrv.warning('当前条件下无收入数据！');
-          this.townG2BarData = [];
-
-          // 判断是否存在高亮区域块数据源及图层
-          if (this.map.getLayer('grid-active')) {
-            this.map.removeLayer('grid-active');
-          }
-          if (this.map.getSource('grid-active')) {
-            this.map.removeSource('grid-active')
-          }
-
-          // 判断是否存在镇街税收图层
-          if (this.map.getLayer('town-layer')) {
-            this.map.removeLayer('town-layer');
-          }
-          if (this.map.getSource('town-geo')) {
-            this.map.removeSource('town-geo')
-          }
-
-          return;
-        }
-        this.townG2BarData = this.townData.map(item => {
-          return {
-            x: item.jdxzmc,
-            y: item.bndsr
-          }
+        // 税款国库geo数据
+        const skgkResp = resp[1];
+        // 税收分级次数据
+        const ssfjcData: ssfjcItem[] = resp[0].data;
+        // 4、获取烟台市统计数据
+        // this.totalItem = ssfjcData.find(i => i.SWJG_MC === '烟台市');
+        // this.cacheSrv.set('totalTax', this.totalItem);
+        // 5、合并税款数据至properties
+        skgkResp.features.forEach(el => {
+          const target = ssfjcData.find(i => i.SWJGJC.includes(el.properties.SWJGJC.trim()));
+          Object.assign(el.properties, target);
         });
-        // 2、获取Geometry
-        const fc = resp[0];
-        const taxArray = [];
-        const taxFeatures = [];
-        fc.features.forEach(f => {
-          const target = this.townData.find(i => i.jdxzmc === f.properties.MC);
-          if (target) {
-            taxArray.push(target.bndsr);
-            Object.defineProperties(f.properties, {
-              'tax': {
-                value: target.bndsr,
-                enumerable: true,
-                configurable: true
-              },
-              'item': {
-                value: target,
-                enumerable: true,
-                configurable: true
-              }
-            });
-            taxFeatures.push(deepCopy(f));
-          }
-        });
-        const mintax = Math.min(...taxArray);
-        const maxtax = Math.max(...taxArray);
-        const colorRange = getColorRange(mintax, maxtax);
+        this.ssfjcData = skgkResp.features.map(i => i.properties).sort(order('SE_HJ_LJ_BQ'));
+        // 6、加载geo
+        const taxValues = ssfjcData.filter(i => i.SWJGJC !== '烟台市').map(i => i['SE_HJ_LJ_BQ']);
+        this.total = taxValues.reduce((x, y) => x + y);
 
-        const ds = {
-          type: 'FeatureCollection',
-          features: taxFeatures
-        };
+        const taxMax = Math.max(...taxValues);
+        const taxMin = Math.min(...taxValues);
+        console.log(taxMin, taxMax);
+        const colorStops = getColorRange(taxMin, taxMax, ColorTypes.info);
 
-        if (this.map.getSource('town-geo')) {
-          (this.map.getSource('town-geo') as mapboxgl.GeoJSONSource).setData(ds as any);
-        } else {
-          this.map.addSource('town-geo', {
-            type: 'geojson',
-            data: ds as any
+
+        if (!this.map.getSource('ssfjc-source')) {
+          this.map.addSource('ssfjc-source', {
+            'type': 'geojson',
+            'data': skgkResp as any
           });
+        } else {
+          (this.map.getSource('ssfjc-source') as any).setData(skgkResp as any);
         }
-        // 判断是否存在高亮区域块数据源及图层
-        if (this.map.getLayer('grid-active')) {
-          this.map.removeLayer('grid-active');
-        }
-        if (this.map.getSource('grid-active')) {
-          this.map.removeSource('grid-active')
-        }
-        // 添加高亮数据源及图层
-        this.map.addSource("grid-active", {
-          type: "geojson",
-          data: this.gridActive as any
-        });
-        this.map.addLayer({
-          id: "grid-active",
-          type: "fill-extrusion",
-          source: "grid-active",
-          paint: {
-            "fill-extrusion-color": this.colorActive,
-            "fill-extrusion-opacity": 0.9,
-            "fill-extrusion-height-transition": {
-              duration: 1500
-            },
-            "fill-extrusion-color-transition": {
-              duration: 1500
-            }
-          }
-        });
-        if (!this.map.getLayer('town-layer')) {
+
+        if (!this.map.getLayer('ssfjc-extrusion-layer')) {
           this.map.addLayer({
-            id: 'town-layer',
-            source: 'town-geo',
-            type: 'fill-extrusion',
-            paint: {
+            'id': 'ssfjc-extrusion-layer',
+            'type': 'fill-extrusion',
+            'source': "ssfjc-source",
+            'paint': {
+              // "fill-extrusion-color": "hsl(55, 1%, 17%)",
               "fill-extrusion-color": {
-                property: "tax",
-                stops: colorRange
+                property: "SE_HJ_LJ_BQ",
+                stops: colorStops
               },
               "fill-extrusion-height": {
-                property: "tax",
-                stops: [[0, 0], [maxtax, this.heightStop]]
-              }, "fill-extrusion-opacity": 0.7,
+                property: "SE_HJ_LJ_BQ",
+                stops: [[taxMin, 0], [taxMax, this.heightStop]]
+              },
+              "fill-extrusion-base": 0,
+              "fill-extrusion-opacity": 0.7,
               "fill-extrusion-height-transition": {
+                duration: 2000
+              },
+              "fill-extrusion-color-transition": {
+                duration: 2000
+              }
+            }
+          });
+        }
+
+        // 添加高亮数据源及图层
+
+        if (!this.map.getSource('grid-active')) {
+          this.map.addSource("grid-active", {
+            type: "geojson",
+            data: this.gridActive as any
+          });
+        }
+
+        if (!this.map.getLayer('grid-active')) {
+          this.map.addLayer({
+            id: "grid-active",
+            type: "fill-extrusion",
+            source: "grid-active",
+            paint: {
+              "fill-extrusion-color": this.colorActive,
+              "fill-extrusion-height": {
+                property: "SE_HJ_LJ_BQ",
+                stops: [[taxMin, 0], [taxMax, this.heightStop]]
+              },
+              "fill-extrusion-opacity": 0.9,
+              "fill-extrusion-height-transition": {
+                duration: 1500
+              },
+              "fill-extrusion-color-transition": {
                 duration: 1500
               }
             }
           });
         }
-        // mousemove
-        const popup = new mapboxgl.Popup({
-          closeButton: false,
-          closeOnClick: false,
-          anchor: "top"
-        });
-        this.map.on("mousemove", e => {
-          let html = "";
-          const coords = [e.lngLat.lng, e.lngLat.lat];
-          // console.log(e);
-          const queryPoint = this.map.queryRenderedFeatures(e.point, {
-            layers: ["town-layer"]
-          });
-          if (queryPoint.length) {
-            this.map.setPaintProperty("grid-active", "fill-extrusion-height", {
-              property: "tax",
-              stops: [[0, 0], [maxtax, this.heightStop]]
-            });
-            this.gridActive.features = [queryPoint[0]];
-            (this.map.getSource("grid-active") as any).setData(this.gridActive);
-            this.map.getCanvas().style.cursor = "pointer";
-            if (queryPoint[0].properties.item) {
-              const p = JSON.parse(queryPoint[0].properties.item);
-              html = `<h5>镇街：${p.jdxzmc}</h5>
-              <h5>本年度税收：${p.bndsr}&nbsp;万元</h5>
-              <h5>上年同期：${p.sntq}&nbsp;万元</h5>
-              <h5>同比增减幅：${p.tbzjf}</h5>`;
 
-              popup
-                .setLngLat(coords as any)
-                .setHTML(html)
-                .addTo(this.map);
-            }
-          } else {
-            // selectNsr = "";
-            (this.map.getSource("grid-active") as any).setData(this.empty);
-            this.map.getCanvas().style.cursor = "";
-            popup.remove();
-          }
+        setTimeout(() => {
+          this.fly2target();
         });
-
       });
   }
 
@@ -293,22 +246,70 @@ export class EconomicAnalysisMapTaxHyMapComponent implements OnInit, AfterViewIn
   mapboxLoad(e) {
     this.loadSrv.close();
     this.map = e;
+    (window as any).map = this.map;
     setTimeout(() => {
-      this.getData();
-      this.fly2target();
+      // this.getData();
+      // this.fly2target();
     });
 
     (window as any).map = e;
 
+    const popup = new mapboxgl.Popup({
+      closeButton: false,
+      closeOnClick: false,
+      anchor: "top"
+    });
+    // mousemove event;
+    this.map.on("mousemove", e => {
+      let html = "";
+      const coords = [e.lngLat.lng, e.lngLat.lat];
+      const queryPoint = this.map.queryRenderedFeatures(e.point, {
+        layers: ["ssfjc-extrusion-layer"]
+      });
+      if (queryPoint.length) {
+        const target = queryPoint[0];
+        const { SE_HJ_LJ_BQ, SE_HJ_LJ_BQ_ZJE, SE_HJ_LJ_BQ_ZJBL, NAME } = target.properties;
+        // setTimeout(() => {
+        //   this.selectedXzqh = {
+        //     SE_HJ_LJ_BQ, SE_HJ_LJ_BQ_ZJE, SE_HJ_LJ_BQ_ZJBL, NAME
+        //   };
+
+        // });
+
+        this.gridActive.features = [target];
+        (this.map.getSource("grid-active") as any).setData(this.gridActive);
+        this.map.getCanvas().style.cursor = "pointer";
+        html = `<h5>行政区划：${NAME}</h5>
+          <h5>收入额&nbsp;&nbsp;：${(SE_HJ_LJ_BQ / 10000).toLocaleString()}亿</h5>
+          <h5>同比增减：${(SE_HJ_LJ_BQ_ZJE / 10000).toLocaleString()}亿</h5>
+          <h5>同比增幅：${SE_HJ_LJ_BQ_ZJBL}</h5>`;
+
+        popup
+          .setLngLat(coords as any)
+          .setHTML(html)
+          .addTo(this.map);
+
+      } else {
+        (this.map.getSource("grid-active") as any).setData(this.empty);
+        this.map.getCanvas().style.cursor = "";
+        popup.remove();
+      }
+    });
+
+
   }
 
   fly2target(center?, pitch?, zoom?, bearing?) {
-    this.map.flyTo({
-      center: center ? center : [120.33246, 36.276589],
-      zoom: zoom ? zoom : 9.688,
-      bearing: bearing ? bearing : 0,
-      pitch: pitch ? pitch : 46.5,
-      speed: 0.8
+    // this.map.fitBounds([[122.76816719294169, 40.48973849172634], [117.32389362527101, 35.63256594857987]]);
+
+    setTimeout(() => {
+      this.map.flyTo({
+        center: center ? center : MAPBOX_POS.center,
+        zoom: zoom ? zoom : MAPBOX_POS.zoom,
+        bearing: bearing ? bearing : MAPBOX_POS.bearing,
+        pitch: pitch ? pitch : MAPBOX_POS.pitch,
+        speed: 0.8
+      });
     });
   }
 

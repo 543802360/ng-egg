@@ -10,7 +10,7 @@ import { IDjnsrxx } from '@shared';
 })
 export class CompanyDjnsrxxViewComponent implements OnInit {
   record: IDjnsrxx = {};
-  i: IDjnsrxx;
+  i;
 
   constructor(
     private modal: NzModalRef,

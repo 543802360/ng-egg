@@ -18,7 +18,7 @@ import { yuan, order } from '@shared';
 })
 export class PermuTaxPermHyComponent implements OnInit {
 
-  style = dark;
+  style = decimal;
   map: mapboxgl.Map;
 
   //#region 表单搜索

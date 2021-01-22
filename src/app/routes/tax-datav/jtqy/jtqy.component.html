@@ -1,0 +1,141 @@
+<div class="container">
+    <div nz-row class="fill-row" nzGutter="8">
+        <!-- 左--税种统计 -->
+        <div nz-col nzSpan="6">
+            <div class="tax-2">
+                <div class="panel-title">
+                    集团企业排名
+                </div>
+                <div class="panel-content">
+                    <div style="height:100%;width:100%;overflow:scroll" class="zsxm-table-wrapper">
+                        <div nz-row class="zsxm-row" nzGutter="8">
+                            <div nz-col nzSpan="3">
+                                排名
+                            </div>
+                            <div nz-col nzSpan="14">
+                                集团企业名称
+                            </div>
+                            <div nz-col nzSpan="7">
+                                本年度税收
+                            </div>
+
+                        </div>
+                        <a pageScroll href="#scrollContent"></a>
+                        <div nz-row id="scrollContent" class="zsxm-row zsxm-item-row"
+                            *ngFor="let item of JtqyData_md;let i=index;" nzGutter="8">
+                            <div nz-col nzSpan="3">
+                                <nz-badge nzStandalone [nzStyle]="{ backgroundColor: 'rgb(33,107,198)' }"
+                                    nzCount="{{i+1}}" nzOverflowCount="10000">
+                                </nz-badge>
+                            </div>
+                            <div nz-col nzSpan="14" nz-button (click)="jtClickHandler(item['jtmc'])">
+                                {{item['jtmc']}}
+                            </div>
+                            <div nz-col nzSpan="7">
+                                {{item['bndsr'].toFixed(2)}}
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tax-2">
+                <div class="panel-title">
+                    <span *ngIf="curGNAME">{{curGNAME}}</span>子公司排名
+                </div>
+                <div class="panel-content">
+                    <div style="height:100%;width:100%;overflow:scroll" class="zsxm-table-wrapper">
+                        <div nz-row class="zsxm-row" nzGutter="8">
+                            <div nz-col nzSpan="3">
+                                排名
+                            </div>
+                            <div nz-col nzSpan="12">
+                                企业名称
+                            </div>
+                            <div nz-col nzSpan="9">
+                                本年度税收
+                            </div>
+
+                        </div>
+                        <a pageScroll href="#scrollContent" *ngIf="ZgsCurData&&ZgsCurData.length"></a>
+                        <div nz-row id="scrollContent" class="zsxm-row zsxm-item-row"
+                            *ngFor="let item of ZgsCurData;let i=index;" nzGutter="8">
+                            <div nz-col nzSpan="3">
+                                <nz-badge nzStandalone [nzStyle]="{ backgroundColor: 'rgb(33,107,198)' }"
+                                    nzCount="{{i+1}}">
+                                </nz-badge>
+                            </div>
+                            <div nz-col nzSpan="12" nz-button (click)="respClickZgsList(item['nsrmc'])">
+                                {{item['nsrmc']}}
+                            </div>
+                            <div nz-col nzSpan="9">
+                                {{item['bndsr']}}
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 中--地图统计 -->
+        <div nz-col nzSpan="12">
+            <div style="height: 100%; width: 100%;margin-top: 10px;">
+                <nz-button-group nzSize="default" style="position: absolute; z-index: 99;top: 20px; left: 20px;">
+                    <button nz-button (click)="switchLayer('heat')" nzType="primary" nzGhost="true">热力图</button>
+                    <button nz-button (click)="switchLayer('dot')" nzType="primary" nzGhost="true">散点图</button>
+                    <button nz-button (click)="switchLayer('cluster')" nzType="primary" nzGhost="true">聚合图</button>
+                </nz-button-group>
+                <button nz-button
+                    style="display: flex;align-items: center;justify-content: center;position: absolute;z-index: 999;right: 15px;bottom: 15px;width: 36px;height: 36px;"
+                    nzType="danger" nzShape="circle" nzGhost="true" (click)="returnHome()">
+                    <i nz-icon nzType="home" nzTheme="fill"></i>
+                </button>
+                <mgl-map class="main-map-container" [style]="style" [trackResize]="true" [zoom]="[8]"
+                    [center]="[121.4099, 37.47522]" (load)="mapboxLoad($event)">
+                    <mgl-control mglNavigation></mgl-control>
+                    <mgl-control mglFullscreen></mgl-control>
+                    <!-- <app-mapbox-style-control></app-mapbox-style-control> -->
+                </mgl-map>
+            </div>
+
+        </div>
+
+        <!-- 右--税种统计 -->
+        <div nz-col nzSpan="6">
+            <div class="tax-2">
+                <div class="panel-title">
+                    <ng-container *ngIf="curGNAME; else elseDivTest">
+                        {{curGNAME}}
+                    </ng-container>
+                    <ng-template #elseDivTest>
+                        烟台集团企业
+                    </ng-template>
+                </div>
+                <div class="panel-content-6" echarts [options]="rightTopChartOpt1" [theme]="'dark'"></div>
+                <!-- <div class="panel-content-4" echarts [options]="rightTopChartOpt2" [theme]="'dark'"></div> -->
+                <div class="panel-content-6" echarts [options]="rightTopChartOpt3" [theme]="'dark'"></div>
+                <div class="panel-content-4">
+                    <div class="panel-title">
+                        <!--同比增减幅-->户数</div>
+                    <div class="panel-title" style="color: rgba(40,208,233, 0.9)">
+                        <!--{{((curStatistics.curBNDSR-curStatistics.curSNTQ)/curStatistics.curSNTQ*100).toFixed(2)}}%-->{{companyNum}}户
+                    </div>
+
+                </div>
+                <div class="panel-content-4">
+                    <div class="panel-title">同比增减值</div>
+                    <div class="panel-title" style="color: rgba(40,208,233, 0.9)">
+                        {{(curStatistics.curBNDSR-curStatistics.curSNTQ)/10000|number}} 亿元</div>
+
+                </div>
+            </div>
+            <div class="tax-2">
+                <div class="panel-title">
+                    {{curZgsName}}
+                </div>
+                <div class="panel-content" echarts [options]="echartsZgsOpt" [theme]="'dark'">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

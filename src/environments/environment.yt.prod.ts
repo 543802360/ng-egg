@@ -15,13 +15,14 @@ export const environment = {
   SERVER_URL: `http://127.0.0.1:10920/api/`,
   map: {
     // 矢量地图
+    // 矢量地图
     VECTOR_MAP:
-      "https://www.qddsgis.com:2600/arcgis/rest/services/qdslmap/MapServer",
+      "http://140.68.16.98:6080/arcgis/rest/services/slmap/MapServer",
     VECTOR_MAP_TILE:
       "https://www.qddsgis.com:2600/arcgis/rest/services/qdslmap/MapServer/tile/{z}/{y}/{x}",
     // 影像地图
     IMAGE_MAP:
-      "https://www.qddsgis.com:2600/arcgis/rest/services/qdyxmap/MapServer",
+      "http://140.68.16.98:6080/arcgis/rest/services/yxmap/MapServer",
     IMAGE_MAP_TILE:
       "https://www.qddsgis.com:2600/arcgis/rest/services/qdyxmap/MapServer/tile/{z}/{y}/{x}",
   },

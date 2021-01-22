@@ -5,7 +5,7 @@ import { CdkVirtualScrollViewport } from "@angular/cdk/scrolling";
 import { BehaviorSubject, Observable, Subscription, from, timer } from 'rxjs';
 import { NzMessageService, NzTreeSelectComponent } from 'ng-zorro-antd';
 import * as mapboxgl from "mapbox-gl";
-import { dark } from "@geo";
+import { dark_T as dark, decimal_T as decimal } from "@geo";
 import { BdgSelectComponent, MonthRangeComponent, Point, getColorRange, COLORS, EOrder, ZSXM, export2excel } from '@shared';
 import { LoadingService, ReuseTabService, ReuseHookTypes, ReuseComponentInstance } from '@delon/abc';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -13,14 +13,14 @@ import { Router, ActivatedRoute } from '@angular/router';
 /**
  * 结果数据接口
  */
-interface ItemData {
-  NSRMC: string,
+interface itemInfo {
   BNDSR: number,
+  NSRMC: string,
   SNTQ: number,
+  TBZJF,
   TBZJZ: number,
-  TBZJF: string,
   lat: number,
-  lng: number
+  lng: number,
 }
 
 @Component({
@@ -37,9 +37,9 @@ export class EconomicAnalysisMapTaxDotMapComponent implements OnInit, AfterViewI
   @ViewChild('hyTreeSelect') hyTreeSelect: NzTreeSelectComponent;
   @ViewChild('scrollView') scrollView: CdkVirtualScrollViewport;
   ds: MyDataSource;// 查询结果数据源 
-  selectedValue = 50; // 所选纳税金额
+  selectedValue = 500; // 所选纳税金额
   selectedHy; // 所选行业
-  resData: ItemData[];
+  resData: itemInfo[];
 
   count = 0;
   totalValue = 0;
@@ -48,7 +48,7 @@ export class EconomicAnalysisMapTaxDotMapComponent implements OnInit, AfterViewI
 
   //#region mapboxgl 相关
 
-  style = dark;
+  style = decimal;
   map: mapboxgl.Map;
   pointActive = {
     type: 'FeatureCollection',
@@ -93,14 +93,14 @@ export class EconomicAnalysisMapTaxDotMapComponent implements OnInit, AfterViewI
   }
 
   ngAfterViewInit() {
-    this.loadSrv.open({ text: '正在处理……' });
+    // this.loadSrv.open({ text: '正在处理……' });
   }
 
   /**
    * 单击查看明细
    * @param i 
    */
-  click(i: ItemData) {
+  click(i: itemInfo) {
     this.router.navigate(['../../budget/single-query'], {
       queryParams: { nsrmc: i.NSRMC },
       relativeTo: this.route
@@ -126,9 +126,12 @@ export class EconomicAnalysisMapTaxDotMapComponent implements OnInit, AfterViewI
     this.loadSrv.open({ text: '正在处理……' });
     this.http.get(this.url, this.getCondition()).subscribe(resp => {
 
+      this.resData = (resp.data as itemInfo[]).filter(i => !i.NSRMC.includes('HGDZ01') && i.NSRMC !== '龙口市城乡建设投资发展有限公司'
+        && i.NSRMC !== '龙口市兴达投资管理有限公司');
+
       this.loadSrv.close();
-      this.count = resp.data.length;
-      resp.data.forEach(i => {
+      this.count = this.resData.length;
+      this.resData.forEach(i => {
         this.totalValue += i.BNDSR;
         sntqValue += i.SNTQ;
       });
@@ -136,13 +139,12 @@ export class EconomicAnalysisMapTaxDotMapComponent implements OnInit, AfterViewI
       this.tbzjf = `${(Math.floor(this.tbzjValue / sntqValue * 10000) / 100).toFixed(2)}%`;
 
 
-      this.resData = [...resp.data];
       if (this.ds) {
-        this.ds.updateSource(resp.data, this.scrollView);
+        this.ds.updateSource(this.resData, this.scrollView);
       } else {
-        this.ds = new MyDataSource(resp.data);
+        this.ds = new MyDataSource(this.resData);
       }
-      this.initDotLayer(resp.data);
+      this.initDotLayer(this.resData);
 
       this.cdr.detectChanges();
 
@@ -171,18 +173,19 @@ export class EconomicAnalysisMapTaxDotMapComponent implements OnInit, AfterViewI
    * 初始化散点地图
    * @param data 
    */
-  initDotLayer(data: ItemData[]) {
+  initDotLayer(data: itemInfo[]) {
 
     const values = data.map(i => i.BNDSR);
     const min = Math.min(...values);
     const max = Math.max(...values);
     // 构造点集合
-    const features = data.map((i, index) => {
+    const features = data.filter(i => i.lat !== null).map((i, index) => {
       return Point(i.lat, i.lng, {
         nsrmc: i.NSRMC,
         value: i.BNDSR
       })
     });
+
     const fc = {
       type: 'FeatureCollection',
       features
@@ -299,9 +302,9 @@ export class EconomicAnalysisMapTaxDotMapComponent implements OnInit, AfterViewI
             ['linear'],
             ['zoom'],
             7,
-            6,
+            10,
             14,
-            30
+            28
           ],
           // Transition from heatmap to circle layer by zoom level
           'heatmap-opacity': [
@@ -309,9 +312,9 @@ export class EconomicAnalysisMapTaxDotMapComponent implements OnInit, AfterViewI
             ['linear'],
             ['zoom'],
             7,
-            1,
+            0.8,
             12,
-            1,
+            0.8,
             15,
             0
           ]
@@ -586,6 +589,10 @@ export class EconomicAnalysisMapTaxDotMapComponent implements OnInit, AfterViewI
    * 导出
    */
   export() {
+    if (!this.resData || !this.resData.length) {
+
+      return;
+    }
     this.loadSrv.open({
       text: '正在处理……'
     });
@@ -617,7 +624,46 @@ export class EconomicAnalysisMapTaxDotMapComponent implements OnInit, AfterViewI
 
   mapboxLoad(e) {
     this.map = e;
-    this.getData();
+    this.http.get('assets/data/yt/SWJG.json').subscribe(resp => {
+      if (!this.map.getSource('current_city_line')) {
+        this.map.addSource('current_city_line', {
+          type: 'geojson',
+          data: resp as any
+        });
+      }
+      if (!this.map.getLayer('current_city_line')) {
+        (this.map as any).addLayer({
+          "id": "current_city_line",
+          "type": "line",
+          "source": "current_city_line",
+          "minzoom": 3,
+          "maxzoom": 13,
+          "layout": {
+            "line-join": "round",
+            "line-cap": "round",
+            "visibility": "visible"
+          },
+          "paint": {
+            "line-dasharray": {
+              "base": 1,
+              "stops": [
+                [6, [2, 0]],
+                [8, [2, 2, 6, 2]]
+              ]
+            },
+            "line-width": {
+              "base": 1,
+              "stops": [
+                [7, 2],
+                [14, 2.8]
+              ]
+            },
+            "line-color": "rgb(193,148,94)"
+          }
+        });
+      }
+    });
+    // this.getData();
     // 添加高亮数据源
     this.map.addSource('point-active', {
       type: 'geojson',
@@ -685,24 +731,24 @@ export class EconomicAnalysisMapTaxDotMapComponent implements OnInit, AfterViewI
 
 }
 
-class MyDataSource extends DataSource<ItemData>{
+class MyDataSource extends DataSource<itemInfo>{
 
   private pageSize = 1;
-  private cachedData: ItemData[];
+  private cachedData: itemInfo[];
   private fetchedPages = new Set<number>();
   private dataStream;
   private subscription = new Subscription();
-  private data: ItemData[];
-  constructor(data: ItemData[]) {
+  private data: itemInfo[];
+  constructor(data: itemInfo[]) {
     super();
     this.data = data;
-    this.cachedData = Array.from<ItemData>({ length: this.data.length });
-    this.dataStream = new BehaviorSubject<ItemData[]>(this.cachedData);
+    this.cachedData = Array.from<itemInfo>({ length: this.data.length });
+    this.dataStream = new BehaviorSubject<itemInfo[]>(this.cachedData);
     this.fetchedPages.clear();
 
   }
 
-  connect(collectionViewer: CollectionViewer): Observable<ItemData[]> {
+  connect(collectionViewer: CollectionViewer): Observable<itemInfo[]> {
     this.subscription.add(
       collectionViewer.viewChange.subscribe(range => {
         const startPage = this.getPageForIndex(range.start);
@@ -719,8 +765,8 @@ class MyDataSource extends DataSource<ItemData>{
     this.subscription.unsubscribe();
   }
 
-  updateSource(data: ItemData[], cdkScrollView: CdkVirtualScrollViewport) {
-    this.cachedData = Array.from<ItemData>({ length: data.length });
+  updateSource(data: itemInfo[], cdkScrollView: CdkVirtualScrollViewport) {
+    this.cachedData = Array.from<itemInfo>({ length: data.length });
     this.fetchedPages.clear();
     this.fetchPage(0);
     setTimeout(() => {

@@ -6,10 +6,37 @@ import { _HttpClient, ModalHelper } from '@delon/theme';
 import { STColumn, STComponent, STPage, STReq, STRequestOptions, STRes, STData, STChange } from '@delon/abc/st';
 import { NzMessageService } from 'ng-zorro-antd';
 import { LoadingService } from '@delon/abc';
+import { ActivatedRoute } from '@angular/router';
+import { CacheService } from '@delon/cache';
 
 // import * as L from "leaflet";
 
-
+interface IDjnsrxx {
+  UUID?: string; // UUID,存在同一企业几个街道共享
+  DJXH?: string; // 登记序号
+  NSRMC?: string;
+  NSRSBH?: string;
+  SHXYDM?: string;
+  NSRZTMC?: string;
+  SCJYDZ?: string;
+  ZCDZ?: string;
+  SWJGJC?: string;
+  SWSKFJJC?: string;
+  HYMC?: string;
+  DJZCLXMC?: string;
+  JDXZDM?: string;
+  JDXZMC?: string;
+  FDDBRXM?: string;
+  DJRQ?: Date;
+  LRRQ?: Date;
+  XGRQ?: Date;
+  SSFC?: number;// 税收分成
+  YXBZ?: string; // 有效标志
+  QBLCBZ?: string; // 全部留存标志
+  BZ?: string; // 备注
+  LAT?: string;
+  LNG?: string;
+}
 @Component({
   selector: 'app-company-position',
   templateUrl: './position.component.html',
@@ -32,318 +59,15 @@ export class CompanyPositionComponent implements OnInit, AfterViewInit {
 
 
   //#endregion
+  i: IDjnsrxx;
 
-
-  //#region ng-alain 表格
-  @ViewChild('st') st: STComponent;
-  url = "hx/nsr/list";
-  total: number;
-  expandForm = false;
-  // 数据列配置
-  columns: STColumn[] = [
-    {
-      title: '序号',
-      type: 'no',
-      width: 70,
-      fixed: 'left',
-      className: 'text-center'
-    },
-    {
-      title: '纳税人名称',
-      index: 'NSRMC',
-      width: 245,
-      fixed: 'left',
-      className: 'text-center'
-    },
-    {
-      title: '纳税人识别号',
-      index: 'NSRSBH',
-      width: 210,
-      className: 'text-center'
-    },
-
-    {
-      title: '社会信用代码',
-      index: 'SHXYDM',
-      width: 210,
-      className: 'text-center'
-    },
-    {
-      title: '税收留存比例',
-      index: 'SSFC',
-      width: 120,
-      className: 'text-center',
-      format: (item, col, index) => `${item.SSFC}%`
-
-    },
-    {
-      title: '所属街道',
-      index: 'JDXZMC',
-      width: 120,
-      className: 'text-center',
-      // 超管可见
-      acl: {
-        role: ['1']
-      }
-    },
-    {
-      title: '有效标志',
-      index: 'YXBZ',
-      width: 100,
-      className: 'text-center',
-      // 超管可见
-      acl: {
-        role: ['1']
-      },
-      type: "tag",
-      tag: {
-        'Y': { text: '有效', color: 'green' },
-        'N': { text: '无效', color: 'red' },
-      },
-    },
-    // {
-    //   title: '纳税人状态',
-    //   index: 'NSRZTMC',
-    //   width: 100,
-    //   type: "tag",
-
-    //   tag: this.nsrztTag,
-    //   className: 'text-center'
-    // },
-    {
-      title: '登记注册类型',
-      index: 'DJZCLXMC',
-      width: 130,
-      className: 'text-center'
-    },
-    {
-      title: '行业',
-      // index: 'HY_DM',
-      index: 'HYMC',
-      width: 150,
-      className: 'text-center'
-    },
-    {
-      title: '注册地址',
-      index: 'ZCDZ',
-      width: 260,
-      className: 'text-center'
-    },
-    {
-      title: '联系人',
-      index: 'LXR',
-      width: 100,
-      className: 'text-center'
-    },
-    {
-      title: '联系电话',
-      index: 'LXDH',
-      width: 110,
-      className: 'text-center'
-    },
-
-    {
-      title: '登记日期',
-      type: 'date',
-      index: 'DJRQ',
-      width: 120,
-      dateFormat: 'yyyy-MM-dd',
-      className: 'text-center'
-    },
-    {
-      title: '修改日期',
-      type: 'date',
-      index: 'XGRQ',
-      width: 120,
-      dateFormat: 'yyyy-MM-dd',
-      className: 'text-center'
-    },
-    {
-      title: '操作',
-      fixed: 'right',
-      width: 150,
-      className: 'text-center',
-      buttons: [
-        {
-          // text: '查看',
-          icon: 'eye',
-          tooltip: '查看纳税人信息',
-          type: 'modal',
-          acl: {
-            ability: ['company:hxnsrxx:view']
-          },
-          modal: {
-            component: CompanyListViewComponent,
-            params: record => ({ record }),
-            modalOptions: {
-              nzStyle: {
-                left: '26%',
-                position: 'fixed'
-              }
-            }
-          },
-          click: (_record, modal, comp) => {
-            // modal 为回传值，可自定义回传值
-
-          }
-        },
-        {
-          icon: 'edit',
-          tooltip: '编辑纳税人信息',
-          acl: {
-            ability: ['company:hxnsrxx:edit']
-          },
-          type: "modal",
-          modal: {
-            component: CompanyListEditComponent,
-            params: record => record,
-            modalOptions: {
-              nzStyle: {
-                left: '26%',
-                position: 'fixed'
-              }
-            }
-          },
-          click: (_record, modal, comp) => {
-            // modal 为回传值，可自定义回传值
-
-          }
-        },
-        {
-          icon: 'global',
-          tooltip: '定位',
-          acl: {
-            ability: ['company:hxnsrxx:edit']
-          },
-          type: "none",
-          click: (_record) => {
-
-            // console.log(_record);
-            this.selected = _record;
-            const { DJXH, NSRMC, ZCDZ, NSRSBH, DJZCLXMC, HYMC, LXR, LXDH, JDXZMC, LAT, LNG } = _record;
-
-            this.leafletMap.flyTo([LAT, LNG], 7);
-            this.editableLayer.eachLayer(layer => {
-              if (layer.DJXH === DJXH) {
-                setTimeout(() => {
-                  layer.openPopup();
-                });
-              }
-            });
-
-            // const params = ZCDZ ? { address: ZCDZ } : { address: NSRMC };
-            // const popupContent = `
-            // <h5>纳税人名称：${NSRMC}</h5>
-            // <h5>纳税人识别号：${NSRSBH}</h5>
-            // <h5>登记注册类型：${DJZCLXMC}</h5>
-            // <h5>所属行业：${HYMC}</h5>
-            // <h5>所属街道：${JDXZMC}</h5>
-            // <h5>联系人：${LXR}</h5>
-            // <h5>联系电话：${LXDH}</h5>
-            // <h5>注册地址：${ZCDZ}</h5>
-            // `;
-            // this.http.get('geo/amap/geocode', params).subscribe(resp => {
-
-            //   if (!resp.success) {
-            //     this.msgSrv.error(resp.msg);
-            //   }
-            //   const center = {
-            //     lat: resp.data.lat,
-            //     lng: resp.data.lng
-            //   };
-            //   this.nsrDefPosition = center;
-            //   if (resp.success) {
-            //     this.leafletMap.flyTo([center.lat, center.lng], 7);
-            //   }
-            //   if (this.nsrMarker) {
-            //     // L.marker([center.lat,center.lng]).
-            //     this.nsrMarker.setLatLng([center.lat, center.lng]).bindPopup(popupContent, { maxWidth: 600 });
-
-            //   } else {
-
-            //     this.nsrMarker = L.marker([center.lat, center.lng]).addTo(this.leafletMap).bindPopup(popupContent, { maxWidth: 600 });
-            //     this.editableLayer.addLayer(this.nsrMarker);
-            //   }
-
-            // });
-
-          }
-        },
-        {
-          icon: 'delete',
-          tooltip: '删除',
-          type: 'del',
-          acl: {
-            ability: ['company:hxnsrxx:delete']
-          },
-          click: (record, _modal, comp) => {
-            this.http.post('hx/nsr/del', [record.UUID]).subscribe(resp => {
-              if (resp.success) {
-                this.msgSrv.success(`${resp.msg}`);
-                comp!.removeRow(record);
-                this.st.reload();
-              }
-              else {
-                this.msgSrv.error(resp.msg);
-              };
-            });
-
-          },
-        },
-      ]
-    }
-  ];
-  page: STPage = {
-    showSize: true,
-    pageSizes: [10, 20, 30, 40, 50, 100]
-  };
-  params = {
-    NSRMC: '',
-    NSRSBH: '',
-    SHXYDM: ''
-  }
-  // 请求配置
-  companyReq: STReq = {
-    type: 'page',
-    method: 'GET',
-    reName: {
-      pi: 'pageNum',
-      ps: 'pageSize'
-    },
-    process: (requestOpt: STRequestOptions) => {
-      const { NSRMC, NSRSBH } = requestOpt.params as any;
-      if (NSRMC === null) {
-        // (requestOpt.params as any).set('NSRMC', ['']);
-        Object.defineProperty(requestOpt.params, 'NSRMC', {
-          enumerable: true,
-          configurable: true,
-          value: ''
-        })
-      }
-      if (NSRSBH === null) {
-        // (requestOpt.params as any).set('NSRSBH', ['']);
-        Object.defineProperty(requestOpt.params, 'NSRSBH', {
-          enumerable: true,
-          configurable: true,
-          value: ''
-        })
-      }
-      return requestOpt;
-    }
-  };
-  // response 配置
-  companyRes: STRes = {
-    process: (data: STData[], rawData?: any) => {
-      this.total = rawData.data.count;
-      return rawData.data.rows;
-    }
-  };
-  //#endregion
-
-  constructor(public http: _HttpClient,
+  constructor(
+    private cacheSrv: CacheService,
+    public http: _HttpClient,
     private loadingSrv: LoadingService,
     private loadingTypeSrv: LoadingTypesService,
     private msgSrv: NzMessageService,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit() {
@@ -354,6 +78,39 @@ export class CompanyPositionComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
+    this.route.queryParams.subscribe(params => {
+      const nsrInfo: IDjnsrxx = JSON.parse(params.nsrInfo);
+      setTimeout(() => {
+        this.i = nsrInfo;
+        const center = {
+          lat: nsrInfo.LAT,
+          lng: nsrInfo.LNG
+        };
+        this.nsrDefPosition = center;
+        this.leafletMap.flyTo([center.lat, center.lng], 16);
+
+        const popupContent = `
+        <h5>纳税人名称：${nsrInfo.NSRMC}</h5>
+        <h5>纳税人识别号：${nsrInfo.NSRSBH}</h5>
+        <h5>登记注册类型：${nsrInfo.DJZCLXMC}</h5>
+        <h5>主管税务局：${nsrInfo.SWJGJC}</h5>
+        <h5>主管税务所科分局：${nsrInfo.SWSKFJJC}</h5>
+        <h5>法定代表人：${nsrInfo.FDDBRXM}</h5>
+        <h5>登记日期：${nsrInfo.DJRQ}</h5>
+        <h5>生产经营地址：${nsrInfo.SCJYDZ}</h5>
+        `;
+
+        if (this.nsrMarker) {
+          // L.marker([center.lat,center.lng]).
+          this.nsrMarker.setLatLng([center.lat, center.lng]).bindPopup(popupContent, { maxWidth: 600 });
+
+        } else {
+
+          this.nsrMarker = L.marker([center.lat, center.lng]).addTo(this.leafletMap).bindPopup(popupContent, { maxWidth: 600 });
+          this.editableLayer.addLayer(this.nsrMarker);
+        }
+      }, 500);
+    });
   }
 
   /**
@@ -407,9 +164,9 @@ export class CompanyPositionComponent implements OnInit, AfterViewInit {
           LNG: latlng.lng
         }
         // 更新
-        this.http.put(`hx/nsr/${property.UUID}`, property).subscribe(res => {
-          this.msgSrv.success(res.msg);
-        });
+        // this.http.put(`hx/nsr/${property.UUID}`, property).subscribe(res => {
+        //   this.msgSrv.success(res.msg);
+        // });
 
       });
     });
