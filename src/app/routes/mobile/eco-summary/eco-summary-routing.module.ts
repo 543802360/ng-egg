@@ -42,7 +42,7 @@ const routes: Routes = [
         }
       },
       {
-        path: 'hy-summary',
+        path: 'all-summary',
         component: EcoSummaryAllSummaryComponent,
         data: {
           title: '财政总收入分析'
@@ -50,7 +50,7 @@ const routes: Routes = [
       },
       {
         path: '',
-        redirectTo: 'zsxm-summary',
+        redirectTo: 'hy-summary',
         pathMatch: 'full'
       }
     ]

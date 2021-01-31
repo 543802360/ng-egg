@@ -10,10 +10,14 @@
             </ListItem>
             <ListItem *ngFor="let item of listData;let i =index" [extra]="item.bndsr | number">
                 <Badge [text]="i+1" [hot]="true" [size]="'large'" style="margin-left:6px;"></Badge>
-                {{item.cymc}}
+                {{item.cymc}}<span style="margin-left:6px">
+                    <i *ngIf="!item.tbzjf.includes('-')" style="margin-left:6px;color:green;" nz-icon nzType="arrow-up"
+                        nzTheme="outline"></i>
+                    <i *ngIf="item.tbzjf.includes('-')" style="margin-left:6px;color: red;" nz-icon nzType="arrow-down"
+                        nzTheme="outline"></i>
+                </span>
                 <Brief>占比:&nbsp;{{(item.bndsr/total*100).toFixed(2)}}%
-                    <!-- <span
-                        style="margin-left:12px">同比增长:&nbsp;{{item.tbzjz}}</span> -->
+                    <span style="margin-left:12px">同比:&nbsp;{{item.tbzjf}}</span>
                 </Brief>
             </ListItem>
         </List>

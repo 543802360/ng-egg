@@ -1,7 +1,16 @@
 <Drawer class="my-drawer" enableDragHandle="true" [ngStyle]="{ minHeight: this.height + 'px' }"
     [contentStyle]="{ color: '#A6A6A6', textAlign: 'center', paddingTop: '42px' }" [enableDragHandle]="true"
-    [sidebar]="sidebar" [open]="this.state.open" (onOpenChange)="this.state.open=!this.state.open">
+    [sidebar]="sidebar" [open]="state.open" (onOpenChange)="state.open=!state.open">
     <!-- <ng-container></ng-container> -->
+    <div style="position: absolute;
+    top:5px;
+    left: 10px;
+    width: 32px;
+    height: 32px;
+    border-radius: 16px;" Button (click)="state.open=!state.open" [type]="'primary'" [icon]="'search'"
+        [disabled]="false">
+    </div>
+
     <ng-content></ng-content>
 
 </Drawer>

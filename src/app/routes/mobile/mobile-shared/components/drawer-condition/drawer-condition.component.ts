@@ -23,7 +23,7 @@ export class MobileDrawerConditionComponent implements OnInit {
   budgetValue = [];
 
   height: number = document.documentElement.clientHeight - 145;
-
+  // 发送参数
   @Output() onConditionConfirm = new EventEmitter<Object>();
 
   constructor(private http: _HttpClient,
@@ -56,6 +56,7 @@ export class MobileDrawerConditionComponent implements OnInit {
 
   onOk() {
     this.budgetValue = [];
+    this.state.open = false;
     if (this.countySelected || this.citySelected || this.centerSelected) {
       if (this.centerSelected) {
         this.budgetValue.push(BudgetLevel.CENTER);
