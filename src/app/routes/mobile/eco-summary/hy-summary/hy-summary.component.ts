@@ -15,7 +15,7 @@ export class EcoSummaryHySummaryComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     setTimeout(() => {
-      // this.getData();
+      // To Do
     });
   }
 
