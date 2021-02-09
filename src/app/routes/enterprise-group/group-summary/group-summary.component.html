@@ -1,49 +1,74 @@
+<div nz-row nzGutter="8" style="margin: 10px 0;">
+    <div nz-col nzSpan="5">
+        <nz-card [nzLoading]="http.loading">
+            <nz-statistic nzTitle="本年度总收入" [nzValue]="bndTotal|number" nzSuffix="万元">
+            </nz-statistic>
+        </nz-card>
+    </div>
+    <div nz-col nzSpan="5">
+        <nz-card [nzLoading]="http.loading">
+            <nz-statistic nzTitle="上年同期总收入" [nzValue]="sntqTotal|number" nzSuffix="万元">
+            </nz-statistic>
+        </nz-card>
+    </div>
+    <div nz-col nzSpan="5">
+        <nz-card [nzLoading]="http.loading">
+            <nz-statistic nzTitle="同比增减" [nzValue]="bndTotal- sntqTotal|number" nzSuffix="万元">
+            </nz-statistic>
+        </nz-card>
+    </div>
+    <div nz-col nzSpan="3">
+        <nz-card [nzLoading]="http.loading">
+            <nz-statistic nzTitle="同比增减幅" [nzPrefix]="bndTotal>sntqTotal?up:down"
+                nzValue="{{((bndTotal- sntqTotal)/sntqTotal*100).toFixed(2)}}"
+                [nzValueStyle]="(bndTotal>sntqTotal)?{color:'green'}:{color:'red'}" nzSuffix="%">
+            </nz-statistic>
+        </nz-card>
+    </div>
+    <div nz-col nzSpan="3">
+        <nz-card [nzLoading]="http.loading">
+            <nz-statistic nzTitle="同比增长集团数" [nzPrefix]="up" [nzValue]="upCount" [nzValueStyle]="{color:'green'}"
+                nzSuffix="户">
+            </nz-statistic>
+        </nz-card>
+    </div>
+    <div nz-col nzSpan="3">
+        <nz-card [nzLoading]="http.loading">
+            <nz-statistic nzTitle="同比下降集团数" [nzPrefix]="down" [nzValue]="downCount" [nzValueStyle]="{color:'red'}"
+                nzSuffix="户">
+            </nz-statistic>
+        </nz-card>
+    </div>
+</div>
+
 <nz-card class='enterprise-card' [nzExtra]="extraTemplate1">
     <ng-template #extraTemplate1>
         <app-bdg-select class="board-1" #bdgSelect></app-bdg-select>
-        <!-- 
-      <span class="header-label"> 所属行业:</span>
-      <nz-tree-select #hyTreeSelect class="hymc-tree-select" [(ngModel)]="selectedHymc" [nzNodes]="hymcNodes"
-        nzAllowClear="true" nzMultiple="false" [nzPlaceHolder]="'请选择行业名称'">
-      </nz-tree-select> -->
-
-        <span class="header-label"> 纳税额:</span>
-        <nz-select class="board-2" style="margin: 0 5px;width: 120px;" [(ngModel)]="selectedValue"
-            nzPlaceHolder="请选择税收金额">
-            <nz-option nzLabel="亿元以上" [nzValue]="10000">
-            </nz-option>
-            <nz-option nzLabel="5000万以上" [nzValue]="5000">
-            </nz-option>
-            <nz-option nzLabel="1000万以上" [nzValue]="1000">
-            </nz-option>
-
-        </nz-select>
-
         <app-month-range class="board-3" #monthRange style="margin-right: 5px;"></app-month-range>
         <button nz-button class="board-4" (click)="getData()" [disabled]="http.loading" nzType="primary"
             style="margin-left: 6px;">查询</button>
-        <button nz-button class="board-5" (click)="create()" [disabled]="http.loading" nzType="primary"
-            style="margin-left: 6px;">添加</button>
-        <button nz-button nz-tooltip nzTooltipTitle="帮助" (click)="startBoard()" nzType="default"
+        <button nz-button class="board-5" (click)="download()" [disabled]="http.loading" nzType="primary"
+            style="margin-left: 6px;">导出</button>
+        <!-- <button nz-button nz-tooltip nzTooltipTitle="帮助" (click)="startBoard()" nzType="default"
             style="margin-left: 6px;" nzShape="circle">
-            <i nz-icon nzType="question" nzTheme="outline"></i></button>
+            <i nz-icon nzType="question" nzTheme="outline"></i></button> -->
     </ng-template>
     <st #st [data]="data" [columns]="columns" [loading]="http.loading" [ps]="10" [pi]="1" [page]="page" bordered="true"
         size="middle" [scroll]="{'y':'576px'}" (change)="change($event)">
         <ng-template st-row="tbzjz-tpl" let-item let-index="index">
-            <nz-tag *ngIf="item.TBZJZ<0" nzColor="red">
-                <span nz-tooltip [nzTooltipTitle]="'同比下降：' + item.TBZJZ"> {{item.TBZJZ|number}}</span>
+            <nz-tag *ngIf="item.tbzjz<0" nzColor="red">
+                <span nz-tooltip [nzTooltipTitle]="'同比下降：' + item.tbzjz"> {{item.tbzjz|number}}</span>
             </nz-tag>
-            <nz-tag *ngIf="item.TBZJZ>=0" nzColor="green">
-                <span nz-tooltip [nzTooltipTitle]="'同比增长：' + item.TBZJZ+' 万元'"> {{item.TBZJZ|number}}</span>
+            <nz-tag *ngIf="item.tbzjz>=0" nzColor="green">
+                <span nz-tooltip [nzTooltipTitle]="'同比增长：' + item.tbzjz+' 万元'"> {{item.tbzjz|number}}</span>
             </nz-tag>
         </ng-template>
         <ng-template st-row="tbzjf-tpl" let-item let-index="index">
-            <nz-tag *ngIf="item.TBZJZ<0" nzColor="red">
-                <span nz-tooltip [nzTooltipTitle]="'同比下降：' + item.TBZJF"> {{item.TBZJF}}</span>
+            <nz-tag *ngIf="item.tbzjz<0" nzColor="red">
+                <span nz-tooltip [nzTooltipTitle]="'同比下降：' + item.tbzjf"> {{item.tbzjf}}</span>
             </nz-tag>
-            <nz-tag *ngIf="item.TBZJZ>=0" nzColor="green">
-                <span nz-tooltip [nzTooltipTitle]="'同比增长：' + item.TBZJF"> {{item.TBZJF}}</span>
+            <nz-tag *ngIf="item.tbzjz>=0" nzColor="green">
+                <span nz-tooltip [nzTooltipTitle]="'同比增长：' + item.tbzjf"> {{item.tbzjf}}</span>
             </nz-tag>
         </ng-template>
         <ng-template st-row='order-tpl' let-item let-index="index">
@@ -51,3 +76,11 @@
         </ng-template>
     </st>
 </nz-card>
+
+
+<ng-template #up>
+    <i nz-icon nzType="arrow-up"></i>
+</ng-template>
+<ng-template #down>
+    <i nz-icon nzType="arrow-down"></i>
+</ng-template>

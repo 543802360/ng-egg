@@ -1,17 +1,14 @@
 import { Component, OnInit, ViewChild, ChangeDetectorRef, AfterViewInit } from '@angular/core';
 import { _HttpClient, ModalHelper } from '@delon/theme';
 import { STColumn, STComponent, STPage, STData, STChange } from '@delon/abc/st';
-import { SFSchema } from '@delon/form';
 import { BdgSelectComponent } from 'src/app/shared/components/bdg-select/bdg-select.component';
 import { MonthRangeComponent } from 'src/app/shared/components/month-range/month-range.component';
 // import { NzTreeSelectComponent, NzMessageService } from 'ng-zorro-antd';
 
-import { IEOrder } from '@shared';
 import { CacheService } from '@delon/cache';
 import { Router, ActivatedRoute } from '@angular/router';
-import { LoadingService, OnboardingService } from '@delon/abc';
+import { LoadingService, OnboardingService, XlsxService } from '@delon/abc';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { NzTreeSelectComponent } from 'ng-zorro-antd/tree-select';
 
 @Component({
   selector: 'app-enterprise-group-group-summary',
@@ -19,23 +16,25 @@ import { NzTreeSelectComponent } from 'ng-zorro-antd/tree-select';
   styleUrls: ['./group-summary.component.less']
 })
 export class EnterpriseGroupGroupSummaryComponent implements OnInit, AfterViewInit {
-  url = `bdg/enterprise/tax`;
-  createUrl = `manage/big-enterprises`;
+
+  bndTotal = 0;
+  sntqTotal = 0;
+  tbzjTotal = 0;
+  upCount = 0;
+  downCount = 0;
+
+  url = `enterprise-group/taxsummary`;
   @ViewChild('st') st: STComponent;
   @ViewChild('bdgSelect') bdgSelect: BdgSelectComponent;
   @ViewChild('monthRange') monthRange: MonthRangeComponent;
-  @ViewChild('hyTreeSelect') hyTreeSelect: NzTreeSelectComponent;
-  hymcNodes;
-  selectedHymc: string;
-  selectedValue = 1000;
 
-  data: IEOrder[];
+  data: any[];
   total: number;
 
   // 表头设置
   columns: STColumn[] = [
     {
-      title: '排名',
+      title: '排行',
       width: 60,
       className: 'text-center',
       fixed: 'left',
@@ -49,33 +48,33 @@ export class EnterpriseGroupGroupSummaryComponent implements OnInit, AfterViewIn
 
     },
     {
-      index: 'NSRMC',
+      index: 'jtmc',
       title: '纳税人名称',
       className: 'text-center',
       fixed: 'left',
-      width: 260
+      width: 340
     },
     {
-      index: 'BNDSR',
+      index: 'bndsr',
       title: '本年度',
       className: 'text-center',
       type: 'number',
     },
     {
-      index: 'SNTQ',
+      index: 'sntq',
       title: '上年同期',
       className: 'text-center',
       type: 'number',
     },
     {
-      index: 'TBZJZ',
+      index: 'tbzjz',
       title: '同比增减',
       className: 'text-center',
       // type: 'number'
       render: 'tbzjz-tpl'
     },
     {
-      index: 'TBZJF',
+      index: 'tbzjf',
       title: '同比增减幅',
       className: 'text-center',
       render: 'tbzjf-tpl'
@@ -87,12 +86,12 @@ export class EnterpriseGroupGroupSummaryComponent implements OnInit, AfterViewIn
       fixed: 'right',
       buttons: [
         {
-          // tooltip: '详情',
+          tooltip: '查看集团子公司明细',
           icon: 'eye',
           // 点击查询详细税收
           click: (record: STData, modal: true) => {
-            this.router.navigate(['../../budget/single-query'], {
-              queryParams: { nsrmc: record.NSRMC },
+            this.router.navigate(['../zgs-list'], {
+              queryParams: { jtmc: record.jtmc },
               relativeTo: this.route
             });
           }
@@ -111,12 +110,12 @@ export class EnterpriseGroupGroupSummaryComponent implements OnInit, AfterViewIn
   constructor(public http: _HttpClient,
     public msg: NzMessageService,
     private boardingSrv: OnboardingService,
-    private cacheSrv: CacheService,
+    private xlsx: XlsxService,
     private router: Router,
     private route: ActivatedRoute,
     private loadSrv: LoadingService
   ) {
-    this.hymcNodes = this.cacheSrv.get('hymc', { mode: 'none' });
+
   }
 
 
@@ -125,9 +124,9 @@ export class EnterpriseGroupGroupSummaryComponent implements OnInit, AfterViewIn
   }
 
   ngAfterViewInit() {
-    // setTimeout(() => {
-    //   this.getData();
-    // });
+    setTimeout(() => {
+      this.getData();
+    });
   }
 
   /**
@@ -171,10 +170,26 @@ export class EnterpriseGroupGroupSummaryComponent implements OnInit, AfterViewIn
    * 获取税收统计概况（电子税票）
    */
   getData() {
+
+    this.bndTotal = 0;
+    this.sntqTotal = 0;
+    this.tbzjTotal = 0;
+    this.upCount = 0;
+    this.downCount = 0;
+
     this.bdgSelect.budgetValue.length === 0 ? this.bdgSelect.budgetValue = [4] : null;
     this.http.get(this.url, this.getCondition()).subscribe(resp => {
       this.data = resp.data;
       this.total = resp.data.length;
+      this.data.forEach(el => {
+        this.bndTotal += el.bndsr;
+        this.sntqTotal += el.sntq;
+        if (el.tbzjz > 0) {
+          ++this.upCount;
+        } else {
+          ++this.downCount;
+        }
+      });
 
     });
 
@@ -188,9 +203,8 @@ export class EnterpriseGroupGroupSummaryComponent implements OnInit, AfterViewIn
     const startMonth = startDate.getMonth() + 1;
     const endMonth = endDate.getMonth() + 1;
     const budgetValue = this.bdgSelect.budgetValue.toLocaleString();
-    const value = this.selectedValue;
-    const adminCode = '3302060000';
-    return { adminCode, year, startMonth, endMonth, budgetValue, value };
+
+    return { year, startMonth, endMonth, budgetValue };
 
   }
   /**
@@ -204,21 +218,30 @@ export class EnterpriseGroupGroupSummaryComponent implements OnInit, AfterViewIn
   }
 
   download() {
+    this.loadSrv.open({
+      text: '正在处理……'
+    });
+    const columns = this.columns.filter(col => col.title !== '操作' && col.title !== '排行');
+    const data = [columns.map(i => i.title)];
 
-  }
+    this.data.forEach(i => {
+      data.push(
+        columns.map(c => i[c.index as string])
+      )
+    });
 
-  /**
-   * 创建大企业名录
-   */
-  create() {
-    const nsrmcs = this.data.map(item => item.NSRMC);
-    this.http.post(this.createUrl, {
-      nsrmcs,
-      year: this.monthRange.startDate.getFullYear(),
-      filter: this.selectedValue
-    }).subscribe(resp => {
-      this.msg.success(resp.msg.length > 60 ? `${(resp.msg as string).substr(0, 60)}……已存在` : resp.msg);
+    this.xlsx.export({
+      sheets: [
+        {
+          data,
+          name: '集团税收统计'
+        }
+      ],
+      filename: `集团税收统计-${new Date().toLocaleString()}.xlsx`
+    }).then(e => {
+      this.loadSrv.close();
     });
   }
+
 }
 
