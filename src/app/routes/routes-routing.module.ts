@@ -63,7 +63,10 @@ const routes: Routes = [
         path: 'exception',
         loadChildren: () => import('./exception/exception.module').then(m => m.ExceptionModule)
       },
-
+      {
+        path: 'enterpriseGroup',
+        loadChildren: () => import('./enterprise-group/enterprise-group.module').then(m => m.EnterpriseGroupModule)
+      },
       // 楼宇经济子模块
       {
         path: 'building',
