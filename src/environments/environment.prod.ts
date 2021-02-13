@@ -14,8 +14,8 @@ export const environment = {
       "http://35.1.149.160:6080/arcgis/rest/services/qdyx2017/MapServer"
   },
   mapbox_pos: {
-    center: [120.33115, 36.251774],
-    zoom: 10.1839,
+    center: [119.981, 35.869],
+    zoom: 7.8,
     pitch: 55
 
   },

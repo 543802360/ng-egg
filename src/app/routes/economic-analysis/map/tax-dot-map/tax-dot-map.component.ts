@@ -811,7 +811,7 @@ export class EconomicAnalysisMapTaxDotMapComponent implements OnInit, AfterViewI
     this.map = e;
     (window as any).map = e;
     this.getData();
-    this.addTownBoundary()
+    // this.addTownBoundary()
     // 添加高亮数据源
     this.map.addSource('point-active', {
       type: 'geojson',
