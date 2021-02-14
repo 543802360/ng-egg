@@ -1,0 +1,5 @@
+<input nz-input [(ngModel)]="_jtmc" (ngModelChange)="autoChangeSub.next($event)" [nzAutocomplete]="jtmcAuto" name="jtmc"
+    placeholder="请输入名称" id="jtmc" style="display: inline-block;width: 284px;" />
+<nz-autocomplete nzBackfill #jtmcAuto>
+    <nz-auto-option *ngFor="let item of dataSource" [nzValue]="item" (click)="setjtmc(item)">{{item}}</nz-auto-option>
+</nz-autocomplete>

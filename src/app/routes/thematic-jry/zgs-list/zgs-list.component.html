@@ -1,0 +1,91 @@
+<div nz-row nzGutter="8" style="margin: 10px 0;">
+    <div nz-col nzSpan="4">
+        <nz-card [nzLoading]="http.loading">
+            <nz-statistic nzTitle="本年度总收入" [nzValue]="bndTotal|number" nzSuffix="万元">
+            </nz-statistic>
+        </nz-card>
+    </div>
+    <div nz-col nzSpan="4">
+        <nz-card [nzLoading]="http.loading">
+            <nz-statistic nzTitle="上年同期总收入" [nzValue]="sntqTotal|number" nzSuffix="万元">
+            </nz-statistic>
+        </nz-card>
+    </div>
+    <div nz-col nzSpan="4">
+        <nz-card [nzLoading]="http.loading">
+            <nz-statistic nzTitle="同比增减" [nzValue]="bndTotal- sntqTotal|number" nzSuffix="万元">
+            </nz-statistic>
+        </nz-card>
+    </div>
+    <div nz-col nzSpan="4">
+        <nz-card [nzLoading]="http.loading">
+            <nz-statistic nzTitle="同比增减幅" [nzPrefix]="bndTotal>sntqTotal?up:down"
+                nzValue="{{((bndTotal- sntqTotal)/sntqTotal*100).toFixed(2)}}"
+                [nzValueStyle]="(bndTotal>sntqTotal)?{color:'green'}:{color:'red'}" nzSuffix="%">
+            </nz-statistic>
+        </nz-card>
+    </div>
+    <div nz-col nzSpan="4">
+        <nz-card [nzLoading]="http.loading">
+            <nz-statistic nzTitle="同比增长企业数" [nzPrefix]="up" [nzValue]="upCount" [nzValueStyle]="{color:'green'}"
+                nzSuffix="户">
+            </nz-statistic>
+        </nz-card>
+    </div>
+    <div nz-col nzSpan="4">
+        <nz-card [nzLoading]="http.loading">
+            <nz-statistic nzTitle="同比下降企业数" [nzPrefix]="down" [nzValue]="downCount" [nzValueStyle]="{color:'red'}"
+                nzSuffix="户">
+            </nz-statistic>
+        </nz-card>
+    </div>
+</div>
+
+
+<nz-card class="single-card" [nzExtra]="extraTpl">
+    <ng-template #extraTpl>
+        <span style="font-weight: bolder;">金融机构类型：</span>
+        <nz-select style="width: 200px;" [(ngModel)]="selectedJrjglx" name="yhjg">
+            <nz-option *ngFor="let item of jrjglx" [nzLabel]="item.name" [nzValue]="item.value">
+            </nz-option>
+        </nz-select>
+
+        <!-- <input nz-input [(ngModel)]="nsrmc" id="nsrmc" name="nsrmc" placeholder="请输入纳税人名称"
+        style="display: inline-block;width: 284px;"> -->
+        <app-bdg-select #bdgSelect></app-bdg-select>
+        <app-month-range #monthRange style="margin-right: 5px;"></app-month-range>
+        <button (click)="getData()" [disabled]="http.loading" nz-button nzType="primary">查询</button>
+        <button (click)="export()" [disabled]="http.loading" nz-button nzType="primary">导出</button>
+
+    </ng-template>
+    <st #st [data]="data" [columns]="columns" [loading]="http.loading" [ps]="10" [pi]="1" [page]="page" bordered="true"
+        size="middle" [scroll]="{'y':'576px'}" (change)="change($event)">
+        <ng-template st-row="tbzjz-tpl" let-item let-index="index">
+            <nz-tag *ngIf="item.tbzjz<0" nzColor="red">
+                <span nz-tooltip [nzTooltipTitle]="'同比下降：' + item.tbzjz"> {{item.tbzjz|number}}</span>
+            </nz-tag>
+            <nz-tag *ngIf="item.tbzjz>=0" nzColor="green">
+                <span nz-tooltip [nzTooltipTitle]="'同比增长：' + item.tbzjz+' 万元'"> {{item.tbzjz|number}}</span>
+            </nz-tag>
+        </ng-template>
+        <ng-template st-row="tbzjf-tpl" let-item let-index="index">
+            <nz-tag *ngIf="item.tbzjz<0" nzColor="red">
+                <span nz-tooltip [nzTooltipTitle]="'同比下降：' + item.tbzjf"> {{item.tbzjf}}</span>
+            </nz-tag>
+            <nz-tag *ngIf="item.tbzjz>=0" nzColor="green">
+                <span nz-tooltip [nzTooltipTitle]="'同比增长：' + item.tbzjf"> {{item.tbzjf}}</span>
+            </nz-tag>
+        </ng-template>
+        <ng-template st-row='order-tpl' let-item let-index="index">
+            <nz-badge [nzCount]="(this.st.pi - 1) * this.st.ps + index + 1" nzOverflowCount="6666"></nz-badge>
+        </ng-template>
+    </st>
+</nz-card>
+
+
+<ng-template #up>
+    <i nz-icon nzType="arrow-up"></i>
+</ng-template>
+<ng-template #down>
+    <i nz-icon nzType="arrow-down"></i>
+</ng-template>

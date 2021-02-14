@@ -67,6 +67,10 @@ const routes: Routes = [
         path: 'enterpriseGroup',
         loadChildren: () => import('./enterprise-group/enterprise-group.module').then(m => m.EnterpriseGroupModule)
       },
+      {
+        path: 'jry',
+        loadChildren: () => import('./thematic-jry/thematic-jry.module').then(m => m.ThematicJryModule)
+      },
       // 楼宇经济子模块
       {
         path: 'building',
