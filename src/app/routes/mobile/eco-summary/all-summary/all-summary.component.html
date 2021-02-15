@@ -1,0 +1,83 @@
+<div class="result-container">
+
+    <List [className]="'date-picker-list'">
+        <ListItem DatePicker [extra]="currentDateFormat(date, 'yyyy-mm')" [arrow]="'horizontal'" [mode]="'month'"
+            [(ngModel)]="date" (onOk)="onOk($event)">
+            入库时间
+        </ListItem>
+    </List>
+
+    <Card [full]="true">
+        <CardHeader [title]="'一般公共预算收入'" [extra]="extra">
+            <ng-template #extra>
+                <span>{{ybggyssrTotal|number}} 万元</span>
+            </ng-template>
+        </CardHeader>
+        <CardBody>
+            <List>
+                <ListItem [extra]=" taxTotal | number">
+                    税收收入
+                </ListItem>
+                <ListItem [extra]=" notaxTotal | number">
+                    非税收入
+                </ListItem>
+            </List>
+            <!-- <div nz-row nzGutter="8" style="text-align: center;">
+                <div nz-col nzSpan="12">
+                    税收收入
+                </div>
+                <div nz-col nzSpan="12">
+                    {{taxTotal|number}} 万元
+                </div>
+            </div>
+            <div nz-row nzGutter="8">
+                <div nz-col nzSpan="12">
+                    非税收入
+                </div>
+                <div nz-col nzSpan="12">
+                    {{notaxTotal|number}} 万元
+                </div>
+            </div> -->
+        </CardBody>
+        <CardFooter [content]="'比同期'" [extra]="footerExtra">
+            <ng-template #footerExtra>
+                <div>{{ybggyssrBtq}}%</div>
+            </ng-template>
+        </CardFooter>
+    </Card>
+
+    <div class="content-wrapper">
+        <SegmentedControl #seg [values]="['税收收入', '非税收入']" (onChange)="itemChange($event)">
+        </SegmentedControl>
+        <div class="list-wrapper">
+            <List *ngIf="taxVisible">
+                <ListItem [extra]="'金额（万元）'">征收项目</ListItem>
+                <ListItem *ngFor="let item of taxZsxmData;let i =index" [extra]="  item.bn | number">
+                    <Badge [text]="i+1" [hot]="true" [size]="'large'" style="margin-left:6px;"></Badge>
+                    {{item.kmmc}} <span style="margin-left:6px">
+                        <i *ngIf="item.tbzjf&&!item.tbzjf.includes('-')" style="margin-left:6px;color:green;" nz-icon
+                            nzType="arrow-up" nzTheme="outline"></i>
+                        <i *ngIf="item.tbzjf&&item.tbzjf.includes('-')" style="margin-left:6px;color: red;" nz-icon
+                            nzType="arrow-down" nzTheme="outline"></i>
+                    </span>
+                    <Brief> <span style="margin-left:12px">同比:&nbsp;{{item.tbzjf}}%</span></Brief>
+                </ListItem>
+            </List>
+            <List *ngIf="notaxVisible">
+                <ListItem [extra]="'金额（万元）'">征收项目</ListItem>
+                <ListItem *ngFor="let item of notaxZsxmData;let i =index" [extra]="item.bn | number">
+                    <Badge [text]="i+1" [hot]="true" [size]="'large'" style="margin-left:6px;"></Badge>
+                    {{item.kmmc}} <span style="margin-left:6px">
+                        <i *ngIf="item.tbzjf&&!item.tbzjf.includes('-')" style="margin-left:6px;color:green;" nz-icon
+                            nzType="arrow-up" nzTheme="outline"></i>
+                        <i *ngIf="item.tbzjf&&item.tbzjf.includes('-')" style="margin-left:6px;color: red;" nz-icon
+                            nzType="arrow-down" nzTheme="outline"></i>
+                    </span>
+                    <Brief> <span style="margin-left:12px">同比:&nbsp;{{item.tbzjf}}%</span></Brief>
+
+                </ListItem>
+            </List>
+        </div>
+    </div>
+
+</div>

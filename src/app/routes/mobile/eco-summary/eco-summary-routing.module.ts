@@ -50,7 +50,7 @@ const routes: Routes = [
       },
       {
         path: '',
-        redirectTo: 'hy-summary',
+        redirectTo: 'all-summary',
         pathMatch: 'full'
       }
     ]
