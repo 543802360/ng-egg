@@ -18,7 +18,9 @@ export class EcoSummaryCySummaryComponent implements OnInit, AfterViewInit {
 
   cyUrl = `analysis/tax/cy`;
   listData: any[];
-  total: number = 0;
+  bndsr: number = 0;
+  sntq: number = 0;
+  tbzjf;
 
   constructor(private http: _HttpClient) { }
 
@@ -31,15 +33,18 @@ export class EcoSummaryCySummaryComponent implements OnInit, AfterViewInit {
   }
 
   getCondition(e) {
-    this.total = 0;
+    this.bndsr = 0;
+    this.sntq = 0;
     this.http.get(this.cyUrl, e).subscribe(resp => {
 
       let itemData = resp.data.map(item => Object.assign({ const: 100 }, item))
       this.listData = [...itemData];
 
       for (const key of this.listData) {
-        this.total += key['bndsr']
+        this.bndsr += key['bndsr'];
+        this.sntq += key['sntq']
       }
+      this.tbzjf = Math.round((this.bndsr / this.sntq - 1) * 10000) / 100;
       // 初始化图表
       let chart = new F2.Chart({
         id: this.chartEl.nativeElement,

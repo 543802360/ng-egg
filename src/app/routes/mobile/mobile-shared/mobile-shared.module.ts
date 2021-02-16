@@ -1,3 +1,4 @@
+import { MobileQypmConditionComponent } from './components/qypm-condition/qypm-condition.component';
 import { CommonModule } from '@angular/common';
 import { NgModule, Type } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -6,7 +7,8 @@ import { MobileDrawerConditionComponent } from './components/drawer-condition/dr
 
 const COMPONENTS: Type<void>[] =
   [
-    MobileDrawerConditionComponent
+    MobileDrawerConditionComponent,
+    MobileQypmConditionComponent
   ];
 const COMPONENTS_NOROUNT: Type<void>[] = [];
 

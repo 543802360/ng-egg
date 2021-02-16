@@ -75,7 +75,7 @@ export class MobileDrawerConditionComponent implements OnInit {
       const flag = 'DZSP';
       // 传递参数
       this.onConditionConfirm.emit({
-        year: year - 1,
+        year: year,
         startMonth, endMonth, flag, budgetValue
       })
     } else {

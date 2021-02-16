@@ -1,17 +1,19 @@
 <Navbar [rightContent]="popover">
-    专题分析
+    {{title?title:'税收专题分析'}}
+
 </Navbar>
 
 <ng-template #popover>
     <Icon Popover [ngStyle]="{ height: '100%', display: 'flex', 'align-items': 'center' }" [mask]="false"
-        [showArrow]="true" [overlay]="overlay" [type]="'ellipsis'" [placement]="'bottomRight'"></Icon>
+        [showArrow]="true" [overlay]="overlay" [type]="'ellipsis'" [placement]="'bottomRight'" (onSelect)="nav($event)">
+    </Icon>
 </ng-template>
 
 <ng-template #overlay>
     <PopoverItem [icon]="icon1">大企业税收</PopoverItem>
-    <PopoverItem [icon]="icon2">企业排名</PopoverItem>
+    <PopoverItem [icon]="icon2">企业税收排名</PopoverItem>
     <PopoverItem [icon]="icon4">企业税收明细</PopoverItem>
-    <PopoverItem [icon]="icon3">财源建设企业</PopoverItem>
+    <!-- <PopoverItem [icon]="icon3">财源建设企业</PopoverItem> -->
 </ng-template>
 
 <ng-template #icon1>

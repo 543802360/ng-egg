@@ -7,6 +7,7 @@ import { SharedModule } from '@shared';
 import { NgModule } from '@angular/core';
 import { EcoThematicRoutingModule } from './eco-thematic-routing.module';
 import { NgZorroAntdMobileModule } from 'ng-zorro-antd-mobile';
+import { MobileSharedModule } from '../mobile-shared/mobile-shared.module';
 
 const COMPONENTS = [
   MobileTmBigEnterpriseComponent,
@@ -19,6 +20,7 @@ const COMPONENTS_NOROUNT = [];
 @NgModule({
   imports: [
     SharedModule,
+    MobileSharedModule,
     NgZorroAntdMobileModule,
     EcoThematicRoutingModule
   ],

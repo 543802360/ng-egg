@@ -36,7 +36,7 @@ export class HomeComponent {
         this.router.navigate(['./eco-summary/all-summary'], { relativeTo: this.route });
         break;
       case 1:
-        this.router.navigate(['./eco-map/agg-map'], { relativeTo: this.route });
+        this.router.navigate(['./eco-thematic/jdxz'], { relativeTo: this.route });
 
         break;
       case 2:
@@ -68,22 +68,22 @@ export class HomeComponent {
         this.thematicVisible = false;
         break;
       case 1:
-        this.mapVisible = true;
+        this.mapVisible = false;
         this.userVisible = false;
         this.summaryVisible = false;
-        this.thematicVisible = false;
+        this.thematicVisible = true;
         break;
       case 2:
         this.mapVisible = false;
-        this.userVisible = false;
+        this.userVisible = true;
         this.summaryVisible = false;
-        this.thematicVisible = true;
+        this.thematicVisible = false;
         break;
       case 3:
         this.mapVisible = false;
-        this.userVisible = true;
+        this.userVisible = false;
         this.summaryVisible = false;
-        this.thematicVisible = true;
+        this.thematicVisible = false;
         break;
       default:
         break;

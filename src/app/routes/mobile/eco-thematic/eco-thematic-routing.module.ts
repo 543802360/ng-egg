@@ -25,7 +25,7 @@ const routes: Routes =
         },
         {
           path: '',
-          redirectTo: 'jdxz',
+          redirectTo: 'order',
           pathMatch: 'full'
         }
       ]

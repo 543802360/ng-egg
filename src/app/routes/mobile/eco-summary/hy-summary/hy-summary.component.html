@@ -1,4 +1,55 @@
 <mobile-drawer-condition #drawer (onConditionConfirm)="getCondition($event)">
+
+    <div class="condition-flex-container">
+        <Flex style="font-weight:bolder;" [direction]="'row'">
+            <FlexItem>
+                <Card [full]="true">
+                    <CardHeader [title]="'本年度收入'" [extra]="extra_1">
+                        <ng-template #extra_1>
+                            <span>{{bndsr/10000|number}}亿</span>
+                        </ng-template>
+                    </CardHeader>
+
+                    <CardFooter [content]="'上年同期'" [extra]="footerExtra_1">
+                        <ng-template #footerExtra_1>
+                            <div>{{sntq/10000|number}}亿</div>
+                        </ng-template>
+                    </CardFooter>
+                </Card>
+            </FlexItem>
+            <FlexItem>
+                <Card [full]="true">
+                    <CardHeader [title]="'同比增长额'" [extra]="extra_2">
+                        <ng-template #extra_2>
+                            <span>{{(bndsr-sntq)/10000|number}}亿</span>
+                        </ng-template>
+                    </CardHeader>
+
+                    <CardFooter [content]="'同比增长幅'" [extra]="footerExtra_2">
+                        <ng-template #footerExtra_2>
+                            <div>{{tbzjf}}%</div>
+                        </ng-template>
+                    </CardFooter>
+                </Card>
+            </FlexItem>
+            <!-- <FlexItem class="flex-1">
+                <span>本年度收入：{{bndsr}}</span>
+            </FlexItem>
+            <FlexItem class="flex-1">
+                <span>上年同期：{{sntq}}</span>
+            </FlexItem>
+            <FlexItem class="flex-1">
+                <WhiteSpace [size]="'md'"></WhiteSpace>
+                <span>同比增长额：{{tbzje}}</span>
+                <WhiteSpace [size]="'md'"></WhiteSpace>
+            </FlexItem>
+            <FlexItem class="flex-1">
+                <WhiteSpace [size]="'md'"></WhiteSpace>
+                <span>同比增长幅：{{tbzjf}}</span>
+                <WhiteSpace [size]="'md'"></WhiteSpace>
+            </FlexItem> -->
+        </Flex>
+    </div>
     <div class="result-container">
         <div class="chart-wrapper">
             <canvas class='chart' #chart style="width: 100%;height: 600px;"></canvas>
@@ -15,7 +66,7 @@
                         <i *ngIf="item.tbzjf.includes('-')" style="margin-left:6px;color: red;" nz-icon
                             nzType="arrow-down" nzTheme="outline"></i>
                     </span>
-                    <Brief>占比:&nbsp;{{(item.bndsr/total*100).toFixed(2)}}% <span
+                    <Brief>占比:&nbsp;{{(item.bndsr/bndsr*100).toFixed(2)}}% <span
                             style="margin-left:12px">同比:&nbsp;{{item.tbzjz|number}}</span></Brief>
                 </ListItem>
             </List>
