@@ -40,7 +40,7 @@ export class HomeComponent {
 
         break;
       case 2:
-        this.router.navigate(['./eco-thematic/jdxz'], { relativeTo: this.route });
+        this.router.navigate(['./favor'], { relativeTo: this.route });
 
         break;
       case 3:
@@ -81,7 +81,7 @@ export class HomeComponent {
         break;
       case 3:
         this.mapVisible = false;
-        this.userVisible = false;
+        this.userVisible = true;
         this.summaryVisible = false;
         this.thematicVisible = false;
         break;

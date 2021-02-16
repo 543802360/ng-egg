@@ -2,6 +2,8 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { FavorService } from '../../service/favor.service';
 import { Modal, ToastService } from 'ng-zorro-antd-mobile';
 import { Router, ActivatedRoute } from '@angular/router';
+import { _HttpClient } from '@delon/theme';
+import { CacheService } from '@delon/cache';
 
 @Component({
   selector: 'app-favor-qy',
@@ -23,6 +25,9 @@ export class FavorQyComponent implements OnInit, AfterViewInit {
     }
   }];
   constructor(private favorService: FavorService,
+    private cacheSrv: CacheService,
+    private toastSrv: ToastService,
+    private http: _HttpClient,
     private router: Router,
     private route: ActivatedRoute) { }
 
@@ -43,7 +48,17 @@ export class FavorQyComponent implements OnInit, AfterViewInit {
 
 
   onFavor() {
+    const username = this.cacheSrv.get('userInfo', { mode: 'none' }).username;
+    this.http.post('favor/destroy',
+      {
+        username,
+        qymc: this.favorNsrmc
+      }).subscribe(resp => {
+        // console.log(resp);
+        this.toastSrv.info(resp.msg);
+        this.favorJtData = this.favorJtData.filter(item => item.qymc != this.favorNsrmc);
 
+      });
   }
 
   /**
@@ -51,14 +66,22 @@ export class FavorQyComponent implements OnInit, AfterViewInit {
  * @param e 
  */
   onSwipeOpen(e) {
-    this.favorNsrmc = e.mc;
+    this.favorNsrmc = e.qymc;
   }
 
 
   getFavorData() {
-
+    const username = this.cacheSrv.get('userInfo', { mode: 'none' }).username;
+    this.http.get('favor/index',
+      {
+        username,
+      }).subscribe(resp => {
+        this.favorJtData = resp['data'];
+        // console.log(resp);
+        // this.toastSrv.info(resp.msg);
+      });
   }
   favorClick(e) {
-    this.router.navigate(['../../syzt/single'], { relativeTo: this.route, queryParams: { nsrmc: e } })
+    this.router.navigate(['../../eco-thematic/single'], { relativeTo: this.route, queryParams: { nsrmc: e } })
   }
 }

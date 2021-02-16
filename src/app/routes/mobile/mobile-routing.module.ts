@@ -17,6 +17,10 @@ const routes: Routes = [
           loadChildren: () => import('./eco-thematic/eco-thematic.module').then(m => m.EcoThematicModule),
         },
         {
+          path: 'favor',
+          loadChildren: () => import('./favor/favor.module').then(m => m.FavorModule)
+        },
+        {
           path: '',
           redirectTo: 'eco-summary',
           pathMatch: 'full'

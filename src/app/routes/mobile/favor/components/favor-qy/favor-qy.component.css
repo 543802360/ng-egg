@@ -1,5 +1,5 @@
 :host >>>.am-list-content, :host >>>.am-list-extra{
-    text-align: center !important;
+    /* text-align: center !important; */
   }
   :host >>> .am-list-item{
     padding: 7px 3px !important;
@@ -23,8 +23,8 @@
     width: 100%;
     height: calc(100% - 60px);
     position: absolute;
-    top: 60px;
-    overflow: scroll;
+    /* top: 80px; */
+    /* overflow: scroll; */
   }
   .fixed-title{
     font-weight: bolder;

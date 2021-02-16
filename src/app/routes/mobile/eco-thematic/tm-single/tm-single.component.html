@@ -111,8 +111,9 @@
 </div>
 <!-- 侧边栏trigger -->
 <div Button [icon]="config" (click)="state.open=!state.open" [type]="'primary'"
-    style="position:fixed;height: 32px;width: 32px;top:85px;z-index: 10;">
+    style="position:fixed;height: 32px;width: 32px;top:85px;border-radius: 16px;z-index: 10;">
 </div>
+
 <ng-template #config>
     <Icon [type]="'right'"></Icon>
 </ng-template>

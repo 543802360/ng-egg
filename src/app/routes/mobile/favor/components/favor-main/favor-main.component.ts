@@ -34,9 +34,6 @@ export class FavorMainComponent implements OnInit, AfterViewInit {
       case '收藏企业':
         this.router.navigate(['./favorQy'], { relativeTo: this.activeRoute });
         break;
-      case '收藏集团':
-        this.router.navigate(['./favorJt'], { relativeTo: this.activeRoute });
-        break;
       case '修改密码':
         this.router.navigate(['./modifyPwd'], { relativeTo: this.activeRoute });
         break;

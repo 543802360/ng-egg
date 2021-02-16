@@ -10,14 +10,20 @@ import { NgZorroAntdMobileModule } from 'ng-zorro-antd-mobile';
 
 
 
-const COMPONENTS = [
-  FavorMainComponent, FavorQyComponent, ModifyPwdComponent
-];
+const COMPONENTS =
+  [
+    FavorMainComponent,
+    FavorQyComponent,
+    ModifyPwdComponent
+  ];
 const COMPONENTS_NOROUNT = [];
 
-
 @NgModule({
-  declarations: [],
+  declarations:
+    [
+      ...COMPONENTS,
+      ...COMPONENTS_NOROUNT
+    ],
   imports: [
     CommonModule,
     SharedModule,
@@ -28,18 +34,5 @@ const COMPONENTS_NOROUNT = [];
 })
 
 
-
-@NgModule({
-  imports: [
-    SharedModule,
-    MobileSharedModule,
-    NgZorroAntdMobileModule,
-    EcoThematicRoutingModule
-  ],
-  declarations: [
-    ...COMPONENTS,
-    ...COMPONENTS_NOROUNT
-  ],
-})
 export class FavorModule { }
 

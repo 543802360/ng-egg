@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { CacheService } from '@delon/cache';
 import { _HttpClient } from '@delon/theme';
 import { Modal, ToastService } from 'ng-zorro-antd-mobile';
 import { MobileDqyConditionComponent } from '../../mobile-shared/components/dqy-condition/dqy-condition.component';
@@ -36,6 +37,7 @@ export class MobileTmBigEnterpriseComponent implements OnInit {
     }
   }];
   constructor(
+    private cacheSrv: CacheService,
     private http: _HttpClient,
     private toastService: ToastService,
     // private favorService: FavorService,
@@ -102,24 +104,21 @@ export class MobileTmBigEnterpriseComponent implements OnInit {
     this.nsrpmListData = this.nsrpmTotalData.slice((e - 1) * 30, e * 30);
   }
   onFavor() {
-    // this.favorService.createFavor(this.favorNsrmc, FAVOR.QY, this.userSerive.getUserName(), this.userSerive.getToken(), this.userSerive.getUserId())
-    //   .subscribe(resp => {
-
-    //     if (resp['flag'] == "success") {
-    //       // 获取页数
-    //       this.toastService.success('收藏成功！', 2000);
-
-    //     }
-
-
-    //   });
+    const username = this.cacheSrv.get('userInfo', { mode: 'none' }).username;
+    this.http.post('favor/create',
+      {
+        username,
+        qymc: this.favorNsrmc
+      }).subscribe(resp => {
+        this.toastService.info(resp.msg);
+      });
   }
   /**
    * 收藏swipe 打开事件，获取当前纳税人名称
    * @param e 
    */
   onSwipeOpen(e) {
-    this.favorNsrmc = e.nsrmc;
+    this.favorNsrmc = e.NSRMC;
   }
 
 }
