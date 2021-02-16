@@ -1,0 +1,70 @@
+:host
+{
+    ::ng-deep{
+
+        .my-drawer {
+            position: relative;
+            overflow: auto;
+            height: 100% !important;
+            min-height: 0 !important;
+            -webkit-overflow-scrolling: touch
+          }
+          
+          .my-drawer .am-drawer-sidebar {
+            background-color: #fff;
+            overflow: auto;
+            -webkit-overflow-scrolling: touch
+          }
+          
+          .my-drawer .am-drawer-sidebar .am-list {
+            width: 300px;
+            padding: 0
+          }
+          
+          .my-drawer .am-drawer-sidebar {
+            z-index: 12
+          }
+         
+          .qy-single-title{
+            position: absolute;
+            top: 10px;
+            text-align: center;
+            width: 100%;
+            font-weight: bold;
+            font-size: 16px;
+          }
+          .am-list-content, .am-list-extra{
+            // text-align: center !important;
+          }
+           .zsxm-flexitem  .am-list-content{
+            text-align: left !important;
+            padding-left:15px;
+          }
+           .am-list-item{
+            padding: 7px 3px !important;
+          }
+           .am-list-item .am-list-line{
+            padding-right: 5px;
+          }
+          .chart-wrapper,
+        .chart-wrapper canvas {
+          width: 100%;
+          height: calc(100% - 130px);
+        }
+        
+        .list-wrapper {
+          width: 100%;
+          height: auto;
+          margin-top: -100px
+        }
+        .nsrmc-list{
+            position: absolute;
+            z-index: 999;
+            top: 50px;
+            width: 300px;
+            /* height: 500px; */
+            max-height: calc(100% - 60px);
+            overflow: scroll;
+          }
+    }
+}

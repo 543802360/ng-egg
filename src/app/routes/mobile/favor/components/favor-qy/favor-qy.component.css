@@ -1,0 +1,34 @@
+:host >>>.am-list-content, :host >>>.am-list-extra{
+    text-align: center !important;
+  }
+  :host >>> .am-list-item{
+    padding: 7px 3px !important;
+  }
+  :host >>> .am-list-item .am-list-line{
+    padding-right: 5px;
+  }
+  .flex-3 {
+    flex: 3 !important;
+  }
+  
+  .flex-2 {
+    flex: 2 !important;
+  }
+  
+  .flex-1 {
+    flex: 1 !important;
+  }
+
+  .list-wrapper {
+    width: 100%;
+    height: calc(100% - 60px);
+    position: absolute;
+    top: 60px;
+    overflow: scroll;
+  }
+  .fixed-title{
+    font-weight: bolder;
+    position: fixed;
+    z-index: 99;
+    width: 100%;
+  }

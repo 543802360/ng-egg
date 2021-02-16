@@ -1,0 +1,6 @@
+<div class="content-wrapper">
+    <SegmentedControl #syztSeg [values]="['收藏企业','修改密码']" (onChange)="czyxItemChange($event)"></SegmentedControl>
+    <div class="sub-content-wrapper">
+        <router-outlet></router-outlet>
+    </div>
+</div>

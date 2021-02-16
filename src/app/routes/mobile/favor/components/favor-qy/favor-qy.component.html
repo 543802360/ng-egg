@@ -1,0 +1,50 @@
+<Flex class="fixed-title">
+    <FlexItem class="flex-3">
+        <ListItem>企业名称</ListItem>
+    </FlexItem>
+    <FlexItem class="flex-2">
+        <ListItem>全口径</ListItem>
+    </FlexItem>
+    <FlexItem class="flex-2">
+        <ListItem>地方口径</ListItem>
+    </FlexItem>
+</Flex>
+<!--  -->
+<div class="list-wrapper">
+        <SwipeAction  *ngFor="let item of favorJtData;let i =index" style="background-color:gray" [autoClose]="true"
+            [right]="rightFavor" (onOpen)="onSwipeOpen(item)">
+            <Flex (click)="favorClick(item.mc)" >
+                <FlexItem class="flex-3">
+                    <ListItem>
+                        {{item.mc}}
+                    </ListItem>
+                </FlexItem>
+                <FlexItem class="flex-2">
+                    <ListItem>
+                        {{item.tax|number}}
+                        <Brief *ngIf="item.sntq">
+                            <span
+                                style="margin-left:8px">同比:&nbsp;{{((item.tax-item.sntq)/item.sntq*100).toFixed(2)}}%</span>
+                            <i *ngIf="item.tax>item.sntq" style="margin-left:6px;color:red;" nz-icon nzType="arrow-up"
+                                nzTheme="outline"></i>
+                            <i *ngIf="item.tax<item.sntq" style="margin-left:6px;color: green;" nz-icon
+                                nzType="arrow-down" nzTheme="outline"></i>
+                        </Brief>
+                    </ListItem>
+                </FlexItem>
+                <FlexItem class="flex-2">
+                    <ListItem>
+                        {{item.dftax|number}}
+                        <Brief *ngIf="item.dfsntq">
+                            <span
+                                style="margin-left:8px">同比:&nbsp;{{((item.dftax-item.dfsntq)/item.dfsntq*100).toFixed(2)}}%</span>
+                            <i *ngIf="item.dftax>item.dfsntq" style="margin-left:6px;color:red;" nz-icon
+                                nzType="arrow-up" nzTheme="outline"></i>
+                            <i *ngIf="item.dftax<item.dfsntq" style="margin-left:6px;color: green;" nz-icon
+                                nzType="arrow-down" nzTheme="outline"></i>
+                        </Brief>
+                    </ListItem>
+                </FlexItem>
+            </Flex>
+        </SwipeAction>
+</div>

@@ -6,17 +6,20 @@
 
             <SwipeAction *ngFor="let item of nsrpmListData;let i =index" style="background-color:gray"
                 [autoClose]="true" [right]="rightFavor" (onOpen)="onSwipeOpen(item)">
-                <ListItem (click)="getNsrTaxInfo(item.nsrmc)" [extra]="item.BNDSR/10000|number" [arrow]="'horizontal'">
+                <ListItem (click)="getNsrTaxInfo(item.NSRMC)" [extra]="item.BNDSR/10000|number" [arrow]="'horizontal'">
                     <Badge [overflowCount]="100000" [text]="(this.currentPage-1)*30+i+1" [hot]="true" [size]="'large'"
                         style="margin-left:6px;">
                     </Badge>
-                    {{item.NSRMC}} <span>
-                        <i *ngIf="item.TBZJZ>0" style="margin-left:6px;color:green;" nz-icon nzType="arrow-up"
-                            nzTheme="outline"></i>
-                        <i *ngIf="item.TBZJZ<0" style="margin-left:6px;color: red;" nz-icon nzType="arrow-down"
-                            nzTheme="outline"></i>
-                    </span>
-                    <Brief><span style="margin-left:12px">同比:&nbsp;{{item.TBZJZ/10000|number}}&nbsp;
+                    {{item.NSRMC}}
+
+                    <Brief><span style="margin-left:12px">同比:
+                            <span>
+                                <i *ngIf="item.TBZJZ>0" style="margin-left:6px;color:green;" nz-icon nzType="arrow-up"
+                                    nzTheme="outline"></i>
+                                <i *ngIf="item.TBZJZ<0" style="margin-left:6px;color: red;" nz-icon nzType="arrow-down"
+                                    nzTheme="outline"></i>
+                            </span>
+                            {{item.TBZJZ/10000|number}}&nbsp;
                             <!-- <span *ngIf="item.tbzjf!=0">（{{item.TBZJF}}）</span> -->
                         </span>
                         <!-- <span style="margin-left:12px">同比增幅:&nbsp;{{item.tbzjf}}</span> -->

@@ -1,0 +1,67 @@
+<Drawer class="my-drawer" enableDragHandle="true" [ngStyle]="{ minHeight: this.height + 'px' }"
+    [contentStyle]="{ color: '#A6A6A6', textAlign: 'center', paddingTop: '42px' }" [enableDragHandle]="true"
+    [sidebar]="sidebar" [open]="state.open" (onOpenChange)="state.open=!state.open">
+    <!-- <ng-container></ng-container> -->
+    <div style="position: absolute;
+    top:5px;
+    left: 10px;
+    width: 32px;
+    height: 32px;
+    border-radius: 16px;" Button (click)="state.open=!state.open" [type]="'primary'" [icon]="'search'"
+        [disabled]="false">
+    </div>
+
+    <ng-content></ng-content>
+
+</Drawer>
+
+<ng-template #lefticon>
+    <Icon type="ellipsis"></Icon>
+</ng-template>
+
+<ng-template #sidebar>
+    <List>
+        <ListItem DatePicker [arrow]="'horizontal'" [mode]="'month'" [(ngModel)]="startTime"
+            [extra]="currentDateFormat(startTime, 'yyyy-mm')">
+            开始时间
+        </ListItem>
+        <ListItem DatePicker [arrow]="'horizontal'" [mode]="'month'" [(ngModel)]="endTime"
+            [extra]="currentDateFormat(endTime, 'yyyy-mm')">
+            结束时间
+        </ListItem>
+
+        <ListItem Picker [extra]="selectedMlmc" [title]="'选择行业名称'" [arrow]="'horizontal'" [data]="mlmcData"
+            (ngModelChange)="onSelectMlmc($event)" [(ngModel)]="selectedMlmcArray">
+            行业名称：
+        </ListItem>
+
+        <ListItem Picker [extra]="selectedNum" [title]="'选择税收金额'" [arrow]="'horizontal'" [data]="zdnsrData"
+            (ngModelChange)="onSelectNum($event)" [(ngModel)]="selectedNumArray">
+            税收金额：
+        </ListItem>
+
+
+        <ListItem>
+            预算级次
+        </ListItem>
+        <CheckboxItem name='中央级' value="center" [(ngModel)]="centerSelected" (onChange)="clearBdgValue()">
+            中央级
+        </CheckboxItem>
+        <CheckboxItem name='市级' value="city" [(ngModel)]="citySelected" (onChange)="clearBdgValue()">
+            市级
+        </CheckboxItem>
+        <CheckboxItem name='区县级' value="county" [(ngModel)]="countySelected" (onChange)="clearBdgValue()">
+            区县级
+        </CheckboxItem>
+        <ListItem>
+            <div nz-row nzGutter="24">
+                <div nz-col nzSpan="12">
+                    <div Button [type]="'primary'" (click)="onOk()">确定</div>
+                </div>
+                <div nz-col nzSpan="12">
+                    <div Button [type]="'default'">重置</div>
+                </div>
+            </div>
+        </ListItem>
+    </List>
+</ng-template>

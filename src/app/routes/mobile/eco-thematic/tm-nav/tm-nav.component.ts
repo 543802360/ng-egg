@@ -31,7 +31,7 @@ export class MobileTmNavComponent implements OnInit {
         this.title = '企业税收排名';
         break;
       case '企业税收明细':
-        this.router.navigate(['./big-enterprise'], { relativeTo: this.route })
+        this.router.navigate(['./single'], { relativeTo: this.route })
         this.title = '企业税收明细';
         break;
 

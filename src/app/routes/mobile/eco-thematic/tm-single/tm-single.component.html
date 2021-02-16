@@ -1,0 +1,153 @@
+<div style="height:100%">
+    <Drawer class="my-drawer" [contentStyle]="{ color: '#A6A6A6', textAlign: 'center', paddingTop: '42px' }"
+        [touch]="true" [dragToggleDistance]="30" [enableDragHandle]="true" [sidebar]="sidebar" [open]="this.state.open"
+        [dragHandleStyle]="{top:0,width:'1px',height:'1px'}"
+        (onOpenChange)="this.state.open = !this.state.open;this.nsrSuggestVisible=false;">
+        <div class="qy-single-title">{{currentNsrmc}}</div>
+        <div class="chart-wrapper">
+            <canvas id="qy-single-chart"></canvas>
+        </div>
+        <div class="list-wrapper" #back2topTarget>
+            <hr>
+            <!-- 历年纳税情况 -->
+            <WingBlank style="font-size:16px;text-align:left">
+                <i nz-icon nzType="appstore" nzTheme="outline" style="font-size: 18px"></i>
+                历年纳税情况(单位：万元)
+            </WingBlank>
+            <Flex>
+                <FlexItem class="flex-1">
+                    <ListItem>年度</ListItem>
+                </FlexItem>
+                <FlexItem class="flex-1">
+                    <ListItem>全口径</ListItem>
+                </FlexItem>
+                <FlexItem class="flex-1">
+                    <ListItem>地方口径</ListItem>
+                </FlexItem>
+            </Flex>
+            <Flex *ngFor="let item of singleHistoryTaxData;let i =index">
+                <FlexItem class="flex-1">
+                    <ListItem>
+                        {{item.year}}
+                    </ListItem>
+                </FlexItem>
+                <FlexItem class="flex-1">
+                    <ListItem>
+                        {{item.qkj|number}}
+                        <!-- <Brief *ngIf="item.qkjtb!='0%'">
+                            <span style="margin-left:8px">同比:&nbsp;{{item.qkjtb}}</span>
+                            <i *ngIf="!item.qkjtb.includes('-')" style="margin-left:6px;color:red;" nz-icon
+                                nzType="arrow-up" nzTheme="outline"></i>
+                            <i *ngIf="item.qkjtb.includes('-')" style="margin-left:6px;color: green;" nz-icon
+                                nzType="arrow-down" nzTheme="outline"></i>
+                        </Brief> -->
+                    </ListItem>
+                </FlexItem>
+                <FlexItem class="flex-1">
+                    <ListItem>
+                        {{item.dfkj|number}}
+                        <!-- <Brief *ngIf="item.dfkjtb!='0%'">
+                            <span style="margin-left:8px">同比:&nbsp;{{item.dfkjtb}}</span>
+                            <i *ngIf="!item.dfkjtb.includes('-')" style="margin-left:6px;color:red;" nz-icon
+                                nzType="arrow-up" nzTheme="outline"></i>
+                            <i *ngIf="item.dfkjtb.includes('-')" style="margin-left:6px;color: green;" nz-icon
+                                nzType="arrow-down" nzTheme="outline"></i>
+                        </Brief> -->
+                    </ListItem>
+                </FlexItem>
+            </Flex>
+            <hr>
+            <!-- 当年征收项目明细 -->
+            <WingBlank style="font-size:16px;text-align:left">
+                <i nz-icon nzType="appstore" nzTheme="outline" style="font-size: 18px"></i>
+                当年税收明细(单位：万元)
+            </WingBlank>
+
+            <List>
+                <ListItem [extra]="'金额（万元）'">征收项目</ListItem>
+                <ListItem *ngFor="let item of singleCurTaxData;let i =index" [extra]="item.tax | number">
+                    <Badge [text]="i+1" [hot]="true" [size]="'large'" style="margin-left:6px;"></Badge>
+                    {{item.zsxm}}
+                    <!-- <Brief>占比:&nbsp;{{(item.bndsr/bndsr*100).toFixed(2)}}% </Brief> -->
+                </ListItem>
+            </List>
+            <!-- <Flex>
+                <FlexItem class="flex-1 zsxm-flexitem">
+                    <ListItem>征收项目</ListItem>
+                </FlexItem>
+                <FlexItem class="flex-1">
+                    <ListItem>全口径</ListItem>
+                </FlexItem>
+                <FlexItem class="flex-1">
+                    <ListItem>地方口径</ListItem>
+                </FlexItem>
+            </Flex>
+
+            <Flex *ngFor="let item of singleCurTaxData;let i =index"
+                [ngStyle]="{'background-color':item.zsxm == '汇总' ? 'wheat' : 'null','color':'white' }">
+                <FlexItem class="flex-1 zsxm-flexitem">
+                    <ListItem class="zsxm-listitem"
+                        [ngStyle]="{'background-color':item.zsxm == '汇总' ? 'wheat' : 'null','color':'white' }">
+                        <Badge *ngIf="item.zsxm != '汇总'" [overflowCount]="20" [text]="i" [hot]="true" [size]="'large'"
+                            style="margin-left:6px;">
+                        </Badge>
+                        {{item.zsxm}}
+                    </ListItem>
+                </FlexItem>
+                <FlexItem class="flex-1">
+                    <ListItem [ngStyle]="{'background-color':item.zsxm == '汇总' ? 'wheat' : 'null','color':'white' }">
+                        {{item.qkj|number}}
+                    </ListItem>
+                </FlexItem>
+                <FlexItem class="flex-1">
+                    <ListItem [ngStyle]="{'background-color':item.zsxm == '汇总' ? 'wheat' : 'null','color':'white' }">
+                        {{item.dfkj|number}}
+                    </ListItem>
+                </FlexItem>
+            </Flex> -->
+        </div>
+
+    </Drawer>
+</div>
+<!-- 侧边栏trigger -->
+<div Button [icon]="config" (click)="state.open=!state.open" [type]="'primary'"
+    style="position:fixed;height: 32px;width: 32px;top:85px;z-index: 10;">
+</div>
+<ng-template #config>
+    <Icon [type]="'right'"></Icon>
+</ng-template>
+<!-- 侧边栏 -->
+<ng-template #sidebar>
+    <List>
+        <SearchBar [placeholder]="'请输入纳税人名称'" [value]="currentNsrmc" (onClear)="clearSearch()"
+            [(ngModel)]="currentNsrmc" (onCancel)="clearSearch()" (onChange)="getNsrSuggestions($event)"></SearchBar>
+
+        <ListItem DatePicker [extra]="currentDateFormat(startTime, 'yyyy-mm')" [arrow]="'horizontal'" [mode]="'month'"
+            [title]="'选择开始时间'" [(ngModel)]="startTime">
+            开始时间：
+        </ListItem>
+        <ListItem DatePicker [extra]="currentDateFormat(endTime, 'yyyy-mm')" [arrow]="'horizontal'" [mode]="'month'"
+            [title]="'选择结束时间'" [(ngModel)]="endTime">
+            结束时间：
+        </ListItem>
+        <!-- <ListItem Picker [extra]="selectedKjlx" [title]="'选择税收级次'" [arrow]="'horizontal'" [data]="kjlxData"
+            (ngModelChange)="onSelectKjlx($event)" [(ngModel)]="selectedKjlxArray">
+            税收级次：
+        </ListItem> -->
+
+    </List>
+    <WhiteSpace></WhiteSpace>
+    <WingBlank>
+        <div Button [type]="'primary'" [size]="'small'" (click)="submitSearch()">查询
+        </div>
+    </WingBlank>
+</ng-template>
+<!-- 纳税人名称提示 -->
+<div class="nsrmc-list" *ngIf="nsrSuggestVisible">
+    <List>
+        <ListItem (click)="this.nsrSuggestVisible=false;this.currentNsrmc=nsrmc;"
+            *ngFor="let nsrmc of nsrmcSuggestions ">
+            {{nsrmc}}
+        </ListItem>
+    </List>
+</div>

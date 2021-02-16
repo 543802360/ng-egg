@@ -4,11 +4,13 @@ import { NgModule, Type } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgZorroAntdMobileModule } from 'ng-zorro-antd-mobile';
 import { MobileDrawerConditionComponent } from './components/drawer-condition/drawer-condition.component';
+import { MobileDqyConditionComponent } from './components/dqy-condition/dqy-condition.component';
 
 const COMPONENTS: Type<void>[] =
   [
     MobileDrawerConditionComponent,
-    MobileQypmConditionComponent
+    MobileQypmConditionComponent,
+    MobileDqyConditionComponent,
   ];
 const COMPONENTS_NOROUNT: Type<void>[] = [];
 

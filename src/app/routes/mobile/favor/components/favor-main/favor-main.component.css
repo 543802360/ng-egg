@@ -1,0 +1,16 @@
+.content-wrapper {
+    width: 100%;
+    height: calc(100% - 45px);
+    padding: 8px 5px;
+    overflow: scroll;
+    position: fixed
+  }
+  
+  .sub-content-wrapper {
+    width: 100%;
+    height: calc(100% - 77px);
+    padding: 5px 0;
+    overflow: scroll;
+    position: fixed
+  }
+  

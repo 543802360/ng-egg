@@ -8,12 +8,14 @@ import { NgModule } from '@angular/core';
 import { EcoThematicRoutingModule } from './eco-thematic-routing.module';
 import { NgZorroAntdMobileModule } from 'ng-zorro-antd-mobile';
 import { MobileSharedModule } from '../mobile-shared/mobile-shared.module';
+import { MobileTmSingleComponent } from './tm-single/tm-single.component';
 
 const COMPONENTS = [
   MobileTmBigEnterpriseComponent,
   MobileTmJdxzComponent,
   MobileTmOrderComponent,
-  MobileTmNavComponent
+  MobileTmNavComponent,
+  MobileTmSingleComponent
 ];
 const COMPONENTS_NOROUNT = [];
 

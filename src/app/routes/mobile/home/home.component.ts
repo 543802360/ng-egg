@@ -36,7 +36,7 @@ export class HomeComponent {
         this.router.navigate(['./eco-summary/all-summary'], { relativeTo: this.route });
         break;
       case 1:
-        this.router.navigate(['./eco-thematic/jdxz'], { relativeTo: this.route });
+        this.router.navigate(['./eco-thematic'], { relativeTo: this.route });
 
         break;
       case 2:

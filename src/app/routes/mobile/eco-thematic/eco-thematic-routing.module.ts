@@ -4,6 +4,7 @@ import { MobileTmOrderComponent } from './tm-order/tm-order.component';
 import { MobileTmJdxzComponent } from './tm-jdxz/tm-jdxz.component';
 import { MobileTmBigEnterpriseComponent } from './tm-big-enterprise/tm-big-enterprise.component';
 import { MobileTmNavComponent } from './tm-nav/tm-nav.component';
+import { MobileTmSingleComponent } from './tm-single/tm-single.component';
 
 const routes: Routes =
   [
@@ -22,6 +23,10 @@ const routes: Routes =
         {
           path: 'jdxz',
           component: MobileTmJdxzComponent
+        },
+        {
+          path: 'single',
+          component: MobileTmSingleComponent
         },
         {
           path: '',

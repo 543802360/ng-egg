@@ -1,0 +1,21 @@
+<div class="container">
+  <Flex class="modify-flex" direction="column">
+    
+    <FlexItem>
+      <InputItem [type]="'password'" [(ngModel)]="oldpassword" [clear]="true" [placeholder]=""
+        [content]="'旧密码'"></InputItem>
+    </FlexItem>
+    <FlexItem>
+      <InputItem [type]="'password'" [(ngModel)]="newpassword" [clear]="true" [placeholder]=""
+        [content]="'新密码'"></InputItem>
+    </FlexItem>
+
+    <FlexItem>
+      <InputItem [type]="'password'" [(ngModel)]="repassword" [clear]="true" [placeholder]=""
+        [content]="'确定新密码'"></InputItem>
+    </FlexItem>
+    <FlexItem style="margin: 2%;">
+      <div Button [type]="'primary'" (click)="confirm()">确定</div>
+    </FlexItem>
+  </Flex>
+</div>
