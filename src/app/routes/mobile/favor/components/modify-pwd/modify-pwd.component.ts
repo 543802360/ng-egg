@@ -1,4 +1,6 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { CacheService } from '@delon/cache';
+import { _HttpClient } from '@delon/theme';
 import { ToastService } from 'ng-zorro-antd-mobile';
 import { FavorService } from '../../service/favor.service';
 
@@ -13,7 +15,11 @@ export class ModifyPwdComponent implements OnInit, AfterViewInit {
   newpassword = "";
   repassword = "";
 
-  constructor(private _toast: ToastService, private favorService: FavorService) { }
+  constructor(
+    private cacheSrv: CacheService,
+    private http: _HttpClient,
+    private _toast: ToastService,
+    private favorService: FavorService) { }
 
 
   ngOnInit() {
@@ -29,16 +35,17 @@ export class ModifyPwdComponent implements OnInit, AfterViewInit {
   }
 
   confirm() {
+    const username = this.cacheSrv.get('userInfo', { mode: 'none' }).username;
 
-    // this.oldpassword == "" ? this._toast.info('请输入旧密码',1500)
-    //   : this.newpassword == "" || this.repassword == "" ? this._toast.info('请输入新密码',1500)
-    //     : this.newpassword != this.repassword ? this._toast.info('两次输入密码不同，请检查',1500) : null;
+    this.oldpassword == "" ? this._toast.info('请输入旧密码', 1500)
+      : this.newpassword == "" || this.repassword == "" ? this._toast.info('请输入新密码', 1500)
+        : this.newpassword != this.repassword ? this._toast.info('两次输入密码不同，请检查', 1500) : null;
+    this.http.post('sys/user/updatepwd', {
+      username, oldpassword: this.oldpassword, newpassword: this.newpassword
+    }).subscribe(resp => {
+      this._toast.info(resp.msg)
+    })
 
-    // this.favorService.modifyPwd(this.oldpassword, this.newpassword).subscribe(resp => {
-    //   resp['flag'] == "success" ? this._toast.success(resp['message'], 1500) : this._toast.fail(resp['message'], 1500)
-    // }, error => {
-    //   this._toast.offline('网络错误，请检查链接', 2000);
-    // });
 
   }
 
