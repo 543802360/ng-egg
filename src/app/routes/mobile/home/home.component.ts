@@ -40,10 +40,11 @@ export class HomeComponent {
 
         break;
       case 2:
-        this.router.navigate(['./favor'], { relativeTo: this.route });
+        this.router.navigate(['./map'], { relativeTo: this.route });
 
         break;
       case 3:
+        this.router.navigate(['./favor'], { relativeTo: this.route });
 
         break;
       default:
@@ -74,8 +75,8 @@ export class HomeComponent {
         this.thematicVisible = true;
         break;
       case 2:
-        this.mapVisible = false;
-        this.userVisible = true;
+        this.mapVisible = true;
+        this.userVisible = false;
         this.summaryVisible = false;
         this.thematicVisible = false;
         break;

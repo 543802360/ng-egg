@@ -38,19 +38,7 @@
       </ng-container>
     </div>
   </TabBarItem>
-  <!-- <TabBarItem (click)="nav('eco-map')" [title]="'税收地图'" [key]="2" [icon]="icon2" [selectedIcon]="icon22">
-    <ng-template #icon2>
-      <i nz-icon nzType="global" nzTheme="outline" class="tab-icon"></i>
-    </ng-template>
-    <ng-template #icon22>
-      <i nz-icon nzType="global" nzTheme="outline" class="tab-icon tab-icon-active"></i>
-    </ng-template>
-    <div *ngIf="mapVisible" style="background-color: white; height: 100%; text-align: center">
-      <ng-container>
-        <router-outlet></router-outlet>
-      </ng-container>
-    </div>
-  </TabBarItem> -->
+
   <TabBarItem (click)="nav('eco-thematic')" [title]="'专题分析'" [key]="3" [dot]="true" [icon]="icon3"
     [selectedIcon]="icon33">
     <ng-template #icon3>
@@ -60,6 +48,19 @@
       <i nz-icon nzType="bar-chart" nzTheme="outline" class="tab-icon tab-icon-active"></i>
     </ng-template>
     <div *ngIf="thematicVisible" style="background-color: white; height: 100%; text-align: center">
+      <ng-container>
+        <router-outlet></router-outlet>
+      </ng-container>
+    </div>
+  </TabBarItem>
+  <TabBarItem (click)="nav('eco-map')" [title]="'税收地图'" [key]="2" [icon]="icon2" [selectedIcon]="icon22">
+    <ng-template #icon2>
+      <i nz-icon nzType="global" nzTheme="outline" class="tab-icon"></i>
+    </ng-template>
+    <ng-template #icon22>
+      <i nz-icon nzType="global" nzTheme="outline" class="tab-icon tab-icon-active"></i>
+    </ng-template>
+    <div *ngIf="mapVisible" style="background-color: white; height: 100%; text-align: center">
       <ng-container>
         <router-outlet></router-outlet>
       </ng-container>

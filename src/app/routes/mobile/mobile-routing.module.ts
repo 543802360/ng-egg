@@ -21,6 +21,10 @@ const routes: Routes = [
           loadChildren: () => import('./favor/favor.module').then(m => m.FavorModule)
         },
         {
+          path: 'map',
+          loadChildren: () => import('./mobile-map/mobile-map.module').then(m => m.MobileMapModule)
+        },
+        {
           path: '',
           redirectTo: 'eco-summary',
           pathMatch: 'full'
