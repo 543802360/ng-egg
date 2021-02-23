@@ -29,28 +29,33 @@ export class JryZgsListComponent implements OnInit, AfterViewInit {
   url = `jry/zgstax`;
   jrjglx = [
     {
-      name: '银行机构',
-      value: '银行机构'
+      name: '银行',
+      value: '银行'
     },
     {
-      name: '纳入监管的地方金融组织',
-      value: '纳入监管的地方金融组织'
+      name: '证券',
+      value: '证券'
     },
     {
-      name: '保险公司',
-      value: '保险公司'
+      name: '财险',
+      value: '财险'
     },
     {
-      name: '新区备案基金管理人',
-      value: '新区备案基金管理人'
+      name: '寿险',
+      value: '寿险'
     },
     {
-      name: '证券营业部',
-      value: '证券营业部'
-    }
+      name: '地方金融组织',
+      value: '地方金融组织'
+    },
+    {
+      name: '备案基金管理人',
+      value: '备案基金管理人'
+    },
+
   ];
 
-  selectedJrjglx = '银行机构'
+  selectedJrjglx = '银行'
 
   @ViewChild('st') st: STComponent;
   @ViewChild('bdgSelect') bdgSelect: BdgSelectComponent;
