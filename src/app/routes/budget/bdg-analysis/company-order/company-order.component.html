@@ -3,45 +3,50 @@
   <ng-template #extraTemplate1>
     <div class="sales-extra-wrap">
 
-      <!-- <div class="sales-extra">
-        <a (click)="setDate('month')">本月</a>
-        <a (click)="setDate('year')">本年</a>
-      </div> -->
 
-      <app-bdg-select class="board-1" #bdgSelect></app-bdg-select>
+      <div nz-row nzGutter="8" style="margin: 5px; text-align: center;">
+        <app-bdg-select class="board-1" #bdgSelect></app-bdg-select>
 
-      <span class="header-label"> 所属行业:</span>
-      <nz-tree-select #hyTreeSelect class="board-2 hymc-tree-select" [(ngModel)]="selectedHymc" [nzNodes]="hymcNodes"
-        nzAllowClear="true" nzMultiple="false" [nzPlaceHolder]="'请选择行业名称'">
-      </nz-tree-select>
-      <hy-base-select class="board-3" #hyBase></hy-base-select>
-      <span class="header-label"> 税收名次:</span>
-      <nz-select class="board-4" style="margin: 0 5px;width: 100px;" [(ngModel)]="selectedOrder" nzPlaceHolder="请选择排名"
-        nzAllowClear>
-        <nz-option nzLabel="10" [nzValue]="10">
-        </nz-option>
-        <nz-option nzLabel="100" [nzValue]="100">
-        </nz-option>
-        <nz-option nzLabel="200" [nzValue]="200">
-        </nz-option>
-        <nz-option nzLabel="500" [nzValue]="500">
-        </nz-option>
-        <nz-option nzLabel="1000" [nzValue]="1000">
-        </nz-option>
-        <nz-option nzLabel="2000" [nzValue]="2000">
-        </nz-option>
-        <nz-option nzLabel="5000" [nzValue]="5000">
-        </nz-option>
-      </nz-select>
+        <span class="header-label"> 所属行业:</span>
+        <nz-tree-select #hyTreeSelect class="board-2 hymc-tree-select" [(ngModel)]="selectedHymc" [nzNodes]="hymcNodes"
+          nzAllowClear="true" nzMultiple="false" [nzPlaceHolder]="'请选择行业名称'">
+        </nz-tree-select>
+        <hy-base-select class="board-3" #hyBase></hy-base-select>
+        <span class="header-label"> 税收名次:</span>
+        <nz-select class="board-4" style="margin: 0 5px;width: 100px;" [(ngModel)]="selectedOrder" nzPlaceHolder="请选择排名"
+          nzAllowClear>
+          <nz-option nzLabel="10" [nzValue]="10">
+          </nz-option>
+          <nz-option nzLabel="100" [nzValue]="100">
+          </nz-option>
+          <nz-option nzLabel="200" [nzValue]="200">
+          </nz-option>
+          <nz-option nzLabel="500" [nzValue]="500">
+          </nz-option>
+          <nz-option nzLabel="1000" [nzValue]="1000">
+          </nz-option>
+          <nz-option nzLabel="2000" [nzValue]="2000">
+          </nz-option>
+          <nz-option nzLabel="5000" [nzValue]="5000">
+          </nz-option>
+        </nz-select>
+      </div>
 
-      <app-month-range class="board-5" #monthRange style="margin-right: 5px;"></app-month-range>
-      <button nz-button class="board-6" (click)="getData()" [disabled]="http.loading" nzType="primary"
-        style="margin-left: 6px;">查询</button>
-      <button nz-button class="board-7" (click)="download()" [disabled]="http.loading" nzType="primary"
-        style="margin-left: 6px;">导出</button>
-      <button nz-button nz-tooltip nzTooltipTitle="帮助" (click)="startBoard()" nzType="default" style="margin-left: 6px;"
-        nzShape="circle">
-        <i nz-icon nzType="question" nzTheme="outline"></i></button>
+      <div nz-row nzGutter="8" style="margin: 10px 5px;">
+        <span class="header-label">入库时间：</span>
+        <app-month-range class="board-5" #monthRange style="margin-right: 5px;"></app-month-range>
+        <button nz-button class="board-6" (click)="getData()" [disabled]="http.loading" nzType="primary"
+          style="margin-left: 6px;">查询</button>
+        <button nz-button class="board-7" (click)="download()" [disabled]="http.loading" nzType="primary"
+          style="margin-left: 6px;">导出</button>
+        <button nz-button nz-tooltip nzTooltipTitle="帮助" (click)="startBoard()" nzType="default"
+          style="margin-left: 6px;" nzShape="circle">
+          <i nz-icon nzType="question" nzTheme="outline"></i></button>
+      </div>
+
+
+
+
     </div>
   </ng-template>
   <div nz-row nzGutter="4" style="height: 100%;">

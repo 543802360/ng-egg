@@ -7,7 +7,7 @@ import { BdgSelectComponent } from 'src/app/shared/components/bdg-select/bdg-sel
 import { MonthRangeComponent } from 'src/app/shared/components/month-range/month-range.component';
 // import { NzTreeSelectComponent, NzMessageService } from 'ng-zorro-antd';
 
-import { IEOrder } from '@shared';
+import { EOrder, export2excel, IEOrder, ZSXM } from '@shared';
 import { CacheService } from '@delon/cache';
 import { Router, ActivatedRoute } from '@angular/router';
 import { LoadingService, OnboardingService } from '@delon/abc';
@@ -203,8 +203,34 @@ export class BigEnterpriseCreateComponent implements OnInit, AfterViewInit {
     }
   }
 
-  download() {
+  export() {
+    this.loadSrv.open({
+      text: '正在处理……'
+    });
+    // 批量查询税收
+    const nsrmcs = this.data.map(item => item.NSRMC);
+    this.http.post('bdg/tools/batchQuery', {
+      nsrmcs,
+      ...this.getCondition()
+    }).subscribe(resp => {
+      // 查询结果按指定字典排序映射
+      const rowData = resp.data.map(item => {
+        const el = {};
+        Object.keys(EOrder).forEach(key => {
+          el[EOrder[key]] = item[key];
+        });
+        Object.keys(ZSXM).forEach(key => {
+          el[ZSXM[key]] = item[key] ? item[key] : 0;
+        });
+        return el;
+      });
+      this.loadSrv.close();
+      export2excel(`${this.selectedValue}万以上-${new Date().toLocaleString()}.xlsx`, [{
+        sheetName: '税收导出',
+        rowData
+      }]);
 
+    });
   }
 
   /**

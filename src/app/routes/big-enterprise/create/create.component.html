@@ -15,12 +15,20 @@
       </nz-option>
       <nz-option nzLabel="1000万以上" [nzValue]="1000">
       </nz-option>
+      <nz-option nzLabel="500万以上" [nzValue]="500">
+      </nz-option>
+      <nz-option nzLabel="200万以上" [nzValue]="200">
+      </nz-option>
+      <nz-option nzLabel="100万以上" [nzValue]="100">
+      </nz-option>
 
     </nz-select>
 
     <app-month-range class="board-3" #monthRange style="margin-right: 5px;"></app-month-range>
     <button nz-button class="board-4" (click)="getData()" [disabled]="http.loading" nzType="primary"
       style="margin-left: 6px;">查询</button>
+    <button nz-button class="board-5" (click)="export()" [disabled]="http.loading" nzType="primary"
+      style="margin-left: 6px;">导出</button>
     <button nz-button class="board-5" (click)="create()" [disabled]="http.loading" nzType="primary"
       style="margin-left: 6px;">添加</button>
     <button nz-button nz-tooltip nzTooltipTitle="帮助" (click)="startBoard()" nzType="default" style="margin-left: 6px;"

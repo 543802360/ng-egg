@@ -7,7 +7,7 @@ import { BdgSelectComponent } from 'src/app/shared/components/bdg-select/bdg-sel
 import { MonthRangeComponent } from 'src/app/shared/components/month-range/month-range.component';
 import { forkJoin, Observable, Subject } from 'rxjs';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { order } from '@shared';
+import { EOrder, export2excel, order, ZSXM } from '@shared';
 import { delay } from 'rxjs/operators';
 import { LoadingService } from '@delon/abc';
 import { deepCopy } from '@delon/util';
@@ -200,8 +200,44 @@ export class BudgetBdgAnalysisSingleQueryComponent implements OnInit, AfterViewI
    * 查询结果导出
    * @param e 
    */
+
   export() {
 
+    if (!this.nsrSug.nsrmc) {
+      this.msgSrv.warning('请选择纳税人');
+      return;
+    }
+    if (!this.bdgSelect.budgetValue.length) {
+      this.msgSrv.warning('请选择预算级次');
+      return;
+    }
+    this.loadSrv.open({
+      text: '正在处理……'
+    });
+    // 批量查询税收
+    const nsrmcs = [this.nsrSug.nsrmc.trim()];
+    this.http.post('bdg/tools/batchQuery', {
+      nsrmcs,
+      ...this.getCondition()
+    }).subscribe(resp => {
+      // 查询结果按指定字典排序映射
+      const rowData = resp.data.map(item => {
+        const el = {};
+        Object.keys(EOrder).forEach(key => {
+          el[EOrder[key]] = item[key];
+        });
+        Object.keys(ZSXM).forEach(key => {
+          el[ZSXM[key]] = item[key] ? item[key] : 0;
+        });
+        return el;
+      });
+      this.loadSrv.close();
+      export2excel(`${this.nsrSug.nsrmc}-${new Date().toLocaleString()}.xlsx`, [{
+        sheetName: `${this.nsrSug.nsrmc}`,
+        rowData
+      }]);
+
+    });
   }
 
 }
