@@ -1,6 +1,8 @@
 const EOrder = {
 
     NSRMC: "纳税人名称",
+    JDXZMC: '隶属镇街',
+    MLMC: '行业',
     BNDSR: '本年度收入(万元)',
     SNTQ: '上年同期(万元)',
     TBZJF: "同比增减幅",

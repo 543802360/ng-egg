@@ -10,21 +10,21 @@ const routes: Routes = [
     path: 'create',
     component: BigEnterpriseCreateComponent,
     data: {
-      title: '大企业查询'
+      title: '重点企业查询'
     }
   },
   {
     path: 'list',
     component: BigEnterpriseListComponent,
     data: {
-      title: '大企业名录'
+      title: '重点企业名录'
     }
   },
   {
     path: 'tax-analysis',
     component: BigEnterpriseTaxAnalysisComponent,
     data: {
-      title: '大企业税收总体分析'
+      title: '重点企业实时税收'
     }
   },
   {

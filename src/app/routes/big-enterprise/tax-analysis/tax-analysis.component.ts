@@ -337,8 +337,8 @@ export class BigEnterpriseTaxAnalysisComponent implements OnInit, AfterViewInit,
   mapboxLoad(e) {
     this.map = e;
     this.getData();
-    this.addTownBoundary();
-    console.log('mapbox -loaded!');
+    // this.addTownBoundary();
+    // console.log('mapbox -loaded!');
     // 添加高亮数据源
     this.map.addSource('point-active', {
       type: 'geojson',

@@ -163,7 +163,7 @@ export class BigEnterpriseListComponent implements OnInit, AfterViewInit {
   }
 
   selectedYear: Date;
-  selectedFilter = '1000';
+  selectedFilter = 100;
 
   constructor(public http: _HttpClient,
     public msg: NzMessageService,

@@ -27,7 +27,7 @@ export class BigEnterpriseCreateComponent implements OnInit, AfterViewInit {
   @ViewChild('hyTreeSelect') hyTreeSelect: NzTreeSelectComponent;
   hymcNodes;
   selectedHymc: string;
-  selectedValue = 1000;
+  selectedValue = 100;
 
   data: IEOrder[];
   total: number;
