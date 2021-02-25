@@ -40,8 +40,8 @@ export const environment = {
 
   },
   mapbox_pos: {
-    center: [119.981, 35.869],
-    zoom: 7.8,
+    center: [119.9187, 35.80802952765178],
+    zoom: 8.973,
     pitch: 55,
   },
   reportsUrl: {

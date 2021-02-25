@@ -31,7 +31,7 @@ const routes: Routes = [
     path: 'hy-analysis',
     component: BigEnterpriseHyAnalysisComponent,
     data: {
-      title: '大企业行业分析'
+      title: '重点企业按行业分析'
     }
   },
   {

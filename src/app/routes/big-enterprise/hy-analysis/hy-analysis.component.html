@@ -1,0 +1,94 @@
+<!-- <div nz-row nzGutter="8" style="margin-top: 10px;">
+    <div nz-col nzSpan="4">
+        <nz-card [nzLoading]="http.loading">
+            <nz-statistic nzTitle="本年度总收入" [nzValue]="bndTotal|number" nzSuffix="万元">
+            </nz-statistic>
+        </nz-card>
+    </div>
+    <div nz-col nzSpan="4">
+        <nz-card [nzLoading]="http.loading">
+            <nz-statistic nzTitle="上年同期总收入" [nzValue]="sntqTotal|number" nzSuffix="万元">
+            </nz-statistic>
+        </nz-card>
+    </div>
+    <div nz-col nzSpan="4">
+        <nz-card [nzLoading]="http.loading">
+            <nz-statistic nzTitle="同比增减" [nzValue]="bndTotal- sntqTotal|number" nzSuffix="万元">
+            </nz-statistic>
+        </nz-card>
+    </div>
+    <div nz-col nzSpan="4">
+        <nz-card [nzLoading]="http.loading">
+            <nz-statistic nzTitle="同比增减幅" [nzPrefix]="bndTotal>sntqTotal?up:down"
+                nzValue="{{((bndTotal- sntqTotal)/sntqTotal*100).toFixed(2)}}"
+                [nzValueStyle]="(bndTotal>sntqTotal)?{color:'green'}:{color:'red'}" nzSuffix="%">
+            </nz-statistic>
+        </nz-card>
+    </div>
+    <div nz-col nzSpan="4">
+        <nz-card [nzLoading]="http.loading">
+            <nz-statistic nzTitle="同比增长企业数" [nzPrefix]="up" [nzValue]="upCount" [nzValueStyle]="{color:'green'}"
+                nzSuffix="户">
+            </nz-statistic>
+        </nz-card>
+    </div>
+    <div nz-col nzSpan="4">
+        <nz-card [nzLoading]="http.loading">
+            <nz-statistic nzTitle="同比下降企业数" [nzPrefix]="down" [nzValue]="downCount" [nzValueStyle]="{color:'red'}"
+                nzSuffix="户">
+            </nz-statistic>
+        </nz-card>
+    </div>
+</div> -->
+
+<nz-card class="enterprise-card" [nzExtra]="extraTemplate1">
+    <ng-template #extraTemplate1>
+        <span class="header-label">入库时间：</span>
+        <!-- <app-bdg-select class="board-1" #bdgSelect></app-bdg-select> -->
+        <app-month-range class="board-2" #monthRange style="margin-right: 5px;"></app-month-range>
+        <button nz-button class="board-3" (click)="getData()" [disabled]="http.loading" nzType="primary"
+            style="margin-left: 6px;">查询</button>
+        <button nz-button class="board-4" (click)="download()" [disabled]="http.loading" nzType="primary"
+            style="margin-left: 6px;">导出</button>
+        <button nz-button nz-tooltip nzTooltipTitle="帮助" (click)="startBoard()" nzType="default"
+            style="margin-left: 6px;" nzShape="circle">
+            <i nz-icon nzType="question" nzTheme="outline"></i></button>
+    </ng-template>
+
+    <div nz-row nzGutter="8" style="height: 100%;">
+        <div nz-col nzSpan="24" style="height: 100%;">
+            <st #st header="重点企业按行业税收分析（单位：万元）" [data]="data" [columns]="columns" [page]="page" [loading]="http.loading"
+                pi="1" ps="10" bordered="true" size="middle" [scroll]="{x:'1400px',y:'586px'}"
+                (change)="stChange($event)">
+                <ng-template st-row="tbzjf-qkj" let-item let-index="index">
+                    <nz-tag *ngIf="item.BNDSR_QKJ>item.SNTQ_QKJ" nzColor="green">
+                        <span nz-tooltip [nzTooltipTitle]="'同比增长：' + item.TBZJF_QKJ"> {{item.TBZJF_QKJ}}</span>
+                    </nz-tag>
+                    <nz-tag *ngIf="item.BNDSR_QKJ<item.SNTQ_QKJ" nzColor="red">
+                        <span nz-tooltip [nzTooltipTitle]="'同比下降：' + item.TBZJF_QKJ"> {{item.TBZJF_QKJ}}</span>
+                    </nz-tag>
+                </ng-template>
+                <ng-template st-row="tbzjf-dfkj" let-item let-index="index">
+                    <nz-tag *ngIf="item.BNDSR_DFKJ>item.SNTQ_DFKJ" nzColor="green">
+                        <span nz-tooltip [nzTooltipTitle]="'同比增长：' + item.TBZJF_DFKJ"> {{item.TBZJF_DFKJ}}</span>
+                    </nz-tag>
+                    <nz-tag *ngIf="item.BNDSR_DFKJ<item.SNTQ_DFKJ" nzColor="red">
+                        <span nz-tooltip [nzTooltipTitle]="'同比下降：' + item.TBZJF_DFKJ"> {{item.TBZJF_DFKJ}}</span>
+                    </nz-tag>
+                </ng-template>
+                <ng-template st-row='order-tpl' let-item let-index="index">
+                    <nz-badge [nzCount]="(this.st.pi - 1) * this.st.ps + index + 1" nzOverflowCount="6666"></nz-badge>
+                </ng-template>
+            </st>
+        </div>
+
+    </div>
+
+</nz-card>
+
+<ng-template #up>
+    <i nz-icon nzType="arrow-up"></i>
+</ng-template>
+<ng-template #down>
+    <i nz-icon nzType="arrow-down"></i>
+</ng-template>

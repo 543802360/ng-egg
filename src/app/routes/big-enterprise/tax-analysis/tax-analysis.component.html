@@ -54,7 +54,7 @@
   </ng-template>
 
   <div nz-row nzGutter="8" style="height: 100%;">
-    <div nz-col nzSpan="10" style="height: 100%;">
+    <div nz-col nzSpan="12" style="height: 100%;">
       <st #st [data]="data" [columns]="columns" [page]="page" [loading]="http.loading" pi="1" ps="10" bordered="true"
         size="middle" [scroll]="{x:'1400px',y:'586px'}" (change)="stChange($event)">
         <ng-template st-row="tbzjz-tpl" let-item let-index="index">
@@ -88,7 +88,7 @@
         </ng-template>
       </st>
     </div>
-    <div nz-col nzSpan="14" style="height: 100%;">
+    <div nz-col nzSpan="12" style="height: 100%;">
       <div style="height: 100%; width: 100%;margin-top: 10px;">
         <nz-button-group nzSize="default" style="position: absolute; z-index: 9; top: 20px; left: 20px;">
           <button nz-button (click)="switchLayer('heat')" nzDanger="true" nzGhost="true">热力图</button>
