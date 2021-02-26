@@ -10,30 +10,55 @@ import { XlsxService, LoadingService, ReuseComponentInstance, OnboardingService 
  * 结果数据接口
  */
 interface ItemData {
-  MLMC: string,
-  COUNT: number,
-  SNTQ_QKJ_ALL: number,
-  BNDSR_QKJ: number,
-  BNDSR_DFKJ: number,
-  SNTQ_QKJ: number,
-  SNTQ_DFKJ: number,
-  TBZJF_QKJ: string,
-  TBZJF_DFKJ: string
+  MLMC?: string,
+  COUNT?: number,
+  SNTQ_QKJ_ALL?: number,
+  BNDSR_QKJ?: number,
+  BNDSR_DFKJ?: number,
+  SNTQ_QKJ?: number,
+  SNTQ_DFKJ?: number,
+  TBZJF_QKJ?: string,
+  TBZJF_DFKJ?: string,
+  BL?: string
+};
+
+const nsrItemData = {
+  NSRMC: '纳税人名称',
+  JDXZMC: '隶属镇街',
+  SNTQ_QKJ_ALL: '上年度全口径总税收',
+  BNDSR_QKJ: '本年度全口径税收',
+  SNTQ_QKJ: '同期全口径税收',
+  TBZJF_QKJ: '同比增减(%)',
+  BNDSR_DFKJ: '本年度地方收入',
+  SNTQ_DFKJ: '同期地方收入',
+  TBZJF_DFKJ: '同比增减(%)'
 }
 
+const nsrItemData2 = {
+  NSRMC: '纳税人名称',
+  JDXZMC: '隶属镇街',
+  DJ_MLMC: '行业',
+  SNTQ_QKJ_ALL: '上年度全口径总税收',
+  BNDSR_QKJ: '本年度全口径税收',
+  SNTQ_QKJ: '同期全口径税收',
+  TBZJF_QKJ: '同比增减(%)',
+  BNDSR_DFKJ: '本年度地方收入',
+  SNTQ_DFKJ: '同期地方收入',
+  TBZJF_DFKJ: '同比增减(%)'
+}
 @Component({
   templateUrl: './hy-analysis.component.html',
   styleUrls: ['./hy-analysis.component.less']
 })
 export class BigEnterpriseHyAnalysisComponent implements OnInit, AfterViewInit, ReuseComponentInstance {
 
-  bndTotal = 0;
-  sntqTotal = 0;
-  tbzjTotal = 0;
-  upCount = 0;
-  downCount = 0;
+  totalObj: ItemData = {};
+  otherObj: ItemData = {};
 
   url = `big-enterprises/taxByMlmcsummary`;
+  detailsUrl = 'big-enterprises/taxByMlmcDetails';
+  taxAllDetails = 'big-enterprises/taxAllDetails'
+
   data: ItemData[];
   @ViewChild('monthRange') monthRange: MonthRangeComponent;
   @ViewChild('st') st: STComponent;
@@ -104,6 +129,11 @@ export class BigEnterpriseHyAnalysisComponent implements OnInit, AfterViewInit, 
       className: 'text-center',
       render: 'tbzjf-dfkj',
     },
+    {
+      index: 'BL',
+      title: '税收比重(%)',
+      className: 'text-center',
+    },
 
     {
       title: '操作',
@@ -112,13 +142,67 @@ export class BigEnterpriseHyAnalysisComponent implements OnInit, AfterViewInit, 
       fixed: 'right',
       buttons: [
         {
-          // tooltip: '详情',
-          icon: 'eye',
+          tooltip: '导出企业明细',
+          icon: 'edit',
           // 点击查询详细税收
           click: (record: STData, modal: true) => {
-            this.router.navigate(['../../budget/single-query'], {
-              queryParams: { nsrmc: record.NSRMC },
-              relativeTo: this.route
+            if (record.MLMC === '其他') {
+              return;
+            }
+            if (record.MLMC === '合计') {
+              this.http.get(this.taxAllDetails, {
+                ...this.getCondition()
+              }).subscribe(resp => {
+                this.loadSrv.open({
+                  text: '正在处理……'
+                });
+                const data = [Object.values(nsrItemData2)];
+                resp.data.forEach(i => {
+                  data.push(
+                    Object.keys(nsrItemData2).map(c => i[c])
+                  )
+                });
+
+                this.xlsx.export({
+                  sheets: [
+                    {
+                      data,
+                      name: `重点企业税收`
+                    }
+                  ],
+                  filename: `重点企业税收统计-${new Date().toLocaleString()}.xlsx`
+                }).then(e => {
+                  this.loadSrv.close();
+                });
+              });
+              return;
+            }
+            this.http.get(this.detailsUrl, {
+              ...this.getCondition(),
+              mlmc: record.MLMC
+            }).subscribe(resp => {
+              this.loadSrv.open({
+                text: '正在处理……'
+              });
+              const data = [Object.values(nsrItemData)];
+
+              resp.data.forEach(i => {
+                data.push(
+                  Object.keys(nsrItemData).map(c => i[c])
+                )
+              });
+
+              this.xlsx.export({
+                sheets: [
+                  {
+                    data,
+                    name: `${record.MLMC}重点企业税收`
+                  }
+                ],
+                filename: `${record.MLMC}重点企业税收统计-${new Date().toLocaleString()}.xlsx`
+              }).then(e => {
+                this.loadSrv.close();
+              });
             });
           }
         }
@@ -162,11 +246,6 @@ export class BigEnterpriseHyAnalysisComponent implements OnInit, AfterViewInit, 
       mask: true,
       items: [
         {
-          selectors: '.board-1',
-          title: '预算级次选择',
-          content: '中央级、省级、市级、区县级等，可组合进行选择'
-        },
-        {
           selectors: '.board-2',
           title: '入库时间',
           content: '选择税收入库时间范围，同年内的'
@@ -201,6 +280,7 @@ export class BigEnterpriseHyAnalysisComponent implements OnInit, AfterViewInit, 
   stChange(e: STChange) {
     if (e.type === 'click') {
       console.log(e.click.item);
+
     }
   }
 
@@ -208,11 +288,81 @@ export class BigEnterpriseHyAnalysisComponent implements OnInit, AfterViewInit, 
    * 获取数据
    */
   getData() {
+
+    this.totalObj = {};
+    this.otherObj = {};
+
     this.http.get(this.url, this.getCondition()).subscribe(resp => {
       this.loadSrv.close();
-      this.data = [...resp.data];
 
-      console.log(this.data);
+      //#region 计算合计数
+      (resp.data as ItemData[]).forEach((i, index) => {
+
+        if (index === 0) {
+          this.totalObj.BNDSR_QKJ = i.BNDSR_QKJ;
+          this.totalObj.BNDSR_DFKJ = i.BNDSR_DFKJ;
+          this.totalObj.SNTQ_QKJ = i.SNTQ_QKJ;
+          this.totalObj.SNTQ_DFKJ = i.SNTQ_DFKJ;
+          this.totalObj.SNTQ_QKJ_ALL = i.SNTQ_QKJ_ALL;
+          this.totalObj.COUNT = i.COUNT
+        } else {
+          this.totalObj.BNDSR_QKJ += i.BNDSR_QKJ;
+          this.totalObj.BNDSR_DFKJ += i.BNDSR_DFKJ;
+          this.totalObj.SNTQ_QKJ += i.SNTQ_QKJ;
+          this.totalObj.SNTQ_DFKJ += i.SNTQ_DFKJ;
+          this.totalObj.SNTQ_QKJ_ALL += i.SNTQ_QKJ_ALL;
+          this.totalObj.COUNT += i.COUNT
+        }
+
+      });
+
+      this.totalObj.TBZJF_QKJ = `${(((this.totalObj.BNDSR_QKJ - this.totalObj.SNTQ_QKJ) / this.totalObj.SNTQ_QKJ) * 100).toFixed(2)}%`
+      this.totalObj.TBZJF_DFKJ = `${(((this.totalObj.BNDSR_DFKJ - this.totalObj.SNTQ_DFKJ) / this.totalObj.SNTQ_QKJ) * 100).toFixed(2)}%`
+      this.totalObj.MLMC = '合计';
+      this.totalObj.BL = '100%';
+      //#endregion
+
+
+      const result = (resp.data as ItemData[]).map(i => {
+        const BL = Math.round((i.BNDSR_QKJ / this.totalObj.BNDSR_QKJ) * 10000) / 100;
+        return Object.assign(i, { BL: `${BL}%` });
+      })
+      const other = [...result].slice(8, result.length);
+
+      //#region 计算其他
+
+
+      (other).forEach((i, index) => {
+
+        if (index === 0) {
+          this.otherObj.BNDSR_QKJ = i.BNDSR_QKJ;
+          this.otherObj.BNDSR_DFKJ = i.BNDSR_DFKJ;
+          this.otherObj.SNTQ_QKJ = i.SNTQ_QKJ;
+          this.otherObj.SNTQ_DFKJ = i.SNTQ_DFKJ;
+          this.otherObj.SNTQ_QKJ_ALL = i.SNTQ_QKJ_ALL;
+          this.otherObj.COUNT = i.COUNT
+        } else {
+          this.otherObj.BNDSR_QKJ += i.BNDSR_QKJ;
+          this.otherObj.BNDSR_DFKJ += i.BNDSR_DFKJ;
+          this.otherObj.SNTQ_QKJ += i.SNTQ_QKJ;
+          this.otherObj.SNTQ_DFKJ += i.SNTQ_DFKJ;
+          this.otherObj.SNTQ_QKJ_ALL += i.SNTQ_QKJ_ALL;
+          this.otherObj.COUNT += i.COUNT
+        }
+
+      });
+
+      this.otherObj.TBZJF_QKJ = `${(((this.otherObj.BNDSR_QKJ - this.otherObj.SNTQ_QKJ) / this.otherObj.SNTQ_QKJ) * 100).toFixed(2)}%`
+      this.otherObj.TBZJF_DFKJ = `${(((this.otherObj.BNDSR_DFKJ - this.otherObj.SNTQ_DFKJ) / this.otherObj.SNTQ_QKJ) * 100).toFixed(2)}%`
+      this.otherObj.MLMC = '其他';
+      this.otherObj.BL = `${Math.round((this.otherObj.BNDSR_QKJ / this.totalObj.BNDSR_QKJ) * 10000) / 100}%`;
+
+      //#endregion
+
+      const top = [this.totalObj, ...[...result].slice(0, 8), this.otherObj];
+
+      this.data = top;
+      console.log(top, other);
     });
   }
 
@@ -236,10 +386,10 @@ export class BigEnterpriseHyAnalysisComponent implements OnInit, AfterViewInit, 
       sheets: [
         {
           data,
-          name: '大企业税收'
+          name: '重点企业税收'
         }
       ],
-      filename: `大企业税收统计-${new Date().toLocaleString()}.xlsx`
+      filename: `重点企业税收统计-${new Date().toLocaleString()}.xlsx`
     }).then(e => {
       this.loadSrv.close();
     });
