@@ -2,17 +2,15 @@ import { deepCopy } from '@delon/util';
 import { Component, OnInit, ViewChild, AfterViewInit, Renderer2, ElementRef } from '@angular/core';
 import { _HttpClient, ModalHelper } from '@delon/theme';
 import { STColumn, STComponent, STData, STPage, STReq, STRequestOptions, STRes } from '@delon/abc/st';
-import { SFSchema } from '@delon/form';
 
 import { NzMessageService } from 'ng-zorro-antd/message';
 import * as mapboxgl from "mapbox-gl";
-import { dark } from "@geo";
+import { blue as dark } from "@geo";
 import { BdgSelectComponent, MonthRangeComponent, getColorRange, ExcelData, export2excel, ColorTypes } from '@shared';
-import { G2BarData } from '@delon/chart/bar';
 import { forkJoin } from 'rxjs';
 import { LoadingService, OnboardingService, ReuseComponentInstance, STChange } from '@delon/abc';
 import { ActivatedRoute, Router } from '@angular/router';
-
+import { environment } from "@env/environment";
 interface itemInfo {
   jdxzmc?: string;
   nsrmc?: string;
@@ -21,19 +19,6 @@ interface itemInfo {
   tbzjz?: number;
   tbzjf?: string
 }
-
-const jdxzmcs = [
-  '城阳街道办事处',
-  '棘洪滩街道办事处',
-  '流亭街道办事处',
-  '夏庄街道办事处',
-  '惜福镇街道办事处',
-  '上马街道办事处',
-  '红岛街道办事处',
-  '河套街道办事处',
-  '青岛高新技术产业开发区'
-]
-
 @Component({
   selector: 'app-economic-analysis-map-tax-agg-map',
   templateUrl: './tax-agg-map.component.html',
@@ -43,13 +28,11 @@ const jdxzmcs = [
 export class EconomicAnalysisMapTaxAggMapComponent implements OnInit, AfterViewInit, ReuseComponentInstance {
 
 
-  townTaxUrl = `analysis/town`;
-  townListUrl = 'analysis/townTaxList';
+  townTaxUrl = `analysis/townAggTax`;
   style = dark;
   // 有镇街所属的数据
   townData: itemInfo[];
-  // 其他镇街数据
-  noTownTaxData: itemInfo[];
+
   // 街道纳税人税收明细列表
   townStVisible = false;
   // 总量
@@ -113,7 +96,7 @@ export class EconomicAnalysisMapTaxAggMapComponent implements OnInit, AfterViewI
       title: '镇街',
       index: 'jdxzmc',
       className: 'text-center',
-      width: 240
+      width: 180
 
     },
     {
@@ -140,73 +123,24 @@ export class EconomicAnalysisMapTaxAggMapComponent implements OnInit, AfterViewI
       render: 'tbzjz-tpl',
       width: 190
     },
-    {
-      title: '操作',
-      className: 'text-center',
-      width: 55,
-      fixed: 'right',
-      buttons: [
-        {
-          tooltip: '查看本街道企业信息',
-          icon: 'info',
-          // 点击查询
-          click: (record: STData, modal: true) => {
-            // console.log('record:', record);
-          }
-        }
-      ]
-    }
-  ];
-  expandColumns: STColumn[] = [
-    {
-      title: '排名',
-      type: 'no',
-      width: 80,
-      className: 'text-center',
-      format: (item: STData, col: STColumn, index: number) => {
-        // console.log('index', index, item, col);
-        // console.log(this.st);
-        return `${(this.jdxzSt.pi - 1) * this.jdxzSt.ps + index + 1}`;
-
-      }
-    },
-    {
-      title: '纳税人名称',
-      index: 'nsrmc',
-      className: 'text-center',
-      width: 246,
-    },
-    {
-      title: '本年度收入',
-      index: 'bndsr',
-      className: 'text-center',
-      type: 'number',
-
-    },
-    {
-      title: '上年同期',
-      index: 'sntq',
-      className: 'text-center',
-      type: 'number',
-    },
-    {
-      title: '同比增减',
-      className: 'text-center',
-      index: 'tbzjz',
-      type: 'number'
-    }
-    ,
-    {
-      title: '同比增减幅',
-      className: 'text-center',
-      index: 'tbzjf'
-    }
     // {
-    //   title: '',
+    //   title: '操作',
+    //   className: 'text-center',
+    //   width: 55,
+    //   fixed: 'right',
     //   buttons: [
+    //     {
+    //       tooltip: '查看本街道企业信息',
+    //       icon: 'info',
+    //       // 点击查询
+    //       click: (record: STData, modal: true) => {
+    //         // console.log('record:', record);
+    //       }
+    //     }
     //   ]
     // }
   ];
+
   colorStops =
     [
       "rgb(1, 152, 189)",
@@ -293,7 +227,7 @@ export class EconomicAnalysisMapTaxAggMapComponent implements OnInit, AfterViewI
     this.loadSrv.open({
       text: '正在处理……'
     })
-    const $townJson = this.http.get('assets/data/CY_TOWN.json');
+    const $townJson = this.http.get('assets/data/town.json');
     const $townTaxData = this.http.get(this.townTaxUrl, this.getCondition());
     forkJoin([$townJson, $townTaxData])
       .subscribe(resp => {
@@ -301,30 +235,12 @@ export class EconomicAnalysisMapTaxAggMapComponent implements OnInit, AfterViewI
         // 1、获取镇街税收数据,处理成包含8个街道的
         const townTaxData: itemInfo[] = resp[1].data;
 
-        this.townData = townTaxData.filter(i => jdxzmcs.includes(i.jdxzmc));
-        this.noTownTaxData = townTaxData.filter(i => !jdxzmcs.includes(i.jdxzmc));
-        let noTownBndsr = 0;
-        let noTownSntq = 0;
-        this.noTownTaxData.forEach(i => {
-          noTownBndsr += i.bndsr;
-          noTownSntq += i.sntq;
-        });
-        const tbzjz = Math.floor((noTownBndsr - noTownSntq) * 100) / 100;
-        const tbzjf = `${Math.floor(tbzjz / noTownSntq * 10000) / 100}%`;
-
-        this.townData.push({
-          jdxzmc: '其他',
-          bndsr: noTownBndsr,
-          sntq: noTownSntq,
-          tbzjz,
-          tbzjf
-        });
-
+        this.townData = [...townTaxData.filter(i => i.jdxzmc != '黄岛区')];
         // 2、获取Geometry
         const fc = resp[0];
         const taxArray = [];
         fc.features.forEach(f => {
-          const target = this.townData.find(i => i.jdxzmc === f.properties.MC);
+          const target = this.townData.find(i => i.jdxzmc === f.properties.name);
           if (target) {
             taxArray.push(target.bndsr);
 
@@ -344,7 +260,7 @@ export class EconomicAnalysisMapTaxAggMapComponent implements OnInit, AfterViewI
         });
         const mintax = Math.min(...taxArray);
         const maxtax = Math.max(...taxArray);
-        const colorRange = getColorRange(mintax, maxtax, ColorTypes.success);
+        const colorRange = getColorRange(mintax, maxtax, ColorTypes.danger);
         if (this.map.getSource('town-geo')) {
           (this.map.getSource('town-geo') as mapboxgl.GeoJSONSource).setData(fc);
         } else {
@@ -456,7 +372,9 @@ export class EconomicAnalysisMapTaxAggMapComponent implements OnInit, AfterViewI
     const startMonth = startDate.getMonth() + 1;
     const endMonth = endDate.getMonth() + 1;
     const budgetValue = this.bdgSelect.budgetValue.toLocaleString();
-    return { year, startMonth, endMonth, budgetValue };
+    // return { year, startMonth, endMonth, budgetValue };
+    return { year: 2019, startMonth: 1, endMonth: 2, budgetValue };
+
 
   }
 
@@ -526,8 +444,8 @@ export class EconomicAnalysisMapTaxAggMapComponent implements OnInit, AfterViewI
    */
   fly2target(center?, pitch?, zoom?, bearing?) {
     this.map.flyTo({
-      center: center ? center : [120.33246, 36.276589],
-      zoom: zoom ? zoom : 9.688,
+      center: center ? center : environment.mapbox_pos.center,
+      zoom: zoom ? zoom : environment.mapbox_pos.zoom,
       bearing: bearing ? bearing : 0,
       pitch: pitch ? pitch : 46.5,
       speed: 0.8
