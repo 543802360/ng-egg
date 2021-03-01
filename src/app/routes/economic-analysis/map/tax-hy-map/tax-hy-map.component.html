@@ -46,10 +46,10 @@
             <!-- <span> {{item.tbzjz|number}}（{{item.tbzjf}}）</span> -->
             <span *ngIf="item.tbzjz>0" nz-tooltip [nzTooltipOverlayStyle]="tooltipStyle"
               [nzTooltipTitle]="'同比增长：' + item.tbzjz+' 万元;&nbsp;' +'增幅：'+item.tbzjf">
-              {{item.tbzjz|number}}（{{item.tbzjf}}） </span>
+              {{item.tbzjf}}</span>
             <span *ngIf="item.tbzjz<0" nz-tooltip [nzTooltipOverlayStyle]="tooltipStyle" [nzTooltipTitle]="'同比下降：' +
               item.tbzjz+' 万元;&nbsp;' +'降幅：'+item.tbzjf">
-              {{item.tbzjz|number}}（{{item.tbzjf}}）</span>
+              {{item.tbzjf}}</span>
           </nz-tag>
         </ng-template>
         <ng-template st-row='order-tpl' let-item let-index="index">

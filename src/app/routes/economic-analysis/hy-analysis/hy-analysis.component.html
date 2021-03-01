@@ -68,7 +68,8 @@
   <div nz-row nzGutter="8">
     <div nz-col [nzXs]="24" [nzSm]="24" nzMd="13" nzLg="13">
       <st #hySt [data]="hyStData" header="行业税收（单位：万元）" [columns]="columns" [body]="bodyHyTpl" bordered="true"
-        size="small" [page]="{show:false}" [scroll]="{y:'260px'}" ps="22" [loading]="http.loading">
+        size="small" (change)="stChange($event)" [page]="{show:false}" [scroll]="{y:'260px'}" ps="22"
+        [loading]="http.loading">
 
         <ng-template #bodyHyTpl let-s>
           <ng-container *ngIf="hySt.count > 0">

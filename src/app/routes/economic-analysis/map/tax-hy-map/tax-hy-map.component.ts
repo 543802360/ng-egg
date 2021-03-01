@@ -55,7 +55,7 @@ export class EconomicAnalysisMapTaxHyMapComponent implements OnInit, AfterViewIn
       title: '镇街',
       index: 'jdxzmc',
       className: 'text-center',
-      width: 240
+      width: 170
 
     },
     {
@@ -86,7 +86,7 @@ export class EconomicAnalysisMapTaxHyMapComponent implements OnInit, AfterViewIn
     // }
   ];
 
-  heightStop = 4000;
+  heightStop = 20000;
   gridActive = {
     type: "FeatureCollection",
     features: []
@@ -161,8 +161,10 @@ export class EconomicAnalysisMapTaxHyMapComponent implements OnInit, AfterViewIn
         this.loadSrv.close();
         // 1、获取镇街税收数据,处理成包含8个街道的
         const townTaxData: itemInfo[] = resp[1].data;
+        const tmp = [...townTaxData.filter(i => i.jdxzmc === '黄岛区')];
+        const other = Object.assign({ ...tmp[0] }, { jdxzmc: '区本级' });
+        this.townData = [...townTaxData.filter(i => i.jdxzmc != '黄岛区'), other];
 
-        this.townData = [...townTaxData.filter(i => i.jdxzmc != '黄岛区')];
         // 2、获取Geometry
         const fc = resp[0];
         const taxArray = [];
@@ -223,7 +225,11 @@ export class EconomicAnalysisMapTaxHyMapComponent implements OnInit, AfterViewIn
             }
           }
         });
-        if (!this.map.getLayer('town-layer')) {
+        if (this.map.getLayer('town-layer')) {
+          this.map.removeLayer('town-layer');
+        }
+
+        setTimeout(() => {
           this.map.addLayer({
             id: 'town-layer',
             source: 'town-geo',
@@ -235,14 +241,14 @@ export class EconomicAnalysisMapTaxHyMapComponent implements OnInit, AfterViewIn
               },
               "fill-extrusion-height": {
                 property: "tax",
-                stops: [[0, 0], [maxtax, this.heightStop]]
+                stops: [[mintax, 0], [maxtax, this.heightStop]]
               }, "fill-extrusion-opacity": 0.7,
               "fill-extrusion-height-transition": {
                 duration: 1500
               }
             }
           });
-        }
+        });
         // mousemove
         const popup = new mapboxgl.Popup({
           closeButton: false,
@@ -259,7 +265,7 @@ export class EconomicAnalysisMapTaxHyMapComponent implements OnInit, AfterViewIn
           if (queryPoint.length) {
             this.map.setPaintProperty("grid-active", "fill-extrusion-height", {
               property: "tax",
-              stops: [[0, 0], [maxtax, this.heightStop]]
+              stops: [[mintax, 0], [maxtax, this.heightStop]]
             });
             this.gridActive.features = [queryPoint[0]];
             (this.map.getSource("grid-active") as any).setData(this.gridActive);
@@ -275,8 +281,6 @@ export class EconomicAnalysisMapTaxHyMapComponent implements OnInit, AfterViewIn
                 .setLngLat(coords as any)
                 .setHTML(html)
                 .addTo(this.map);
-
-              console.log((this.st as any).el.nativeElement.style);
             }
           } else {
             // selectNsr = "";
@@ -301,12 +305,12 @@ export class EconomicAnalysisMapTaxHyMapComponent implements OnInit, AfterViewIn
     const budgetValue = this.bdgSelect.budgetValue.toLocaleString();
 
     if (!this.hyTreeSelect.getSelectedNodeList().length) {
-      return { year: 2019, startMonth, endMonth, budgetValue };
+      return { year, startMonth, endMonth, budgetValue };
     }
     if (this.hyTreeSelect.getSelectedNodeList().length !== 0) {
       const selectedNode = this.hyTreeSelect.getSelectedNodeList()[0];
       return selectedNode.parentNode ? { year, startMonth, endMonth, budgetValue, hymc: selectedNode.title } :
-        { year: 2019, startMonth, endMonth, budgetValue, mlmc: selectedNode.title };
+        { year, startMonth, endMonth, budgetValue, mlmc: selectedNode.title };
     }
 
   }

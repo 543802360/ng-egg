@@ -13,6 +13,7 @@ import { ScrollingModule } from "@angular/cdk/scrolling";
 import { NzBadgeModule } from 'ng-zorro-antd/badge';
 import { NzCardModule } from 'ng-zorro-antd/card';
 import { DownFileModule, OnboardingModule } from '@delon/abc';
+import { EconomicAnalysisQybtqTopnComponent } from './qybtq-topn/qybtq-topn.component';
 const COMPONENTS = [
   DashboardComponent,
   EconomicAnalysisHyAnalysisComponent,
@@ -20,7 +21,8 @@ const COMPONENTS = [
   EconomicAnalysisMapTaxAggMapComponent,
   EconomicAnalysisMapTaxHyMapComponent,
   EconomicAnalysisBillAnalysisComponent
-];
+,
+  EconomicAnalysisQybtqTopnComponent];
 const COMPONENTS_NOROUNT = [];
 
 @NgModule({

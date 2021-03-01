@@ -1,0 +1,43 @@
+<nz-card [nzTitle]="title" [nzExtra]="extraTemplate1" [nzBordered]="false" class="ant-card__body-nopadding sales-card">
+    <ng-template #extraTemplate1>
+        <app-bdg-select class="board-1" #bdgSelect></app-bdg-select>
+        <app-month-range class="board-3" #monthRange style="margin:0 5px;"></app-month-range>
+        <button nz-button class="board-4" (click)="getData()" nzType="primary" style="margin-left: 6px;">查询</button>
+        <button nz-button class="board-5" (click)="export()" nzType="primary" [disabled]="http.loading"
+            style="margin-left: 6px;">导出</button>
+    </ng-template>
+    <div nz-row nzGutter="8">
+        <div nz-col [nzXs]="24" [nzSm]="24" nzMd="24" nzLg="24">
+            <st #cySt [data]="qybtqTopNData" header="（单位：万元）" [page]="page" [columns]="columns" [body]="bodyCyTpl"
+                bordered="true" size="default" [loading]="http.loading">
+                <ng-template #bodyCyTpl let-s>
+                    <!-- <ng-container *ngIf="cySt.count > 0">
+                        <tr class="bg-grey-lighter text-magenta-dark">
+                            <td colspan="2" class="text-center">合计</td>
+                            <td class="text-center">{{ s.bndsr.value|number}}</td>
+                            <td class="text-center">{{ s.sntq.value|number}}</td>
+                            <td class="text-center">{{ (s.bndsr.value-s.sntq.value) |number}}</td>
+                            <td class="text-center">
+                                {{ ((s.bndsr.value-s.sntq.value)/s.sntq.value*100).toFixed(2)+"%"}}
+                            </td>
+                        </tr>
+                    </ng-container> -->
+                </ng-template>
+                <ng-template st-row="tbzjz-tpl" let-item let-index="index">
+                    <nz-tag nzColor="{{item.TBZJZ>0?'green':'red'}}">
+                        <span nz-tooltip [nzTooltipTitle]="'同比增减：' + item.TBZJZ +'万元'"> {{item.TBZJZ|number}}</span>
+                    </nz-tag>
+                </ng-template>
+                <ng-template st-row="tbzjf-tpl" let-item let-index="index">
+                    <nz-tag nzColor="{{item.TBZJZ>0?'green':'red'}}">
+                        <span nz-tooltip [nzTooltipTitle]="'同比增减幅：' + item.TBZJF"> {{item.TBZJF}}</span>
+                    </nz-tag>
+                </ng-template>
+
+                <ng-template st-row='order-tpl' let-item let-index="index">
+                    <nz-badge [nzCount]="index + 1"></nz-badge>
+                </ng-template>
+            </st>
+        </div>
+    </div>
+</nz-card>

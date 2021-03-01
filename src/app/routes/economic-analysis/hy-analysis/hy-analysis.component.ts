@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { _HttpClient, ModalHelper } from '@delon/theme';
-import { STColumn, STComponent } from '@delon/abc/st';
-
+import { STColumn, STComponent, STChange } from '@delon/abc/st';
+import { Router, ActivatedRoute } from "@angular/router";
 import { G2PieData } from '@delon/chart/pie';
 import { yuan, BdgSelectComponent, MonthRangeComponent, order, ExcelData, export2excel } from '@shared';
 import { forkJoin } from 'rxjs';
@@ -15,6 +15,7 @@ import { OnboardingService } from '@delon/abc';
 export class EconomicAnalysisHyAnalysisComponent implements OnInit, AfterViewInit {
   hyUrl = `analysis/tax/hy`;
   cyUrl = `analysis/tax/cy`;
+  qybtqTopNUrl = 'bdg/enterprise/qybtqTopN';
   selectedMlmcFlag = 'SWDJ';
   // 行业数据
   hyG2Data: G2PieData[];
@@ -123,6 +124,8 @@ export class EconomicAnalysisHyAnalysisComponent implements OnInit, AfterViewIni
 
   constructor(public http: _HttpClient,
     private boardingSrv: OnboardingService,
+    private router: Router,
+    private route: ActivatedRoute,
     private modal: ModalHelper) { }
 
   ngOnInit() { }
@@ -219,7 +222,21 @@ export class EconomicAnalysisHyAnalysisComponent implements OnInit, AfterViewIni
   handlePieValueFormat(value: any) {
     return yuan(value);
   }
+  /**
+   * st change event
+   * @param e 
+   */
+  stChange(e: STChange) {
+    if (e.type === 'click') {
+      const { item } = e.click;
+      this.router.navigate(['../qybtq-topn'],
+        {
+          relativeTo: this.route,
+          queryParams: { ...this.getCondition(), mlmc: item.mlmc }
+        });
 
+    }
+  }
   /**
    * 导出表格数据
    */

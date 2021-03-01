@@ -6,6 +6,7 @@ import { EconomicAnalysisMapTaxDotMapComponent } from './map/tax-dot-map/tax-dot
 import { EconomicAnalysisMapTaxAggMapComponent } from './map/tax-agg-map/tax-agg-map.component';
 import { EconomicAnalysisBillAnalysisComponent } from './bill-analysis/bill-analysis.component';
 import { EconomicAnalysisMapTaxHyMapComponent } from './map/tax-hy-map/tax-hy-map.component';
+import { EconomicAnalysisQybtqTopnComponent } from './qybtq-topn/qybtq-topn.component';
 
 const routes: Routes = [
   {
@@ -51,10 +52,18 @@ const routes: Routes = [
     }
   },
   {
+    path: 'qybtq-topn',
+    data: {
+      title: '同期税收分析'
+    },
+    component: EconomicAnalysisQybtqTopnComponent
+  },
+  {
     path: '',
     redirectTo: 'tax-dot-map',
     pathMatch: 'full'
-  }];
+  },
+];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
