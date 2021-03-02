@@ -17,7 +17,7 @@
         [header]="headerTpl" [page]="{show:false}" [footer]="footerTpl">
         <ng-template #headerTpl>
           <ng-container>
-            <div>企业分税种税收明细（单位：万元）</div>
+            <div>企业分税种税收明细（单位：元）</div>
           </ng-container>
         </ng-template>
         <ng-template #footerTpl let-s>
@@ -55,19 +55,19 @@
   <!-- 分税种图表 -->
   <div nz-row nzGutter="24" style="height: 100%;">
 
-    <div nz-col nzSpan="12">
+    <div nz-col nzSpan="8">
       <div class="chart">
         <g2-bar height="345" [padding]="[32,0,68,40]" style="width: 100%" [data]="taxByYearData">
         </g2-bar>
       </div>
     </div>
-    <div nz-col nzSpan="12" style="height: 100%;width: 100%;">
+    <div nz-col nzSpan="16" style="height: 100%;width: 100%;">
       <div class="chart">
         <g2-pie title="总税收" [hasLegend]="true" [inner]="0.75" subTitle="总税收" [total]="tpl_total" [data]="zsxmBarData"
           height="335">
         </g2-pie>
         <ng-template #tpl_total>
-          {{total | number}} 万元
+          {{total | number}} 元
         </ng-template>
         <!-- <g2-bar height="300" style="width: 100%" [data]="zsxmData"></g2-bar> -->
       </div>

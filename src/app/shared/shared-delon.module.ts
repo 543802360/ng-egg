@@ -11,7 +11,7 @@ import { GlobalFooterModule } from '@delon/abc/global-footer';
 import { NoticeIconModule } from '@delon/abc/notice-icon';
 import { NumberToChineseModule } from '@delon/abc/number-to-chinese';
 import { PageHeaderModule } from '@delon/abc/page-header';
-import { QRModule } from '@delon/abc/qr';
+// import { QRModule } from '@delon/abc/qr';
 import { QuickMenuModule } from '@delon/abc/quick-menu';
 import { ResultModule } from '@delon/abc/result';
 // import { ReuseTabModule } from '@delon/abc/reuse-tab';
@@ -41,11 +41,11 @@ export const SHARED_DELON_MODULES = [
   CountDownModule,
   DatePickerModule,
   DownFileModule,
-  EllipsisModule,
+  // EllipsisModule,
   STModule,
   SVModule,
   SEModule,
-  QRModule,
+  // QRModule,
   NumberToChineseModule,
   ErrorCollectModule,
   ExceptionModule,
@@ -54,22 +54,22 @@ export const SHARED_DELON_MODULES = [
   GlobalFooterModule,
   PageHeaderModule,
   ResultModule,
-  TagSelectModule,
+  // TagSelectModule,
   NoticeIconModule,
   QuickMenuModule,
   SidebarNavModule,
   G2BarModule,
   G2CardModule,
-  G2GaugeModule,
-  G2MiniAreaModule,
-  G2MiniBarModule,
-  G2MiniProgressModule,
+  // G2GaugeModule,
+  // G2MiniAreaModule,
+  // G2MiniBarModule,
+  // G2MiniProgressModule,
   G2PieModule,
-  G2RadarModule,
+  // G2RadarModule,
   G2SingleBarModule,
-  G2TagCloudModule,
+  // G2TagCloudModule,
   G2TimelineModule,
-  G2WaterWaveModule,
+  // G2WaterWaveModule,
   NumberInfoModule,
   TrendModule,
   FullContentModule,
