@@ -108,15 +108,13 @@ export class AnalysisToolsCompanyDimTaxComponent implements OnInit {
       index: 'TBZJZ',
       title: '同比增减',
       className: 'text-center',
-      // type: 'number'
-      render: 'tbzjz-tpl',
+      type: 'number',
       width: 120
     },
     {
       index: 'TBZJF',
       title: '同比增减幅',
       className: 'text-center',
-      render: 'tbzjf-tpl',
       width: 120
 
     },
