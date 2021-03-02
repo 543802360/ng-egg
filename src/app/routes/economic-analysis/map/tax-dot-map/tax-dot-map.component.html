@@ -1,38 +1,45 @@
 <nz-card style="margin-top: 10px;" [nzExtra]="extraTemplate1">
   <ng-template #extraTemplate1>
-    <app-bdg-select class="board-1" #bdgSelect></app-bdg-select>
-    <app-hy-select class="board-2" (changed)="hyChange($event)" #hySelect></app-hy-select>
-    <hy-base-select class="board-3" #hyBase></hy-base-select>
+    <div nz-row nzGutter="8" style="margin: 5px; text-align: center;">
+      <app-bdg-select class="board-1" #bdgSelect></app-bdg-select>
+      <app-hy-select class="board-2" (changed)="hyChange($event)" #hySelect></app-hy-select>
+      <hy-base-select class="board-3" #hyBase></hy-base-select>
 
-    <span class="header-label"> 纳税额:</span>
-    <nz-select class="board-4" style="margin: 0 5px;width: 130px;" [(ngModel)]="selectedValue" nzPlaceHolder="请选择排名"
-      nzAllowClear>
-      <nz-option nzLabel="亿元以上" [nzValue]="10000">
-      </nz-option>
-      <nz-option nzLabel="5000万以上" [nzValue]="5000">
-      </nz-option>
-      <nz-option nzLabel="1000万以上" [nzValue]="1000">
-      </nz-option>
-      <nz-option nzLabel="500万以上" [nzValue]="500">
-      </nz-option>
-      <nz-option nzLabel="200万以上" [nzValue]="200">
-      </nz-option>
-      <nz-option nzLabel="100万以上" [nzValue]="100">
-      </nz-option>
-      <nz-option nzLabel="50万以上" [nzValue]="50">
-      </nz-option>
-    </nz-select>
+      <span class="header-label"> 纳税额:</span>
+      <nz-select class="board-4" style="margin: 0 5px;width: 130px;" [(ngModel)]="selectedValue" nzPlaceHolder="请选择排名"
+        nzAllowClear>
+        <nz-option nzLabel="亿元以上" [nzValue]="10000">
+        </nz-option>
+        <nz-option nzLabel="5000万以上" [nzValue]="5000">
+        </nz-option>
+        <nz-option nzLabel="1000万以上" [nzValue]="1000">
+        </nz-option>
+        <nz-option nzLabel="500万以上" [nzValue]="500">
+        </nz-option>
+        <nz-option nzLabel="200万以上" [nzValue]="200">
+        </nz-option>
+        <nz-option nzLabel="100万以上" [nzValue]="100">
+        </nz-option>
+        <nz-option nzLabel="50万以上" [nzValue]="50">
+        </nz-option>
+      </nz-select>
+    </div>
 
-    <app-month-range class="board-5" #monthRange style="margin-right: 5px;"></app-month-range>
-    <button nz-button class="board-6" (click)="getData()" nzType="primary" style="margin-left: 6px;">查询</button>
-    <button nz-button class="board-7" (click)="export()" nzType="primary" style="margin-left: 6px;">导出</button>
-    <button nz-button nz-tooltip nzTooltipTitle="帮助" (click)="startBoard()" nzType="default" style="margin-left: 6px;"
-      nzShape="circle">
-      <i nz-icon nzType="question" nzTheme="outline"></i></button>
+    <div nz-row nzGutter="8" style="margin: 10px 5px; text-align: center;">
+      <span class="header-label">入库时间：</span>
+      <app-month-range class="board-5" #monthRange style="margin-right: 5px;"></app-month-range>
+      <button nz-button class="board-6" (click)="getData()" nzType="primary" style="margin-left: 6px;">查询</button>
+      <button nz-button class="board-7" (click)="export()" nzType="primary" style="margin-left: 6px;">导出</button>
+      <button nz-button nz-tooltip nzTooltipTitle="帮助" (click)="startBoard()" nzType="default" style="margin-left: 6px;"
+        nzShape="circle">
+        <i nz-icon nzType="question" nzTheme="outline"></i></button>
+    </div>
+
+
     <!-- startBoard -->
   </ng-template>
   <div nz-row nzGutter="8" style="height: calc(100%);">
-    <div nz-col nzSpan="10" style="height: 100%;overflow:auto">
+    <div nz-col nzSpan="12" style="height: 100%;overflow:auto">
       <div nz-row nzGutter="8">
         <div nz-col nzSpan="12">
           <nz-card>
@@ -86,7 +93,7 @@
         </ng-template>
       </st>
     </div>
-    <div nz-col nzSpan="14" style="height: 100%;">
+    <div nz-col nzSpan="12" style="height: 100%;">
       <div style="height: 100%; width: 100%;margin-top: 10px;">
         <nz-button-group nzSize="default" style="position: absolute; z-index: 9; top: 20px; left: 20px;">
           <button nz-button (click)="switchLayer('heat')" nzDanger="true" nzGhost="true">热力图</button>

@@ -11,6 +11,7 @@
 export * from "./style/dark";
 export * from "./style/dark_T";
 export * from "./style/decimal_T";
+export * from './style/blue';
 
 // 模块
 export * from './geo.module';

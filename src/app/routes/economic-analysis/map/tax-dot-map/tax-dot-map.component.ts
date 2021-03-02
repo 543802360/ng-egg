@@ -4,7 +4,7 @@ import { CdkVirtualScrollViewport } from "@angular/cdk/scrolling";
 import { Subject } from 'rxjs';
 import { NzTreeSelectComponent } from 'ng-zorro-antd/tree-select';
 import * as mapboxgl from "mapbox-gl";
-import { dark } from "@geo";
+import { blue as dark } from "@geo";
 import { BdgSelectComponent, MonthRangeComponent, Point, getColorRange, COLORS, EOrder, ZSXM, export2excel, fly2target } from '@shared';
 import { LoadingService, ReuseTabService, ReuseHookTypes, ReuseComponentInstance, STColumn, STComponent, STPage, STData, STChangeType, STChange, OnboardingService } from '@delon/abc';
 import { Router, ActivatedRoute } from '@angular/router';
