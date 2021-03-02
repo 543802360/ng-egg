@@ -115,32 +115,35 @@ export class BudgetBdgAnalysisSingleQueryComponent implements OnInit, AfterViewI
 
     forkJoin([$stream1, $stream2, $stream3]).pipe(delay(50)).subscribe(resp => {
       this.loadSrv.close();
-      // 分税种明细
-      const zsxmMap = new Map(Object.entries(resp[0].data).filter(item => item[1] !== 0));
-      const zsxmData = (Object as any).fromEntries(zsxmMap);
+      if (Object.keys(resp[0].data).length) {
+        // 分税种明细
+        const zsxmMap = new Map(Object.entries(resp[0].data).filter(item => item[1] !== 0));
+        const zsxmData = (Object as any).fromEntries(zsxmMap);
 
-      // 设置征收项目表头
-      this.columns = Object.keys(zsxmData).map(item => {
-        return {
-          title: item,
-          index: item,
-          className: 'text-center',
-          type: 'number'
-        }
-      });
-      // 计算合计数
-      this.total = Object.values(zsxmData).reduce((prev: number, cur: number) => {
-        return prev + cur;
-      }) as number;
-      this.taxByZsxmData = [zsxmData];
-      // 设置G2 Bar、Pie 数据
-      const data = Object.entries(zsxmData).map(item => {
-        return {
-          x: item[0],
-          y: item[1]
-        }
-      }).filter(item => item.y !== 0).sort(order('y'));
-      this.zsxmBarData = deepCopy(data);
+        // 设置征收项目表头
+        this.columns = Object.keys(zsxmData).map(item => {
+          return {
+            title: item,
+            index: item,
+            className: 'text-center',
+            type: 'number'
+          }
+        });
+        // 计算合计数
+        this.total = Object.values(zsxmData).reduce((prev: number, cur: number) => {
+          return prev + cur;
+        }) as number;
+        this.taxByZsxmData = [zsxmData];
+        // 设置G2 Bar、Pie 数据
+        const data = Object.entries(zsxmData).map(item => {
+          return {
+            x: item[0],
+            y: item[1]
+          }
+        }).filter(item => item.y !== 0).sort(order('y'));
+        this.zsxmBarData = deepCopy(data);
+      }
+
       // 获取历年税收
       this.taxByYearData = resp[1].data.map(item => {
         return {

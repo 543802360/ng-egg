@@ -1,3 +1,4 @@
+import { NzMessageService } from 'ng-zorro-antd/message';
 import { Subject } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
 import { filter, debounceTime, switchMap } from 'rxjs/operators';
@@ -16,8 +17,6 @@ export class NsrmcSuggestionComponent implements OnInit {
   autoChangeSub = new Subject<any>();
   dataSource: string[];
 
-
-
   public get nsrmc(): string {
     return this._nsrmc;
   }
@@ -28,7 +27,7 @@ export class NsrmcSuggestionComponent implements OnInit {
   }
 
 
-  constructor(private http: _HttpClient) { }
+  constructor(private http: _HttpClient, private msgSrv: NzMessageService) { }
 
   ngOnInit(): void {
     // 搜索提示自动完成框
@@ -48,8 +47,16 @@ export class NsrmcSuggestionComponent implements OnInit {
       });
   }
 
+  ngModelChange(e) {
+    if (e && e.length >= 2) {
+      this.autoChangeSub.next(e);
+    } else {
+      // this.msgSrv.warning('')
+    }
+
+  }
+
   setNsrmc(e) {
-    console.log('set nsrmc:', e);
     this._nsrmc = e;
   }
 
