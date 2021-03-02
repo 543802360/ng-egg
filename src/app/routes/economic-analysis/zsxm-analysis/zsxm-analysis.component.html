@@ -1,0 +1,74 @@
+<!--产业税收 -->
+<nz-card [nzTitle]="'分税种税收'" [nzExtra]="extraTemplate1" [nzBordered]="false"
+  class="ant-card__body-nopadding sales-card">
+  <ng-template #extraTemplate1>
+    <app-bdg-select class="board-1" #bdgSelect></app-bdg-select>
+    <app-month-range class="board-3" #monthRange style="margin:0 5px;"></app-month-range>
+
+    <button nz-button class="board-4" (click)="getData()" nzType="primary" style="margin-left: 6px;">查询</button>
+    <button nz-button class="board-5" (click)="export()" nzType="primary" [disabled]="http.loading"
+      style="margin-left: 6px;">导出</button>
+    <button nz-button nz-tooltip nzTooltipTitle="帮助" (click)="startBoard()" nzType="default" style="margin-left: 6px;"
+      nzShape="circle">
+      <i nz-icon nzType="question" nzTheme="outline"></i></button>
+  </ng-template>
+  <div nz-row nzGutter="8">
+    <div nz-col [nzXs]="24" [nzSm]="24" nzMd="12" nzLg="12">
+      <st #zsxmSt [data]="zsxmStData" header="分税种税收（单位：万元）" [columns]="columns" [body]="bodyCyTpl" bordered="true"
+        size="small" [page]="{show:false}" [scroll]="{y:'660px'}" ps="22" [loading]="http.loading">
+        <ng-template #bodyCyTpl let-s>
+          <ng-container *ngIf="zsxmSt.count > 0">
+            <tr class="bg-grey-lighter text-magenta-dark">
+              <td colspan="2" class="text-center">合计</td>
+              <td class="text-center">{{ s.BNDSR.value|number}}</td>
+              <td class="text-center">{{ s.SNTQ.value|number}}</td>
+              <td class="text-center">{{ (s.BNDSR.value-s.SNTQ.value) |number}}</td>
+              <td class="text-center">
+                {{ ((s.BNDSR.value-s.SNTQ.value)/s.SNTQ.value*100).toFixed(2)+"%"}}
+              </td>
+            </tr>
+          </ng-container>
+        </ng-template>
+        <ng-template st-row="tbzjz-tpl" let-item let-index="index">
+          <nz-tag nzColor="{{item.TBZJZ>0?'green':'red'}}">
+            <span nz-tooltip [nzTooltipTitle]="'同比增减：' + item.TBZJZ +'万元'"> {{item.TBZJZ|number}}</span>
+          </nz-tag>
+        </ng-template>
+        <ng-template st-row="tbzjf-tpl" let-item let-index="index">
+          <nz-tag nzColor="{{item.TBZJZ>0?'green':'red'}}">
+            <span nz-tooltip [nzTooltipTitle]="'同比增减幅：' + item.TBZJF"> {{item.TBZJF}}</span>
+          </nz-tag>
+        </ng-template>
+
+        <ng-template st-row='order-tpl' let-item let-index="index">
+          <nz-badge [nzCount]="index + 1"></nz-badge>
+        </ng-template>
+      </st>
+    </div>
+
+    <div nz-col [nzXs]="24" [nzSm]="24" nzMd="12" nzLg="12">
+      <div class="bar">
+        <g2-pie *ngIf="zsxmG2Data" [data]="zsxmG2Data" subTitle="总收入" height="600" [total]="tpl_total"
+          [valueFormat]="handlePieValueFormat" [hasLegend]="false">
+        </g2-pie>
+        <ng-template #tpl_total>
+          {{total | number}} 万元
+        </ng-template>
+      </div>
+    </div>
+  </div>
+  <!-- <div nz-row nzGutter="8">
+
+    <div nz-col [nzXs]="24" [nzSm]="24" nzMd="24" nzLg="24">
+      <div class="bar">
+        <g2-pie *ngIf="zsxmG2Data" [data]="zsxmG2Data" subTitle="总收入" height="330" [total]="tpl_total"
+          [valueFormat]="handlePieValueFormat" [hasLegend]="true">
+        </g2-pie>
+        <ng-template #tpl_total>
+          {{total | number}} 万元
+        </ng-template>
+      </div>
+    </div>
+
+  </div> -->
+</nz-card>

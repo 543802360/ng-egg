@@ -14,14 +14,16 @@ import { NzBadgeModule } from 'ng-zorro-antd/badge';
 import { NzCardModule } from 'ng-zorro-antd/card';
 import { DownFileModule, OnboardingModule } from '@delon/abc';
 import { EconomicAnalysisQybtqTopnComponent } from './qybtq-topn/qybtq-topn.component';
+import { EconomicAnalysisZsxmAnalysisComponent } from './zsxm-analysis/zsxm-analysis.component';
 const COMPONENTS = [
   DashboardComponent,
   EconomicAnalysisHyAnalysisComponent,
   EconomicAnalysisMapTaxDotMapComponent,
   EconomicAnalysisMapTaxAggMapComponent,
   EconomicAnalysisMapTaxHyMapComponent,
-  EconomicAnalysisBillAnalysisComponent
-,
+  EconomicAnalysisBillAnalysisComponent,
+  EconomicAnalysisZsxmAnalysisComponent
+  ,
   EconomicAnalysisQybtqTopnComponent];
 const COMPONENTS_NOROUNT = [];
 

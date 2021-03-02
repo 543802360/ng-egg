@@ -7,6 +7,7 @@ import { EconomicAnalysisMapTaxAggMapComponent } from './map/tax-agg-map/tax-agg
 import { EconomicAnalysisBillAnalysisComponent } from './bill-analysis/bill-analysis.component';
 import { EconomicAnalysisMapTaxHyMapComponent } from './map/tax-hy-map/tax-hy-map.component';
 import { EconomicAnalysisQybtqTopnComponent } from './qybtq-topn/qybtq-topn.component';
+import { EconomicAnalysisZsxmAnalysisComponent } from './zsxm-analysis/zsxm-analysis.component';
 
 const routes: Routes = [
   {
@@ -21,6 +22,13 @@ const routes: Routes = [
     component: EconomicAnalysisHyAnalysisComponent,
     data: {
       title: '分产业行业分析'
+    }
+  },
+  {
+    path: 'zsxm-analysis',
+    component: EconomicAnalysisZsxmAnalysisComponent,
+    data: {
+      title: '分税种分析'
     }
   },
   {

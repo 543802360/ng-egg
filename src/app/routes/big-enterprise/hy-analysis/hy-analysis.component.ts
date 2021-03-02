@@ -12,6 +12,7 @@ import { XlsxService, LoadingService, ReuseComponentInstance, OnboardingService 
 interface ItemData {
   MLMC?: string,
   COUNT?: number,
+  TOTAL_COUNT?: number,
   SNTQ_QKJ_ALL?: number,
   BNDSR_QKJ?: number,
   BNDSR_DFKJ?: number,
@@ -82,7 +83,14 @@ export class BigEnterpriseHyAnalysisComponent implements OnInit, AfterViewInit, 
     },
     {
       index: 'COUNT',
-      title: '企业户数',
+      title: '当前纳税人户数',
+      className: 'text-center',
+      width: 100,
+      // width: 400
+    },
+    {
+      index: 'TOTAL_COUNT',
+      title: '总户数',
       className: 'text-center',
       width: 100,
       // width: 400
@@ -304,7 +312,9 @@ export class BigEnterpriseHyAnalysisComponent implements OnInit, AfterViewInit, 
           this.totalObj.SNTQ_QKJ = i.SNTQ_QKJ;
           this.totalObj.SNTQ_DFKJ = i.SNTQ_DFKJ;
           this.totalObj.SNTQ_QKJ_ALL = i.SNTQ_QKJ_ALL;
-          this.totalObj.COUNT = i.COUNT
+          this.totalObj.COUNT = i.COUNT;
+          this.totalObj.TOTAL_COUNT = i.TOTAL_COUNT
+
         } else {
           this.totalObj.BNDSR_QKJ += i.BNDSR_QKJ;
           this.totalObj.BNDSR_DFKJ += i.BNDSR_DFKJ;
@@ -312,6 +322,8 @@ export class BigEnterpriseHyAnalysisComponent implements OnInit, AfterViewInit, 
           this.totalObj.SNTQ_DFKJ += i.SNTQ_DFKJ;
           this.totalObj.SNTQ_QKJ_ALL += i.SNTQ_QKJ_ALL;
           this.totalObj.COUNT += i.COUNT
+          this.totalObj.TOTAL_COUNT += i.TOTAL_COUNT
+
         }
 
       });
@@ -340,7 +352,9 @@ export class BigEnterpriseHyAnalysisComponent implements OnInit, AfterViewInit, 
           this.otherObj.SNTQ_QKJ = i.SNTQ_QKJ;
           this.otherObj.SNTQ_DFKJ = i.SNTQ_DFKJ;
           this.otherObj.SNTQ_QKJ_ALL = i.SNTQ_QKJ_ALL;
-          this.otherObj.COUNT = i.COUNT
+          this.otherObj.COUNT = i.COUNT;
+          this.otherObj.TOTAL_COUNT = i.TOTAL_COUNT
+
         } else {
           this.otherObj.BNDSR_QKJ += i.BNDSR_QKJ;
           this.otherObj.BNDSR_DFKJ += i.BNDSR_DFKJ;
@@ -348,6 +362,8 @@ export class BigEnterpriseHyAnalysisComponent implements OnInit, AfterViewInit, 
           this.otherObj.SNTQ_DFKJ += i.SNTQ_DFKJ;
           this.otherObj.SNTQ_QKJ_ALL += i.SNTQ_QKJ_ALL;
           this.otherObj.COUNT += i.COUNT
+          this.otherObj.TOTAL_COUNT += i.TOTAL_COUNT
+
         }
 
       });
