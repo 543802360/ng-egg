@@ -91,7 +91,11 @@ export class AnalysisToolsCompanyDimTaxComponent implements OnInit {
       title: '本年度',
       className: 'text-center',
       type: 'number',
-      width: 120
+      width: 120,
+      // format:(item,col,index)=>{
+      //   // return item;
+      //   // return {}
+      // }
     },
     {
       index: 'SNTQ',
@@ -205,7 +209,13 @@ export class AnalysisToolsCompanyDimTaxComponent implements OnInit {
 
     this.bdgSelect.budgetValue.length === 0 ? this.bdgSelect.budgetValue = [1, 3, 4] : null;
     this.http.get(this.url, this.getCondition()).subscribe(resp => {
-      this.taxData = resp.data;
+      this.taxData = resp.data.map(i => {
+        const BNDSR = Math.round(i.BNDSR / 100) / 100;
+        const SNTQ = Math.round(i.SNTQ / 100) / 100;
+        const TBZJZ = Math.round(i.TBZJZ / 100) / 100;
+        return { ...i, BNDSR, SNTQ, TBZJZ }
+
+      });
       this.total = resp.data.length;
     });
 

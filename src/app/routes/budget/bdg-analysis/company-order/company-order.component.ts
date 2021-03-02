@@ -233,39 +233,39 @@ export class BudgetBdgAnalysisCompanyOrderComponent implements OnInit, AfterView
 
       // 添加至地图
       this.data.forEach((item, index) => {
-        const marker = L.marker([item.lat, item.lng], {
-          icon: L.BeautifyIcon.icon({
-            icon: 'leaf',
-            // iconSize: [28, 28],
-            isAlphaNumericIcon: true,
-            text: index + 1,
-            iconShape: 'marker',
-            borderColor: '#00ABCD',
-            textColor: 'red'
-          })
-        });
+        if (item.lat && item.lng) {
+          const marker = L.marker([item.lat, item.lng], {
+            icon: L.BeautifyIcon.icon({
+              icon: 'leaf',
+              // iconSize: [28, 28],
+              isAlphaNumericIcon: true,
+              text: index + 1,
+              iconShape: 'marker',
+              borderColor: '#00ABCD',
+              textColor: 'red'
+            })
+          });
 
 
-        Object.defineProperty(marker, 'NSRMC', {
-          enumerable: true,
-          value: item.NSRMC
-        });
+          Object.defineProperty(marker, 'NSRMC', {
+            enumerable: true,
+            value: item.NSRMC
+          });
 
-        const popupContent = `
-        <h5>纳税人名称：${item.NSRMC}</h5>
-        <h5>本年度收入：${item.BNDSR}</h5>
-        <h5>上年同期：${item.SNTQ}</h5>
-        <h5>同比增减值：${item.TBZJZ}</h5>
-        <h5>同比增减幅：${item.TBZJF}</h5>
-        `;
-        marker.bindPopup(popupContent);
-        this.nsrFeatureGroup.addLayer(marker);
-
+          const popupContent = `
+          <h5>纳税人名称：${item.NSRMC}</h5>
+          <h5>本年度收入：${item.BNDSR}</h5>
+          <h5>上年同期：${item.SNTQ}</h5>
+          <h5>同比增减值：${item.TBZJZ}</h5>
+          <h5>同比增减幅：${item.TBZJF}</h5>
+          `;
+          marker.bindPopup(popupContent);
+          this.nsrFeatureGroup.addLayer(marker);
+        }
       });
       // 
       this.map.fitBounds(this.nsrFeatureGroup.getBounds());
     });
-
 
   }
   /**

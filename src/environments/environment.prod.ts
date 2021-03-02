@@ -70,10 +70,10 @@ export const environment = {
 
   },
   reportsUrl: {
-    czsr: 'http://35.1.149.22:8080/bb/bb/czsr',
-    hy: 'http://35.1.149.22:8080/bb/bb/hy',
-    hyall: 'http://35.1.149.22:8080/bb/bb/hyall',
-    zj: 'http://35.1.149.22:8080/bb/bb/zj',
-    nsr: 'http://35.1.149.22:8080/bb/bb/nsr',
+    czsr: 'http://35.1.149.88:8080/bb/bb/czsr',
+    hy: 'http://35.1.149.88:8080/bb/bb/hy',
+    hyall: 'http://35.1.149.88:8080/bb/bb/hyall',
+    zj: 'http://35.1.149.88:8080/bb/bb/zj',
+    nsr: 'http://35.1.149.88:8080/bb/bb/nsr',
   }
 };
