@@ -17,7 +17,7 @@
       <i nz-icon nzType="question" nzTheme="outline"></i></button>
   </ng-template>
   <div nz-row nzGutter="8" style="height: 100%;">
-    <div nz-col nzSpan="10" style="height: 100%;">
+    <div nz-col nzSpan="11" style="height: 100%;">
       <st #st [data]="townData" header="镇街收入（单位：万元）" [columns]="columns" size="small" bordered="true"
         [page]="{show:false}" [page]="{show:false}" [scroll]="{y:'620px'}" [body]="bodyTpl" [loading]="http.loading">
 
@@ -59,7 +59,7 @@
       <!-- <g2-bar style="padding: 10px;" *ngIf="townG2BarData&&townG2BarData.length" height="300" [data]="townG2BarData">
       </g2-bar> -->
     </div>
-    <div nz-col nzSpan="14" style="height: 100%;">
+    <div nz-col nzSpan="13" style="height: 100%;">
       <div style="height: 100%;min-height: 660px; width: 100%;margin-top: 10px;">
         <mgl-map [style]="style" [trackResize]="true" [zoom]="[8]" [center]="[120.3,36.45]" (load)="mapboxLoad($event)">
           <mgl-control mglNavigation></mgl-control>

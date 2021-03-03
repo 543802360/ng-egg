@@ -4,6 +4,7 @@
   <ng-template #extraTemplate1>
     <app-bdg-select class="board-1" #bdgSelect></app-bdg-select>
     <app-month-range class="board-3" #monthRange style="margin:0 5px;"></app-month-range>
+    <label nz-checkbox [(ngModel)]="isZxsr" name="">专项收入</label>
 
     <button nz-button class="board-4" (click)="getData()" nzType="primary" style="margin-left: 6px;">查询</button>
     <button nz-button class="board-5" (click)="export()" nzType="primary" [disabled]="http.loading"
@@ -15,11 +16,11 @@
   <div nz-row nzGutter="8">
     <div nz-col [nzXs]="24" [nzSm]="24" nzMd="12" nzLg="12">
       <st #zsxmSt [data]="zsxmStData" header="分税种税收（单位：万元）" [columns]="columns" [body]="bodyCyTpl" bordered="true"
-        size="small" [page]="{show:false}" [scroll]="{y:'660px'}" ps="22" [loading]="http.loading">
+        size="small" [page]="{show:false}" [scroll]="{y:'520px'}" ps="22" [loading]="http.loading">
         <ng-template #bodyCyTpl let-s>
           <ng-container *ngIf="zsxmSt.count > 0">
             <tr class="bg-grey-lighter text-magenta-dark">
-              <td colspan="2" class="text-center">合计</td>
+              <td colspan="1" class="text-center">合计</td>
               <td class="text-center">{{ s.BNDSR.value|number}}</td>
               <td class="text-center">{{ s.SNTQ.value|number}}</td>
               <td class="text-center">{{ (s.BNDSR.value-s.SNTQ.value) |number}}</td>
@@ -40,15 +41,15 @@
           </nz-tag>
         </ng-template>
 
-        <ng-template st-row='order-tpl' let-item let-index="index">
+        <!-- <ng-template st-row='order-tpl' let-item let-index="index">
           <nz-badge [nzCount]="index + 1"></nz-badge>
-        </ng-template>
+        </ng-template> -->
       </st>
     </div>
 
     <div nz-col [nzXs]="24" [nzSm]="24" nzMd="12" nzLg="12">
       <div class="bar">
-        <g2-pie *ngIf="zsxmG2Data" [data]="zsxmG2Data" subTitle="总收入" height="600" [total]="tpl_total"
+        <g2-pie *ngIf="zsxmG2Data" [data]="zsxmG2Data" subTitle="总收入" height="520" [total]="tpl_total"
           [valueFormat]="handlePieValueFormat" [hasLegend]="false">
         </g2-pie>
         <ng-template #tpl_total>

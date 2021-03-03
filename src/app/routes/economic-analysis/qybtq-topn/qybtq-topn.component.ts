@@ -3,6 +3,7 @@ import { _HttpClient, ModalHelper } from '@delon/theme';
 import { STColumn, STComponent, STChange, STPage, STData } from '@delon/abc/st';
 import { Router, ActivatedRoute } from "@angular/router";
 import { yuan, BdgSelectComponent, MonthRangeComponent, order, ExcelData, export2excel, EOrder, ZSXM } from '@shared';
+import { switchMap } from 'rxjs/operators';
 
 
 @Component({
@@ -16,6 +17,7 @@ export class EconomicAnalysisQybtqTopnComponent implements OnInit, AfterViewInit
 
   title = "";
   mlmc = '';
+  order = '';
   @ViewChild('bdgSelect') bdgSelect: BdgSelectComponent;
   @ViewChild('monthRange') monthRange: MonthRangeComponent;
   @ViewChild('st') st: STComponent;
@@ -99,17 +101,30 @@ export class EconomicAnalysisQybtqTopnComponent implements OnInit, AfterViewInit
   ngOnInit() { }
 
   ngAfterViewInit() {
-    this.route.queryParams.subscribe(resp => {
-      this.mlmc = resp.mlmc;
-      this.title = `${this.mlmc}企业税收比同期下降Top100`
-      this.http.get(this.qybtqTopNUrl, {
-        ...resp
-      }).subscribe(resp => {
+    // this.route.queryParams.subscribe(resp => {
+    //   this.mlmc = resp.mlmc;
+    //   this.order = resp.order;
+    //   this.title = `${this.mlmc}企业税收比同期${this.order === 'desc' ? '增长' : '下降'}Top200`
+    //   this.http.get(this.qybtqTopNUrl, {
+    //     ...resp
+    //   }).subscribe(resp => {
+
+    //     this.qybtqTopNData = resp.data;
+    //   });
+    // });
+    this.route.queryParams.pipe(
+      switchMap(resp => {
+        this.mlmc = resp.mlmc;
+        this.order = resp.order;
+        this.title = `${this.mlmc}企业税收比同期${this.order == 'desc' ? '增长' : '下降'}Top200`
+        return this.http.get(this.qybtqTopNUrl, {
+          ...resp
+        })
+      })).subscribe(resp => {
 
         this.qybtqTopNData = resp.data;
       });
 
-    });
   }
 
   /**
@@ -118,7 +133,8 @@ export class EconomicAnalysisQybtqTopnComponent implements OnInit, AfterViewInit
   getData() {
     this.http.get(this.qybtqTopNUrl, {
       ...this.getCondition(),
-      mlmc: this.mlmc
+      mlmc: this.mlmc,
+      order: this.order
     }).subscribe(resp => {
       this.qybtqTopNData = resp.data;
     });
@@ -140,19 +156,6 @@ export class EconomicAnalysisQybtqTopnComponent implements OnInit, AfterViewInit
   }
   handlePieValueFormat(value: any) {
     return yuan(value);
-  }
-  /**
-   * st change event
-   * @param e 
-   */
-  stChange(e: STChange) {
-    if (e.type === 'click') {
-      const { item } = e.click;
-      this.http.get(this.qybtqTopNUrl, {
-        ...this.getCondition(),
-        mlmc: item.mlmc
-      }).subscribe(resp => { console.log('qybtq topn:', resp) });
-    }
   }
   /**
    * 导出表格数据

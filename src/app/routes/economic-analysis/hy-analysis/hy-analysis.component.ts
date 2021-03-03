@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { _HttpClient, ModalHelper } from '@delon/theme';
-import { STColumn, STComponent, STChange } from '@delon/abc/st';
+import { STColumn, STComponent, STChange, STData } from '@delon/abc/st';
 import { Router, ActivatedRoute } from "@angular/router";
 import { G2PieData } from '@delon/chart/pie';
 import { yuan, BdgSelectComponent, MonthRangeComponent, order, ExcelData, export2excel } from '@shared';
@@ -73,6 +73,39 @@ export class EconomicAnalysisHyAnalysisComponent implements OnInit, AfterViewIni
       index: 'tbzjf',
       className: 'text-center',
       render: 'tbzjf-tpl'
+    },
+    {
+      title: '操作',
+      className: 'text-center',
+      fixed: 'right',
+      width: 80,
+      buttons: [
+        {
+          tooltip: '税收比同期下降企业',
+          icon: 'down',
+          // 点击查询详细税收
+          click: (record: STData, modal: true) => {
+            this.router.navigate(['../qybtq-topn'],
+              {
+                relativeTo: this.route,
+                queryParams: { ...this.getCondition(), mlmc: record.mlmc, order: 'asc' }
+              });
+          }
+        },
+        {
+          tooltip: '税收比同期增长企业',
+          icon: 'up',
+          // 点击查询详细税收
+          click: (record: STData, modal: true) => {
+
+            this.router.navigate(['../qybtq-topn'],
+              {
+                relativeTo: this.route,
+                queryParams: { ...this.getCondition(), mlmc: record.mlmc, order: 'desc' }
+              });
+          }
+        }
+      ]
     }
   ]
 
@@ -232,7 +265,7 @@ export class EconomicAnalysisHyAnalysisComponent implements OnInit, AfterViewIni
       this.router.navigate(['../qybtq-topn'],
         {
           relativeTo: this.route,
-          queryParams: { ...this.getCondition(), mlmc: item.mlmc }
+          queryParams: { ...this.getCondition(), mlmc: item.mlmc, order: 'desc' }
         });
 
     }
