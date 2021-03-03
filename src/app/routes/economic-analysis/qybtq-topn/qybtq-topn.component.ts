@@ -121,7 +121,6 @@ export class EconomicAnalysisQybtqTopnComponent implements OnInit, AfterViewInit
           ...resp
         })
       })).subscribe(resp => {
-
         this.qybtqTopNData = resp.data;
       });
 

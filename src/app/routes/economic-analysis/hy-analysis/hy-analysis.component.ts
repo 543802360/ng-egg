@@ -90,6 +90,7 @@ export class EconomicAnalysisHyAnalysisComponent implements OnInit, AfterViewIni
                 relativeTo: this.route,
                 queryParams: { ...this.getCondition(), mlmc: record.mlmc, order: 'asc' }
               });
+            return;
           }
         },
         {
@@ -103,6 +104,7 @@ export class EconomicAnalysisHyAnalysisComponent implements OnInit, AfterViewIni
                 relativeTo: this.route,
                 queryParams: { ...this.getCondition(), mlmc: record.mlmc, order: 'desc' }
               });
+            return;
           }
         }
       ]
@@ -260,15 +262,15 @@ export class EconomicAnalysisHyAnalysisComponent implements OnInit, AfterViewIni
    * @param e 
    */
   stChange(e: STChange) {
-    if (e.type === 'click') {
-      const { item } = e.click;
-      this.router.navigate(['../qybtq-topn'],
-        {
-          relativeTo: this.route,
-          queryParams: { ...this.getCondition(), mlmc: item.mlmc, order: 'desc' }
-        });
+    // if (e.type === 'click') {
+    //   const { item } = e.click;
+    //   this.router.navigate(['../qybtq-topn'],
+    //     {
+    //       relativeTo: this.route,
+    //       queryParams: { ...this.getCondition(), mlmc: item.mlmc, order: 'desc' }
+    //     });
 
-    }
+    // }
   }
   /**
    * 导出表格数据
