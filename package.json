@@ -8,6 +8,8 @@
 
     "yt-dev": "npm run color-less && node --max_old_space_size=6190 ./node_modules/@angular/cli/bin/ng serve -o  --port 4500",
     "build": "npm run color-less && node --max_old_space_size=8192 ./node_modules/@angular/cli/bin/ng build --prod --build-optimizer --base-href /fbi/",
+    "build-mobile": "npm run color-less && node --max_old_space_size=8192 ./node_modules/@angular/cli/bin/ng build --prod --build-optimizer --base-href /fmobile/",
+
     "test": "ng test",
     "lint": "npm run lint:ts && npm run lint:style",
     "e2e": "ng e2e",

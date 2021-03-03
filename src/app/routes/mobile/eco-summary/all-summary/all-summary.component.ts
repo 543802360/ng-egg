@@ -43,8 +43,8 @@ export class EcoSummaryAllSummaryComponent implements OnInit, AfterViewInit {
       this.taxTotal = Number(taxObj['bn']);
       this.notaxTotal = Number(notaxObj['bn']);
 
-      this.taxZsxmData = data.filter(i => i.sjkmdm === '101');
-      this.notaxZsxmData = data.filter(i => i.sjkmdm === '103');
+      this.taxZsxmData = data.filter(i => i.sjkmdm === '101').filter(i => i.bn !== '0.00');
+      this.notaxZsxmData = data.filter(i => i.sjkmdm === '103').filter(i => i.bn !== '0.00');
 
       console.log('税收：', this.taxZsxmData);
       console.log('非税：', this.notaxZsxmData);

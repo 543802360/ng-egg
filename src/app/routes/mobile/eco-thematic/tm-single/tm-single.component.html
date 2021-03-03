@@ -60,11 +60,11 @@
             <!-- 当年征收项目明细 -->
             <WingBlank style="font-size:16px;text-align:left">
                 <i nz-icon nzType="appstore" nzTheme="outline" style="font-size: 18px"></i>
-                当年税收明细(单位：万元)
+                当年税收明细(单位：元)
             </WingBlank>
 
             <List>
-                <ListItem [extra]="'金额（万元）'">征收项目</ListItem>
+                <ListItem [extra]="'金额（元）'">征收项目</ListItem>
                 <ListItem *ngFor="let item of singleCurTaxData;let i =index" [extra]="item.tax | number">
                     <Badge [text]="i+1" [hot]="true" [size]="'large'" style="margin-left:6px;"></Badge>
                     {{item.zsxm}}
