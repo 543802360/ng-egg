@@ -2,7 +2,7 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { _HttpClient, ModalHelper } from '@delon/theme';
 import { STChange, STColumn, STComponent, STData, STPage } from '@delon/abc/st';
-import { MonthRangeComponent } from '@shared';
+import { EOrder, export2excel, MonthRangeComponent, ZSXM } from '@shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import { XlsxService, LoadingService, ReuseComponentInstance, OnboardingService } from '@delon/abc';
 
@@ -223,9 +223,8 @@ export class BigEnterpriseHyAnalysisComponent implements OnInit, AfterViewInit, 
     front: true,
     pageSizes: [10, 20, 30, 50, 100]
   }
-  constructor(public http: _HttpClient,
-    private router: Router,
-    private route: ActivatedRoute,
+  constructor(
+    public http: _HttpClient,
     private xlsx: XlsxService,
     private loadSrv: LoadingService,
     private boardingSrv: OnboardingService) { }
@@ -313,7 +312,7 @@ export class BigEnterpriseHyAnalysisComponent implements OnInit, AfterViewInit, 
           this.totalObj.SNTQ_DFKJ = i.SNTQ_DFKJ;
           this.totalObj.SNTQ_QKJ_ALL = i.SNTQ_QKJ_ALL;
           this.totalObj.COUNT = i.COUNT;
-          this.totalObj.TOTAL_COUNT = i.TOTAL_COUNT
+          this.totalObj.TOTAL_COUNT = i.TOTAL_COUNT;
 
         } else {
           this.totalObj.BNDSR_QKJ += i.BNDSR_QKJ;
@@ -321,8 +320,8 @@ export class BigEnterpriseHyAnalysisComponent implements OnInit, AfterViewInit, 
           this.totalObj.SNTQ_QKJ += i.SNTQ_QKJ;
           this.totalObj.SNTQ_DFKJ += i.SNTQ_DFKJ;
           this.totalObj.SNTQ_QKJ_ALL += i.SNTQ_QKJ_ALL;
-          this.totalObj.COUNT += i.COUNT
-          this.totalObj.TOTAL_COUNT += i.TOTAL_COUNT
+          this.totalObj.COUNT += i.COUNT ? i.COUNT : 0;
+          this.totalObj.TOTAL_COUNT += i.TOTAL_COUNT ? i.TOTAL_COUNT : 0;
 
         }
 
@@ -353,7 +352,7 @@ export class BigEnterpriseHyAnalysisComponent implements OnInit, AfterViewInit, 
           this.otherObj.SNTQ_DFKJ = i.SNTQ_DFKJ;
           this.otherObj.SNTQ_QKJ_ALL = i.SNTQ_QKJ_ALL;
           this.otherObj.COUNT = i.COUNT;
-          this.otherObj.TOTAL_COUNT = i.TOTAL_COUNT
+          this.otherObj.TOTAL_COUNT = i.TOTAL_COUNT;
 
         } else {
           this.otherObj.BNDSR_QKJ += i.BNDSR_QKJ;
@@ -361,8 +360,8 @@ export class BigEnterpriseHyAnalysisComponent implements OnInit, AfterViewInit, 
           this.otherObj.SNTQ_QKJ += i.SNTQ_QKJ;
           this.otherObj.SNTQ_DFKJ += i.SNTQ_DFKJ;
           this.otherObj.SNTQ_QKJ_ALL += i.SNTQ_QKJ_ALL;
-          this.otherObj.COUNT += i.COUNT
-          this.otherObj.TOTAL_COUNT += i.TOTAL_COUNT
+          this.otherObj.COUNT += i.COUNT ? i.COUNT : 0;
+          this.otherObj.TOTAL_COUNT += i.TOTAL_COUNT ? i.TOTAL_COUNT : 0;
 
         }
 
@@ -411,3 +410,5 @@ export class BigEnterpriseHyAnalysisComponent implements OnInit, AfterViewInit, 
     });
   }
 }
+
+

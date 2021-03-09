@@ -6,6 +6,7 @@ import { _HttpClient, ModalHelper } from '@delon/theme';
 import { STColumn, STComponent, STPage, STReq, STRequestOptions, STRes, STData, STChange } from '@delon/abc/st';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { LoadingService, ReuseComponentInstance } from '@delon/abc';
+import truncate from '@turf/truncate';
 
 // import * as L from "leaflet";
 
@@ -384,7 +385,7 @@ export class CompanyPositionComponent implements OnInit, AfterViewInit, ReuseCom
       position: 'topleft',
       draw: {
         polyline: false,
-        polygon: false,
+        polygon: true,
         rectangle: false,
         circle: false,
         circlemarker: false

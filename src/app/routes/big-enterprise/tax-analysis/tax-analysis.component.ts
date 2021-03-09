@@ -330,7 +330,40 @@ export class BigEnterpriseTaxAnalysisComponent implements OnInit, AfterViewInit,
     });
   }
 
+  /**
+   * 批量导出当前重点企业税收
+   */
+  export() {
+    const { startDate, endDate } = this.monthRange;
 
+    this.loadSrv.open({
+      text: '正在处理……'
+    });
+    // 批量查询税收
+    const nsrmcs = this.data.map(item => item.NSRMC);
+    this.http.post('bdg/tools/batchQuery', {
+      nsrmcs,
+      ...this.getCondition()
+    }).subscribe(resp => {
+      // 查询结果按指定字典排序映射
+      const rowData = resp.data.map(item => {
+        const el = {};
+        Object.keys(EOrder).forEach(key => {
+          el[EOrder[key]] = item[key];
+        });
+        Object.keys(ZSXM).forEach(key => {
+          el[ZSXM[key]] = item[key] ? item[key] : 0;
+        });
+        return el;
+      });
+      this.loadSrv.close();
+      export2excel(`重点企业-${startDate.getFullYear()}年${startDate.getMonth() + 1}-${endDate.getMonth() + 1}月税收分析-${new Date().toLocaleString()}.xlsx`, [{
+        sheetName: '税收导出',
+        rowData
+      }]);
+
+    });
+  }
   //#region mapbox map相关
 
 
