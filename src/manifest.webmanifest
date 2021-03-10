@@ -1,11 +1,11 @@
 {
-  "name": "ng-egg",
-  "short_name": "ng-egg",
+  "name": "城阳财源办公",
+  "short_name": "城阳财源办公",
   "theme_color": "#1976d2",
   "background_color": "#fafafa",
   "display": "standalone",
-  "scope": "/fbi/",
-  "start_url": "/fbi/",
+  "scope": "/fmobile/",
+  "start_url": "/fmobile/",
   "icons": [
     {
       "src": "assets/icons/icon-72x72.png",
