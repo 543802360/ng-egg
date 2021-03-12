@@ -12,7 +12,7 @@
       <i nz-icon nzType="question" nzTheme="outline"></i></button> <!-- startBoard -->
   </ng-template>
   <div nz-row nzGutter="8" style="height: 100%;">
-    <div nz-col nzSpan="10" style="height: 100%;" #colHost>
+    <div nz-col nzSpan="10" style="height: calc(100% - 80px);" #colHost>
       <st #st [data]="townData" header="镇街收入（单位：万元）" [columns]="columns" size="small" bordered="true"
         [page]="{show:false}" [scroll]="{y:'620px'}" [body]="bodyTpl" (change)="stChange($event)">
 

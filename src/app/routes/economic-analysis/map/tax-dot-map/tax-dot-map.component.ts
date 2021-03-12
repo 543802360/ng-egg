@@ -42,7 +42,7 @@ export class EconomicAnalysisMapTaxDotMapComponent implements OnInit, AfterViewI
   selectedValue = 100; // 所选纳税金额
   selectedHy; // 所选行业
   resData: ItemData[];
-
+  isZxsr = true;
   count = 0;
   totalValue = 0;
   tbzjValue = 0;
@@ -344,8 +344,8 @@ export class EconomicAnalysisMapTaxDotMapComponent implements OnInit, AfterViewI
     const value = this.selectedValue;
     const hyBase = this.hyBaseSelect.hyBase;
     // const adminCode = '3302130000';
-    return this.selectedHy === null ? { year, startMonth, endMonth, budgetValue, value, hyBase }
-      : { year, startMonth, endMonth, budgetValue, value, hyBase, ...this.selectedHy };
+    return this.selectedHy === null ? { year, startMonth, endMonth, budgetValue, value, hyBase, isZxsr: this.isZxsr }
+      : { year, startMonth, endMonth, budgetValue, value, hyBase, ...this.selectedHy, isZxsr: this.isZxsr };
 
   }
 

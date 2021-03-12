@@ -17,6 +17,7 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 })
 export class EnterpriseGroupGroupSummaryComponent implements OnInit, AfterViewInit {
 
+  // 统计栏目；本年度、上年同期、同比增减；
   bndTotal = 0;
   sntqTotal = 0;
   tbzjTotal = 0;
@@ -24,6 +25,8 @@ export class EnterpriseGroupGroupSummaryComponent implements OnInit, AfterViewIn
   downCount = 0;
 
   url = `enterprise-group/taxsummary`;
+  isZxsr = true; //是否包含专项收入
+
   @ViewChild('st') st: STComponent;
   @ViewChild('bdgSelect') bdgSelect: BdgSelectComponent;
   @ViewChild('monthRange') monthRange: MonthRangeComponent;
@@ -204,7 +207,8 @@ export class EnterpriseGroupGroupSummaryComponent implements OnInit, AfterViewIn
     const endMonth = endDate.getMonth() + 1;
     const budgetValue = this.bdgSelect.budgetValue.toLocaleString();
 
-    return { year, startMonth, endMonth, budgetValue };
+
+    return { year, startMonth, endMonth, budgetValue, isZxsr: this.isZxsr };
 
   }
   /**

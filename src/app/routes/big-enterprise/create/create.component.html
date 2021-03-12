@@ -25,6 +25,8 @@
     </nz-select>
 
     <app-month-range class="board-3" #monthRange style="margin-right: 5px;"></app-month-range>
+    <label style="margin: 5px;" nz-checkbox [(ngModel)]="isZxsr" name="">专项收入</label>
+
     <button nz-button class="board-4" (click)="getData()" [disabled]="http.loading" nzType="primary"
       style="margin-left: 6px;">查询</button>
     <button nz-button class="board-5" (click)="export()" [disabled]="http.loading" nzType="primary"
@@ -35,8 +37,8 @@
       nzShape="circle">
       <i nz-icon nzType="question" nzTheme="outline"></i></button>
   </ng-template>
-  <st #st [data]="data" [columns]="columns" [loading]="http.loading" [ps]="10" [pi]="1" [page]="page" bordered="true"
-    size="middle" [scroll]="{'y':'576px'}" (change)="change($event)">
+  <st #st header="重点企业税收（单位：万元）" [data]="data" [columns]="columns" [loading]="http.loading" [ps]="10" [pi]="1"
+    [page]="page" bordered="true" size="middle" [scroll]="{'y':'576px'}" (change)="change($event)">
     <ng-template st-row="tbzjz-tpl" let-item let-index="index">
       <nz-tag *ngIf="item.TBZJZ<0" nzColor="red">
         <span nz-tooltip [nzTooltipTitle]="'同比下降：' + item.TBZJZ"> {{item.TBZJZ|number}}</span>

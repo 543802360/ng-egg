@@ -45,6 +45,8 @@
     <ng-template #extraTemplate1>
         <app-bdg-select class="board-1" #bdgSelect></app-bdg-select>
         <app-month-range class="board-3" #monthRange style="margin-right: 5px;"></app-month-range>
+        <label nz-checkbox [(ngModel)]="isZxsr" name="">专项收入</label>
+
         <button nz-button class="board-4" (click)="getData()" [disabled]="http.loading" nzType="primary"
             style="margin-left: 6px;">查询</button>
         <button nz-button class="board-5" (click)="download()" [disabled]="http.loading" nzType="primary"

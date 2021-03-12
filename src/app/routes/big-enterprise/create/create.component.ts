@@ -21,6 +21,7 @@ import { NzTreeSelectComponent } from 'ng-zorro-antd/tree-select';
 export class BigEnterpriseCreateComponent implements OnInit, AfterViewInit {
   url = `bdg/enterprise/tax`;
   createUrl = `manage/big-enterprises`;
+  isZxsr = true;
   @ViewChild('st') st: STComponent;
   @ViewChild('bdgSelect') bdgSelect: BdgSelectComponent;
   @ViewChild('monthRange') monthRange: MonthRangeComponent;
@@ -190,7 +191,7 @@ export class BigEnterpriseCreateComponent implements OnInit, AfterViewInit {
     const budgetValue = this.bdgSelect.budgetValue.toLocaleString();
     const value = this.selectedValue;
     const adminCode = '3302060000';
-    return { adminCode, year, startMonth, endMonth, budgetValue, value };
+    return { adminCode, year, startMonth, endMonth, budgetValue, value, isZxsr: this.isZxsr };
 
   }
   /**

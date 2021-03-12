@@ -59,7 +59,7 @@ export class BigEnterpriseHyAnalysisComponent implements OnInit, AfterViewInit, 
   url = `big-enterprises/taxByMlmcsummary`;
   detailsUrl = 'big-enterprises/taxByMlmcDetails';
   taxAllDetails = 'big-enterprises/taxAllDetails'
-
+  isZxsr = true;
   data: ItemData[];
   @ViewChild('monthRange') monthRange: MonthRangeComponent;
   @ViewChild('st') st: STComponent;
@@ -276,7 +276,7 @@ export class BigEnterpriseHyAnalysisComponent implements OnInit, AfterViewInit, 
     const startMonth = startDate.getMonth() + 1;
     const endMonth = endDate.getMonth() + 1;
 
-    return { year, startMonth, endMonth };
+    return { year, startMonth, endMonth, isZxsr: this.isZxsr };
 
   }
 

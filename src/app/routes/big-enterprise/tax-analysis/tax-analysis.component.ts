@@ -36,6 +36,8 @@ export class BigEnterpriseTaxAnalysisComponent implements OnInit, AfterViewInit,
 
   url = `big-enterprises/taxsummary`;
   data: any[];
+  isZxsr = true;
+
   @ViewChild('bdgSelect') bdgSelect: BdgSelectComponent;
   @ViewChild('monthRange') monthRange: MonthRangeComponent;
   @ViewChild('st') st: STComponent;
@@ -259,7 +261,7 @@ export class BigEnterpriseTaxAnalysisComponent implements OnInit, AfterViewInit,
     const endMonth = endDate.getMonth() + 1;
     const budgetValue = this.bdgSelect.budgetValue.toLocaleString();
 
-    return { year, startMonth, endMonth, budgetValue };
+    return { year, startMonth, endMonth, budgetValue, isZxsr: this.isZxsr };
 
   }
 
