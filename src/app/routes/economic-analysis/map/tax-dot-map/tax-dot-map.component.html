@@ -81,17 +81,23 @@
           <nz-badge nzStandalone [nzCount]="index + 1" nzOverflowCount="6666"></nz-badge>
         </ng-template>
         <ng-template st-row="tbzjz-tpl" let-item let-index="index">
-          <nz-tag *ngIf="item.TBZJZ<0" nzColor="red">
-            <span nz-tooltip [nzTooltipTitle]="'同比增减：' + item.TBZJZ"> {{item.TBZJZ|number}}</span>
+          <nz-tag *ngIf="item.TBZJZ>=0" nzColor="red">
+            <span nz-tooltip [nzTooltipTitle]="'同比增长：' + item.TBZJZ + ' 万元'"> {{item.TBZJZ|number}}</span>
           </nz-tag>
-          <span *ngIf="item.TBZJZ>=0" nz-tooltip [nzTooltipTitle]="'同比增减：' + item.TBZJZ"> {{item.TBZJZ|number}}</span>
+          <nz-tag *ngIf="item.TBZJZ<0" nzColor="green">
+            <span nz-tooltip [nzTooltipTitle]="'同比下降：' + item.TBZJZ + ' 万元'"> {{item.TBZJZ|number}}</span>
+          </nz-tag>
+          <!-- <span *ngIf="item.TBZJZ>=0" nz-tooltip [nzTooltipTitle]="'同比增减：' + item.TBZJZ"> {{item.TBZJZ|number}}</span> -->
         </ng-template>
         <ng-template st-row="tbzjf-tpl" let-item let-index="index">
 
-          <nz-tag *ngIf="item.TBZJZ<0" nzColor="red">
-            <span nz-tooltip [nzTooltipTitle]="'同比增减：' + item.TBZJF"> {{item.TBZJF}}</span>
+          <nz-tag *ngIf="item.TBZJZ>=0" nzColor="red">
+            <span nz-tooltip [nzTooltipTitle]="'同比增幅：' + item.TBZJF"> {{item.TBZJF}}</span>
           </nz-tag>
-          <span *ngIf="item.TBZJZ>=0" nz-tooltip [nzTooltipTitle]="'同比增减幅：' + item.TBZJF"> {{item.TBZJF}}</span>
+          <nz-tag *ngIf="item.TBZJZ<0" nzColor="green">
+            <span nz-tooltip [nzTooltipTitle]="'同比减幅：' + item.TBZJF"> {{item.TBZJF}}</span>
+          </nz-tag>
+          <!-- <span *ngIf="item.TBZJZ>=0" nz-tooltip [nzTooltipTitle]="'同比增减幅：' + item.TBZJF"> {{item.TBZJF}}</span> -->
         </ng-template>
       </st>
     </div>

@@ -37,7 +37,7 @@
         </ng-template>
 
         <ng-template st-row="tbzjz-tpl" let-item let-index="index">
-          <nz-tag nzColor="{{item.tbzjz>0?'green':'red'}}">
+          <nz-tag nzColor="{{item.tbzjz>0?'red':'green'}}">
             <!-- <span> {{item.tbzjz|number}}（{{item.tbzjf}}）</span> -->
             <span *ngIf="item.tbzjz>0" nz-tooltip [nzTooltipOverlayStyle]="tooltipStyle"
               [nzTooltipTitle]="'同比增长：' + item.tbzjz+' 万元;&nbsp;' +'增幅：'+item.tbzjf">

@@ -63,18 +63,18 @@
                 pi="1" ps="10" bordered="true" size="middle" [scroll]="{x:'1400px',y:'586px'}"
                 (change)="stChange($event)">
                 <ng-template st-row="tbzjf-qkj" let-item let-index="index">
-                    <nz-tag *ngIf="item.BNDSR_QKJ>item.SNTQ_QKJ" nzColor="green">
+                    <nz-tag *ngIf="item.BNDSR_QKJ>item.SNTQ_QKJ" nzColor="red">
                         <span nz-tooltip [nzTooltipTitle]="'同比增长：' + item.TBZJF_QKJ"> {{item.TBZJF_QKJ}}</span>
                     </nz-tag>
-                    <nz-tag *ngIf="item.BNDSR_QKJ<item.SNTQ_QKJ" nzColor="red">
+                    <nz-tag *ngIf="item.BNDSR_QKJ<item.SNTQ_QKJ" nzColor="green">
                         <span nz-tooltip [nzTooltipTitle]="'同比下降：' + item.TBZJF_QKJ"> {{item.TBZJF_QKJ}}</span>
                     </nz-tag>
                 </ng-template>
                 <ng-template st-row="tbzjf-dfkj" let-item let-index="index">
-                    <nz-tag *ngIf="item.BNDSR_DFKJ>item.SNTQ_DFKJ" nzColor="green">
+                    <nz-tag *ngIf="item.BNDSR_DFKJ>item.SNTQ_DFKJ" nzColor="red">
                         <span nz-tooltip [nzTooltipTitle]="'同比增长：' + item.TBZJF_DFKJ"> {{item.TBZJF_DFKJ}}</span>
                     </nz-tag>
-                    <nz-tag *ngIf="item.BNDSR_DFKJ<item.SNTQ_DFKJ" nzColor="red">
+                    <nz-tag *ngIf="item.BNDSR_DFKJ<item.SNTQ_DFKJ" nzColor="green">
                         <span nz-tooltip [nzTooltipTitle]="'同比下降：' + item.TBZJF_DFKJ"> {{item.TBZJF_DFKJ}}</span>
                     </nz-tag>
                 </ng-template>

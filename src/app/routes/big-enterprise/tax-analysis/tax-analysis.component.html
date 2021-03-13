@@ -60,28 +60,28 @@
       <st #st [data]="data" [columns]="columns" [page]="page" [loading]="http.loading" pi="1" ps="10" bordered="true"
         size="middle" [scroll]="{x:'1400px',y:'586px'}" (change)="stChange($event)">
         <ng-template st-row="tbzjz-tpl" let-item let-index="index">
-          <nz-tag *ngIf="item.TBZJZ<0" nzColor="red">
+          <nz-tag *ngIf="item.TBZJZ<0" nzColor="green">
             <span nz-tooltip [nzTooltipTitle]="'同比下降：' + item.TBZJZ"> {{item.TBZJZ|number}}</span>
           </nz-tag>
-          <nz-tag *ngIf="item.TBZJZ>=0" nzColor="green">
+          <nz-tag *ngIf="item.TBZJZ>=0" nzColor="red">
             <span nz-tooltip [nzTooltipTitle]="'同比增长：' + item.TBZJZ+' 万元'"> {{item.TBZJZ|number}}</span>
           </nz-tag>
         </ng-template>
         <ng-template st-row="tbzjf-tpl" let-item let-index="index">
-          <nz-tag *ngIf="item.TBZJZ<0" nzColor="red">
+          <nz-tag *ngIf="item.TBZJZ<0" nzColor="green">
             <span nz-tooltip [nzTooltipTitle]="'同比下降：' + item.TBZJF"> {{item.TBZJF}}</span>
           </nz-tag>
-          <nz-tag *ngIf="item.TBZJZ>=0" nzColor="green">
+          <nz-tag *ngIf="item.TBZJZ>=0" nzColor="red">
             <span nz-tooltip [nzTooltipTitle]="'同比增长：' + item.TBZJF"> {{item.TBZJF}}</span>
           </nz-tag>
         </ng-template>
         <ng-template st-row='pmzj-tpl' let-item let-index="index">
           <span *ngIf="item.PMZJ>=0">
-            <nz-tag nzColor="green">{{item.PMZJ}} </nz-tag>
+            <nz-tag nzColor="red">{{item.PMZJ}} </nz-tag>
             <i nz-icon style="color: green;" nzType="arrow-up"></i>
           </span>
           <span *ngIf="item.PMZJ<0">
-            <nz-tag nzColor="red">{{item.PMZJ}} </nz-tag>
+            <nz-tag nzColor="green">{{item.PMZJ}} </nz-tag>
             <i nz-icon style="color: red;" nzType="arrow-down"></i>
           </span>
         </ng-template>

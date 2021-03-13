@@ -24,12 +24,12 @@
                     </ng-container> -->
                 </ng-template>
                 <ng-template st-row="tbzjz-tpl" let-item let-index="index">
-                    <nz-tag nzColor="{{item.TBZJZ>0?'green':'red'}}">
+                    <nz-tag nzColor="{{item.TBZJZ>0?'red':'green'}}">
                         <span nz-tooltip [nzTooltipTitle]="'同比增减：' + item.TBZJZ +'万元'"> {{item.TBZJZ|number}}</span>
                     </nz-tag>
                 </ng-template>
                 <ng-template st-row="tbzjf-tpl" let-item let-index="index">
-                    <nz-tag nzColor="{{item.TBZJZ>0?'green':'red'}}">
+                    <nz-tag nzColor="{{item.TBZJZ>0?'red':'green'}}">
                         <span nz-tooltip [nzTooltipTitle]="'同比增减幅：' + item.TBZJF"> {{item.TBZJF}}</span>
                     </nz-tag>
                 </ng-template>

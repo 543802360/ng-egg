@@ -373,7 +373,7 @@ export class EconomicAnalysisMapTaxAggMapComponent implements OnInit, AfterViewI
     const endMonth = endDate.getMonth() + 1;
     const budgetValue = this.bdgSelect.budgetValue.toLocaleString();
     // return { year, startMonth, endMonth, budgetValue };
-    return { year: 2019, startMonth: 1, endMonth: 2, budgetValue };
+    return { year, startMonth, endMonth, budgetValue };
 
 
   }
