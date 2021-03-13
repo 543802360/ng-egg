@@ -33,7 +33,7 @@ export class BudgetBdgAnalysisCompanyOrderComponent implements OnInit, AfterView
   hymcNodes;
   selectedHymc: string;
   selectedOrder = 100;
-
+  isZxsr = true;
   //#endregion
   @ViewChild('st') st: STComponent;
   url = "bdg/enterprise/order";
@@ -232,7 +232,7 @@ export class BudgetBdgAnalysisCompanyOrderComponent implements OnInit, AfterView
       this.total = resp.data.length;
 
       // 添加至地图
-      this.data.forEach((item, index) => {
+      this.data.filter(i => i.lat && i.lng).forEach((item, index) => {
         const marker = L.marker([item.lat, item.lng], {
           icon: L.BeautifyIcon.icon({
             icon: 'leaf',
@@ -284,13 +284,13 @@ export class BudgetBdgAnalysisCompanyOrderComponent implements OnInit, AfterView
     // const adminCode = this.cacheSrv.get('userInfo', { mode: 'none' }).department_id;
 
     if (!this.hyTreeSelect.getSelectedNodeList().length) {
-      return { adminCode, year, startMonth, endMonth, budgetValue, count };
+      return { adminCode, year, startMonth, endMonth, budgetValue, count, isZxsr: this.isZxsr };
     }
     if (this.hyTreeSelect.getSelectedNodeList().length !== 0) {
       const hyBase = this.hyBaseSelect.hyBase;
       const selectedNode = this.hyTreeSelect.getSelectedNodeList()[0];
-      return selectedNode.parentNode ? { adminCode, year, startMonth, endMonth, budgetValue, count, hyBase, hymc: selectedNode.title } :
-        { adminCode, year, startMonth, endMonth, budgetValue, count, hyBase, mlmc: selectedNode.title };
+      return selectedNode.parentNode ? { adminCode, year, startMonth, endMonth, budgetValue, count, hyBase, hymc: selectedNode.title, isZxsr: this.isZxsr } :
+        { adminCode, year, startMonth, endMonth, budgetValue, count, hyBase, mlmc: selectedNode.title, isZxsr: this.isZxsr };
     }
 
   }
