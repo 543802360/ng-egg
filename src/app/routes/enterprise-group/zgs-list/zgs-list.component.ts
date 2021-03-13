@@ -27,7 +27,7 @@ export class EnterpriseGroupZgsListComponent implements OnInit, AfterViewInit {
   downCount = 0;
 
   url = `enterprise-group/zgstax`;
-
+  isZxsr = true;
   @ViewChild('st') st: STComponent;
   @ViewChild('bdgSelect') bdgSelect: BdgSelectComponent;
   @ViewChild('monthRange') monthRange: MonthRangeComponent;
@@ -225,7 +225,7 @@ export class EnterpriseGroupZgsListComponent implements OnInit, AfterViewInit {
     const endMonth = endDate.getMonth() + 1;
     const budgetValue = this.bdgSelect.budgetValue.toLocaleString();
 
-    return { jtmc: this.jtSug.jtmc.trim(), year, startMonth, endMonth, budgetValue };
+    return { jtmc: this.jtSug.jtmc.trim(), year, startMonth, endMonth, budgetValue, isZxsr: this.isZxsr };
 
   }
   /**

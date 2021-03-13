@@ -51,6 +51,8 @@
         style="display: inline-block;width: 284px;"> -->
         <app-bdg-select #bdgSelect></app-bdg-select>
         <app-month-range #monthRange style="margin-right: 5px;"></app-month-range>
+        <label style="margin: 5px;" nz-checkbox [(ngModel)]="isZxsr" name="">专项收入</label>
+
         <button (click)="getData()" [disabled]="http.loading" nz-button nzType="primary">查询</button>
         <button (click)="export()" [disabled]="http.loading" nz-button nzType="primary">导出</button>
 
