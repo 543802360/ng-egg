@@ -49,7 +49,7 @@ const itemInfo =
 })
 export class AnalysisToolsCompanyDimTaxComponent implements OnInit {
   url = `bdg/tools/dimtax`;
-
+  isZxsr = true;
   nsrmc: string;
   @ViewChild('bdgSelect') bdgSelect: BdgSelectComponent;
   @ViewChild('monthRange') monthRange: MonthRangeComponent;
@@ -223,7 +223,7 @@ export class AnalysisToolsCompanyDimTaxComponent implements OnInit {
     const budgetValue = this.bdgSelect.budgetValue.toLocaleString();
 
 
-    return { year, startMonth, endMonth, budgetValue, nsrmc: this.nsrmc };
+    return { year, startMonth, endMonth, budgetValue, nsrmc: this.nsrmc, isZxsr: this.isZxsr };
 
 
   }

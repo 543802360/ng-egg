@@ -6,6 +6,8 @@
       style="display: inline-block;width: 284px;" />
     <app-bdg-select class="board-2" #bdgSelect></app-bdg-select>
     <app-month-range class="board-3" #monthRange style="margin-right: 5px;"></app-month-range>
+    <label style="margin: 5px;" nz-checkbox [(ngModel)]="isZxsr" name="">专项收入</label>
+
     <button class="board-4" (click)="getData()" [disabled]="http.loading" nz-button nzType="primary">查询</button>
     <button class="board-5" (click)="export()" [disabled]="http.loading" nz-button nzType="primary">导出</button>
     <button nz-button nz-tooltip nzTooltipTitle="帮助" (click)="startBoard()" nzType="default" style="margin-left: 6px;"
