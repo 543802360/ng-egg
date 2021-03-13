@@ -16,6 +16,7 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 })
 export class BudgetBdgAnalysisBatchQueryComponent implements OnInit {
   url = `bdg/tools/batchQuery`;
+  isZxsr = true;
   xlsxColumns: STColumn[] = [];
   xlsxData: any[] = [];
 
@@ -89,7 +90,7 @@ export class BudgetBdgAnalysisBatchQueryComponent implements OnInit {
     const endMonth = endDate.getMonth() + 1;
     const budgetValue = this.bdgSelect.budgetValue.toLocaleString();
 
-    return { year, startMonth, endMonth, budgetValue };
+    return { year, startMonth, endMonth, budgetValue, isZxsr: this.isZxsr };
 
 
   }
