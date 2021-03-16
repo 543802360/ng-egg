@@ -1,1 +1,22 @@
-<page-header></page-header>
+<!--产业税收 -->
+<nz-card [nzTitle]="'产业税收'" [nzExtra]="extraTemplate1" [nzBordered]="false" class="single-card">
+    <ng-template #extraTemplate1>
+        <span style="font-weight: bolder;">纳税人名称：</span>
+        <app-nsrmc-suggestion style="margin: 0 5px;" #nsrSug></app-nsrmc-suggestion>
+        <nz-date-picker [(ngModel)]="startDate" nzFormat="yyyy-MM-dd" nzPlaceHolder="起始时间">
+        </nz-date-picker>
+        <span style="margin: 0 5px;">~</span>
+        <nz-date-picker [(ngModel)]="endDate" nzFormat="yyyy-MM-dd" nzPlaceHolder="结束时间"></nz-date-picker>
+        <button nz-button class="board-4" (click)="getData()" nzType="primary" style="margin-left: 6px;">查询</button>
+        <button nz-button class="board-5" nzType="primary" [disabled]="http.loading"
+            style="margin-left: 6px;">导出</button>
+
+    </ng-template>
+    <div nz-row nzGutter="8">
+        <div nz-col [nzXs]="24" [nzSm]="24" nzMd="24" nzLg="24">
+            <st [data]="infoData" header="电子税票明细（单位：元）" [columns]="columns" bordered="true" [page]="page"
+                [loading]="http.loading">
+            </st>
+        </div>
+    </div>
+</nz-card>

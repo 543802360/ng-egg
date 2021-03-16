@@ -58,6 +58,10 @@ const routes: Routes = [
         path: 'tools',
         loadChildren: () => import('./analysis-tools/analysis-tools.module').then(m => m.AnalysisToolsModule)
       },
+      {
+        path: 'deductsum',
+        loadChildren: () => import('./deductsum/deductsum.module').then(m => m.DeductsumModule)
+      },
       // 异常处理模块
       {
         path: 'exception',

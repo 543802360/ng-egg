@@ -5,8 +5,20 @@ import { DeductsumTaxRefundComponent } from './tax-refund/tax-refund.component';
 
 const routes: Routes = [
 
-  { path: 'details', component: DeductsumDetailsComponent },
-  { path: 'tax-refund', component: DeductsumTaxRefundComponent }];
+  {
+    path: 'details',
+    data: {
+      title: '税票明细'
+    },
+    component: DeductsumDetailsComponent
+  },
+  {
+    path: 'tax-refund',
+    data: {
+      title: '退税明细'
+    },
+    component: DeductsumTaxRefundComponent
+  }];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
