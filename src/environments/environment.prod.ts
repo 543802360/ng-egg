@@ -1,5 +1,5 @@
 export const environment = {
-  SERVER_URL: `http://15.72.178.174:10920/api/`,
+  SERVER_URL: `http://15.72.178.175:10920/api/`,
   production: true,
   useHash: true,
   hmr: false,
