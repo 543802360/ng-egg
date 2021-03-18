@@ -1,6 +1,8 @@
 export const environment = {
   // SERVER_URL: `http://15.72.178.175:10920/api/`,
-  SERVER_URL: `http://120.221.72.3:10010/api/`,
+  // SERVER_URL: `http://120.221.72.3:10010/api/`,
+  SERVER_URL: `http://192.168.207.136:10920/api/`,
+
   production: true,
   useHash: true,
   hmr: false,
