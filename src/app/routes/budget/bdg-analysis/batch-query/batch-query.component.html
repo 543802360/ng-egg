@@ -10,6 +10,7 @@
     <app-bdg-select class="board-3" style="margin-left: 5px;" #bdgSelect></app-bdg-select>
     <app-month-range class="board-4" #monthRange style="margin-right: 5px;"></app-month-range>
     <label style="margin: 5px;" nz-checkbox [(ngModel)]="isZxsr" name="">专项收入</label>
+    <!-- <label style="margin: 5px;" nz-checkbox [(ngModel)]="isRefund" name="">出口退税</label> -->
 
     <button class="board-5" (click)="export()" [disabled]="http.loading" nz-button nzType="primary">查询</button>
     <button class="board-6" (click)="export()" [disabled]="http.loading" nz-button nzType="primary">导出</button>

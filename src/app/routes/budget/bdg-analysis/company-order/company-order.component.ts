@@ -34,6 +34,7 @@ export class BudgetBdgAnalysisCompanyOrderComponent implements OnInit, AfterView
   selectedHymc: string;
   selectedOrder = 100;
   isZxsr = true;
+  isRefund = false;
   //#endregion
   @ViewChild('st') st: STComponent;
   url = "bdg/enterprise/order";
@@ -284,13 +285,13 @@ export class BudgetBdgAnalysisCompanyOrderComponent implements OnInit, AfterView
     // const adminCode = this.cacheSrv.get('userInfo', { mode: 'none' }).department_id;
 
     if (!this.hyTreeSelect.getSelectedNodeList().length) {
-      return { adminCode, year, startMonth, endMonth, budgetValue, count, isZxsr: this.isZxsr };
+      return { adminCode, year, startMonth, endMonth, budgetValue, count, isZxsr: this.isZxsr, isRefund: this.isRefund };
     }
     if (this.hyTreeSelect.getSelectedNodeList().length !== 0) {
       const hyBase = this.hyBaseSelect.hyBase;
       const selectedNode = this.hyTreeSelect.getSelectedNodeList()[0];
-      return selectedNode.parentNode ? { adminCode, year, startMonth, endMonth, budgetValue, count, hyBase, hymc: selectedNode.title, isZxsr: this.isZxsr } :
-        { adminCode, year, startMonth, endMonth, budgetValue, count, hyBase, mlmc: selectedNode.title, isZxsr: this.isZxsr };
+      return selectedNode.parentNode ? { adminCode, year, startMonth, endMonth, budgetValue, count, hyBase, hymc: selectedNode.title, isZxsr: this.isZxsr, isRefund: this.isRefund } :
+        { adminCode, year, startMonth, endMonth, budgetValue, count, hyBase, mlmc: selectedNode.title, isZxsr: this.isZxsr, isRefund: this.isRefund };
     }
 
   }
